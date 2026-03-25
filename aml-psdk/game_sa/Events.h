@@ -9,6 +9,7 @@ struct CVehicle;
 struct CPed;
 struct CObject;
 struct MobileMenu;
+struct CPlayerInfo;
 
 struct Events
 {
@@ -65,6 +66,13 @@ struct Events
     DECL_EVENT_SYM_ARG0_PICK0(bool, preinitEngineEvent, _ZN5CGame22InitialiseOnceBeforeRWEv);
     DECL_EVENT_SYM_ARG0_PICK0(int,  initEngineEvent, _Z12RsInitializev);
     DECL_EVENT_SYM_ARG4_PICK4(void, touchScreenEvent, _Z14AND_TouchEventiiii, int, actionType, int, trackNum, int, x, int, y); // !!! NOT THREAD SAFE !!!
+    DECL_EVENT_SYM_ARG1_PICK1(void, pedPreRenderEvent, _ZN4CPed18PreRenderAfterTestEv, CPed*, ped);
+    DECL_EVENT_SYM_ARG0_PICK0(void, cloudsRenderEvent, _ZN7CClouds6RenderEv);
+    DECL_EVENT_SYM_ARG0_PICK0(void, roadsRenderEvent, _ZN9CRenderer11RenderRoadsEv);
+    DECL_EVENT_SYM_ARG0_PICK0(void, barRoadsRenderEvent, _ZN9CRenderer24RenderEverythingBarRoadsEv);
+    DECL_EVENT_SYM_ARG0_PICK0(void, waterRenderEvent, _ZN11CWaterLevel11RenderWaterEv);
+    DECL_EVENT_SYM_ARG0_PICK0(void, timerUpdateEvent, _ZN6CTimer6UpdateEv);
+    DECL_EVENT_SYM_ARG2_PICK2(void, playerInfoUpdateEvent, _ZN11CPlayerInfo7ProcessEi, CPlayerInfo*, info, int, playerNum);
 };
 
 #endif // __AML_PSDK_SACALLEVENTS_H
