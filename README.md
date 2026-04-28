@@ -18,3 +18,7 @@ I personally recommend using Visual Studio Code (VS Code) with PowerShell for be
 
 # Additional information
 The project for GTA-games is trying to utilise names that are found in DK22Pac/plugin-sdk for compatibility and better user experience. Check out the PC version!
+
+# Mods using PSDK
+- https://github.com/AndroidModLoader/GTASA_OnlineRadio
+- https://github.com/TecoReacviteGaming/GTASA_CLEOVisualObject
