@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SAVEHICLEEXTENDER_H
 #define __AML_PSDK_SAVEHICLEEXTENDER_H
 
+#include "../other/Pools.h"
 #include "../BaseExtender.h"
 #include "../Events.h"
 
