@@ -4,6 +4,9 @@
 #include <aml-psdk/sdk_base.h>
 #include "RwBase.h"
 
+#define rpATOMIC 1
+#define rpCLUMP 2
+
 struct RwFrame;
 
 struct RwObject
