@@ -2,6 +2,7 @@
 #define __AML_PSDK_RWMATRIX_H
 
 #include <aml-psdk/sdk_base.h>
+#include "RwBase.h"
 #include "RwVector.h"
 #include "RwStream.h"
 
@@ -14,13 +15,6 @@ struct rwStreamMatrix
     RwInt32 type;
 };
 typedef rwStreamMatrix RwMatrixChunkInfo;
-
-enum RwOpCombineType : RwInt32
-{
-    rwCOMBINEREPLACE = 0x0,
-    rwCOMBINEPRECONCAT = 0x1,
-    rwCOMBINEPOSTCONCAT = 0x2,
-};
 
 
 struct RwMatrix

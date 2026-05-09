@@ -24,6 +24,9 @@ struct RpMaterial
     RwInt16             refCount;
 };
 
-// TODO: global functions
+DECL_FASTCALL_SIMPLE_GLO(RpMaterialCreateMultiTexture, _Z28RpMaterialCreateMultiTextureP10RpMaterial12RwPlatformIDj, RpMaterial*, RpMaterial* material, RwPlatformID platformID, RwUInt32 numTextures);
+DECL_FASTCALL_SIMPLE_GLO(RpMaterialDestroyMultiTexture, _Z29RpMaterialDestroyMultiTextureP10RpMaterial12RwPlatformID, RpMaterial*, RpMaterial* material, RwPlatformID platformID);
+DECL_FASTCALL_SIMPLE_GLO(RpMaterialGetMultiTexture, _Z25RpMaterialGetMultiTexturePK10RpMaterial12RwPlatformID, RpMultiTexture*, const RpMaterial* material, RwPlatformID platformID);
+DECL_FASTCALL_SIMPLE_GLO(RpMaterialQueryMultiTexturePlatform, _Z35RpMaterialQueryMultiTexturePlatform12RwPlatformID, RwBool, RwPlatformID platformID);
 
 #endif // __AML_PSDK_RPMATERIAL_H

@@ -6,5 +6,9 @@ struct RwLLLink
     RwLLLink *next;
     RwLLLink *prev;
 };
+struct RwLinkList
+{
+    RwLLLink link;
+};
 
 #endif // __AML_PSDK_RWLINKS_H

@@ -22,6 +22,31 @@ struct RwRect
     RwInt32 h;
 };
 
+enum RwOpCombineType : RwInt32
+{
+    rwCOMBINEREPLACE = 0x0,
+    rwCOMBINEPRECONCAT = 0x1,
+    rwCOMBINEPOSTCONCAT = 0x2,
+};
+
+enum RwPlatformID : RwInt32
+{
+    rwID_PCD3D7 = 0x1,
+    rwID_PCOGL = 0x2,
+    rwID_MAC = 0x3,
+    rwID_PS2 = 0x4,
+    rwID_XBOX = 0x5,
+    rwID_GAMECUBE = 0x6,
+    rwID_SOFTRAS = 0x7,
+    rwID_PCD3D8 = 0x8,
+    rwID_PCD3D9 = 0x9,
+    rwID_ES2_DXT = 0xA,
+    rwID_ES2_PVR = 0xB,
+    rwID_ES2_ATC = 0xC,
+    rwID_ES2_UNC = 0xD,
+};
+
+
 
 struct RwStream;
 
