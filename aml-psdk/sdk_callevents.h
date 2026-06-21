@@ -2,296 +2,129 @@
 #define __AML_PSDK_CALLEVENTS_H
 
 #include "sdk_base.h"
-#include <type_traits>
+#include <cstdint>
 #include <vector>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
-// Yeah, this all below looks real bad lol.
+enum class EventPhase { Before, After };
+struct EventHooker
+{
+    enum EventHookType { EHT_SYM, EHT_ADDR, EHT_PLT, EHT_BL, EHT_BLX /* <- ARM64 = BL */} type;
+    const char* sym;
+    uintptr_t   addr;
 
-#define DECL_EVENT_BASE(_name) \
-    struct CallEvent_##_name {
-
-#define DECL_EVENT_SYM(_ret, _sym, ...) \
-        typedef _ret (MyType)(__VA_ARGS__); \
-        static inline MyType* m_pOriginalFunc = NULL; \
-        struct { \
-            std::vector<EventType*> m_list; \
-            void operator+=(EventType* newFn) { \
-                m_list.push_back(newFn); StartEvent(); \
-            } \
-            void operator-=(EventType* newFn) { \
-                for(auto it = m_list.begin(); it != m_list.end(); ++it) { if(*it == newFn) { m_list.erase(it); break; } } \
-            } \
-        } before, after; \
-        void operator+=(EventType* newFn) { after += newFn; } \
-        static inline void StartEvent() { \
-            if(!m_pOriginalFunc) { \
-                aml->Hook(GetMainLibrarySymbol(#_sym), (void*)(&EventExecuted), (void**)(&m_pOriginalFunc)); \
-            } \
+    void Install(void* detour, void** orig) const
+    {
+        if(type == EHT_PLT)
+        {
+            aml->HookPLT((void*)(GetMainLibraryAddress() + addr), detour, orig);
         }
-
-#define DECL_EVENT_PLT(_ret, _addr, ...) \
-        typedef _ret (MyType)(__VA_ARGS__); \
-        static inline MyType* m_pOriginalFunc = NULL; \
-        struct { \
-            std::vector<EventType*> m_list; \
-            void operator+=(EventType* newFn) { \
-                m_list.push_back(newFn); StartEvent(); \
-            } \
-            void operator-=(EventType* newFn) { \
-                for(auto it = m_list.begin(); it != m_list.end(); ++it) { if(*it == newFn) { m_list.erase(it); break; } } \
-            } \
-        } before, after; \
-        void operator+=(EventType* newFn) { after += newFn; } \
-        static inline void StartEvent() { \
-            if(!m_pOriginalFunc) { \
-                aml->HookPLT((void*)(GetMainLibraryAddress() + _addr), (void*)(&EventExecuted), (void**)(&m_pOriginalFunc)); \
-            } \
+        else if(type == EHT_ADDR)
+        {
+            aml->Hook((void*)(GetMainLibraryAddress() + addr), detour, orig);
         }
+        else if(type == EHT_BL)
+        {
+            aml->HookBL((void*)(GetMainLibraryAddress() + addr), detour, orig);
+        }
+        else if(type == EHT_BLX)
+        {
+            aml->HookBLX((void*)(GetMainLibraryAddress() + addr), detour, orig);
+        }
+        else if(sym != NULL)
+        {
+            aml->Hook(GetMainLibrarySymbol(sym), detour, orig);
+        }
+    }
+};
 
-#define DECL_EVENT_BASE_END(_name) \
-    }; static inline CallEvent_##_name _name
+template <class Tag, EventPhase Def, class Sig, std::size_t... Pick> struct CallEvent;
 
-#define DECL_EVENT_SYM_ARG0_PICK0(_ret, _name, _sym) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(); \
-        DECL_EVENT_SYM(_ret, _sym) \
-        inline void CallBefore() { \
-            for(auto fn : before.m_list) fn(); \
-        } \
-        inline void CallAfter() { \
-            for(auto fn : after.m_list) fn(); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl() { \
-            _name.CallBefore(); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(); \
-                _name.CallAfter(); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(); \
-                _name.CallAfter(); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted() { \
-            return EventExecutedImpl(); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+template <class Tag, EventPhase Def, class R, class... A, std::size_t... Pick>
+struct CallEvent<Tag, Def, R(A...), Pick...>
+{
+    using AllArgs  = std::tuple<A...>;
+    using Listener = void(*)(std::tuple_element_t<Pick, AllArgs>...);
+    using OrigT    = R(*)(A...);
 
-#define DECL_EVENT_PLT_ARG0_PICK0(_ret, _name, _addr) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(); \
-        DECL_EVENT_PLT(_ret, _addr) \
-        inline void CallBefore() { \
-            for(auto fn : before.m_list) fn(); \
-        } \
-        inline void CallAfter() { \
-            for(auto fn : after.m_list) fn(); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl() { \
-            _name.CallBefore(); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(); \
-                _name.CallAfter(); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(); \
-                _name.CallAfter(); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted() { \
-            return EventExecutedImpl(); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    static inline OrigT                 m_pOriginalFunc = nullptr;
+    static inline std::vector<Listener> s_before, s_after;
 
-#define DECL_EVENT_SYM_ARG1_PICK0(_ret, _name, _sym, _t1, _v1) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(); \
-        DECL_EVENT_SYM(_ret, _sym, _t1 _v1) \
-        inline void CallBefore() { \
-            for(auto fn : before.m_list) fn(); \
-        } \
-        inline void CallAfter() { \
-            for(auto fn : after.m_list) fn(); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1) { \
-            _name.CallBefore(); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1) { \
-            return EventExecutedImpl(_v1); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    EventHooker m_hook;
+    explicit CallEvent(EventHooker h) : m_hook(h) {}
 
-#define DECL_EVENT_PLT_ARG1_PICK0(_ret, _name, _addr, _t1, _v1) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(); \
-        DECL_EVENT_PLT(_ret, _addr, _t1 _v1) \
-        inline void CallBefore() { \
-            for(auto fn : before.m_list) fn(); \
-        } \
-        inline void CallAfter() { \
-            for(auto fn : after.m_list) fn(); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1) { \
-            _name.CallBefore(); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1) { \
-            return EventExecutedImpl(_v1); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    struct List
+    {
+        std::vector<Listener>& v; CallEvent* e;
+        void operator+=(Listener fn) { v.push_back(fn); e->StartEvent(); }
+        void operator-=(Listener fn) { for(auto it = v.begin(); it != v.end(); ++it) if(*it == fn) { v.erase(it); break; } }
+    };
+    List before{ s_before, this };
+    List after { s_after,  this };
 
-#define DECL_EVENT_PLT_ARG1_PICK1(_ret, _name, _addr, _t1, _v1) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(_t1 _v1); \
-        DECL_EVENT_PLT(_ret, _addr, _t1 _v1) \
-        inline void CallBefore(_t1 _v1) { \
-            for(auto fn : before.m_list) fn(_v1); \
-        } \
-        inline void CallAfter(_t1 _v1) { \
-            for(auto fn : after.m_list) fn(_v1); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1) { \
-            _name.CallBefore(_v1); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(_v1); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(_v1); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1) { \
-            return EventExecutedImpl(_v1); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    void operator+=(Listener fn) { if constexpr (Def == EventPhase::Before) before += fn; else after += fn; }
+    void operator-=(Listener fn) { if constexpr (Def == EventPhase::Before) before -= fn; else after -= fn; }
 
-#define DECL_EVENT_SYM_ARG1_PICK1(_ret, _name, _sym, _t1, _v1) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(_t1 _v1); \
-        DECL_EVENT_SYM(_ret, _sym, _t1 _v1) \
-        inline void CallBefore(_t1 _v1) { \
-            for(auto fn : before.m_list) fn(_v1); \
-        } \
-        inline void CallAfter(_t1 _v1) { \
-            for(auto fn : after.m_list) fn(_v1); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1) { \
-            _name.CallBefore(_v1); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(_v1); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1); \
-                _name.CallAfter(_v1); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1) { \
-            return EventExecutedImpl(_v1); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    void StartEvent()
+    {
+        if(!m_pOriginalFunc) m_hook.Install((void*)(&EventExecuted), (void**)(&m_pOriginalFunc));
+    }
 
-#define DECL_EVENT_SYM_ARG2_PICK1(_ret, _name, _sym, _t1, _v1, _t2, _v2) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(_t1 _v1); \
-        DECL_EVENT_SYM(_ret, _sym, _t1 _v1, _t2 _v2) \
-        inline void CallBefore(_t1 _v1) { \
-            for(auto fn : before.m_list) fn(_v1); \
-        } \
-        inline void CallAfter(_t1 _v1) { \
-            for(auto fn : after.m_list) fn(_v1); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1, _t2 _v2) { \
-            _name.CallBefore(_v1); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1, _v2); \
-                _name.CallAfter(_v1); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1, _v2); \
-                _name.CallAfter(_v1); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1, _t2 _v2) { \
-            return EventExecutedImpl(_v1, _v2); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+    static R EventExecuted(A... a)
+    {
+        auto t = std::forward_as_tuple(a...);
+        for(auto fn : s_before) fn(std::get<Pick>(t)...);
+        if constexpr (std::is_void_v<R>)
+        {
+            m_pOriginalFunc(a...);
+            for(auto fn : s_after) fn(std::get<Pick>(t)...);
+        }
+        else
+        {
+            R r = m_pOriginalFunc(a...);
+            for(auto fn : s_after) fn(std::get<Pick>(t)...);
+            return r;
+        }
+    }
+};
 
-#define DECL_EVENT_SYM_ARG2_PICK2(_ret, _name, _sym, _t1, _v1, _t2, _v2) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(_t1 _v1, _t2 _v2); \
-        DECL_EVENT_SYM(_ret, _sym, _t1 _v1, _t2 _v2) \
-        inline void CallBefore(_t1 _v1, _t2 _v2) { \
-            for(auto fn : before.m_list) fn(_v1, _v2); \
-        } \
-        inline void CallAfter(_t1 _v1, _t2 _v2) { \
-            for(auto fn : after.m_list) fn(_v1, _v2); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1, _t2 _v2) { \
-            _name.CallBefore(_v1, _v2); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1, _v2); \
-                _name.CallAfter(_v1, _v2); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1, _v2); \
-                _name.CallAfter(_v1, _v2); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1, _t2 _v2) { \
-            return EventExecutedImpl(_v1, _v2); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+#define EVENT_SYM(name, ret, args, sym, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, #sym, 0} }
+#define EVENT_SYM_BEFORE(name, ret, args, sym, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, #sym, 0} }
 
-#define DECL_EVENT_SYM_ARG4_PICK4(_ret, _name, _sym, _t1, _v1, _t2, _v2, _t3, _v3, _t4, _v4) \
-    DECL_EVENT_BASE(_name) \
-        typedef void (EventType)(_t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4); \
-        DECL_EVENT_SYM(_ret, _sym, _t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4) \
-        inline void CallBefore(_t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4) { \
-            for(auto fn : before.m_list) fn(_v1, _v2, _v3, _v4); \
-        } \
-        inline void CallAfter(_t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4) { \
-            for(auto fn : after.m_list) fn(_v1, _v2, _v3, _v4); \
-        } \
-        template<typename RetType = _ret> \
-        static inline RetType EventExecutedImpl(_t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4) { \
-            _name.CallBefore(_v1, _v2, _v3, _v4); \
-            if constexpr (std::is_same_v<RetType, void>) { \
-                _name.m_pOriginalFunc(_v1, _v2, _v3, _v4); \
-                _name.CallAfter(_v1, _v2, _v3, _v4); \
-            } else { \
-                RetType ret = _name.m_pOriginalFunc(_v1, _v2, _v3, _v4); \
-                _name.CallAfter(_v1, _v2, _v3, _v4); \
-                return ret; \
-            } \
-        } \
-        static inline _ret EventExecuted(_t1 _v1, _t2 _v2, _t3 _v3, _t4 _v4) { \
-            return EventExecutedImpl(_v1, _v2, _v3, _v4); \
-        } \
-    DECL_EVENT_BASE_END(_name)
+#define EVENT_ADDR(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_ADDR, NULL, (uintptr_t)(addr)} }
+#define EVENT_ADDR_BEFORE(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_ADDR, NULL, (uintptr_t)(addr)} }
+    
+#define EVENT_PLT(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_PLT, NULL, (uintptr_t)(addr)} }
+#define EVENT_PLT_BEFORE(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_PLT, NULL, (uintptr_t)(addr)} }
+    
+#define EVENT_BL(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_BL, NULL, (uintptr_t)(addr)} }
+#define EVENT_BL_BEFORE(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_BL, NULL, (uintptr_t)(addr)} }
+    
+#define EVENT_BLX(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_BLX, NULL, (uintptr_t)(addr)} }
+#define EVENT_BLX_BEFORE(name, ret, args, addr, ...) \
+    struct name##_tag {}; \
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_BLX, NULL, (uintptr_t)(addr)} }
+
+
 
 #endif // __AML_PSDK_CALLEVENTS_H
