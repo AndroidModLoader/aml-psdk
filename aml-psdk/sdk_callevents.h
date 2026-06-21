@@ -74,16 +74,16 @@ struct CallEvent<Tag, Def, R(A...), Pick...>
 
     static R EventExecuted(A... a)
     {
-        auto t = std::forward_as_tuple(a...);
+        AllArgs t{a...};
         for(auto fn : s_before) fn(std::get<Pick>(t)...);
         if constexpr (std::is_void_v<R>)
         {
-            m_pOriginalFunc(a...);
+            std::apply(m_pOriginalFunc, t);
             for(auto fn : s_after) fn(std::get<Pick>(t)...);
         }
         else
         {
-            R r = m_pOriginalFunc(a...);
+            R r = std::apply(m_pOriginalFunc, t);
             for(auto fn : s_after) fn(std::get<Pick>(t)...);
             return r;
         }
