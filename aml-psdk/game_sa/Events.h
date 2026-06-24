@@ -23,7 +23,7 @@ struct Events
     EVENT_PLT(drawBlipsEvent, void, (float), BYBIT(0x66E910, 0x83DED0));
     EVENT_SYM(drawRadarOverlayEvent, void, (bool), _ZN6CRadar20DrawRadarGangOverlayEb);
     // drawMenuBackgroundEvent
-    EVENT_SYM(initRwEvent, void, (), _ZN5CGame20InitialiseRenderWareEv);
+    EVENT_SYM(initRwEvent, bool, (), _ZN5CGame20InitialiseRenderWareEv);
     EVENT_PLT_BEFORE(shutdownRwEvent, void, (), BYBIT(0x6756F0, 0x849148));
     EVENT_SYM(vehicleCtorEvent, CVehicle*, (CVehicle*, u8), _ZN8CVehicleC2Eh, 0);
     EVENT_SYM_BEFORE(vehicleDtorEvent, CVehicle*, (CVehicle*), _ZN8CVehicleD2Ev, 0);
@@ -63,7 +63,7 @@ struct Events
     EVENT_SYM(renderCoronasEvent, void, (), _ZN8CCoronas6RenderEv);
     EVENT_SYM(updateCoronasEvent, void, (), _ZN8CCoronas6UpdateEv);
     EVENT_SYM(gameLogicUpdateEvent, void, (), _ZN10CGameLogic6UpdateEv);
-    EVENT_SYM(preinitEngineEvent, void, (), _ZN5CGame22InitialiseOnceBeforeRWEv);
+    EVENT_SYM(preinitEngineEvent, bool, (), _ZN5CGame22InitialiseOnceBeforeRWEv);
     EVENT_SYM(initEngineEvent, int, (), _Z12RsInitializev);
     EVENT_SYM(touchScreenEvent, void, (int actionType, int trackNum, int x, int y), _Z14AND_TouchEventiiii, 0, 1, 2, 3);
     EVENT_SYM(pedPreRenderEvent, void, (CPed* ped), _ZN4CPed18PreRenderAfterTestEv, 0);
