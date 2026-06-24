@@ -73,6 +73,7 @@ struct Events
     EVENT_SYM(waterRenderEvent, void, (), _ZN11CWaterLevel11RenderWaterEv);
     EVENT_SYM(timerUpdateEvent, void, (), _ZN6CTimer6UpdateEv);
     EVENT_SYM(playerInfoUpdateEvent, void, (CPlayerInfo* info, int playerNum), _ZN11CPlayerInfo7ProcessEi, 0, 1);
+    EVENT_SYM(loadIdeEvent, void, (const char*), _ZN11CFileLoader10LoadObjectEPKc, 0);
 };
 
 #endif // __AML_PSDK_SACALLEVENTS_H
