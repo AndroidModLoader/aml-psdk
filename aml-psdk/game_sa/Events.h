@@ -25,12 +25,12 @@ struct Events
     // drawMenuBackgroundEvent
     EVENT_SYM(initRwEvent, void, (), _ZN5CGame20InitialiseRenderWareEv);
     EVENT_PLT_BEFORE(shutdownRwEvent, void, (), BYBIT(0x6756F0, 0x849148));
-    EVENT_SYM(vehicleCtorEvent, void, (CVehicle*, u8), _ZN8CVehicleC2Eh, 0);
-    EVENT_SYM_BEFORE(vehicleDtorEvent, void, (CVehicle*), _ZN8CVehicleD2Ev, 0);
-    EVENT_SYM(pedCtorEvent, void, (CPed*, u32), _ZN4CPedC2Ej, 0);
-    EVENT_SYM_BEFORE(pedDtorEvent, void, (CPed*), _ZN4CPedD2Ev, 0);
+    EVENT_SYM(vehicleCtorEvent, CVehicle*, (CVehicle*, u8), _ZN8CVehicleC2Eh, 0);
+    EVENT_SYM_BEFORE(vehicleDtorEvent, CVehicle*, (CVehicle*), _ZN8CVehicleD2Ev, 0);
+    EVENT_SYM(pedCtorEvent, CPed*, (CPed*, u32), _ZN4CPedC2Ej, 0);
+    EVENT_SYM_BEFORE(pedDtorEvent, CPed*, (CPed*), _ZN4CPedD2Ev, 0);
     EVENT_SYM(objectCtorEvent, void, (CObject*), _ZN7CObject4InitEv, 0);
-    EVENT_SYM_BEFORE(objectDtorEvent, void, (CObject*), _ZN7CObjectD2Ev, 0);
+    EVENT_SYM_BEFORE(objectDtorEvent, CObject*, (CObject*), _ZN7CObjectD2Ev, 0);
     EVENT_PLT(initPoolsEvent, void, (), BYBIT(0x672468, 0x843F18));
     EVENT_PLT(shutdownPoolsEvent, void, (), BYBIT(0x66F218, 0x83EDC0));
     EVENT_SYM_BEFORE(vehicleRenderEvent, void, (CVehicle*), _ZN8CVehicle6RenderEv, 0);
