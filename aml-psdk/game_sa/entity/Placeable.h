@@ -84,6 +84,10 @@ DECL_CLASS_VTABLE(CPlaceable)
     inline CVector& GetPosition() { return m_matrix ? m_matrix->GetPosition() : m_placement.m_vPosn; }
     inline CVector2D& GetPosition2D() { return GetPosition(); }
     inline CMatrix* GetMatrix() { return m_matrix; }
+    inline float GetDistanceTo(CPlaceable* other) { return GetPosition().Dist(other->GetPosition()); }
+    inline float GetDistanceSqrTo(CPlaceable* other) { return GetPosition().DistSqr(other->GetPosition()); }
+    inline float GetDistance2DTo(CPlaceable* other) { return GetPosition().Dist2D(other->GetPosition()); }
+    inline float GetDistance2DSqrTo(CPlaceable* other) { return GetPosition().DistSqr2D(other->GetPosition()); }
 
     // Member values
     CSimpleTransform m_placement;

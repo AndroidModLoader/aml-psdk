@@ -255,6 +255,14 @@ struct CVector
         return ret;
     }
 };
+inline CVector operator*(const CVector& vecOne, const CVector& vecTwo)
+{
+    return { vecOne.x * vecTwo.x, vecOne.y * vecTwo.y, vecOne.z * vecTwo.z };
+}
+inline CVector operator*(float multiplier, const CVector& vec)
+{
+    return { vec.x * multiplier, vec.y * multiplier, vec.z * multiplier };
+}
 
 const CVector vectorNull(0, 0, 0);
 const CVector vectorAxisX(1, 0, 0);
@@ -346,6 +354,34 @@ inline float DistanceBetweenPoints(CVector2D const& v1, CVector2D const& v2)
 inline float DistanceBetweenPoints2D(CVector2D const& v1, CVector2D const& v2)
 {
     return (v1 - v2).Magnitude2D();
+}
+inline CVector CrossProduct(CVector *v1, CVector *v2)
+{
+    CVector cross;
+    cross.x = v1->y*v2->z - v1->z*v2->y;
+    cross.y = v1->z*v2->x - v1->x*v2->z;
+    cross.z = v1->x*v2->y - v1->y*v2->x;
+    return cross;
+}
+inline float DotProduct(const CVector& v1, const CVector& v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+inline float DotProduct2D(const CVector& v1, const CVector& v2)
+{
+    return v1.x * v2.x + v1.y * v2.y;
+}
+inline void VectorNormalise(CVector *vec)
+{
+    float lensq = vec->x*vec->x + vec->y*vec->y + vec->z*vec->z;
+    if(lensq > 0.0f)
+    {
+        float invsqrt = 1.0f / sqrtf(lensq);
+        vec->x *= invsqrt;
+        vec->y *= invsqrt;
+        vec->z *= invsqrt;
+    }
+    else vec->x = 1.0f;
 }
 
 #endif // __AML_PSDK_GTAVECTOR_H

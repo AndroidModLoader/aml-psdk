@@ -4,7 +4,63 @@
 #include <aml-psdk/gta_base/Vector.h>
 #include "../enum/SurfaceType.h"
 
-struct CCollisionData;
+struct CColSphere;
+struct CColDisk;
+struct CColLine;
+struct CColBox;
+
+typedef CVector CollisionVector;
+typedef float CollisionFloat;
+
+struct __attribute__((aligned(4))) CColTriangle
+{
+	unsigned short m_nVertA; // vertex index in vertices array
+	unsigned short m_nVertB; // vertex index in vertices array
+	unsigned short m_nVertC; // vertex index in vertices array
+	unsigned char  m_nMaterial;
+	unsigned char  m_nLight;
+};
+struct __attribute__((aligned(4))) CColTrianglePlane
+{
+    CollisionVector m_normal;
+    CollisionFloat  m_nDistance;
+    u8              m_nOrientation;
+};
+
+struct CCollisionData
+{
+    unsigned short      m_nNumSpheres;
+    unsigned short      m_nNumBoxes;
+    unsigned short      m_nNumTriangles;
+    union
+    {
+        unsigned char   m_nNumLines;
+        unsigned char   m_nNumDisks;
+    };
+    struct
+    {
+        unsigned char   bUsesDisks : 1;
+        unsigned char   bNotEmpty : 1;
+        unsigned char   bHasShadowTris : 1;
+        unsigned char   bHasFaceGroups : 1; // cant confirm this one exists
+        unsigned char   bHasShadow : 1; // cant confirm this one exists
+    } m_nFlags;
+    CColSphere         *m_pSpheres;
+    CColBox            *m_pBoxes;
+    union
+    {
+        CColLine       *m_pLines;
+        CColDisk       *m_pDisks;
+    };
+    CollisionVector    *m_pVertices;
+    CColTriangle       *m_pTriangles;
+    CColTrianglePlane  *m_pTrianglePlanes;
+    unsigned int        m_nNumShadowTriangles;
+    unsigned int        m_nNumShadowVertices;
+    CollisionVector    *m_pShadowVertices;
+    CColTriangle       *m_pShadowTriangles;
+    int32_t            *m_modelSec;
+};
 
 struct ColData
 {
@@ -48,6 +104,23 @@ struct CSphere
 struct CColSphere : CSphere
 {
     ColData m_data;
+};
+
+struct CColDisk : CColSphere
+{
+    CVector m_vecThickness;
+    float   m_fThickness;
+
+    inline void Set(float startRadius, CVector const& start, CVector const& end, float endRadius, unsigned char material, unsigned char pieceType, unsigned char lighting)
+    {
+        m_fRadius = startRadius;
+        m_vecCentre = start;
+        m_fThickness = endRadius;
+        m_vecThickness = end;
+        m_data.m_nSurfaceType = material;
+        m_data.m_nPieceType = pieceType;
+        m_data.m_lighting = lighting;
+    }
 };
 
 struct CBoundingBox : CBox

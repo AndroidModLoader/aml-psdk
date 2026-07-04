@@ -198,6 +198,8 @@ DECL_CLASS_BASED(CPed, CPhysical)
     DECL_THISCALL_SIMPLE(CanPedHoldConversation, _ZN4CPed22CanPedHoldConversationEv, u8);
     DECL_THISCALL_SIMPLE(DeadPedMakesTyresBloody, _ZN4CPed23DeadPedMakesTyresBloodyEv, void);
 
+    
+
     // Member values
     CAEPedAudioEntity           m_pedAudio;
     CAEPedSpeechAudioEntity     m_pedSpeech;
