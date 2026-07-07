@@ -110,16 +110,13 @@ DECL_CLASS(CMatrix)
     }
     inline CVector TransformVector(CVector& v) const
     {
-        // Inlined:
-        // > m_right.x * v.x + m_forward.x * v.y + m_up.x * v.z,
-        // > m_right.y * v.x + m_forward.y * v.y + m_up.y * v.z,
-        // > m_right.z * v.x + m_forward.z * v.y + m_up.z * v.z,
-        return v.x * right + v.y * at + v.z * up;
+        return *this * v;
     }
     inline CVector TransformPos(CVector& v) const
     {
         return TransformVector(v) + pos;
     }
+    inline CVector TransformPoint(CVector& v) const { return TransformPos(v); }
     inline CVector InverseTransformVector(CVector& v) const
     {
         return { DotProduct(right, v), DotProduct(at, v), DotProduct(up, v) };
