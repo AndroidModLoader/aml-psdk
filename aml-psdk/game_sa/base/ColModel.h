@@ -14,9 +14,9 @@ typedef float CollisionFloat;
 
 struct __attribute__((aligned(4))) CColTriangle
 {
-	unsigned short m_nVertA; // vertex index in vertices array
-	unsigned short m_nVertB; // vertex index in vertices array
-	unsigned short m_nVertC; // vertex index in vertices array
+	int32_t        m_nVertA; // vertex index in vertices array
+	int32_t        m_nVertB; // vertex index in vertices array
+	int32_t        m_nVertC; // vertex index in vertices array
 	unsigned char  m_nMaterial;
 	unsigned char  m_nLight;
 };
