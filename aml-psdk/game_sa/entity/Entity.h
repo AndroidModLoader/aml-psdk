@@ -197,11 +197,10 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
     unsigned int bUnimportantStream : 1;       // set that this object is unimportant, if streaming is having problems
     unsigned int bTunnel : 1;          // Is this model part of a tunnel
     unsigned int bTunnelTransition : 1;        // This model should be rendered from within and outside of the tunnel
+    u32 dummy_flag_pad; // both versions.
 
-    B32MACRO(u32 CEntity_gap;) // Need a gap here. For some reason.
     unsigned short m_nRandomSeed;
     unsigned short m_nModelIndex;
-    B64MACRO(u32 CEntity_gap1;) // Need a gap here. For some reason.
     CReference *m_pReferences;
     void *m_pStreamingLink;
     short m_nScanCode;
@@ -211,10 +210,10 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
         unsigned char m_nInterior;
         unsigned char m_nAreaCode;
     };
-    B64MACRO(u32 CEntity_gap2;) // Need a gap here. For some reason.
+    //B64MACRO(u32 CEntity_gap2;) // Need a gap here. For some reason.
     union
     {
-        int m_nLodIndex; // -1 - without LOD model
+        intptr_t m_nLodIndex; // -1 - without LOD model
         CEntity *m_pLod;
     };
     unsigned char m_nNumLodChildren;
@@ -222,7 +221,8 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
     union
     {
         i8 m_nTypeStatus;
-        struct {
+        struct
+        {
             unsigned char m_nType : 3;
             unsigned char m_nStatus : 5;
         };
