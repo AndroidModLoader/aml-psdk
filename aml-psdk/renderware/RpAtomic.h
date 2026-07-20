@@ -8,10 +8,23 @@
 #include "RpMaterial.h"
 #include "RpClump.h"
 #include "RwMatrix.h"
+#include "RwVector.h"
+#include "RwResource.h"
+#include "RxPipeline.h"
+#include "RpWorld.h"
 
 struct RpAtomic;
-struct RwResEntry;
-struct RpWorld;
+
+enum RpAtomicFlag : RwInt32
+{
+    rpATOMICCOLLISIONTEST = 0x1, /**< Collision testing is enabled */
+    rpATOMICRENDER = 0x4,        /**< The atomic is rendered */
+};
+
+enum RpAtomicSetGeomFlag : RwInt32
+{
+    rpATOMICSAMEBOUNDINGSPHERE = 0x1, /**< Skip recomputing the bounding sphere */
+};
 
 struct RpInterpolator
 {
@@ -36,6 +49,7 @@ struct RpAtomic
     RpAtomicCallBackRender  renderCallBack;
     RpInterpolator          interpolator;
     RwUInt16                renderFrame;
+    RwUInt16                pad;
     RwLinkList              llWorldSectorsInAtomic;
     RxPipeline             *pipeline;
 };
@@ -60,7 +74,7 @@ DECL_FASTCALL_SIMPLE_GLO(RpAtomicGetPluginOffset, _Z23RpAtomicGetPluginOffsetj, 
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicValidatePlugins, _Z23RpAtomicValidatePluginsPK8RpAtomic, RwBool, const RpAtomic* atomic);
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicInstance, _Z16RpAtomicInstanceP8RpAtomic, RwBool, RpAtomic* atomic);
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicGetWorld, _Z16RpAtomicGetWorldPK8RpAtomic, RpWorld*, const RpAtomic* atomic);
-//DECL_FASTCALL_SIMPLE_GLO(RpAtomicForAllWorldSectors, _Z26RpAtomicForAllWorldSectorsP8RpAtomicPFP13RpWorldSectorS2_PvES3_, RpAtomic*, RpAtomic* atomic, RpWorldSectorCallBack callback, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpAtomicForAllWorldSectors, _Z26RpAtomicForAllWorldSectorsP8RpAtomicPFP13RpWorldSectorS2_PvES3_, RpAtomic*, RpAtomic* atomic, RpWorldSectorCallBack callback, void* data);
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicSetDefaultPipeline, _Z26RpAtomicSetDefaultPipelineP10RxPipeline, RxPipeline*, RxPipeline* pipeline);
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicConvertGeometryToTL, _Z27RpAtomicConvertGeometryToTLP8RpAtomic, u8, RpAtomic* pAtomic);
 DECL_FASTCALL_SIMPLE_GLO(RpAtomicConvertGeometryToTS, _Z27RpAtomicConvertGeometryToTSP8RpAtomic, u8, RpAtomic* pAtomic);

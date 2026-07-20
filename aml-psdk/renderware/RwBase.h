@@ -60,4 +60,33 @@ typedef RwInt32 (*RwPluginDataChunkGetSizeCallBack)(const void *, RwInt32, RwInt
 typedef RwStream *(*RwPluginDataChunkWriteCallBack)(RwStream *, RwInt32, const void *, RwInt32, RwInt32);
 typedef RwStream *(*RwPluginDataChunkReadCallBack)(RwStream *, RwInt32, void *, RwInt32, RwInt32);
 
+struct RwPluginRegistry;
+
+/* One registered plugin. Every Rw/Rp object type owns a registry, and each
+ * RpXxxRegisterPlugin() call appends an entry like this to it. `offset` is
+ * what RpXxxGetPluginOffset() hands back. */
+struct RwPluginRegEntry
+{
+    RwInt32                           offset;
+    RwInt32                           size;
+    RwUInt32                          pluginID;
+
+    RwPluginDataChunkReadCallBack     readCB;
+    RwPluginDataChunkWriteCallBack    writeCB;
+    RwPluginDataChunkGetSizeCallBack  getSizeCB;
+    RwPluginDataChunkAlwaysCallBack   alwaysCB;
+    RwPluginDataChunkRightsCallBack   rightsCB;
+
+    RwPluginObjectConstructor         constructCB;
+    RwPluginObjectDestructor          destructCB;
+    RwPluginObjectCopy                copyCB;
+    RwPluginErrorStrCallBack          errStrCB;
+
+    RwPluginRegEntry                 *nextRegEntry;
+    RwPluginRegEntry                 *prevRegEntry;
+    RwPluginRegistry                 *parentRegistry;
+};
+
+CHECKSIZE(RwPluginRegEntry, 0x3C, 0x70);
+
 #endif // __AML_PSDK_RWBASE_H

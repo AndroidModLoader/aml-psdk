@@ -242,8 +242,8 @@ DECL_CLASS_BASED(CDummyObject, CDummy)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CDummyObject, _ZN12CDummyObjectC2Ev);
     DECL_DTORCALL(CDummyObject, _ZN12CDummyObjectD2Ev);
-    DECL_NEWCALL(CDummyObject, BYBIT(_ZN12CDummyObjectnwEj, _ZN12CDummyObjectnwEm) );
-    DECL_DLCALL(CDummyObject, _ZN12CDummyObjectdlEPv);
+    DECL_NEWCALL(CDummyObject, BYBIT(_ZN12CDummyObjectnwEj, _ZN12CDummyObjectnwEm) );  // NOT EXPORTED BY 2.00 OR 2.10: resolves to NULL on both
+    DECL_DLCALL(CDummyObject, _ZN12CDummyObjectdlEPv);  // NOT EXPORTED BY 2.00 OR 2.10: resolves to NULL on both
     
     // Member functions
 

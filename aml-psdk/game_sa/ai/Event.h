@@ -1,5 +1,5 @@
-#ifndef __AML_PSDK_SAEVENT_H
-#define __AML_PSDK_SAEVENT_H
+#ifndef __AML_PSDK_SAAIEVENT_H
+#define __AML_PSDK_SAAIEVENT_H
 
 #include <aml-psdk/game_sa/plugin.h>
 
@@ -11,4 +11,4 @@ DECL_CLASS_VTABLE(CEventGroup)
     void         *m_apEvents[16];
 DECL_CLASS_END()
 
-#endif // __AML_PSDK_SAEVENT_H
+#endif // __AML_PSDK_SAAIEVENT_H

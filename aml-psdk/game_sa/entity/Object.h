@@ -19,7 +19,7 @@ enum eObjectType : unsigned char
 
 DECL_CLASS_BASED(CObject, CPhysical)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CObject, _ZN7CObjectC2Ej);
+    DECL_CTORCALL(CObject, _ZN7CObjectC2Ej);  // NOT EXPORTED BY 2.00 OR 2.10: resolves to NULL on both
     DECL_DTORCALL(CObject, _ZN7CObjectD2Ev);
     DECL_NEWCALL(CObject, BYBIT(_ZN7CObjectnwEj, _ZN7CObjectnwEm) );
     DECL_DLCALL(CObject, _ZN7CObjectdlEPv);

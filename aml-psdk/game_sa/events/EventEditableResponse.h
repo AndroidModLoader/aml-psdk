@@ -6,10 +6,9 @@
 DECL_CLASS_BASED(CEventEditableResponse, CEvent)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CEventEditableResponse, _ZN22CEventEditableResponseC2Ev);
-    DECL_DTORCALL(CEventEditableResponse, _ZN22CEventEditableResponseD2Ev);
 
     // Member functions
-    DECL_THISCALL_SIMPLE(WillRespond, _ZN4CPed27PedIsInvolvedInConversationEv, bool);
+    DECL_THISCALL_SIMPLE(WillRespond, _ZNK22CEventEditableResponse11WillRespondEv, bool);
     
     DECL_THISCALL_HEAD(ComputeResponseTaskType, _ZN22CEventEditableResponse23ComputeResponseTaskTypeEP9CPedGroup, void, CPedGroup* pPedGroup);
     DECL_THISCALL_TAIL(ComputeResponseTaskType, pPedGroup)

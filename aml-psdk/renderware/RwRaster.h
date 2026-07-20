@@ -9,6 +9,46 @@
 struct TextureDatabaseEntry;
 struct RwImage;
 
+enum RwRasterLockMode : RwInt32
+{
+    rwRASTERLOCKWRITE = 0x1,
+    rwRASTERLOCKREAD = 0x2,
+    rwRASTERLOCKNOFETCH = 0x4, /**< Don't fetch the pixels when write-locking */
+    rwRASTERLOCKRAW = 0x8,
+};
+
+enum RwRasterType : RwInt32
+{
+    rwRASTERTYPENORMAL = 0x0,
+    rwRASTERTYPEZBUFFER = 0x1,
+    rwRASTERTYPECAMERA = 0x2,
+    rwRASTERTYPETEXTURE = 0x4,
+    rwRASTERTYPECAMERATEXTURE = 0x5,
+    rwRASTERTYPEMASK = 0x7,
+    rwRASTERDONTALLOCATE = 0x80, /**< Create the header but no pixel memory */
+};
+
+enum RwRasterFormat : RwInt32
+{
+    rwRASTERFORMATDEFAULT = 0x0,
+    rwRASTERFORMAT1555 = 0x100,
+    rwRASTERFORMAT565 = 0x200,
+    rwRASTERFORMAT4444 = 0x300,
+    rwRASTERFORMATLUM8 = 0x400,
+    rwRASTERFORMAT8888 = 0x500,
+    rwRASTERFORMAT888 = 0x600,
+    rwRASTERFORMAT16 = 0x700,
+    rwRASTERFORMAT24 = 0x800,
+    rwRASTERFORMAT32 = 0x900,
+    rwRASTERFORMAT555 = 0xA00,
+    rwRASTERFORMATAUTOMIPMAP = 0x1000,
+    rwRASTERFORMATPAL8 = 0x2000,
+    rwRASTERFORMATPAL4 = 0x4000,
+    rwRASTERFORMATMIPMAP = 0x8000,
+    rwRASTERFORMATPIXELFORMATMASK = 0xF00,
+    rwRASTERFORMATMASK = 0xFF00,
+};
+
 struct RwRaster
 {
     RwRaster             *parent; /* Top level raster if a sub raster */
@@ -49,7 +89,7 @@ DECL_FASTCALL_SIMPLE_GLO(RwRasterRegisterPlugin, _Z22RwRasterRegisterPluginijPFP
     RwInt32 size, RwUInt32 pluginID, RwPluginObjectConstructor constructCB, RwPluginObjectDestructor destructCB, RwPluginObjectCopy copyCB);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterLockPalette, _Z19RwRasterLockPaletteP8RwRasteri, RwUInt8*, RwRaster *raster, RwInt32 lockMode);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterPopContext, _Z18RwRasterPopContextv, RwRaster*);
-DECL_FASTCALL_SIMPLE_GLO(RwRasterGetNumLevels, _Z20RwRasterGetNumLevelsP8RwRaster, RwInt32);
+DECL_FASTCALL_SIMPLE_GLO(RwRasterGetNumLevels, _Z20RwRasterGetNumLevelsP8RwRaster, RwInt32, RwRaster *raster);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterShowRaster, _Z18RwRasterShowRasterP8RwRasterPvj, RwRaster*, RwRaster *raster, void *dev, RwUInt32 flags);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterSubRaster, _Z17RwRasterSubRasterP8RwRasterS0_P6RwRect, RwRaster*, RwRaster *subRaster, RwRaster *raster, RwRect *rect);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterCreate, _Z14RwRasterCreateiiii, RwRaster*, RwInt32 width, RwInt32 height, RwInt32 depth, RwInt32 flags);

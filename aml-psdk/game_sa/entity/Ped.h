@@ -76,8 +76,69 @@ DECL_CLASS(CPedIK)
             unsigned int bSlopePitch : 1;
         };
     };
+
+    // Construct functions
+    CPedIK(){} // CPed holds one by value, so keep a default ctor available
+    DECL_CTORCALL_ARG_HEAD(CPedIK, _ZN6CPedIKC2EP4CPed, CPed *pPed)
+    DECL_CTORCALL_ARG_TAIL(pPed)
+
+    // Functions
+    DECL_FASTCALL_SIMPLE(GetWorldMatrix, _ZN6CPedIK14GetWorldMatrixEP7RwFrameP11RwMatrixTag, RwMatrix*, RwFrame* pFrame, RwMatrix* pMatrix);
+
+    DECL_THISCALL_SIMPLE(PitchForSlope, _ZN6CPedIK13PitchForSlopeEv, void);
+
+    DECL_THISCALL_HEAD(ExtractYawAndPitchWorld, _ZN6CPedIK23ExtractYawAndPitchWorldEP11RwMatrixTagRfS2_, void, RwMatrix* pMatrix, float* yaw, float* pitch)
+    DECL_THISCALL_TAIL(ExtractYawAndPitchWorld, pMatrix, yaw, pitch)
+
+    DECL_THISCALL_HEAD(MoveLimb1, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfo, i32, LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo)
+    DECL_THISCALL_TAIL(MoveLimb1, limb, yaw, pitch, limbInfo)
+
+    DECL_THISCALL_HEAD(MoveLimb2, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfof, i32, LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo, float fBlendAmount)
+    DECL_THISCALL_TAIL(MoveLimb2, limb, yaw, pitch, limbInfo, fBlendAmount)
+
+    DECL_THISCALL_HEAD(PointGunAtPosition, _ZN6CPedIK18PointGunAtPositionERK7CVectorf, bool, const CVector* pos, float fBlendAmount)
+    DECL_THISCALL_TAIL(PointGunAtPosition, pos, fBlendAmount)
+
+    DECL_THISCALL_HEAD(PointGunInDirection, _ZN6CPedIK19PointGunInDirectionEffbf, bool, float yaw, float pitch, bool bRollPitch, float fBlendAmount)
+    DECL_THISCALL_TAIL(PointGunInDirection, yaw, pitch, bRollPitch, fBlendAmount)
+
+    DECL_THISCALL_HEAD(RotateTorso, _ZN6CPedIK11RotateTorsoEP18AnimBlendFrameDataR15LimbOrientationb, void, AnimBlendFrameData* pFrameData, LimbOrientation* torso, bool bCancelRoll)
+    DECL_THISCALL_TAIL(RotateTorso, pFrameData, torso, bCancelRoll)
+
+    DECL_THISCALL_HEAD(RotateTorsoForArm, _ZN6CPedIK17RotateTorsoForArmERK7CVector, void, const CVector* vecTarget)
+    DECL_THISCALL_TAIL(RotateTorsoForArm, vecTarget)
+
+    // Helper functions
+    inline i32 MoveLimb(LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo)
+    {
+        return MoveLimb1(limb, yaw, pitch, limbInfo);
+    }
+    inline i32 MoveLimb(LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo, float fBlendAmount)
+    {
+        return MoveLimb2(limb, yaw, pitch, limbInfo, fBlendAmount);
+    }
+
+    // STATIC values
+    DECL_OBJECT_PLT(LimbMovementInfo, ms_torsoInfo, BYBIT(0x676BC0, 0x84B7C8));
+    DECL_OBJECT_PLT(CVector, XaxisIK, BYBIT(0x6761A8, 0x84A3B0));
+    DECL_OBJECT_PLT(CVector, YaxisIK, BYBIT(0x678B48, 0x84F6B8));
+    DECL_OBJECT_PLT(CVector, ZaxisIK, BYBIT(0x6771C4, 0x84C3C0));
+
+    DECL_OBJECT_ADDR(LimbMovementInfo, ms_headInfo, BYBIT(0x6AF878, 0x88C1B4));
+    DECL_OBJECT_ADDR(LimbMovementInfo, ms_headRestoreInfo, BYBIT(0x6AF890, 0x88C1CC));
+    DECL_OBJECT_ADDR(LimbMovementInfo, ms_upperArmInfo, BYBIT(0x6AF8C0, 0x88C1FC));
+    DECL_OBJECT_ADDR(LimbMovementInfo, ms_lowerArmInfo, BYBIT(0x6AF8D8, 0x88C214));
 DECL_CLASS_END()
 CHECKSIZE(CPedIK, 0x20, 0x28);
+
+#define ms_torsoInfo ms_torsoInfo()
+#define ms_headInfo ms_headInfo()
+#define ms_headRestoreInfo ms_headRestoreInfo()
+#define ms_upperArmInfo ms_upperArmInfo()
+#define ms_lowerArmInfo ms_lowerArmInfo()
+#define XaxisIK XaxisIK()
+#define YaxisIK YaxisIK()
+#define ZaxisIK ZaxisIK()
 
 DECL_CLASS_BASED(CPed, CPhysical)
     // Construct/Deconstruct functions

@@ -395,7 +395,7 @@ DECL_FASTCALL_SIMPLE_GLO(AND_KeyboardSoftClosed, _Z22AND_KeyboardSoftClosedv, vo
 DECL_FASTCALL_SIMPLE_GLO(AND_OpenLink, _Z12AND_OpenLinkPKc, void, const char *link);
 DECL_FASTCALL_SIMPLE_GLO(AND_ScreenSetWakeLock, _Z21AND_ScreenSetWakeLockb, void, bool enabled);
 DECL_FASTCALL_SIMPLE_GLO(AND_TouchEvent, _Z14AND_TouchEventiiii, void, int actionType, int trackNum, int x, int y);
-DECL_FASTCALL_SIMPLE_GLO(AND_VibratePhoneEffect, _Z22AND_VibratePhoneEffecti, void, int effect);
+DECL_FASTCALL_SIMPLE_GLO(AND_VibratePhoneEffect, _Z22AND_VibratePhoneEffecti, void, int effect);  // NOT IN 2.00 (32-bit): resolves to NULL on armeabi-v7a
 
 DECL_FASTCALL_SIMPLE_GLO(OS_ApplicationEvent, _Z19OS_ApplicationEvent11OSEventTypePv, void, OSEventType type, void *data);
 DECL_FASTCALL_SIMPLE_GLO(OS_ApplicationInitialize, _Z24OS_ApplicationInitializeiPPKc, bool, int argc, const char **argv);

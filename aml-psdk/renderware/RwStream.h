@@ -82,7 +82,7 @@ DECL_FASTCALL_SIMPLE_GLO(RwStreamReadInt16, _Z17RwStreamReadInt16P8RwStreamPsj, 
 DECL_FASTCALL_SIMPLE_GLO(RwStreamReadInt32, _Z17RwStreamReadInt32P8RwStreamPij, RwStream*, RwStream *stream, RwInt32 *ints, RwUInt32 numBytes);
 DECL_FASTCALL_SIMPLE_GLO(RwStreamReadReal, _Z16RwStreamReadRealP8RwStreamPfj, RwStream*, RwStream *stream, RwReal *reals, RwUInt32 numBytes);
 DECL_FASTCALL_SIMPLE_GLO(RwStreamSetFreeListCreateParams, _Z31RwStreamSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
-DECL_FASTCALL_SIMPLE_GLO(RwStreamSkip, _Z12RwStreamSkipP8RwStreamj, void, RwStream *stream, RwUInt32 offset);
+DECL_FASTCALL_SIMPLE_GLO(RwStreamSkip, _Z12RwStreamSkipP8RwStreamj, RwStream*, RwStream *stream, RwUInt32 offset);
 DECL_FASTCALL_SIMPLE_GLO(RwStreamWrite, _Z13RwStreamWriteP8RwStreamPKvj, RwStream*, RwStream *stream, const void *buffer, RwUInt32 length);
 DECL_FASTCALL_SIMPLE_GLO(RwStreamWriteInt16, _Z18RwStreamWriteInt16P8RwStreamPKsj, RwStream*, RwStream *stream, const RwInt16 *ints, RwUInt32 numBytes);
 DECL_FASTCALL_SIMPLE_GLO(RwStreamWriteInt32, _Z18RwStreamWriteInt32P8RwStreamPKij, RwStream*, RwStream *stream, const RwInt32 *ints, RwUInt32 numBytes);

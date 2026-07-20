@@ -7,10 +7,18 @@
 
 #define rwTEXTUREBASENAMELENGTH 32
 
+#include "RwObject.h"
+
 struct RwRaster;
-struct RwTexDictionary;
 struct RwStream;
 struct RwImage;
+
+struct RwTexDictionary
+{
+    RwObject   object;
+    RwLinkList texturesInDict;
+    RwLLLink   lInInstance; /* Node in the global list of dictionaries */
+};
 
 struct RwTexture
 {
@@ -38,7 +46,7 @@ DECL_FASTCALL_SIMPLE_GLO(RwTextureGenerateMipmapName, _Z27RwTextureGenerateMipma
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetAutoMipmapping, _Z26RwTextureGetAutoMipmappingv, RwBool);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetFindCallBack, _Z24RwTextureGetFindCallBackv, RwTextureCallBackFind);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapGenerationCallBack, _Z36RwTextureGetMipmapGenerationCallBackv, RwTextureCallBackMipmapGeneration);
-DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapNameCallBack, _Z30RwTextureGetMipmapNameCallBackv, void);
+DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapNameCallBack, _Z30RwTextureGetMipmapNameCallBackv, RwTextureCallBackMipmapName);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapping, _Z22RwTextureGetMipmappingv, RwBool);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetPluginOffset, _Z24RwTextureGetPluginOffsetj, RwInt32, uint);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetReadCallBack, _Z24RwTextureGetReadCallBackv, RwTextureCallBackRead);
@@ -47,10 +55,10 @@ DECL_FASTCALL_SIMPLE_GLO(RwTextureRasterGenerateMipmaps, _Z30RwTextureRasterGene
 DECL_FASTCALL_SIMPLE_GLO(RwTextureRead, _Z13RwTextureReadPKcS0_, RwTexture*, char const*, char const*);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureRegisterPlugin, _Z23RwTextureRegisterPluginijPFPvS_iiES1_PFS_S_PKviiE, RwInt32,
     int, uint, RwPluginObjectConstructor, RwPluginObjectDestructor, RwPluginObjectCopy);
-DECL_FASTCALL_SIMPLE_GLO(RwTextureRegisterPluginStream, _Z29RwTextureRegisterPluginStreamjPFP8RwStreamS0_iPviiEPFS0_S0_iPKviiEPFiS5_iiE, void,
+DECL_FASTCALL_SIMPLE_GLO(RwTextureRegisterPluginStream, _Z29RwTextureRegisterPluginStreamjPFP8RwStreamS0_iPviiEPFS0_S0_iPKviiEPFiS5_iiE, RwInt32,
     uint, RwPluginDataChunkReadCallBack, RwPluginDataChunkWriteCallBack, RwPluginDataChunkGetSizeCallBack);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetAutoMipmapping, _Z26RwTextureSetAutoMipmappingi, RwBool, int);
-DECL_FASTCALL_SIMPLE_GLO(RwTextureSetFindCallBack, _Z24RwTextureSetFindCallBackPFP9RwTexturePKcE, void, RwTextureCallBackFind);
+DECL_FASTCALL_SIMPLE_GLO(RwTextureSetFindCallBack, _Z24RwTextureSetFindCallBackPFP9RwTexturePKcE, RwBool, RwTextureCallBackFind);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetFreeListCreateParams, _Z32RwTextureSetFreeListCreateParamsii, void, int,int);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetMaskName, _Z20RwTextureSetMaskNameP9RwTexturePKc, RwTexture*, RwTexture *,char const*);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetMipmapGenerationCallBack, _Z36RwTextureSetMipmapGenerationCallBackPFP8RwRasterS0_P7RwImageE, RwBool, RwTextureCallBackMipmapGeneration);

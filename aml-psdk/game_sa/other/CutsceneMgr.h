@@ -55,8 +55,8 @@ DECL_CLASS(CCutsceneMgr)
     DECL_VALUE_PLT_BOOL(IntroTextIsActiveHack, BYBIT(0x678354, 0x84E6C0));
     DECL_OBJECT_PLT(CDirectory*, ms_pCutsceneDir, BYBIT(0x678940, 0x84F2A0));
     DECL_VALUE_PLT_I32(ms_numAppendObjectNames, BYBIT(0x677234, 0x84C4A0));
-    DECL_OBJECT_ARRAY_PLT(char, ms_cAppendObjectName, BYBIT(0x679C98, 0x84C4A0));
-    DECL_OBJECT_ARRAY_PLT(char, ms_cAppendAnimName, BYBIT(0x678B38, 0x851948));
+    DECL_OBJECT_ARRAY_PLT(char, ms_cAppendObjectName, BYBIT(0x679C98, 0x851948));
+    DECL_OBJECT_ARRAY_PLT(char, ms_cAppendAnimName, BYBIT(0x678B38, 0x84F698));
     DECL_OBJECT_ARRAY_PLT(char, ms_cutsceneName, BYBIT(0x6794B8, 0x850988));
     DECL_OBJECT_PLT(CAnimBlendAssocGroup, ms_cutsceneAssociations, BYBIT(0x676EB4, 0x84BDA8));
     DECL_VALUE_PLT_I32(ms_cutscenePlayStatus, BYBIT(0x679A28, 0x851468));

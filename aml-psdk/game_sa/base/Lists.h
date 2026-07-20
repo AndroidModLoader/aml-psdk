@@ -106,6 +106,55 @@ struct CNodeRoute
     CNodeAddress m_routePoints[8];
 };
 
+// Doubly-linked list node. The game preallocates a fixed pool of these and
+// moves them between the used list and the free list, which is why the list
+// head below carries four sentinel links rather than two.
+template <class T> struct CLink
+{
+    T        item;
+    CLink<T> *m_pPrev;
+    CLink<T> *m_pNext;
+
+    inline void Insert(CLink<T> *pTarget)
+    {
+        m_pNext = pTarget->m_pNext;
+        m_pPrev = pTarget;
+        pTarget->m_pNext->m_pPrev = this;
+        pTarget->m_pNext = this;
+    }
+    inline void Remove()
+    {
+        m_pNext->m_pPrev = m_pPrev;
+        m_pPrev->m_pNext = m_pNext;
+    }
+};
+
+template <class T> struct CLinkList
+{
+    CLink<T>  m_firstLink;
+    CLink<T>  m_lastLink;
+    CLink<T>  m_firstFreeLink;
+    CLink<T>  m_lastFreeLink;
+    CLink<T> *m_pStore;
+
+    inline CLink<T>* GetHead() { return m_firstLink.m_pNext; }
+    inline CLink<T>* GetTail() { return m_lastLink.m_pPrev; }
+    inline bool      IsEmpty() { return m_firstLink.m_pNext == &m_lastLink; }
+};
+
+// Fixed-capacity stack. N is a value template parameter, so the type spells
+// out as e.g. CStack<int, 16>.
+template <class T, int N> struct CStack
+{
+    T   m_array[N];
+    i32 m_posn;
+
+    inline void Push(const T& v) { m_array[m_posn++] = v; }
+    inline T&   Pop()            { return m_array[--m_posn]; }
+    inline T&   Top()            { return m_array[m_posn - 1]; }
+    inline bool IsEmpty()        { return m_posn <= 0; }
+};
+
 template <class T> struct OSArray
 {
     unsigned int numAlloced;

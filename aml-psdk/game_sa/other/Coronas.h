@@ -89,7 +89,7 @@ DECL_CLASS(CCoronas)
     DECL_FASTCALL_SIMPLE(RegisterCorona2, BYBIT(_ZN8CCoronas14RegisterCoronaEjP7CEntityhhhhRK7CVectorffP9RwTexturehhhhfbfbfbb ,_ZN8CCoronas14RegisterCoronaEyP7CEntityhhhhRK7CVectorffP9RwTexturehhhhfbfbfbb), void,
         uintptr_t ID, CEntity *pAttachedToEntity, u8 R, u8 G, u8 B, u8 Intensity, CVector const& Coors, float Size, float Range, RwTexture *pCoronaTex, eCoronaFlareType FlareType,
         u8 ReflType, u8 LOSCheck, u8 UsesTrails, float fNormalAngle, bool bNeonFade, float ArgPullTowardsCam, bool bFullBrightAtStart, float FadeSpeed, bool bOnlyFromBelow, bool bWhiteCore);
-    DECL_FASTCALL_SIMPLE(UpdateCoronaCoors, _ZN8CCoronas17UpdateCoronaCoorsEjRK7CVectorff, void, CVector const& Coors, float Range, float fNormalAngle);
+    DECL_FASTCALL_SIMPLE(UpdateCoronaCoors, _ZN8CCoronas17UpdateCoronaCoorsEjRK7CVectorff, void, u32 ID, CVector const& Coors, float Range, float fNormalAngle);
     DECL_FASTCALL_SIMPLE(DoSunAndMoon, _ZN8CCoronas12DoSunAndMoonEv, void);
 
     // Helper functions

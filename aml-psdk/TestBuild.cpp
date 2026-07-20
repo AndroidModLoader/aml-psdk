@@ -14,6 +14,17 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/renderware/RpGeometry.h>
 #include <aml-psdk/renderware/RpClump.h>
 #include <aml-psdk/renderware/RwFrame.h>
+#include <aml-psdk/renderware/RwResource.h>
+#include <aml-psdk/renderware/RxPipeline.h>
+#include <aml-psdk/renderware/RpMesh.h>
+#include <aml-psdk/renderware/RpLight.h>
+#include <aml-psdk/renderware/RwCamera.h>
+#include <aml-psdk/renderware/RpWorld.h>
+#include <aml-psdk/renderware/RpMaterial.h>
+#include <aml-psdk/renderware/RwObject.h>
+#include <aml-psdk/renderware/RwStream.h>
+#include <aml-psdk/renderware/RwMatrix.h>
+#include <aml-psdk/renderware/RwRender.h>
 
 #include <aml-psdk/game_sa/base/Timer.h>
 #include <aml-psdk/game_sa/entity/PlayerPed.h>
@@ -62,6 +73,20 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/OS.h>
 #include <aml-psdk/game_sa/utils/ThreadSyncer.h>
 #include <aml-psdk/game_sa/engine/TxdStore.h>
+#include <aml-psdk/game_sa/engine/Hud.h>
+#include <aml-psdk/game_sa/engine/Radar.h>
+#include <aml-psdk/game_sa/other/CutsceneMgr.h>
+#include <aml-psdk/game_sa/events/EventEditableResponse.h>
+#include <aml-psdk/game_sa/engine/Fire.h>
+#include <aml-psdk/game_sa/other/GangWars.h>
+#include <aml-psdk/game_sa/engine/Garages.h>
+#include <aml-psdk/game_sa/engine/HID.h>
+#include <aml-psdk/game_sa/engine/LoadingScreen.h>
+#include <aml-psdk/game_sa/base/MemoryMgr.h>
+#include <aml-psdk/game_sa/engine/Messages.h>
+#include <aml-psdk/game_sa/engine/Pad.h>
+#include <aml-psdk/game_sa/engine/Streaming.h>
+#include <aml-psdk/game_sa/engine/VisibilityPlugins.h>
 
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {

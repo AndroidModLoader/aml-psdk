@@ -532,7 +532,7 @@ DECL_FASTCALL_SIMPLE_GLO(IsVehiclePointerValid_NotInWorld, _Z32IsVehiclePointerV
 DECL_FASTCALL_SIMPLE_GLO(SetVehicleAtomicVisibility, _Z28SetVehicleAtomicVisibilityCBP8RwObjectPv, RwObject*, RwObject* pObject, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(SetVehicleAtomicVisibility_RwFrame, _Z28SetVehicleAtomicVisibilityCBP7RwFramePv, RwFrame*, RwFrame* pFrame, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(SetCompAlphaCB, _Z14SetCompAlphaCBP10RpMaterialPv, RpMaterial*, RpMaterial* pMaterial, void* pData);
-DECL_FASTCALL_SIMPLE_GLO(RemoveUpgradeCB, _Z15RemoveUpgradeCBCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
-DECL_FASTCALL_SIMPLE_GLO(FindUpgradeCB, _Z13FindUpgradeCBCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
+DECL_FASTCALL_SIMPLE_GLO(RemoveUpgradeCB, _Z15RemoveUpgradeCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
+DECL_FASTCALL_SIMPLE_GLO(FindUpgradeCB, _Z13FindUpgradeCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
 
 #endif // __AML_PSDK_SAVEHICLE_H

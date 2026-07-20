@@ -66,6 +66,10 @@ DECL_CLASS(CGameLogic)
     DECL_VALUE_PLT_U32(nPrintFocusHelpTimer, BYBIT(0x678F84, 0x84FF30));
     DECL_VALUE_PLT_U32(nPrintFocusHelpCounter, BYBIT(0x678E9C, 0x84FD60));
     DECL_OBJECT_PLT(CWeapon*, SavedWeaponSlots, BYBIT(0x676864, 0x84B120));
+
+    DECL_OBJECT_ADDR(CVector, ShortCutDropOffForMission, BYBIT(0x7A2040, 0x982248));
+    DECL_VALUE_ADDR_FLT(ShortCutDropOffOrientationForMission, BYBIT(0x7A204C, 0x982254));
+    DECL_VALUE_ADDR_BOOL(MissionDropOffReadyToBeUsed, BYBIT(0x7A2050, 0x982258));
 DECL_CLASS_END()
 
 #define bPenaltyForDeathApplies bPenaltyForDeathApplies()
@@ -93,5 +97,8 @@ DECL_CLASS_END()
 #define nPrintFocusHelpTimer nPrintFocusHelpTimer()
 #define nPrintFocusHelpCounter nPrintFocusHelpCounter()
 #define SavedWeaponSlots SavedWeaponSlots()
+#define ShortCutDropOffForMission ShortCutDropOffForMission()
+#define ShortCutDropOffOrientationForMission ShortCutDropOffOrientationForMission()
+#define MissionDropOffReadyToBeUsed MissionDropOffReadyToBeUsed()
 
 #endif // __AML_PSDK_SAGAMELOGIC_H

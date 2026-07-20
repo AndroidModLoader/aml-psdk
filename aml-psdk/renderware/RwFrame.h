@@ -26,10 +26,10 @@ DECL_FASTCALL_SIMPLE_GLO(RwFrameSetFreeListCreateParams, _Z30RwFrameSetFreeListC
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameOpen, _Z12_rwFrameOpenPvii, void*, void* instance, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameClose, _Z13_rwFrameClosePvii, void*, void* instance, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameCloneAndLinkClones, _Z26_rwFrameCloneAndLinkClonesP7RwFrame, RwFrame*, RwFrame* root);
-DECL_FASTCALL_SIMPLE_GLO(rwFrameCloneRecurse, _ZL19rwFrameCloneRecurseP7RwFrameS0_, RwFrame*, RwFrame* oldFrame, RwFrame* newRoot);
+DECL_FASTCALL_SIMPLE_GLO_PLT(rwFrameCloneRecurse, BYBIT(0x1D7FAD, 0x26F698), RwFrame*, RwFrame* oldFrame, RwFrame* newRoot);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameUpdateObjects, _Z20RwFrameUpdateObjectsP7RwFrame, RwFrame*, RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(_rwFramePurgeClone, _Z18_rwFramePurgeCloneP7RwFrame, RwFrame*, RwFrame* root);
-DECL_FASTCALL_SIMPLE_GLO(rwSetHierarchyRoot, _ZL18rwSetHierarchyRootP7RwFrameS0_, void, RwFrame* frame, RwFrame* root);
+DECL_FASTCALL_SIMPLE_GLO_PLT(rwSetHierarchyRoot, BYBIT(0x1D8117, 0x26F85C), void, RwFrame* frame, RwFrame* root);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameCloneHierarchy, _Z21RwFrameCloneHierarchyP7RwFrame, RwFrame*, RwFrame* root);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameDirty, _Z12RwFrameDirtyPK7RwFrame, RwBool, const RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameInit, _Z12_rwFrameInitP7RwFrame, void, RwFrame* frame);
@@ -40,7 +40,7 @@ DECL_FASTCALL_SIMPLE_GLO(RwFrameRemoveChild, _Z18RwFrameRemoveChildP7RwFrame, Rw
 DECL_FASTCALL_SIMPLE_GLO(RwFrameDestroy, _Z14RwFrameDestroyP7RwFrame, RwBool, RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameDeInit, _Z13RwFrameDeInitP7RwFrame, RwBool, RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameDestroyHierarchy, _Z23RwFrameDestroyHierarchyP7RwFrame, RwBool, RwFrame* frame);
-DECL_FASTCALL_SIMPLE_GLO(rwFrameDestroyRecurse, _ZL21rwFrameDestroyRecurseP7RwFrame, void, RwFrame* frame);
+DECL_FASTCALL_SIMPLE_GLO_PLT(rwFrameDestroyRecurse, BYBIT(0x1D84B5, 0x26FD80), void, RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameGetLTM, _Z13RwFrameGetLTMP7RwFrame, RwMatrix*, RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameGetRoot, _Z14RwFrameGetRootPK7RwFrame, RwFrame*, const RwFrame* frame);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameAddChild, _Z15RwFrameAddChildP7RwFrameS0_, RwFrame*, RwFrame* parent, RwFrame* child);

@@ -14,6 +14,21 @@
 struct RwFrame;
 struct RwObjectHasFrame;
 
+/* Every Rw/Rp object type, forward declared in one place. The ForAll* calls
+ * cross-reference each other constantly (a world walks lights, a light walks
+ * world sectors), so their callback typedefs live here too -- that keeps the
+ * per-object headers from having to include each other in a cycle. */
+struct RpAtomic;
+struct RpClump;
+struct RpGeometry;
+struct RpLight;
+struct RpMaterial;
+struct RpMesh;
+struct RpMeshHeader;
+struct RpWorld;
+struct RpWorldSector;
+struct RwCamera;
+
 struct RwObject
 {
     RwUInt8  type;
@@ -29,6 +44,16 @@ struct RwObject
 
 typedef RwObject *(*RwObjectCallBack)(RwObject *object, void *data);
 typedef RwObjectHasFrame * (*RwObjectHasFrameSyncFunction)(RwObjectHasFrame *object);
+
+typedef RpAtomic       *(*RpAtomicCallBack)(RpAtomic *atomic, void *data);
+typedef RpClump        *(*RpClumpCallBack)(RpClump *clump, void *data);
+typedef RpLight        *(*RpLightCallBack)(RpLight *light, void *data);
+typedef RpMaterial     *(*RpMaterialCallBack)(RpMaterial *material, void *data);
+typedef RpMesh         *(*RpMeshCallBack)(RpMesh *mesh, RpMeshHeader *meshHeader, void *data);
+typedef RpWorld        *(*RpWorldCallBack)(RpWorld *world, void *data);
+typedef RpWorldSector  *(*RpWorldSectorCallBack)(RpWorldSector *sector, void *data);
+typedef RpWorldSector  *(*RpWorldSectorCallBackRender)(RpWorldSector *sector);
+typedef RwCamera       *(*RwCameraCallBack)(RwCamera *camera, void *data);
 
 struct RwObjectHasFrame
 {

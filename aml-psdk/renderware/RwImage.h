@@ -9,6 +9,13 @@
 struct RwStream;
 struct RwRaster;
 
+enum RwImageFlag : RwInt32
+{
+    rwNAIMAGEFLAG = 0x0,
+    rwIMAGEALLOCATED = 0x1,      /**< The image owns its pixel memory */
+    rwIMAGEGAMMACORRECTED = 0x2,
+};
+
 struct RwImage
 {
     RwInt32             flags;
@@ -45,7 +52,7 @@ DECL_FASTCALL_SIMPLE_GLO(RwImageRegisterImageFormat, _Z26RwImageRegisterImageFor
     const RwChar *extension, RwImageCallBackRead imageRead, RwImageCallBackWrite imageWrite);
 DECL_FASTCALL_SIMPLE_GLO(RwImageWrite, _Z12RwImageWriteP7RwImagePKc, RwImage*, RwImage *image, const RwChar *imageName);
 DECL_FASTCALL_SIMPLE_GLO(RwImageReadMaskedImage, _Z22RwImageReadMaskedImagePKcS0_, RwImage*, const RwChar *imageName, const RwChar *maskName);
-DECL_FASTCALL_SIMPLE_GLO(RwImageRegisterPlugin, _Z21RwImageRegisterPluginijPFPvS_iiES1_PFS_S_PKviiE, void,
+DECL_FASTCALL_SIMPLE_GLO(RwImageRegisterPlugin, _Z21RwImageRegisterPluginijPFPvS_iiES1_PFS_S_PKviiE, RwInt32,
     RwInt32 size, RwUInt32 pluginID, RwPluginObjectConstructor constructCB, RwPluginObjectDestructor destructCB, RwPluginObjectCopy copyCB);
 DECL_FASTCALL_SIMPLE_GLO(RwImageGetPluginOffset, _Z22RwImageGetPluginOffsetj, RwInt32, RwUInt32 pluginID);
 DECL_FASTCALL_SIMPLE_GLO(RwImageValidatePlugins, _Z22RwImageValidatePluginsPK7RwImage, RwBool, const RwImage *image);

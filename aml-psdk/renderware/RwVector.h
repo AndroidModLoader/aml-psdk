@@ -38,4 +38,20 @@ struct RwSphere
     RwReal radius;
 };
 
+struct RwBBox
+{
+    RwV3d sup; /* Supremum corner (max) */
+    RwV3d inf; /* Infimum corner (min) */
+};
+
+struct RwPlane
+{
+    RwV3d normal;
+    RwReal distance;
+};
+
+CHECKSIZE(RwSphere, 0x10, 0x10);
+CHECKSIZE(RwBBox, 0x18, 0x18);
+CHECKSIZE(RwPlane, 0x10, 0x10);
+
 #endif // __AML_PSDK_RWVECTOR_H

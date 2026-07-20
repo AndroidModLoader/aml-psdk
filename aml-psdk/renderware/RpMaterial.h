@@ -3,11 +3,16 @@
 
 #include <aml-psdk/sdk_base.h>
 #include "RwBase.h"
+#include "RwObject.h"
 #include "RwTexture.h"
 #include "RwRGBA.h"
 
-struct RxPipeline;
-struct RpMultiTexture;
+#include "RxPipeline.h"
+
+#define rpMULTITEXTURE_MAXTEXTURES 8
+
+struct rpMultiTextureRegEntry;
+struct RpMTEffect;
 
 struct RwSurfaceProperties
 {
@@ -32,7 +37,21 @@ struct RpMaterialList
     RwInt32        space;
 };
 
-typedef RpMaterial *(*RpMaterialCallBack)(RpMaterial *, void *);
+/* Extra textures hung off a material by the multi-texture plugin. Reachable
+ * with RpMaterialGetMultiTexture(). */
+struct RpMultiTexture
+{
+    rpMultiTextureRegEntry *regEntry;
+    RwUInt32                numTextures;
+    RwTexture              *textures[rpMULTITEXTURE_MAXTEXTURES];
+    RwUInt8                 coordMap[rpMULTITEXTURE_MAXTEXTURES]; /* Tex coord set per texture */
+    RpMTEffect             *effect;
+    void                   *extension;
+};
+
+
+CHECKSIZE(RwSurfaceProperties, 0xC, 0xC);
+CHECKSIZE(RpMultiTexture, 0x38, 0x68);
 
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialCreateMultiTexture, _Z28RpMaterialCreateMultiTextureP10RpMaterial12RwPlatformIDj, RpMaterial*, RpMaterial* material, RwPlatformID platformID, RwUInt32 numTextures);
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialDestroyMultiTexture, _Z29RpMaterialDestroyMultiTextureP10RpMaterial12RwPlatformID, RpMaterial*, RpMaterial* material, RwPlatformID platformID);

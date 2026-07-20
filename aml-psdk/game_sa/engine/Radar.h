@@ -182,7 +182,7 @@ DECL_CLASS(CRadar)
     DECL_FASTCALL_SIMPLE(DrawCoordBlip, _ZN6CRadar13DrawCoordBlipEihif, void, i32 idx, u8 sprite, u8 alpha, float circleSize);
     DECL_FASTCALL_SIMPLE(DrawEntityBlip, _ZN6CRadar14DrawEntityBlipEihif, void, i32 idx, u8 sprite, u8 alpha, float circleSize);
     DECL_FASTCALL_SIMPLE(DrawYouAreHereSprite, _ZN6CRadar20DrawYouAreHereSpriteEff, void, float x, float y);
-    DECL_FASTCALL_SIMPLE(DrawRotatingRadarSprite, _ZN6CRadar23DrawRotatingRadarSpriteEP9CSprite2dfffff5CRGBA, void, CSprite2d* sprite, float x, float y, float angle, float scale, CRGBA& color);
+    DECL_FASTCALL_SIMPLE(DrawRotatingRadarSprite, _ZN6CRadar23DrawRotatingRadarSpriteEP9CSprite2dffff5CRGBA, void, CSprite2d* sprite, float x, float y, float angle, float scale, CRGBA& color);
     DECL_FASTCALL_SIMPLE(GetRadarTraceColour, _ZN6CRadar19GetRadarTraceColourEjhh, u32, u32 colorIdx, u8 bBrightness, u8 bFriend);
     DECL_FASTCALL_SIMPLE(ShowRadarMarker, _ZN6CRadar15ShowRadarMarkerE7CVectorjf, void, CVector pos, u32 color, float scale);
     DECL_FASTCALL_SIMPLE(CalculateBlipAlpha, _ZN6CRadar18CalculateBlipAlphaEf, u8, float alphaMult);
@@ -217,7 +217,7 @@ DECL_CLASS(CRadar)
     DECL_FASTCALL_SIMPLE(RemoveMapSection, _ZN6CRadar16RemoveMapSectionEii, void, i32 x, i32 y);
     DECL_FASTCALL_SIMPLE(StreamRadarSections1, _ZN6CRadar19StreamRadarSectionsEii, void, i32 x, i32 y);
     DECL_FASTCALL_SIMPLE(ClipRadarPoly, _ZN6CRadar13ClipRadarPolyEP9CVector2DPKS0_, i32, CVector2D* clipVerts, CVector2D const* verts);
-    DECL_FASTCALL_SIMPLE(DrawRadarSections, _ZN6CRadar16DrawRadarSectionsEiii, void, i32 x, i32 y, i32 alpha);
+    DECL_FASTCALL_SIMPLE(DrawRadarSections, _ZN6CRadar16DrawRadarSectionEiii, void, i32 x, i32 y, i32 alpha);
     DECL_FASTCALL_SIMPLE(DrawRadarSectionMap, _ZN6CRadar19DrawRadarSectionMapEii5CRectf, void, i32 x, i32 y, CRect pos, float opacity);
     DECL_FASTCALL_SIMPLE(DrawAreaOnRadar, _ZN6CRadar15DrawAreaOnRadarERK5CRectRK5CRGBAb, void, CRect const& rect, CRGBA const& rgba, bool fullMap);
     DECL_FASTCALL_SIMPLE(DrawRadarGangOverlay, _ZN6CRadar20DrawRadarGangOverlayEb, void, bool fullMap);

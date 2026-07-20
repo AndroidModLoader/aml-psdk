@@ -63,8 +63,8 @@ DECL_FASTCALL_SIMPLE_GLO(RwMatrixQueryRotate, _Z19RwMatrixQueryRotatePK11RwMatri
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixRotate, _Z14RwMatrixRotateP11RwMatrixTagPK5RwV3df15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwV3d *axis, RwReal angle, RwOpCombineType combineOp);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixRotateOneMinusCosineSine, _Z32RwMatrixRotateOneMinusCosineSineP11RwMatrixTagPK5RwV3dff15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwV3d *unitAxis, RwReal oneMinusCosine, RwReal sine, RwOpCombineType combineOp);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixScale, _Z13RwMatrixScaleP11RwMatrixTagPK5RwV3d15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwV3d *scale, RwOpCombineType combineOp);
-DECL_FASTCALL_SIMPLE_GLO(RwMatrixSetFreeListCreateParams, _Z31RwMatrixSetFreeListCreateParamsii, RwMatrix*, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
-DECL_FASTCALL_SIMPLE_GLO(RwMatrixStreamGetSize, _Z21RwMatrixStreamGetSizePK11RwMatrixTag, RwMatrix*, const RwMatrix *matrix);
+DECL_FASTCALL_SIMPLE_GLO(RwMatrixSetFreeListCreateParams, _Z31RwMatrixSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
+DECL_FASTCALL_SIMPLE_GLO(RwMatrixStreamGetSize, _Z21RwMatrixStreamGetSizePK11RwMatrixTag, RwUInt32, const RwMatrix *matrix);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixStreamRead, _Z18RwMatrixStreamReadP8RwStreamP11RwMatrixTag, RwMatrix*, RwStream *stream, RwMatrix *matrix);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixStreamWrite, _Z19RwMatrixStreamWritePK11RwMatrixTagP8RwStream, RwMatrix*, const RwMatrix *matrix, RwStream *stream);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixTransform, _Z17RwMatrixTransformP11RwMatrixTagPKS_15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwMatrix *transform, RwOpCombineType combineOp);

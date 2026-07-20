@@ -319,11 +319,63 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
         DECL_VALUE_OBJECT_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type&) \
     DECL_VALUE_TAIL_GLOBAL(_type, _name)
-    
+
+#define DECL_VALUE_ADDR_I32(_name, _addr) \
+    DECL_VALUE_HEAD(i32, _name) \
+        DECL_VALUE_ADDR_BASE(i32, _name, _addr) \
+        DECL_VALUE_NUMBER_BASE(i32) \
+        DECL_VALUE_BITOPS_BASE(i32) \
+        DECL_VALUE_RETURN_BASE(int) \
+    DECL_VALUE_TAIL(i32, _name)
+
+#define DECL_VALUE_ADDR_U32(_name, _addr) \
+    DECL_VALUE_HEAD(u32, _name) \
+        DECL_VALUE_ADDR_BASE(u32, _name, _addr) \
+        DECL_VALUE_NUMBER_BASE(u32) \
+        DECL_VALUE_BITOPS_BASE(u32) \
+        DECL_VALUE_RETURN_BASE(unsigned int) \
+    DECL_VALUE_TAIL(u32, _name)
+
+#define DECL_VALUE_ADDR_U8(_name, _addr) \
+    DECL_VALUE_HEAD(u8, _name) \
+        DECL_VALUE_ADDR_BASE(u8, _name, _addr) \
+        DECL_VALUE_NUMBER_BASE(u8) \
+        DECL_VALUE_BITOPS_BASE(u8) \
+        DECL_VALUE_RETURN_BASE(unsigned char) \
+        DECL_VALUE_RETURN_BASE(unsigned int) \
+    DECL_VALUE_TAIL(u8, _name)
+
+#define DECL_VALUE_ADDR_FLT(_name, _addr) \
+    DECL_VALUE_HEAD(float, _name) \
+        DECL_VALUE_ADDR_BASE(float, _name, _addr) \
+        DECL_VALUE_NUMBER_BASE(float) \
+        DECL_VALUE_RETURN_BASE(float) \
+        DECL_VALUE_RETURN_BASE(int) \
+    DECL_VALUE_TAIL(float, _name)
+
+#define DECL_VALUE_ADDR_BOOL(_name, _addr) \
+    DECL_VALUE_HEAD(bool, _name) \
+        DECL_VALUE_ADDR_BASE(bool, _name, _addr) \
+        DECL_VALUE_NUMBER_BASE(bool) \
+        DECL_VALUE_BITOPS_BASE(bool) \
+        DECL_VALUE_RETURN_BASE(int) \
+    DECL_VALUE_TAIL(bool, _name)
+
+#define DECL_OBJECT_ADDR(_type, _name, _addr) \
+    DECL_VALUE_HEAD(_type, _name) \
+        DECL_VALUE_ADDR_BASE(_type, _name, _addr) \
+        DECL_VALUE_OBJECT_BASE(_type) \
+        DECL_VALUE_RETURN_BASE(_type&) \
+    DECL_VALUE_TAIL(_type, _name)
+
+
+#define PSDK_STRINGIFY_(_x) #_x
+#define PSDK_STRINGIFY(_x) PSDK_STRINGIFY_(_x)
+
 // Class functions
 
 #define DECL_CTORCALL_ARG_HEAD(_clsName, _sym, ...) \
-    static inline auto FuncProxy_ctor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(#_sym); \
+    static inline auto FuncProxy_ctor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \
     _clsName(__VA_ARGS__) { FuncProxy_ctor##_clsName(
 
 #define DECL_CTORCALL_ARG_TAIL(...) \
@@ -334,7 +386,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
     DECL_CTORCALL_ARG_TAIL()
 
 #define DECL_DTORCALL(_clsName, _sym) \
-    static inline auto FuncProxy_dtor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass*)>(#_sym); \
+    static inline auto FuncProxy_dtor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass*)>(PSDK_STRINGIFY(_sym)); \
     ~_clsName() { FuncProxy_dtor##_clsName(this); }
 
 #define DECL_DTORCALL_PLT(_clsName, _addr) \
@@ -342,19 +394,19 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
     ~_clsName() { FuncProxy_dtor##_clsName(this); }
 
 #define DECL_NEWCALL(_clsName, _sym) \
-    static inline auto FuncProxy_opnew##_clsName = GetMainLibrarySymbol<_clsName*(*)(size_t size)>(#_sym); \
+    static inline auto FuncProxy_opnew##_clsName = GetMainLibrarySymbol<_clsName*(*)(size_t size)>(PSDK_STRINGIFY(_sym)); \
     inline static _clsName* Instantiate(size_t size = sizeof(_clsName)) { return FuncProxy_opnew##_clsName(size); }
     
 #define DECL_DLCALL(_clsName, _sym) \
-    static inline auto FuncProxy_opdel##_clsName = GetMainLibrarySymbol<void(*)(void* ptr)>(#_sym); \
+    static inline auto FuncProxy_opdel##_clsName = GetMainLibrarySymbol<void(*)(void* ptr)>(PSDK_STRINGIFY(_sym)); \
     inline void DeInstantiate() { FuncProxy_opdel##_clsName(this); }
 
 #define DECL_THISCALL_HEAD(_name, _sym, _ret, ...) \
-    static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(#_sym); \
+    static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \
     inline _ret _name(__VA_ARGS__) {
 
 #define DECL_THISCALL_NAMED_HEAD(_name, _alias, _sym, _ret, ...) \
-    static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(#_sym); \
+    static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \
     inline _ret _alias(__VA_ARGS__) {
 
 #define DECL_THISCALL_ADDR_HEAD(_name, _addr, _ret, ...) \
@@ -379,16 +431,30 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
     DECL_THISCALL_HEAD(_name, _sym, _ret) \
     DECL_THISCALL_TAIL(_name)
 
+#define DECL_THISCALL(_name, _sym, _ret, ...) \
+    static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \
+    template<class... _PsdkArgs> \
+    inline _ret _name(_PsdkArgs&&... _psdkArgs) { \
+        return FuncProxy_##_name(this, std::forward<_PsdkArgs>(_psdkArgs)...); \
+    }
+
+#define DECL_THISCALL_ADDR(_name, _addr, _ret, ...) \
+    static inline auto FuncProxy_##_name = (_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__)))(GetMainLibraryAddress() + _addr); \
+    template<class... _PsdkArgs> \
+    inline _ret _name(_PsdkArgs&&... _psdkArgs) { \
+        return FuncProxy_##_name(this, std::forward<_PsdkArgs>(_psdkArgs)...); \
+    }
+
 #define DECL_FASTCALL_SIMPLE(_name, _sym, _ret, ...) \
-    static inline auto _name = GetMainLibrarySymbol<_ret(*)(__VA_ARGS__)>(#_sym)
+    static inline auto _name = GetMainLibrarySymbol<_ret(*)(__VA_ARGS__)>(PSDK_STRINGIFY(_sym))
 
 #define DECL_FASTCALL_SIMPLE_PLT(_name, _addr, _ret, ...) \
     static inline auto _name = (_ret(*)(__VA_ARGS__))(GetMainLibraryAddress() + _addr)
 
 #define DECL_FASTCALL_SIMPLE_GLO(_name, _sym, _ret, ...) \
-    inline auto _name = GetMainLibrarySymbol<_ret(*)(__VA_ARGS__)>(#_sym)
+    inline auto _name = GetMainLibrarySymbol<_ret(*)(__VA_ARGS__)>(PSDK_STRINGIFY(_sym))
 
-#define DECL_FASTCALL_SIMPLE_GLO_PLT(_name, _sym, _ret, ...) \
+#define DECL_FASTCALL_SIMPLE_GLO_PLT(_name, _addr, _ret, ...) \
     inline auto _name = (_ret(*)(__VA_ARGS__))(GetMainLibraryAddress() + _addr)
 
 #define GET_THISCALL_ADDR(_clsName, _name) \

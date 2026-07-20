@@ -5,15 +5,14 @@
 #include "RwBase.h"
 #include "RwLinks.h"
 #include "RwObject.h"
+#include "RwVector.h"
+#include "RpLight.h"
+#include "RwCamera.h"
 
 struct RpClump;
 struct RpAtomic;
-struct RpLight;
-struct RwCamera;
 struct RpWorld;
 
-typedef RpAtomic *(*RpAtomicCallBack)(RpAtomic *, void *);
-typedef RpClump* (*RpClumpCallBack)(RpClump* clump, void *data);
 struct RpClumpChunkInfo
 {
     RwInt32 numAtomics;
@@ -28,24 +27,26 @@ struct RpClump
     RwLinkList          cameraList;
     RwLLLink            inWorldLink;
     RpClumpCallBack     callback;
+    RwUInt16            renderFrame;
+    RwUInt16            pad;
 };
 
 DECL_FASTCALL_SIMPLE_GLO(_rpClumpClose, _Z13_rpClumpClosePvii, void*, void* instance, RwInt32 offset, RwInt32 size);
-DECL_FASTCALL_SIMPLE_GLO(ClumpTidyDestroyClump, _ZL21ClumpTidyDestroyClumpPvS_, void, void* object, void* data);
-DECL_FASTCALL_SIMPLE_GLO(ClumpTidyDestroyAtomic, _ZL22ClumpTidyDestroyAtomicPvS_, void, void* object, void* data);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpTidyDestroyClump, BYBIT(0x213C15, 0x2B9E28), void, void* object, void* data);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpTidyDestroyAtomic, BYBIT(0x213C19, 0x2B9E2C), void, void* object, void* data);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpSetFreeListCreateParams, _Z30RpClumpSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 DECL_FASTCALL_SIMPLE_GLO(_rpClumpOpen, _Z12_rpClumpOpenPvii, void*, void* instance, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO(_rpClumpRegisterExtensions, _Z26_rpClumpRegisterExtensionsv, RwBool, void);
-DECL_FASTCALL_SIMPLE_GLO(ClumpInitCameraExt, _ZL18ClumpInitCameraExtPvii, void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
-DECL_FASTCALL_SIMPLE_GLO(ClumpDeInitCameraExt, _ZL20ClumpDeInitCameraExtPvii, void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
-DECL_FASTCALL_SIMPLE_GLO(ClumpInitLightExt, _ZL17ClumpInitLightExtPvii, void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
-DECL_FASTCALL_SIMPLE_GLO(ClumpDeInitLightExt, _ZL19ClumpDeInitLightExtPvii, void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpInitCameraExt, BYBIT(0x213D9D, 0x2B9FC8), void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpDeInitCameraExt, BYBIT(0x213DB5, 0x2B9FE0), void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpInitLightExt, BYBIT(0x213DB9, 0x2B9FE4), void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpDeInitLightExt, BYBIT(0x213DD1, 0x2B9FFC), void*, void* object, RwInt32 offsetInObject, RwInt32 sizeInObject);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpGetNumAtomics, _Z20RpClumpGetNumAtomicsP7RpClump, RwInt32, RpClump* clump);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpForAllAtomics, _Z20RpClumpForAllAtomicsP7RpClumpPFP8RpAtomicS2_PvES3_, RpClump*, RpClump* clump, RpAtomicCallBack callback, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpGetNumLights, _Z19RpClumpGetNumLightsP7RpClump, RwInt32, RpClump* clump);
-//DECL_FASTCALL_SIMPLE_GLO(RpClumpForAllLights, _Z19RpClumpForAllLightsP7RpClumpPFP7RpLightS2_PvES3_, RpClump*, RpClump* clump, RpLightCallBack callback, void* pData);
+DECL_FASTCALL_SIMPLE_GLO(RpClumpForAllLights, _Z19RpClumpForAllLightsP7RpClumpPFP7RpLightS2_PvES3_, RpClump*, RpClump* clump, RpLightCallBack callback, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpGetNumCameras, _Z20RpClumpGetNumCamerasP7RpClump, RwInt32, RpClump* clump);
-//DECL_FASTCALL_SIMPLE_GLO(RpClumpForAllCameras, _Z20RpClumpForAllCamerasP7RpClumpPFP8RwCameraS2_PvES3_, RpClump*, RpClump* clump, RwCameraCallBack callback, void* pData);
+DECL_FASTCALL_SIMPLE_GLO(RpClumpForAllCameras, _Z20RpClumpForAllCamerasP7RpClumpPFP8RwCameraS2_PvES3_, RpClump*, RpClump* clump, RwCameraCallBack callback, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpCreateSpace, _Z18RpClumpCreateSpacePK5RwV3df, RpClump*, const RwV3d* position, RwReal radius);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpCreate, _Z13RpClumpCreatev, RpClump*, void);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpAddAtomic, _Z16RpClumpAddAtomicP7RpClumpP8RpAtomic, RpClump*, RpClump* clump, RpAtomic* atomic);
@@ -53,7 +54,7 @@ DECL_FASTCALL_SIMPLE_GLO(RpClumpRender, _Z13RpClumpRenderP7RpClump, RpClump*, Rp
 DECL_FASTCALL_SIMPLE_GLO(RpClumpClone, _Z12RpClumpCloneP7RpClump, RpClump*, RpClump* clump);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpDestroy, _Z14RpClumpDestroyP7RpClump, RwBool, RpClump* clump);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpSetCallBack, _Z18RpClumpSetCallBackP7RpClumpPFS0_S0_PvE, RpClump*, RpClump* clump, RpClumpCallBack callback);
-DECL_FASTCALL_SIMPLE_GLO(ClumpCallBack, _ZL13ClumpCallBackP7RpClumpPv, RpClump*, RpClump* clump, void* data);
+DECL_FASTCALL_SIMPLE_GLO_PLT(ClumpCallBack, BYBIT(0x214779, 0x2BAC78), RpClump*, RpClump* clump, void* data);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpGetCallBack, _Z18RpClumpGetCallBackPK7RpClump, RpClumpCallBack, const RpClump* clump);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpRemoveAtomic, _Z19RpClumpRemoveAtomicP7RpClumpP8RpAtomic, RpClump*, RpClump* clump, RpAtomic* atomic);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpAddLight, _Z15RpClumpAddLightP7RpClumpP7RpLight, RpClump*, RpClump* clump, RpLight* light);
