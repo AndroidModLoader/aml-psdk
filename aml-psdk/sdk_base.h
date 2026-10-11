@@ -372,6 +372,66 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
 #define PSDK_STRINGIFY_(_x) #_x
 #define PSDK_STRINGIFY(_x) PSDK_STRINGIFY_(_x)
 
+// Symbol values
+
+#define DECL_VALUE_SYM_I32(_name, _sym) \
+    DECL_VALUE_HEAD(i32, _name) \
+        DECL_VALUE_SYM_BASE(i32, _name, PSDK_STRINGIFY(_sym)) \
+        DECL_VALUE_NUMBER_BASE(i32) \
+        DECL_VALUE_BITOPS_BASE(i32) \
+        DECL_VALUE_RETURN_BASE(int) \
+    DECL_VALUE_TAIL(i32, _name)
+
+#define DECL_VALUE_SYM_BOOL(_name, _sym) \
+    DECL_VALUE_HEAD(bool, _name) \
+        DECL_VALUE_SYM_BASE(bool, _name, PSDK_STRINGIFY(_sym)) \
+        DECL_VALUE_NUMBER_BASE(bool) \
+        DECL_VALUE_BITOPS_BASE(bool) \
+        DECL_VALUE_RETURN_BASE(int) \
+    DECL_VALUE_TAIL(bool, _name)
+
+#define DECL_OBJECT_SYM(_type, _name, _sym) \
+    DECL_VALUE_HEAD(_type, _name) \
+        DECL_VALUE_SYM_BASE(_type, _name, PSDK_STRINGIFY(_sym)) \
+        DECL_VALUE_OBJECT_BASE(_type) \
+        DECL_VALUE_RETURN_BASE(_type&) \
+    DECL_VALUE_TAIL(_type, _name)
+
+#define DECL_VALUE_ARRAY_SYM_BASE(_type, _name, _sym) \
+        _type*& operator()() { return Get(); } \
+        static inline _type*& Get() { \
+            if(!m_Pointer) m_Pointer = GetMainLibrarySymbol<_type*>(PSDK_STRINGIFY(_sym)); \
+            return m_Pointer; \
+        }
+
+#define DECL_OBJECT_ARRAY_SYM(_type, _name, _sym) \
+    DECL_VALUE_HEAD(_type, _name) \
+        DECL_VALUE_ARRAY_SYM_BASE(_type, _name, _sym) \
+        DECL_VALUE_OBJECT_BASE(_type*) \
+        DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
+        DECL_VALUE_RETURN_BASE(_type*&) \
+    DECL_VALUE_TAIL(_type*, _name)
+
+#define DECL_OBJECT_ARRAY_SYM_GLOBAL(_type, _name, _sym) \
+    DECL_VALUE_HEAD(_type, _name) \
+        DECL_VALUE_ARRAY_SYM_BASE(_type, _name, _sym) \
+        DECL_VALUE_OBJECT_BASE(_type*) \
+        DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
+        DECL_VALUE_RETURN_BASE(_type*&) \
+    DECL_VALUE_TAIL_GLOBAL(_type*, _name)
+
+#define DECL_OBJECT_ARRAY_ADDR_GLOBAL(_type, _name, _addr) \
+    DECL_VALUE_HEAD(_type, _name) \
+        _type*& operator()() { return Get(); } \
+        static inline _type*& Get() { \
+            if(!m_Pointer) m_Pointer = (_type*)(GetMainLibraryAddress() + _addr); \
+            return m_Pointer; \
+        } \
+        DECL_VALUE_OBJECT_BASE(_type*) \
+        DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
+        DECL_VALUE_RETURN_BASE(_type*&) \
+    DECL_VALUE_TAIL_GLOBAL(_type*, _name)
+
 // Class functions
 
 #define DECL_CTORCALL_ARG_HEAD(_clsName, _sym, ...) \

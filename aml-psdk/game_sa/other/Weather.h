@@ -55,6 +55,8 @@ DECL_CLASS(CWeather)
     DECL_FASTCALL_SIMPLE(AddSandStormParticles, _ZN8CWeather21AddSandStormParticlesEv, void);
     DECL_FASTCALL_SIMPLE(RenderRainStreaks, _ZN8CWeather17RenderRainStreaksEv, void);
     DECL_FASTCALL_SIMPLE(ForecastWeather, _ZN8CWeather15ForecastWeatherEii, bool, i32 WeatherType, i32 HoursAhead);
+    DECL_FASTCALL_SIMPLE(AddStreamAfterRain, _ZN8CWeather18AddStreamAfterRainEv, void);
+    DECL_FASTCALL_SIMPLE(AddHeatHaze, _ZN8CWeather11AddHeatHazeEv, void);
 
     // STATIC values
     DECL_VALUE_PLT_I32(StreamAfterRainTimer, BYBIT(0x677208, 0x84C448));
@@ -97,6 +99,9 @@ DECL_CLASS(CWeather)
     DECL_VALUE_PLT_FLT(Earthquake, BYBIT(0x677C50, 0x84D8C0));
     DECL_VALUE_PLT_BOOL(bScriptsForceRain, BYBIT(0x6798D4, 0x8511C8));
     DECL_VALUE_PLT_FLT(TrafficLightsBrightness, BYBIT(0x6789F0, 0x84F400));
+    DECL_OBJECT_ARRAY_SYM(CVector, TwisterPos, _ZN8CWeather10TwisterPosE);
+    DECL_VALUE_SYM_I32(TwisterIndex, _ZN8CWeather12TwisterIndexE);
+    DECL_OBJECT_SYM(float, WaterFog, _ZN8CWeather8WaterFogE);
 DECL_CLASS_END()
 
 #define StreamAfterRainTimer StreamAfterRainTimer()
@@ -139,5 +144,9 @@ DECL_CLASS_END()
 #define Earthquake Earthquake()
 #define bScriptsForceRain bScriptsForceRain()
 #define TrafficLightsBrightness TrafficLightsBrightness()
+
+#define TwisterPos TwisterPos()
+#define TwisterIndex TwisterIndex()
+#define WaterFog WaterFog()
 
 #endif // __AML_PSDK_SAWEATHER_H

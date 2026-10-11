@@ -103,8 +103,57 @@ enum eStatsReactions
     STAT_TIMELIMIT_ADD_TO_HEALTH = 58
 };
 
+struct tStatMessage
+{
+    u16 stat_num;
+    u8 displayed;
+    u8 condition;
+    float value;
+    char text_id[8];
+};
+CHECKSIZE(tStatMessage, 0x10, 0x10);
+
 DECL_CLASS(CStats)
     // STATIC values
+    DECL_VALUE_PLT_U8(bShowUpdateStats, BYBIT(0x679680, 0x850D10));
+    DECL_OBJECT_ARRAY_PLT(float, StatTypesFloat, BYBIT(0x6780D4, 0x84E1C0));
+    DECL_OBJECT_ARRAY_PLT(i32, StatTypesInt, BYBIT(0x676644, 0x84ACE0));
+    DECL_OBJECT_ARRAY_PLT(float, StatReactionValue, BYBIT(0x677958, 0x84D2D8));
+    DECL_VALUE_PLT_U16(m_ThisStatIsABarChart, BYBIT(0x6781D4, 0x84E3C0));
+    DECL_OBJECT_ARRAY_PLT(u32, PedsKilledOfThisType, BYBIT(0x6773D8, 0x84C7E8));
+    DECL_OBJECT_ARRAY_PLT(i32, FavoriteRadioStationList, BYBIT(0x676238, 0x84A4D0));
+    DECL_OBJECT_ARRAY_PLT(i32, TimesMissionAttempted, BYBIT(0x678954, 0x84F2C8));
+    DECL_OBJECT_ARRAY_PLT(char, LastMissionPassedName, BYBIT(0x679D20, 0x851A58));
+    DECL_OBJECT_ARRAY_PLT(tStatMessage, StatMessage, BYBIT(0x676934, 0x84B2B8));
+    DECL_VALUE_PLT_U32(TotalNumStatMessages, BYBIT(0x679E64, 0x851CD8));
+    DECL_VALUE_PLT_BOOL(usingSexCheat, BYBIT(0x676160, 0x84A320));
+    DECL_VALUE_PLT_BOOL(usingRespectCheat, BYBIT(0x677E68, 0x84DCF0));
+    DECL_VALUE_PLT_U32(m_SprintStaminaCounter, BYBIT(0x679854, 0x8510B8));
+    DECL_VALUE_PLT_U32(m_CycleStaminaCounter, BYBIT(0x676FD4, 0x84BFE0));
+    DECL_VALUE_PLT_U32(m_CycleSkillCounter, BYBIT(0x6785C8, 0x84EBA8));
+    DECL_VALUE_PLT_U32(m_SwimStaminaCounter, BYBIT(0x6796DC, 0x850DC8));
+    DECL_VALUE_PLT_U32(m_SwimUnderWaterCounter, BYBIT(0x677EE4, 0x84DDE8));
+    DECL_VALUE_PLT_U32(m_DrivingCounter, BYBIT(0x6768F8, 0x84B240));
+    DECL_VALUE_PLT_U32(m_FlyingCounter, BYBIT(0x6781BC, 0x84E390));
+    DECL_VALUE_PLT_U32(m_BoatCounter, BYBIT(0x678228, 0x84E468));
+    DECL_VALUE_PLT_U32(m_BikeCounter, BYBIT(0x677E2C, 0x84DC78));
+    DECL_VALUE_PLT_U32(m_FatCounter, BYBIT(0x6764F0, 0x84AA38));
+    DECL_VALUE_PLT_U32(m_RunningCounter, BYBIT(0x6777B0, 0x84CF88));
+    DECL_VALUE_PLT_U32(m_WeaponCounter, BYBIT(0x677F6C, 0x84DEF8));
+    DECL_VALUE_PLT_U32(m_DeathCounter, BYBIT(0x678328, 0x84E668));
+    DECL_VALUE_PLT_U32(m_MaxHealthCounter, BYBIT(0x6792B8, 0x850588));
+    DECL_VALUE_PLT_U32(m_AddToHealthCounter, BYBIT(0x6783B0, 0x84E778));
+    DECL_VALUE_PLT_I32(m_LastWeaponTypeFired, BYBIT(0x677EE0, 0x84DDE0));
+    DECL_OBJECT_SYM(u32, DebugStatValue, _ZN6CStats14DebugStatValueE);
+    DECL_OBJECT_ARRAY_SYM(i32, FavouriteVehicle, _ZN6CStats16FavouriteVehicleE);
+    DECL_OBJECT_ARRAY_SYM(i32, FavouriteWeapon, _ZN6CStats15FavouriteWeaponE);
+    DECL_OBJECT_ARRAY_SYM(float, MoneySpent, _ZN6CStats10MoneySpentE);
+    DECL_OBJECT_ARRAY_SYM(float, MoneyLost, _ZN6CStats9MoneyLostE);
+    DECL_OBJECT_ARRAY_SYM(float, BiggestWin, _ZN6CStats10BiggestWinE);
+    DECL_OBJECT_ARRAY_SYM(float, BiggestLoss, _ZN6CStats11BiggestLossE);
+    DECL_VALUE_SYM_BOOL(bShowRespectStat, _ZN6CStats16bShowRespectStatE);
+    DECL_VALUE_SYM_BOOL(bShowSexAppealStat, _ZN6CStats18bShowSexAppealStatE);
+    DECL_OBJECT_SYM(u8, ShowChaseStatOnScreen, _ZN6CStats21ShowChaseStatOnScreenE);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(Init, _ZN6CStats4InitEv, void);
@@ -113,18 +162,19 @@ DECL_CLASS(CStats)
     DECL_FASTCALL_SIMPLE(PopulateFavoriteRadioStationList, _ZN6CStats32PopulateFavoriteRadioStationListEv, u8);
     DECL_FASTCALL_SIMPLE(LoadActionReactionStats, _ZN6CStats23LoadActionReactionStatsEv, void);
     DECL_FASTCALL_SIMPLE(LoadStatUpdateConditions, _ZN6CStats24LoadStatUpdateConditionsEv, void);
-    DECL_FASTCALL_SIMPLE(GetStatID, _ZN6CStats9GetStatIDEt, const char*, u16 index);
+    DECL_FASTCALL_SIMPLE(GetStatID, _ZN6CStats9GetStatIDEt, char*, u16 index);
     DECL_FASTCALL_SIMPLE(GetStatType, _ZN6CStats11GetStatTypeEt, u8, u16 index);
     DECL_FASTCALL_SIMPLE(GetStatValue, _ZN6CStats12GetStatValueEt, float, u16 index);
     DECL_FASTCALL_SIMPLE(ModifyStat, _ZN6CStats10ModifyStatEtf, void, u16 index, float amount);
     DECL_FASTCALL_SIMPLE(IncrementStat, _ZN6CStats13IncrementStatEtf, void, u16 index, float amount);
     DECL_FASTCALL_SIMPLE(DecrementStat, _ZN6CStats13DecrementStatEtf, void, u16 index, float amount);
-    DECL_FASTCALL_SIMPLE(IsStatCapped, _ZN6CStats12IsStatCappedEt, u8);
+    DECL_FASTCALL_SIMPLE(IsStatCapped, _ZN6CStats12IsStatCappedEt, u8, u16 index);
     DECL_FASTCALL_SIMPLE(UpdateStatsAddToHealth, _ZN6CStats22UpdateStatsAddToHealthEj, void, u32 nAdd);
     DECL_FASTCALL_SIMPLE(ProcessReactionStatsOnIncrement, _ZN6CStats31ProcessReactionStatsOnIncrementEh, void, u8 index);
     DECL_FASTCALL_SIMPLE(ProcessReactionStatsOnDecrement, _ZN6CStats31ProcessReactionStatsOnDecrementEh, void, u8 index);
     DECL_FASTCALL_SIMPLE(SetNewRecordStat, _ZN6CStats16SetNewRecordStatEtf, void, u16 index, float NewLevel);
     DECL_FASTCALL_SIMPLE(GetTimesMissionAttempted, _ZN6CStats24GetTimesMissionAttemptedEh, u8, u8 MissionNumber);
+    DECL_FASTCALL_SIMPLE(RegisterMissionAttempted, _ZN6CStats24RegisterMissionAttemptedEh, void, u8 MissionNumber);
     DECL_FASTCALL_SIMPLE(RegisterMissionPassed, _ZN6CStats21RegisterMissionPassedEh, void, u8 MissionNumber);
     DECL_FASTCALL_SIMPLE(RegisterFastestTime, _ZN6CStats19RegisterFastestTimeEii, void, i32 StatIndex, i32 NewTime);
     DECL_FASTCALL_SIMPLE(RegisterBestPosition, _ZN6CStats20RegisterBestPositionEii, void, i32 StatIndex, i32 NewPosition);
@@ -160,5 +210,45 @@ DECL_CLASS(CStats)
     DECL_FASTCALL_SIMPLE(Save, _ZN6CStats4SaveEv, bool);
     DECL_FASTCALL_SIMPLE(Load, _ZN6CStats4LoadEv, bool);
 DECL_CLASS_END()
+
+#define bShowUpdateStats bShowUpdateStats()
+#define StatTypesFloat StatTypesFloat()
+#define StatTypesInt StatTypesInt()
+#define StatReactionValue StatReactionValue()
+#define m_ThisStatIsABarChart m_ThisStatIsABarChart()
+#define PedsKilledOfThisType PedsKilledOfThisType()
+#define FavoriteRadioStationList FavoriteRadioStationList()
+#define TimesMissionAttempted TimesMissionAttempted()
+#define LastMissionPassedName LastMissionPassedName()
+#define StatMessage StatMessage()
+#define TotalNumStatMessages TotalNumStatMessages()
+#define usingSexCheat usingSexCheat()
+#define usingRespectCheat usingRespectCheat()
+#define m_SprintStaminaCounter m_SprintStaminaCounter()
+#define m_CycleStaminaCounter m_CycleStaminaCounter()
+#define m_CycleSkillCounter m_CycleSkillCounter()
+#define m_SwimStaminaCounter m_SwimStaminaCounter()
+#define m_SwimUnderWaterCounter m_SwimUnderWaterCounter()
+#define m_DrivingCounter m_DrivingCounter()
+#define m_FlyingCounter m_FlyingCounter()
+#define m_BoatCounter m_BoatCounter()
+#define m_BikeCounter m_BikeCounter()
+#define m_FatCounter m_FatCounter()
+#define m_RunningCounter m_RunningCounter()
+#define m_WeaponCounter m_WeaponCounter()
+#define m_DeathCounter m_DeathCounter()
+#define m_MaxHealthCounter m_MaxHealthCounter()
+#define m_AddToHealthCounter m_AddToHealthCounter()
+#define m_LastWeaponTypeFired m_LastWeaponTypeFired()
+#define DebugStatValue DebugStatValue()
+#define FavouriteVehicle FavouriteVehicle()
+#define FavouriteWeapon FavouriteWeapon()
+#define MoneySpent MoneySpent()
+#define MoneyLost MoneyLost()
+#define BiggestWin BiggestWin()
+#define BiggestLoss BiggestLoss()
+#define bShowRespectStat bShowRespectStat()
+#define bShowSexAppealStat bShowSexAppealStat()
+#define ShowChaseStatOnScreen ShowChaseStatOnScreen()
 
 #endif // __AML_PSDK_SASTATS_H

@@ -5,6 +5,8 @@
 
 struct CAnimBlock;
 struct CAnimBlendStaticAssociation;
+struct CAnimBlendAssociation;
+struct RpClump;
 
 DECL_CLASS(CAnimBlendAssocGroup)
     // Construct/Deconstruct functions
@@ -38,10 +40,10 @@ DECL_CLASS(CAnimBlendAssocGroup)
     DECL_THISCALL_NAMED_HEAD(GetAnimation2, GetAnimation, _ZN20CAnimBlendAssocGroup12GetAnimationEj, CAnimBlendStaticAssociation*, u32 id)
     DECL_THISCALL_TAIL(GetAnimation2, id)   
 
-    DECL_THISCALL_NAMED_HEAD(CopyAnimation1, CopyAnimation, _ZN20CAnimBlendAssocGroup13CopyAnimationEPKc, CAnimBlendAssocGroup*, const char *pName)
+    DECL_THISCALL_NAMED_HEAD(CopyAnimation1, CopyAnimation, _ZN20CAnimBlendAssocGroup13CopyAnimationEPKc, CAnimBlendAssociation*, const char *pName)
     DECL_THISCALL_TAIL(CopyAnimation1, pName)
 
-    DECL_THISCALL_NAMED_HEAD(CopyAnimation2, CopyAnimation, _ZN5CText12GetUpperCaseEt, CAnimBlendAssocGroup*, u32 id)
+    DECL_THISCALL_NAMED_HEAD(CopyAnimation2, CopyAnimation, _ZN20CAnimBlendAssocGroup13CopyAnimationEj, CAnimBlendAssociation*, u32 id)
     DECL_THISCALL_TAIL(CopyAnimation2, id)
 
     DECL_THISCALL_HEAD(GetAnimationId, _ZN20CAnimBlendAssocGroup14GetAnimationIdEPKc, u32, const char *pName)
@@ -50,9 +52,10 @@ DECL_CLASS(CAnimBlendAssocGroup)
     // Member values
     CAnimBlock                  *m_pAnimBlock;
     CAnimBlendStaticAssociation *m_pAssociations;
-    unsigned int                 m_nNumAnimations;
+    int                          m_nNumAnimations;
     int                          m_nIdOffset;
     int                          m_nGroupID;
 DECL_CLASS_END()
+CHECKSIZE(CAnimBlendAssocGroup, 0x14, 0x20);
 
 #endif // __AML_PSDK_SAANIMBLENDASSOCGROUP_H

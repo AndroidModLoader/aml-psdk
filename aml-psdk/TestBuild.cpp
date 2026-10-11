@@ -88,6 +88,32 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/Streaming.h>
 #include <aml-psdk/game_sa/engine/VisibilityPlugins.h>
 
+#include <aml-psdk/game_sa/base/General.h>
+#include <aml-psdk/game_sa/base/KeyGen.h>
+#include <aml-psdk/game_sa/other/Restart.h>
+#include <aml-psdk/game_sa/other/Explosion.h>
+#include <aml-psdk/game_sa/other/WaterLevel.h>
+#include <aml-psdk/game_sa/other/TimeCycle.h>
+#include <aml-psdk/game_sa/other/Cheat.h>
+#include <aml-psdk/game_sa/engine/TrafficLights.h>
+#include <aml-psdk/game_sa/engine/Checkpoints.h>
+#include <aml-psdk/game_sa/engine/SetPieces.h>
+#include <aml-psdk/game_sa/engine/RoadBlocks.h>
+#include <aml-psdk/game_sa/engine/Remote.h>
+#include <aml-psdk/game_sa/engine/Cranes.h>
+#include <aml-psdk/game_sa/other/GridRef.h>
+#include <aml-psdk/game_sa/engine/Bridge.h>
+#include <aml-psdk/game_sa/other/Birds.h>
+#include <aml-psdk/game_sa/other/Gangs.h>
+#include <aml-psdk/game_sa/engine/TagManager.h>
+#include <aml-psdk/game_sa/other/Localisation.h>
+#include <aml-psdk/game_sa/other/CullZones.h>
+#include <aml-psdk/game_sa/engine/VehicleRecording.h>
+#include <aml-psdk/game_sa/engine/IplStore.h>
+#include <aml-psdk/game_sa/engine/ColStore.h>
+
+#include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>
+
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {
     CCamera__Process(self);

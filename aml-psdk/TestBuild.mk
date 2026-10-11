@@ -8,6 +8,9 @@ else
     LOCAL_MODULE := AML_PSDK_Template_BuildTest64
 endif
 LOCAL_SRC_FILES := aml-psdk/TestBuild.cpp mod/logger.cpp mod/config.cpp
-LOCAL_CXXFLAGS += -O2 -mfloat-abi=softfp -DNDEBUG -std=c++17
+LOCAL_CXXFLAGS += -O2 -DNDEBUG -std=c++17
+ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
+    LOCAL_CXXFLAGS += -mfloat-abi=softfp
+endif
 LOCAL_LDLIBS += -llog
 include $(BUILD_SHARED_LIBRARY)

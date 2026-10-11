@@ -24,13 +24,13 @@ DECL_CLASS(CWorld)
     DECL_FASTCALL_SIMPLE(ShutDown, _ZN6CWorld8ShutDownEv, void);
     DECL_FASTCALL_SIMPLE(Remove, _ZN6CWorld6RemoveEP7CEntity, void, CEntity* entity);
     DECL_FASTCALL_SIMPLE(ClearForRestart, _ZN6CWorld15ClearForRestartEv, void);
-    DECL_FASTCALL_SIMPLE(Add, _ZN6CWorld3AddEP7CEntity, void);
+    DECL_FASTCALL_SIMPLE(Add, _ZN6CWorld3AddEP7CEntity, void, CEntity* entity);
     DECL_FASTCALL_SIMPLE(GetIsLineOfSightClear, _ZN6CWorld21GetIsLineOfSightClearERK7CVectorS2_bbbbbbb, bool,
         CVector const& vecStart, CVector const& vecEnd, bool bCheckBuildings, bool bCheckVehicles, bool bCheckPeds, bool bCheckObjects, bool bCheckDummies, bool bSeeThroughStuff, bool bIgnoreSomeObjectsForCamera);
     DECL_FASTCALL_SIMPLE(GetIsLineOfSightSectorClear, _ZN6CWorld27GetIsLineOfSightSectorClearER7CSectorR13CRepeatSectorRK8CColLinebbbbbbb, bool,
         CSector &sector, CRepeatSector &rsector, CColLine const& line, bool bCheckBuildings, bool bCheckVehicles, bool bCheckPeds, bool bCheckObjects, bool bCheckDummies, bool bSeeThroughStuff, bool bIgnoreSomeObjectsForCamera);
     DECL_FASTCALL_SIMPLE(ProcessLineOfSight, _ZN6CWorld18ProcessLineOfSightERK7CVectorS2_R9CColPointRP7CEntitybbbbbbbb, bool,
-        CVector const& vecStart, CVector const& vecEnd, CColPoint &colPoint, CEntity*& refEntityPtr, bool bCheckBuildings, bool bCheckVehicles, int bCheckPeds, bool bCheckObjects, bool bCheckDummies, bool bSeeThroughStuff, bool bIgnoreSomeObjectsForCamera, bool bShootThroughStuff);
+        CVector const& vecStart, CVector const& vecEnd, CColPoint &colPoint, CEntity*& refEntityPtr, bool bCheckBuildings, bool bCheckVehicles, bool bCheckPeds, bool bCheckObjects, bool bCheckDummies, bool bSeeThroughStuff, bool bIgnoreSomeObjectsForCamera, bool bShootThroughStuff);
     DECL_FASTCALL_SIMPLE(ProcessLineOfSightSector, _ZN6CWorld24ProcessLineOfSightSectorER7CSectorR13CRepeatSectorRK8CColLineR9CColPointRfRP7CEntitybbbbbbbb, bool,
         CSector &sector, CRepeatSector &rsector, CColLine const& line, CColPoint &colPoint, float &fCollisionRatio, CEntity*& refEntityPtr, bool bCheckBuildings, bool bCheckVehicles, bool bCheckPeds, bool bCheckObjects, bool bCheckDummies, bool bSeeThroughStuff, bool bIgnoreSomeObjectsForCamera, bool bShootThroughStuff);
     DECL_FASTCALL_SIMPLE(ProcessLineOfSightSectorList, _ZN6CWorld28ProcessLineOfSightSectorListER8CPtrListRK8CColLineR9CColPointRfRP7CEntitybbb, bool,

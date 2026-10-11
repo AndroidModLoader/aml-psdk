@@ -51,7 +51,8 @@ struct CPed;
 struct CVector;
 struct CVehicle;
 
-DECL_CLASS(CGarage, __attribute__((packed, aligned(4))))
+#pragma pack(push, 4)
+DECL_CLASS(CGarage)
     // Member values
     float                              BaseX;
     float                              BaseY;
@@ -138,6 +139,7 @@ DECL_CLASS(CGarage, __attribute__((packed, aligned(4))))
 
 DECL_CLASS_END()
 CHECKSIZE(CGarage, 0xD8, 0xF4);  // 64-bit from the IDB; 32-bit measured from this layout
+#pragma pack(pop)
 
 DECL_CLASS(CGarages)
     // Functions
@@ -168,8 +170,8 @@ DECL_CLASS(CGarages)
     DECL_FASTCALL_SIMPLE(PlayerArrestedOrDied, _ZN8CGarages20PlayerArrestedOrDiedEv, void);
     DECL_FASTCALL_SIMPLE(CloseHideOutGaragesBeforeSave, _ZN8CGarages29CloseHideOutGaragesBeforeSaveEv, void);
     DECL_FASTCALL_SIMPLE(StopCarFromBlowingUp, _ZN8CGarages20StopCarFromBlowingUpEP11CAutomobile, void, CAutomobile* pCar);
-    DECL_FASTCALL_SIMPLE(IsPointWithinHideOutGarage, _ZN8CGarages26IsPointWithinHideOutGarageER7CVector, bool, CVector* Point);
-    DECL_FASTCALL_SIMPLE(IsPointWithinAnyGarage, _ZN8CGarages22IsPointWithinAnyGarageER7CVector, bool, CVector* Point);
+    DECL_FASTCALL_SIMPLE(IsPointWithinHideOutGarage, _ZN8CGarages26IsPointWithinHideOutGarageER7CVector, bool, CVector& Point);
+    DECL_FASTCALL_SIMPLE(IsPointWithinAnyGarage, _ZN8CGarages22IsPointWithinAnyGarageER7CVector, bool, CVector& Point);
     DECL_FASTCALL_SIMPLE(FindGarageForObject, _ZN8CGarages19FindGarageForObjectEP7CObject, i32, CObject* pObject);
     DECL_FASTCALL_SIMPLE(StoreCarInNearestImpoundingGarage, _ZN8CGarages33StoreCarInNearestImpoundingGarageEP8CVehicle, void, CVehicle* pVeh);
     DECL_FASTCALL_SIMPLE(IsModelIndexADoor, _ZN8CGarages17IsModelIndexADoorEi, bool, i32 MI);
