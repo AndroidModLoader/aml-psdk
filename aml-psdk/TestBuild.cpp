@@ -114,6 +114,7 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/other/CullZones.h>
 #include <aml-psdk/game_sa/engine/VehicleRecording.h>
 #include <aml-psdk/game_sa/engine/IplStore.h>
+#include <aml-psdk/game_sa/engine/QuadTree.h>
 #include <aml-psdk/game_sa/engine/ColStore.h>
 
 #include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>

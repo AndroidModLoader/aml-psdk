@@ -4,6 +4,8 @@
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/renderware/RwVector.h>
 #include <aml-psdk/renderware/RwRGBA.h>
+#include <aml-psdk/gta_base/Rect.h>
+#include <aml-psdk/gta_base/RGBA.h>
 
 struct RwIm2DVertex;
 
@@ -31,7 +33,7 @@ DECL_CLASS(CSprite)
     DECL_FASTCALL_SIMPLE(RenderOneXLUSprite_Rotate_Dimension, _ZN7CSprite35RenderOneXLUSprite_Rotate_DimensionEfffffhhhsffh, void,
         float ScreenX, float ScreenY, float ScreenZ, float SizeX, float SizeY, u8 R, u8 G, u8 B, i16 Intensity16, float RecipZ, float Rotation, u8 Alpha);
     DECL_FASTCALL_SIMPLE(RenderBufferedOneXLUSprite_Rotate_2Colours, _ZN7CSprite42RenderBufferedOneXLUSprite_Rotate_2ColoursEfffffhhhhhhffffh, void,
-        float ScreenX, float ScreenY, float ScreenZ, float SizeX, float SizeY, u8 R1, u8 G1, u8 B1, u8 R2, u8 G2, u8 B2, float ToColour1X, float ToColour1Y, float RecipZ, u8 Alpha, float Rotation);
+        float ScreenX, float ScreenY, float ScreenZ, float SizeX, float SizeY, u8 R1, u8 G1, u8 B1, u8 R2, u8 G2, u8 B2, float ToColour1X, float ToColour1Y, float RecipZ, float Rotation, u8 Alpha);
     DECL_FASTCALL_SIMPLE(RenderOneXLUSprite_Rotate_2Colours, _ZN7CSprite34RenderOneXLUSprite_Rotate_2ColoursEfffffhhhhhhffffh, void,
         float ScreenX, float ScreenY, float ScreenZ, float SizeX, float SizeY, u8 R1, u8 G1, u8 B1, u8 R2, u8 G2, u8 B2, float ToColour1X, float ToColour1Y, float RecipZ, float Rotation, u8 Alpha);
     DECL_FASTCALL_SIMPLE(RenderBufferedOneXLUSprite2D, _ZN7CSprite28RenderBufferedOneXLUSprite2DEffffRK6RwRGBAsh, void,
@@ -61,7 +63,7 @@ DECL_CLASS(CSprite)
     DECL_VALUE_PLT_FLT(m_f2DNearScreenZ, BYBIT(0x678688, 0x84ED38));
     DECL_VALUE_PLT_FLT(m_f2DFarScreenZ, BYBIT(0x6799B8, 0x851388));
     DECL_VALUE_PLT_FLT(m_fRecipNearClipPlane, BYBIT(0x678000, 0x84E020));
-    DECL_VALUE_PLT_I32(m_bFlushSpriteBufferSwitchZTest, BYBIT(0x679538, 0x850A80));
+    DECL_VALUE_PLT_U32(m_bFlushSpriteBufferSwitchZTest, BYBIT(0x679538, 0x850A80));
 DECL_CLASS_END()
 
 #define m_f2DNearScreenZ m_f2DNearScreenZ()

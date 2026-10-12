@@ -414,9 +414,9 @@ struct tHeliLight
     CVector m_vecTarget;
     float m_fTargetRadius;
     float m_fPower;
-    int m_nCoronaIndex;
-    bool m_bClipIfColliding;
-    bool m_bDrawShadow;
+    unsigned int m_nCoronaIndex;
+    unsigned char m_bClipIfColliding;
+    unsigned char m_bDrawShadow;
     CVector m_vecEllipseCentre;
     CVector m_vecEllipseForward;
     CVector m_vecEllipseSide;

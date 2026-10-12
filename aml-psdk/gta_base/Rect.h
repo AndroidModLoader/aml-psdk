@@ -6,9 +6,9 @@
 struct CRect
 {
     float left;          // x1
-    float top;           // y1
+    float top;           // max y for world bounds
     float right;         // x2
-    float bottom;        // y2
+    float bottom;        // min y for world bounds
 
     CRect(float _left, float _top, float _right, float _bottom)
     {
@@ -17,25 +17,30 @@ struct CRect
         right = _right;
         bottom = _bottom;
     }
-    CRect() { Reset(); }
+    CRect() { Init(); }
 
-    inline bool IsFlipped()
+    inline void Init()
     {
-        return (left > right || top > bottom);
+        left = bottom = 1000000.0f;
+        right = top = -1000000.0f;
+    }
+    inline bool IsFlipped() const
+    {
+        return (left > right || bottom > top);
     }
     inline void Restrict(CRect const& r)
     {
         if(r.left < left) left = r.left;
         if(r.right > right) right = r.right;
-        if(r.top < top) top = r.top;
-        if(r.bottom > bottom) bottom = r.bottom;
+        if(r.top > top) top = r.top;
+        if(r.bottom < bottom) bottom = r.bottom;
     }
     inline void Grow(float l, float r, float t, float b)
     {
         left -= l;
-        top -= t;
+        top += t;
         right += r;
-        bottom += b;
+        bottom -= b;
     }
     inline void Translate(float x, float y)
     {
@@ -48,14 +53,76 @@ struct CRect
     {
         left = right = bottom = top = 0.0f;
     }
-    inline bool IsPointInside(CVector2D const& point)
+    inline bool IsPointInside(CVector2D const& point) const
     {
-        return (point.x >= left && point.x <= right && point.y >= top && point.y <= bottom);
+        return (point.x >= left && point.x <= right && point.y >= bottom && point.y <= top);
     }
-    inline CVector2D GetCenter()
+    inline CVector2D GetCenter() const
     {
         return CVector2D(0.5f * (left + right), 0.5f * (top + bottom));
     }
+    inline void Resize(float resizeX, float resizeY)
+    {
+        Grow(resizeX, resizeX, resizeY, resizeY);
+    }
+    inline void Grow(float resizeX, float resizeY)
+    {
+        Resize(resizeX, resizeY);
+    }
+    inline void SetFromCenter(float x, float y, float size)
+    {
+        left = x - size;
+        top = y + size;
+        right = x + size;
+        bottom = y - size;
+    }
+    inline void GetCenter(float *x, float *y) const
+    {
+        *x = 0.5f * (left + right);
+        *y = 0.5f * (top + bottom);
+    }
+    inline void GetCentre(float &x, float &y) const
+    {
+        GetCenter(&x, &y);
+    }
+    inline void StretchToPoint(float x, float y)
+    {
+        if(x < left) left = x;
+        if(x > right) right = x;
+        if(y > top) top = y;
+        if(y < bottom) bottom = y;
+    }
+    inline CRect& Add(float x, float y)
+    {
+        StretchToPoint(x, y);
+        return *this;
+    }
+    inline CRect& operator+=(CVector2D const& point)
+    {
+        return Add(point.x, point.y);
+    }
+    inline CRect& operator+=(CRect const& r)
+    {
+        Restrict(r);
+        return *this;
+    }
+    inline bool IsInside(CVector2D const& point) const
+    {
+        return IsPointInside(point);
+    }
+    inline bool IsInvalid() const
+    {
+        return IsFlipped();
+    }
+    inline float Width() const
+    {
+        return right - left;
+    }
+    inline float Height() const
+    {
+        return top - bottom;
+    }
 };
+CHECKSIZE(CRect, 0x10, 0x10);
 
 #endif // __AML_PSDK_GTARECT_H

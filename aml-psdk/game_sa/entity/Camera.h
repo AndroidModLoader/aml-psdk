@@ -111,7 +111,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL(Fade, _ZN7CCamera4FadeEfs, void, float, i16);
     DECL_THISCALL(Find3rdPersonCamTargetVector, _ZN7CCamera28Find3rdPersonCamTargetVectorEf7CVectorRS0_S1_, bool, float, CVector, CVector*, CVector*);
     DECL_THISCALL(GetArrPosForVehicleType, _ZN7CCamera23GetArrPosForVehicleTypeEiRi, bool, int, int*);
-    DECL_THISCALL(GetScreenRect, _ZN7CCamera13GetScreenRectER5CRect, void, CRect*);
+    DECL_THISCALL(GetScreenRect, _ZN7CCamera13GetScreenRectER5CRect, void, CRect&);
     DECL_THISCALL(HandleCameraMotionForDucking, _ZN7CCamera28HandleCameraMotionForDuckingEP4CPedP7CVectorS3_b, void, CPed*, CVector*, CVector*, bool);
     DECL_THISCALL(HandleCameraMotionForDuckingDuringAim, _ZN7CCamera37HandleCameraMotionForDuckingDuringAimEP4CPedP7CVectorS3_b, void, CPed*, CVector*, CVector*, bool);
     DECL_THISCALL(ImproveNearClip, _ZN7CCamera15ImproveNearClipEP8CVehicleP4CPedP7CVectorS5_, void, CVehicle*, CPed*, CVector*, CVector*);

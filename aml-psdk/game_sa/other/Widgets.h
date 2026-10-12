@@ -69,7 +69,54 @@ DECL_CLASS_BASED(CWidget, SimpleVTable)
     virtual void Visualize(void);
 
     // STATIC functions
-    DECL_FASTCALL_SIMPLE(SetScissor, _ZN7CWidget10SetScissorER5CRect, void, CRect const& rectScissor);
+    DECL_FASTCALL_SIMPLE(SetScissor, _ZN7CWidget10SetScissorER5CRect, void, CRect& rectScissor);
+    DECL_FASTCALL_SIMPLE(DrawTitleSafeArea, _ZN7CWidget17DrawTitleSafeAreaEv, void);
+    DECL_FASTCALL_SIMPLE(GetScreenWidth, _ZN7CWidget14GetScreenWidthEv, u32);
+    DECL_FASTCALL_SIMPLE(UpdateTiming, _ZN7CWidget12UpdateTimingEv, void);
+    DECL_FASTCALL_SIMPLE(IsInsideRect, _ZN7CWidget12IsInsideRectE9CVector2D5CRect, bool, CVector2D point, CRect rect);
+    DECL_FASTCALL_SIMPLE(IsInsideCircle, _ZN7CWidget14IsInsideCircleE9CVector2D5CRect, bool, CVector2D point, CRect rect);
+    DECL_FASTCALL_SIMPLE(SetInitialTouchWidget, _ZN7CWidget21SetInitialTouchWidgetEiPS_, void, i32 touchIndex, CWidget *pWidget);
+    DECL_FASTCALL_SIMPLE(SetReleasedWidget, _ZN7CWidget17SetReleasedWidgetEiPS_, void, i32 touchIndex, CWidget *pWidget);
+    DECL_FASTCALL_SIMPLE(SetSwipedWidget, _ZN7CWidget15SetSwipedWidgetEiPS_, void, i32 touchIndex, CWidget *pWidget);
+    DECL_FASTCALL_SIMPLE(SetPinchZoomWidget, _ZN7CWidget18SetPinchZoomWidgetEPS_, void, CWidget *pWidget);
+    DECL_FASTCALL_SIMPLE(SetTextureStatic, _ZN7CWidget16SetTextureStaticER9CSprite2dPc, void, CSprite2d& sprite, char *pTextureName);
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(ClearTapHistory, _ZN7CWidget15ClearTapHistoryEv, void);
+    DECL_THISCALL_SIMPLE(DecrementFrameCount, _ZN7CWidget19DecrementFrameCountEv, void);
+    DECL_THISCALL_SIMPLE(AndroidBackEnabled, _ZN7CWidget18AndroidBackEnabledEv, bool);
+    DECL_THISCALL_SIMPLE(GetEnabled, _ZN7CWidget10GetEnabledEv, bool);
+    DECL_THISCALL_SIMPLE(ManageAlpha, _ZN7CWidget11ManageAlphaEv, void);
+
+    DECL_THISCALL_HEAD(CreateHoldEffect, _ZN7CWidget16CreateHoldEffectEPKcb5CRGBAb, void,
+        const char *pTextureName, bool square, CRGBA color, bool explicitRender)
+    DECL_THISCALL_TAIL(CreateHoldEffect, pTextureName, square, color, explicitRender)
+
+    DECL_THISCALL_HEAD(GetGradientColor, _ZN7CWidget16GetGradientColorEfi, CRGBA, float progress, i32 alpha)
+    DECL_THISCALL_TAIL(GetGradientColor, progress, alpha)
+
+    DECL_THISCALL_HEAD(GetNumTapsInTime, _ZN7CWidget16GetNumTapsInTimeEf, i32, float time)
+    DECL_THISCALL_TAIL(GetNumTapsInTime, time)
+
+    DECL_THISCALL_HEAD(SetEnabled, _ZN7CWidget10SetEnabledEb, void, bool enabled)
+    DECL_THISCALL_TAIL(SetEnabled, enabled)
+
+    DECL_THISCALL_HEAD(SetScreenRect, _ZN7CWidget13SetScreenRectERK5CRect, void, CRect const& rect)
+    DECL_THISCALL_TAIL(SetScreenRect, rect)
+
+    DECL_THISCALL_HEAD(SetTexture, _ZN7CWidget10SetTextureER9CSprite2dPcb, void, CSprite2d& sprite, char *pTextureName, bool bilinear)
+    DECL_THISCALL_TAIL(SetTexture, sprite, pTextureName, bilinear)
+
+    // STATIC values
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pInitialTouchWidget, BYBIT(0x67656C, 0x84AB30));
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pReleasedWidget, BYBIT(0x678AC8, 0x84F5B8));
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pSwipedWidget, BYBIT(0x678AC4, 0x84F5B0));
+    DECL_OBJECT_PLT(CWidget*, m_pPinchZoomWidget, BYBIT(0x678220, 0x84E458));
+    DECL_OBJECT_ARRAY_PLT(CVector2D, m_vecTouchAnchor, BYBIT(0x678C50, 0x84F8C8));
+    DECL_OBJECT_PLT(double, m_fTime, BYBIT(0x676CCC, 0x84B9E0));
+    DECL_OBJECT_PLT(double, m_fElapsedTime, BYBIT(0x678AFC, 0x84F620));
+    DECL_VALUE_SYM_BOOL(m_bInsidePause, _ZN7CWidget14m_bInsidePauseE);
+    DECL_VALUE_PLT_FLT(SWIPE_DISTANCE, BYBIT(0x678ECC, 0x84FDC0));
 
 
     // Member values

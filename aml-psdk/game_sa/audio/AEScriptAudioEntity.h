@@ -9,7 +9,7 @@ struct CPhysical;
 struct CAudioLink
 {
     CVector m_vPosition;
-    CEntity* m_pEntity;
+    CPhysical* m_pEntity;
     CAESound *pSound;
     int m_nAudioEvent;
     int m_nBankId;

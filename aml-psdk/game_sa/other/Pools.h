@@ -38,7 +38,9 @@ struct CPool
         m_pObjects = NULL;
         m_byteMap = NULL;
         m_nSize = 0;
+        m_nFirstFree = -1;
         m_bOwnsAllocations = false;
+        m_bDealWithNoMemory = false;
     }
 
     CPool(int nSize, const char* pPoolName = NULL)
@@ -48,6 +50,7 @@ struct CPool
         m_nSize = nSize;
         m_nFirstFree = -1;
         m_bOwnsAllocations = true;
+        m_bDealWithNoMemory = false;
         for (int i = 0; i < nSize; ++i)
         {
             m_byteMap[i].bEmpty = true;
@@ -67,6 +70,7 @@ struct CPool
         m_nSize = nSize;
         m_nFirstFree = -1;
         m_bOwnsAllocations = false;
+        m_bDealWithNoMemory = false;
         for (int i = 0; i < nSize; ++i)
         {
             m_byteMap[i].bEmpty = true;
@@ -127,6 +131,7 @@ struct CPool
 
     inline A* New()
     {
+        if(m_nSize <= 0 || !m_pObjects || !m_byteMap) return NULL;
         bool bReachedTop = false;
         do
         {
@@ -151,10 +156,11 @@ struct CPool
     inline void CreateAtRef(int nRef)
     {
         nRef >>= 8;
+        if(nRef < 0 || nRef >= m_nSize || !m_pObjects || !m_byteMap) return;
         m_byteMap[nRef].bEmpty = false;
         ++m_byteMap[nRef].nId;
         m_nFirstFree = 0;
-        while (!m_byteMap[m_nFirstFree].bEmpty)
+        while (m_nFirstFree < m_nSize && !m_byteMap[m_nFirstFree].bEmpty)
         {
             ++m_nFirstFree;
         }
@@ -162,6 +168,7 @@ struct CPool
 
     inline A *New(int nRef)
     {
+        if(nRef < 0 || (nRef >> 8) >= m_nSize || !m_pObjects || !m_byteMap) return NULL;
         A *result = &m_pObjects[nRef >> 8];
         CreateAtRef(nRef);
         return result;

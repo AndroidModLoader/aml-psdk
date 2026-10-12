@@ -190,7 +190,11 @@ template <class T> struct OSArray
     inline void RemoveAt(unsigned int idx)
     {
         if(idx >= numEntries) return;
-        memcpy(&data[idx], &data[idx+1], sizeof(T) * (numEntries - idx));
+        if(idx + 1 < numEntries)
+        {
+            memmove(&data[idx], &data[idx+1], sizeof(T) * (numEntries - idx - 1));
+        }
+        --numEntries;
     }
     inline T& operator[](unsigned int idx)
     {
