@@ -370,9 +370,17 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
 
 
 #define PSDK_STRINGIFY_(_x) #_x
-#define PSDK_STRINGIFY(_x) PSDK_STRINGIFY_(_x)
-
-// Symbol values
+#define PSDK_SYMBOL_CHECK_N(_first, _second, ...) _second
+#define PSDK_SYMBOL_CHECK(...) PSDK_SYMBOL_CHECK_N(__VA_ARGS__, 0)
+#define PSDK_SYMBOL_PROBE(...) ~, 1
+#define PSDK_SYMBOL_IS_PAREN(_x) PSDK_SYMBOL_CHECK(PSDK_SYMBOL_PROBE _x)
+#define PSDK_SYMBOL_REMOVE_PARENS(...) __VA_ARGS__
+#define PSDK_SYMBOL_UNWRAP_0(_x) _x
+#define PSDK_SYMBOL_UNWRAP_1(_x) PSDK_SYMBOL_REMOVE_PARENS _x
+#define PSDK_SYMBOL_UNWRAP_PICK_(_n, _x) PSDK_SYMBOL_UNWRAP_##_n(_x)
+#define PSDK_SYMBOL_UNWRAP_PICK(_n, _x) PSDK_SYMBOL_UNWRAP_PICK_(_n, _x)
+#define PSDK_STRINGIFY_NORMALIZED(_x) PSDK_STRINGIFY_(_x)
+#define PSDK_STRINGIFY(_x) PSDK_STRINGIFY_NORMALIZED(PSDK_SYMBOL_UNWRAP_PICK(PSDK_SYMBOL_IS_PAREN(_x), _x))
 
 #define DECL_VALUE_SYM_I32(_name, _sym) \
     DECL_VALUE_HEAD(i32, _name) \

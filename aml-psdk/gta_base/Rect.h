@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_GTARECT_H
 #define __AML_PSDK_GTARECT_H
 
+#include <math.h>
 #include "Vector.h"
 
 struct CRect
@@ -16,6 +17,10 @@ struct CRect
         top = _top;
         right = _right;
         bottom = _bottom;
+    }
+    CRect(CVector2D const pos, float size)
+    {
+        SetFromCenter(pos.x, pos.y, size);
     }
     CRect() { Init(); }
 
@@ -110,17 +115,25 @@ struct CRect
     {
         return IsPointInside(point);
     }
+    inline bool DoesIntersect(CVector2D const& v, float radius) const
+    {
+        return !(v.x < left - radius || v.x > right + radius || v.y < bottom - radius || v.y > top + radius);
+    }
+    inline bool DoesIntersect(CRect const& r) const
+    {
+        return !(left > r.right || right < r.left || bottom > r.top || top < r.bottom);
+    }
     inline bool IsInvalid() const
     {
         return IsFlipped();
     }
     inline float Width() const
     {
-        return right - left;
+        return fabsf(right - left);
     }
     inline float Height() const
     {
-        return top - bottom;
+        return fabsf(top - bottom);
     }
 };
 CHECKSIZE(CRect, 0x10, 0x10);

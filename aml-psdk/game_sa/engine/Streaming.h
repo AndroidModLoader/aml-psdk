@@ -3,6 +3,7 @@
 
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/game_sa/base/Lists.h>
+#include <aml-psdk/game_sa/other/LoadedCarGroup.h>
 #include <aml-psdk/gta_base/Vector.h>
 
 enum Status : i32
@@ -22,17 +23,26 @@ struct DirectoryInfo
 };
 CHECKSIZE(DirectoryInfo, 0x20, 0x20);  // 64-bit from the IDB; 32-bit measured from this layout
 
-struct CDirectory
-{
+DECL_CLASS(CDirectory)
+    typedef ::DirectoryInfo DirectoryInfo;
+
     DirectoryInfo*                     m_pDirInfo;
     i32                                m_size;
     i32                                m_number;
     bool                               m_bOwnBuffer;
-};
+
+    // Functions
+    DECL_THISCALL(Init, _ZN10CDirectory4InitEiPv, void, i32 capacity, void* pBuffer);
+    DECL_THISCALL(AddItem, _ZN10CDirectory7AddItemERKNS_13DirectoryInfoE, void, const DirectoryInfo& entry);
+    DECL_THISCALL(ReadDirFile, _ZN10CDirectory11ReadDirFileEPKc, void, const char* pFileName);
+    DECL_THISCALL(WriteDirFile, _ZN10CDirectory12WriteDirFileEPKc, bool, const char* pFileName);
+    DECL_THISCALL(FindItem, _ZN10CDirectory8FindItemEPKc, DirectoryInfo*, const char* pName);
+    DECL_THISCALL(FindItem1, _ZN10CDirectory8FindItemEPKcRjS2_, bool, const char* pName, u32& offset, u32& size);
+    DECL_THISCALL(FindItem2, _ZN10CDirectory8FindItemEjRjS0_, bool, u32 key, u32& offset, u32& size);
+DECL_CLASS_END()
 CHECKSIZE(CDirectory, 0x10, 0x18);  // 64-bit from the IDB; 32-bit measured from this layout
 
-struct CStreamingInfo
-{
+DECL_CLASS(CStreamingInfo)
     i16                                m_nextIndex;
     i16                                m_prevIndex;
     i16                                m_nextModelOnCd;
@@ -41,7 +51,24 @@ struct CStreamingInfo
     u32                                m_cdPosn;
     u32                                m_cdSize;
     u8                                 m_status;
-};
+
+    // Functions
+    DECL_THISCALL_SIMPLE(Init, _ZN14CStreamingInfo4InitEv, void);
+    DECL_THISCALL_SIMPLE(GetNext, _ZN14CStreamingInfo7GetNextEv, CStreamingInfo*);
+    DECL_THISCALL_SIMPLE(GetPrev, _ZN14CStreamingInfo7GetPrevEv, CStreamingInfo*);
+    DECL_THISCALL(SetNext, _ZN14CStreamingInfo7SetNextEPS_, void, CStreamingInfo* pNext);
+    DECL_THISCALL(SetPrev, _ZN14CStreamingInfo7SetPrevEPS_, void, CStreamingInfo* pPrev);
+    DECL_THISCALL(AddToList, _ZN14CStreamingInfo9AddToListEPS_, void, CStreamingInfo* pListStart);
+    DECL_THISCALL_SIMPLE(RemoveFromList, _ZN14CStreamingInfo14RemoveFromListEv, void);
+    DECL_THISCALL_SIMPLE(InList, _ZN14CStreamingInfo6InListEv, bool);
+    DECL_THISCALL_SIMPLE(GetCdPosn, _ZN14CStreamingInfo9GetCdPosnEv, u32);
+    DECL_THISCALL_SIMPLE(GetCdSize, _ZN14CStreamingInfo9GetCdSizeEv, u32);
+    DECL_THISCALL(GetCdPosnAndSize, _ZN14CStreamingInfo16GetCdPosnAndSizeERjS0_, bool, u32& position, u32& size);
+    DECL_THISCALL(SetCdPosnAndSize, _ZN14CStreamingInfo16SetCdPosnAndSizeEjj, void, u32 position, u32 size);
+
+    // Static values
+    DECL_OBJECT_PLT(CStreamingInfo*, ms_pArrayBase, BYBIT(0x678580, 0x84EB18));
+DECL_CLASS_END()
 CHECKSIZE(CStreamingInfo, 0x14, 0x14);  // 64-bit from the IDB; 32-bit measured from this layout
 
 struct CStreamingFile
@@ -51,12 +78,6 @@ struct CStreamingFile
     i32                                m_lsn;
 };
 CHECKSIZE(CStreamingFile, 0x30, 0x30);  // 64-bit from the IDB; 32-bit measured from this layout
-
-struct CLoadedCarGroup
-{
-    i16                                aMembers[23];
-};
-CHECKSIZE(CLoadedCarGroup, 0x2E, 0x2E);  // 64-bit from the IDB; 32-bit measured from this layout
 
 struct StreamChannel
 {
@@ -90,23 +111,23 @@ DECL_CLASS(CStreaming)
     DECL_FASTCALL_SIMPLE(RemoveModel, _ZN10CStreaming11RemoveModelEi, void, i32 index);
     DECL_FASTCALL_SIMPLE(UpdateMemoryUsed, _ZN10CStreaming16UpdateMemoryUsedEv, void);
     DECL_FASTCALL_SIMPLE(Update, _ZN10CStreaming6UpdateEv, void);
-    DECL_FASTCALL_SIMPLE(AddModelsToRequestList, _ZN10CStreaming22AddModelsToRequestListERK7CVectorj, void, const CVector* posn, u32 reqFlag);
-    DECL_FASTCALL_SIMPLE(AddLodsToRequestList, _ZN10CStreaming20AddLodsToRequestListERK7CVectorj, void, const CVector* posn, u32 reqFlag);
-    DECL_FASTCALL_SIMPLE(StreamVehiclesAndPeds_Always, _ZN10CStreaming28StreamVehiclesAndPeds_AlwaysERK7CVector, void, const CVector* posn);
+    DECL_FASTCALL_SIMPLE(AddModelsToRequestList, _ZN10CStreaming22AddModelsToRequestListERK7CVectorj, void, const CVector& posn, u32 reqFlag);
+    DECL_FASTCALL_SIMPLE(AddLodsToRequestList, _ZN10CStreaming20AddLodsToRequestListERK7CVectorj, void, const CVector& posn, u32 reqFlag);
+    DECL_FASTCALL_SIMPLE(StreamVehiclesAndPeds_Always, _ZN10CStreaming28StreamVehiclesAndPeds_AlwaysERK7CVector, void, const CVector& posn);
     DECL_FASTCALL_SIMPLE(IsVeryBusy, _ZN10CStreaming10IsVeryBusyEv, bool);
     DECL_FASTCALL_SIMPLE(StreamVehiclesAndPeds, _ZN10CStreaming21StreamVehiclesAndPedsEv, void);
-    DECL_FASTCALL_SIMPLE(StreamZoneModels, _ZN10CStreaming16StreamZoneModelsERK7CVector, void, const CVector* posn);
+    DECL_FASTCALL_SIMPLE(StreamZoneModels, _ZN10CStreaming16StreamZoneModelsERK7CVector, void, const CVector& posn);
     DECL_FASTCALL_SIMPLE(LoadRequestedModels, _ZN10CStreaming19LoadRequestedModelsEv, void);
     DECL_FASTCALL_SIMPLE(PurgeRequestList, _ZN10CStreaming16PurgeRequestListEv, void);
     DECL_FASTCALL_SIMPLE(UpdateForAnimViewer, _ZN10CStreaming19UpdateForAnimViewerEv, void);
     DECL_FASTCALL_SIMPLE(RetryLoadFile, _ZN10CStreaming13RetryLoadFileEi, void, i32 ch);
     DECL_FASTCALL_SIMPLE(ProcessLoadingChannel, _ZN10CStreaming21ProcessLoadingChannelEi, bool, i32 ch);
     DECL_FASTCALL_SIMPLE(GetDiscInDrive, _ZN10CStreaming14GetDiscInDriveEv, i32);
-    DECL_FASTCALL_SIMPLE(ProcessEntitiesInSectorList, _ZN10CStreaming27ProcessEntitiesInSectorListER8CPtrListj, void, CPtrList* list, u32 reqFlag);
-    DECL_FASTCALL_SIMPLE(ProcessEntitiesInSectorList1, _ZN10CStreaming27ProcessEntitiesInSectorListER8CPtrListfffffffj, void, CPtrList* list, float CenterX, float CenterY, float MinX, float MinY, float MaxX, float MaxY, float radius, u32 reqFlag);
+    DECL_FASTCALL_SIMPLE(ProcessEntitiesInSectorList, _ZN10CStreaming27ProcessEntitiesInSectorListER8CPtrListj, void, CPtrList& list, u32 reqFlag);
+    DECL_FASTCALL_SIMPLE(ProcessEntitiesInSectorList1, _ZN10CStreaming27ProcessEntitiesInSectorListER8CPtrListfffffffj, void, CPtrList& list, float CenterX, float CenterY, float MinX, float MinY, float MaxX, float MaxY, float radius, u32 reqFlag);
     DECL_FASTCALL_SIMPLE(RequestModel, _ZN10CStreaming12RequestModelEii, void, i32 index, i32 flags);
-    DECL_FASTCALL_SIMPLE(InstanceLoadedModels, _ZN10CStreaming20InstanceLoadedModelsERK7CVector, void, const CVector* posn);
-    DECL_FASTCALL_SIMPLE(InstanceLoadedModelsInSectorList, _ZN10CStreaming32InstanceLoadedModelsInSectorListER8CPtrList, void, CPtrList* list);
+    DECL_FASTCALL_SIMPLE(InstanceLoadedModels, _ZN10CStreaming20InstanceLoadedModelsERK7CVector, void, const CVector& posn);
+    DECL_FASTCALL_SIMPLE(InstanceLoadedModelsInSectorList, _ZN10CStreaming32InstanceLoadedModelsInSectorListER8CPtrList, void, CPtrList& list);
     DECL_FASTCALL_SIMPLE(IsObjectInCdImage, _ZN10CStreaming17IsObjectInCdImageEi, bool, i32 index);
     DECL_FASTCALL_SIMPLE(RemoveCarModel, _ZN10CStreaming14RemoveCarModelEi, void, i32 modelId);
     DECL_FASTCALL_SIMPLE(RequestVehicleUpgrade, _ZN10CStreaming21RequestVehicleUpgradeEii, void, i32 modelId, i32 flags);
@@ -125,15 +146,15 @@ DECL_CLASS(CStreaming)
     DECL_FASTCALL_SIMPLE(FlushChannels, _ZN10CStreaming13FlushChannelsEv, void);
     DECL_FASTCALL_SIMPLE(SetLoadVehiclesInLoadScene, _ZN10CStreaming26SetLoadVehiclesInLoadSceneEb, void, bool bLoad);
     DECL_FASTCALL_SIMPLE(RequestFilesInChannel, _ZN10CStreaming21RequestFilesInChannelEi, void, i32 ch);
-    DECL_FASTCALL_SIMPLE(LoadScene, _ZN10CStreaming9LoadSceneERK7CVector, void, const CVector* posn);
-    DECL_FASTCALL_SIMPLE(RequestBigBuildings, _ZN10CStreaming19RequestBigBuildingsERK7CVector, void, const CVector* posn);
-    DECL_FASTCALL_SIMPLE(LoadZoneVehicle, _ZN10CStreaming15LoadZoneVehicleERK7CVector, void, const CVector* posn);
+    DECL_FASTCALL_SIMPLE(LoadScene, _ZN10CStreaming9LoadSceneERK7CVector, void, const CVector& posn);
+    DECL_FASTCALL_SIMPLE(RequestBigBuildings, _ZN10CStreaming19RequestBigBuildingsERK7CVector, void, const CVector& posn);
+    DECL_FASTCALL_SIMPLE(LoadZoneVehicle, _ZN10CStreaming15LoadZoneVehicleERK7CVector, void, const CVector& posn);
     DECL_FASTCALL_SIMPLE(StreamCopModels, _ZN10CStreaming15StreamCopModelsEi, void, i32 level);
     DECL_FASTCALL_SIMPLE(ClearFlagForAll, _ZN10CStreaming15ClearFlagForAllEj, void, u32 flag);
-    DECL_FASTCALL_SIMPLE(LoadSceneCollision, _ZN10CStreaming18LoadSceneCollisionERK7CVector, void, const CVector* posn);
-    DECL_FASTCALL_SIMPLE(DeleteFarAwayRwObjects, _ZN10CStreaming22DeleteFarAwayRwObjectsERK7CVector, void, const CVector* posn);
-    DECL_FASTCALL_SIMPLE(DeleteRwObjectsInSectorList, _ZN10CStreaming27DeleteRwObjectsInSectorListER8CPtrListii, void, CPtrList* list, i32 x, i32 y);
-    DECL_FASTCALL_SIMPLE(DeleteRwObjectsAfterDeath, _ZN10CStreaming25DeleteRwObjectsAfterDeathERK7CVector, void, const CVector* posn);
+    DECL_FASTCALL_SIMPLE(LoadSceneCollision, _ZN10CStreaming18LoadSceneCollisionERK7CVector, void, const CVector& posn);
+    DECL_FASTCALL_SIMPLE(DeleteFarAwayRwObjects, _ZN10CStreaming22DeleteFarAwayRwObjectsERK7CVector, void, const CVector& posn);
+    DECL_FASTCALL_SIMPLE(DeleteRwObjectsInSectorList, _ZN10CStreaming27DeleteRwObjectsInSectorListER8CPtrListii, void, CPtrList& list, i32 x, i32 y);
+    DECL_FASTCALL_SIMPLE(DeleteRwObjectsAfterDeath, _ZN10CStreaming25DeleteRwObjectsAfterDeathERK7CVector, void, const CVector& posn);
     DECL_FASTCALL_SIMPLE(RemoveBigBuildings, _ZN10CStreaming18RemoveBigBuildingsEv, void);
     DECL_FASTCALL_SIMPLE(RemoveBuildingsNotInArea, _ZN10CStreaming24RemoveBuildingsNotInAreaEi, void, i32 area);
     DECL_FASTCALL_SIMPLE(RequestAllModels, _ZN10CStreaming16RequestAllModelsEv, void);
@@ -146,10 +167,10 @@ DECL_CLASS(CStreaming)
     DECL_FASTCALL_SIMPLE(StartRenderEntities, _ZN10CStreaming19StartRenderEntitiesEv, void);
     DECL_FASTCALL_SIMPLE(RenderEntity, _ZN10CStreaming12RenderEntityEP5CLinkIP7CEntityE, void, CLink<CEntity *>* pLink);
     DECL_FASTCALL_SIMPLE(RemoveEntity, _ZN10CStreaming12RemoveEntityEP5CLinkIP7CEntityE, void, CLink<CEntity *>* pLink);
-    DECL_FASTCALL_SIMPLE(DeleteRwObjectsBehindCameraInSectorList, _ZN10CStreaming39DeleteRwObjectsBehindCameraInSectorListER8CPtrListi, bool, CPtrList* list, i32 memory);
-    DECL_FASTCALL_SIMPLE(DeleteRwObjectsNotInFrustumInSectorList, _ZN10CStreaming39DeleteRwObjectsNotInFrustumInSectorListER8CPtrListi, bool, CPtrList* list, i32 memory);
+    DECL_FASTCALL_SIMPLE(DeleteRwObjectsBehindCameraInSectorList, _ZN10CStreaming39DeleteRwObjectsBehindCameraInSectorListER8CPtrListi, bool, CPtrList& list, i32 memory);
+    DECL_FASTCALL_SIMPLE(DeleteRwObjectsNotInFrustumInSectorList, _ZN10CStreaming39DeleteRwObjectsNotInFrustumInSectorListER8CPtrListi, bool, CPtrList& list, i32 memory);
     DECL_FASTCALL_SIMPLE(RemoveModelsNotVisibleFromCullzone, _ZN10CStreaming34RemoveModelsNotVisibleFromCullzoneEv, void);
-    DECL_FASTCALL_SIMPLE(RemoveModelsNotVisibleFromCullzoneInSectorList, _ZN10CStreaming46RemoveModelsNotVisibleFromCullzoneInSectorListER8CPtrList, void, CPtrList* list);
+    DECL_FASTCALL_SIMPLE(RemoveModelsNotVisibleFromCullzoneInSectorList, _ZN10CStreaming46RemoveModelsNotVisibleFromCullzoneInSectorListER8CPtrList, void, CPtrList& list);
     DECL_FASTCALL_SIMPLE(ImGonnaUseStreamingMemory, _ZN10CStreaming25ImGonnaUseStreamingMemoryEv, void);
     DECL_FASTCALL_SIMPLE(IHaveUsedStreamingMemory, _ZN10CStreaming24IHaveUsedStreamingMemoryEv, void);
     DECL_FASTCALL_SIMPLE(SetModelIsDeletable, _ZN10CStreaming19SetModelIsDeletableEi, void, i32 index);
@@ -169,7 +190,7 @@ DECL_CLASS(CStreaming)
     DECL_FASTCALL_SIMPLE(GetDefaultFireEngineModel, _ZN10CStreaming25GetDefaultFireEngineModelEv, i32);
     DECL_FASTCALL_SIMPLE(StreamAmbulanceAndMedic, _ZN10CStreaming23StreamAmbulanceAndMedicEb, bool, bool bInMemory);
     DECL_FASTCALL_SIMPLE(StreamFireEngineAndFireman, _ZN10CStreaming26StreamFireEngineAndFiremanEb, bool, bool bInMemory);
-    DECL_FASTCALL_SIMPLE(StreamZoneModels_Gangs, _ZN10CStreaming22StreamZoneModels_GangsERK7CVector, void, const CVector* posn);
+    DECL_FASTCALL_SIMPLE(StreamZoneModels_Gangs, _ZN10CStreaming22StreamZoneModels_GangsERK7CVector, void, const CVector& posn);
     DECL_FASTCALL_SIMPLE(ReclassifyLoadedCars, _ZN10CStreaming20ReclassifyLoadedCarsEv, void);
     DECL_FASTCALL_SIMPLE(IsCarModelNeededInCurrentZone, _ZN10CStreaming29IsCarModelNeededInCurrentZoneEi, bool, i32 MI);
     DECL_FASTCALL_SIMPLE(RemoveCurrentZonesModels, _ZN10CStreaming24RemoveCurrentZonesModelsEv, void);
@@ -242,6 +263,7 @@ DECL_CLASS(CStreaming)
     DECL_OBJECT_PLT(CLinkList<CEntity *>, ms_rwObjectInstances, BYBIT(0x67756C, 0x84CB10));
 DECL_CLASS_END()
 
+#define ms_pArrayBase ms_pArrayBase()
 #define ms_memoryAvailable ms_memoryAvailable()
 #define desiredNumVehiclesLoaded desiredNumVehiclesLoaded()
 #define ms_disableStreaming ms_disableStreaming()

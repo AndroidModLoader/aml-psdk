@@ -28,7 +28,7 @@ struct CCamPathSplines
 DECL_CLASS_BASED(CCamera, CPlaceable)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CCamera, _ZN7CCameraC2Ev)
-    DECL_DTORCALL(CCamera, _ZN7CCameraD0Ev);
+    DECL_DTORCALL(CCamera, _ZN7CCameraD2Ev);
 
     // Member functions
     DECL_THISCALL_SIMPLE(GetCamDirectlyBehind, _ZN7CCamera20GetCamDirectlyBehindEv, bool);
@@ -85,7 +85,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL_SIMPLE(ProcessVectorMoveLinear, _ZN7CCamera23ProcessVectorMoveLinearEv, void);
     DECL_THISCALL_SIMPLE(ProcessFOVLerp, _ZN7CCamera14ProcessFOVLerpEv, void);
     DECL_THISCALL_SIMPLE(GetRoughDistanceToGround, _ZN7CCamera24GetRoughDistanceToGroundEv, float);
-    DECL_THISCALL_SIMPLE(ShouldPedControlsBeRelative, _ZN7CCamera27ShouldPedControlsBeRelativeEv, u8);
+    DECL_THISCALL_SIMPLE(ShouldPedControlsBeRelative, _ZN7CCamera27ShouldPedControlsBeRelativeEv, i8);
     DECL_THISCALL_SIMPLE(DeleteCutSceneCamDataMemory, _ZN7CCamera27DeleteCutSceneCamDataMemoryEv, void);
     DECL_THISCALL_SIMPLE(Init, _ZN7CCamera4InitEv, void);
     // ---- added: unique thiscalls via DECL_THISCALL ----
@@ -93,7 +93,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL(AddShakeSimple, _ZN7CCamera14AddShakeSimpleEfif, void, float, i32, float);
     DECL_THISCALL(AllowShootingWith2PlayersInCar, _ZN7CCamera30AllowShootingWith2PlayersInCarEb, void, bool);
     DECL_THISCALL(ApplyVehicleCameraTweaks, _ZN7CCamera24ApplyVehicleCameraTweaksEP8CVehicle, void, CVehicle*);
-    DECL_THISCALL(AvoidTheGeometry, _ZN7CCamera16AvoidTheGeometryERK7CVectorS2_RS0_f, void, const CVector*, const CVector*, CVector*, float);
+    DECL_THISCALL(AvoidTheGeometry, _ZN7CCamera16AvoidTheGeometryERK7CVectorS2_RS0_f, void, const CVector&, const CVector&, CVector&, float);
     DECL_THISCALL(CalculateDerivedValues, _ZN7CCamera22CalculateDerivedValuesEbb, void, bool, bool);
     DECL_THISCALL(CalculateFrustumPlanes, _ZN7CCamera22CalculateFrustumPlanesEb, void, bool);
     DECL_THISCALL(CalculateGroundHeight, _ZN7CCamera21CalculateGroundHeightEj, float, u32);
@@ -109,8 +109,8 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL(CopyCameraMatrixToRWCam, _ZN7CCamera23CopyCameraMatrixToRWCamEb, void, bool);
     DECL_THISCALL(DealWithMirrorBeforeConstructRenderList, _ZN7CCamera39DealWithMirrorBeforeConstructRenderListEb7CVectorfP7CMatrix, void, bool, CVector, float, CMatrix*);
     DECL_THISCALL(Fade, _ZN7CCamera4FadeEfs, void, float, i16);
-    DECL_THISCALL(Find3rdPersonCamTargetVector, _ZN7CCamera28Find3rdPersonCamTargetVectorEf7CVectorRS0_S1_, bool, float, CVector, CVector*, CVector*);
-    DECL_THISCALL(GetArrPosForVehicleType, _ZN7CCamera23GetArrPosForVehicleTypeEiRi, bool, int, int*);
+    DECL_THISCALL(Find3rdPersonCamTargetVector, _ZN7CCamera28Find3rdPersonCamTargetVectorEf7CVectorRS0_S1_, bool, float, CVector, CVector&, CVector&);
+    DECL_THISCALL(GetArrPosForVehicleType, _ZN7CCamera23GetArrPosForVehicleTypeEiRi, bool, int, int&);
     DECL_THISCALL(GetScreenRect, _ZN7CCamera13GetScreenRectER5CRect, void, CRect&);
     DECL_THISCALL(HandleCameraMotionForDucking, _ZN7CCamera28HandleCameraMotionForDuckingEP4CPedP7CVectorS3_b, void, CPed*, CVector*, CVector*, bool);
     DECL_THISCALL(HandleCameraMotionForDuckingDuringAim, _ZN7CCamera37HandleCameraMotionForDuckingDuringAimEP4CPedP7CVectorS3_b, void, CPed*, CVector*, CVector*, bool);
@@ -118,12 +118,12 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL(InitialiseScriptableComponents, _ZN7CCamera30InitialiseScriptableComponentsEv, void);
     DECL_THISCALL(IsExtraEntityToIgnore, _ZN7CCamera21IsExtraEntityToIgnoreEP7CEntity, bool, CEntity*);
     DECL_THISCALL(IsItTimeForNewcam, _ZN7CCamera17IsItTimeForNewcamEii, bool, i32, i32);
-    DECL_THISCALL(IsSphereVisible, _ZN7CCamera15IsSphereVisibleERK7CVectorf, bool, const CVector*, float);
+    DECL_THISCALL(IsSphereVisible, _ZN7CCamera15IsSphereVisibleERK7CVectorf, bool, const CVector&, float);
     DECL_THISCALL(LerpFOV, _ZN7CCamera7LerpFOVEfffb, void, float, float, float, bool);
-    DECL_THISCALL(LoadPathSplines, _ZN7CCamera15LoadPathSplinesEy, void, u64);
+    DECL_THISCALL(LoadPathSplines, BYBIT(_ZN7CCamera15LoadPathSplinesEj, _ZN7CCamera15LoadPathSplinesEy), void, uintptr_t);
     DECL_THISCALL(ResetDuckingSystem, _ZN7CCamera18ResetDuckingSystemEP4CPed, void, CPed*);
-    DECL_THISCALL(SetCamCutSceneOffSet, _ZN7CCamera20SetCamCutSceneOffSetERK7CVector, void, const CVector*);
-    DECL_THISCALL(SetCamPositionForFixedMode, _ZN7CCamera26SetCamPositionForFixedModeERK7CVectorS2_, void, const CVector*, const CVector*);
+    DECL_THISCALL(SetCamCutSceneOffSet, _ZN7CCamera20SetCamCutSceneOffSetERK7CVector, void, const CVector&);
+    DECL_THISCALL(SetCamPositionForFixedMode, _ZN7CCamera26SetCamPositionForFixedModeERK7CVectorS2_, void, const CVector&, const CVector&);
     DECL_THISCALL(SetCameraDirectlyBehindForFollowPed_ForAPed_CamOnAString, _ZN7CCamera56SetCameraDirectlyBehindForFollowPed_ForAPed_CamOnAStringEP4CPed, void, CPed*);
     DECL_THISCALL(SetCameraDirectlyInFrontForFollowPed_ForAPed_CamOnAString, _ZN7CCamera57SetCameraDirectlyInFrontForFollowPed_ForAPed_CamOnAStringEP4CPed, void, CPed*);
     DECL_THISCALL(SetFadeColour, _ZN7CCamera13SetFadeColourEhhh, void, u8, u8, u8);
@@ -140,13 +140,13 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_THISCALL(SetZoomValueFollowPedScript, _ZN7CCamera27SetZoomValueFollowPedScriptEs, void, i16);
     DECL_THISCALL(StartTransition, _ZN7CCamera15StartTransitionEs, void, i16);
     DECL_THISCALL(StartTransitionWhenNotFinishedInter, _ZN7CCamera35StartTransitionWhenNotFinishedInterEs, void, i16);
-    DECL_THISCALL(StoreValuesDuringInterPol, _ZN7CCamera25StoreValuesDuringInterPolER7CVectorS1_S1_Rf, void, CVector*, CVector*, CVector*, float*);
+    DECL_THISCALL(StoreValuesDuringInterPol, _ZN7CCamera25StoreValuesDuringInterPolER7CVectorS1_S1_Rf, void, CVector&, CVector&, CVector&, float&);
     DECL_THISCALL(TakeControl, _ZN7CCamera11TakeControlEP7CEntityssi, void, CEntity*, i16, i16, int);
-    DECL_THISCALL(TakeControlAttachToEntity, _ZN7CCamera25TakeControlAttachToEntityEP7CEntityS1_R7CVectorS3_fsi, void, CEntity*, CEntity*, CVector*, CVector*, float, i16, int);
-    DECL_THISCALL(TakeControlNoEntity, _ZN7CCamera19TakeControlNoEntityERK7CVectorsi, void, const CVector*, i16, int);
+    DECL_THISCALL(TakeControlAttachToEntity, _ZN7CCamera25TakeControlAttachToEntityEP7CEntityS1_R7CVectorS3_fsi, void, CEntity*, CEntity*, CVector&, CVector&, float, i16, int);
+    DECL_THISCALL(TakeControlNoEntity, _ZN7CCamera19TakeControlNoEntityERK7CVectorsi, void, const CVector&, i16, int);
     DECL_THISCALL(TakeControlWithSpline, _ZN7CCamera21TakeControlWithSplineEs, void, i16);
     DECL_THISCALL(TryToStartNewCamMode, _ZN7CCamera20TryToStartNewCamModeEi, bool, i32);
-    DECL_THISCALL(UpdateAimingCoors, _ZN7CCamera17UpdateAimingCoorsERK7CVector, void, const CVector*);
+    DECL_THISCALL(UpdateAimingCoors, _ZN7CCamera17UpdateAimingCoorsERK7CVector, void, const CVector&);
     DECL_THISCALL(VectorMoveLinear, _ZN7CCamera16VectorMoveLinearEP7CVectorS1_fb, void, CVector*, CVector*, float, bool);
     DECL_THISCALL(VectorTrackLinear, _ZN7CCamera17VectorTrackLinearEP7CVectorS1_fb, void, CVector*, CVector*, float, bool);
 

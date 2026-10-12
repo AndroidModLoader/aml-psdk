@@ -7,6 +7,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <memory>
 
 enum class EventPhase { Before, After };
 struct EventHooker
@@ -50,7 +51,20 @@ struct CallEvent<Tag, Def, R(A...), Pick...>
     using OrigT    = R(*)(A...);
 
     static inline OrigT                 m_pOriginalFunc = nullptr;
-    static inline std::vector<Listener> s_before, s_after;
+    static std::vector<Listener>& BeforeListeners() { static std::vector<Listener> listeners; return listeners; }
+    static std::vector<Listener>& AfterListeners() { static std::vector<Listener> listeners; return listeners; }
+    static std::shared_ptr<const std::vector<Listener>>& BeforeSnapshot()
+    {
+        static std::shared_ptr<const std::vector<Listener>> snapshot;
+        return snapshot;
+    }
+    static std::shared_ptr<const std::vector<Listener>>& AfterSnapshot()
+    {
+        static std::shared_ptr<const std::vector<Listener>> snapshot;
+        return snapshot;
+    }
+    static inline std::vector<Listener>& s_before = BeforeListeners();
+    static inline std::vector<Listener>& s_after = AfterListeners();
 
     EventHooker m_hook;
     explicit CallEvent(EventHooker h) : m_hook(h) {}
@@ -58,11 +72,11 @@ struct CallEvent<Tag, Def, R(A...), Pick...>
     struct List
     {
         std::vector<Listener>& v; CallEvent* e;
-        void operator+=(Listener fn) { v.push_back(fn); e->StartEvent(); }
+        void operator+=(Listener fn) { if(fn) { v.push_back(fn); e->StartEvent(); } }
         void operator-=(Listener fn) { for(auto it = v.begin(); it != v.end(); ++it) if(*it == fn) { v.erase(it); break; } }
     };
-    List before{ s_before, this };
-    List after { s_after,  this };
+    List before{ BeforeListeners(), this };
+    List after { AfterListeners(),  this };
 
     void operator+=(Listener fn) { if constexpr (Def == EventPhase::Before) before += fn; else after += fn; }
     void operator-=(Listener fn) { if constexpr (Def == EventPhase::Before) before -= fn; else after -= fn; }
@@ -72,19 +86,28 @@ struct CallEvent<Tag, Def, R(A...), Pick...>
         if(!m_pOriginalFunc) m_hook.Install((void*)(&EventExecuted), (void**)(&m_pOriginalFunc));
     }
 
+    static void ExecuteListeners(std::vector<Listener>& listeners,
+        std::shared_ptr<const std::vector<Listener>>& cache, AllArgs& args)
+    {
+        if(listeners.empty()) return;
+        if(!cache || *cache != listeners) cache = std::make_shared<const std::vector<Listener>>(listeners);
+        auto snapshot = cache;
+        for(auto fn : *snapshot) if(fn) fn(std::get<Pick>(args)...);
+    }
+
     static R EventExecuted(A... a)
     {
         AllArgs t{a...};
-        for(auto fn : s_before) fn(std::get<Pick>(t)...);
+        ExecuteListeners(BeforeListeners(), BeforeSnapshot(), t);
         if constexpr (std::is_void_v<R>)
         {
             std::apply(m_pOriginalFunc, t);
-            for(auto fn : s_after) fn(std::get<Pick>(t)...);
+            ExecuteListeners(AfterListeners(), AfterSnapshot(), t);
         }
         else
         {
             R r = std::apply(m_pOriginalFunc, t);
-            for(auto fn : s_after) fn(std::get<Pick>(t)...);
+            ExecuteListeners(AfterListeners(), AfterSnapshot(), t);
             return r;
         }
     }

@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SAPICKUP_H
 #define __AML_PSDK_SAPICKUP_H
 
+#include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
 
 struct CObject;
@@ -54,18 +55,28 @@ DECL_CLASS(CPickup, B64MACRO(__attribute__((packed)) __attribute__((aligned(4)))
     DECL_THISCALL_HEAD(Update, _ZN7CPickup6UpdateEP10CPlayerPedP8CVehiclei, bool, CPlayerPed* pPlayerPed, CVehicle* pPlayerVehicle, int PlayerNum)
     DECL_THISCALL_TAIL(Update, pPlayerPed, pPlayerVehicle, PlayerNum)
     
-    DECL_THISCALL_HEAD(FindTextIndexForString, _ZN7CPickup22FindTextIndexForStringEPc, int, char* pString)
-    DECL_THISCALL_TAIL(FindTextIndexForString, pString)
-    
     DECL_THISCALL_HEAD(ProcessGunShot, _ZN7CPickup14ProcessGunShotEP7CVectorS1_, void, CVector* pStart, CVector* pEnd)
     DECL_THISCALL_TAIL(ProcessGunShot, pStart, pEnd)
     
     DECL_THISCALL_HEAD(ExtractAmmoFromPickup, _ZN7CPickup21ExtractAmmoFromPickupEP10CPlayerPed, void, CPlayerPed* pPlayerPed)
     DECL_THISCALL_TAIL(ExtractAmmoFromPickup, pPlayerPed)
     
-    DECL_THISCALL_HEAD(FindStringForTextIndex, _ZN7CPickup22FindStringForTextIndexEi, const char*, int TextIndex)
-    DECL_THISCALL_TAIL(FindStringForTextIndex, TextIndex)
-    
+    inline void SetCoors(CVector posn)
+    {
+        m_vecPos.Set(posn);
+    }
+    inline CVector GetCoors() const
+    {
+        return CVector(GetCoorsX(), GetCoorsY(), GetCoorsZ());
+    }
+    inline float GetCoorsX() const { return m_vecPos.x / 8.0f; }
+    inline float GetCoorsY() const { return m_vecPos.y / 8.0f; }
+    inline float GetCoorsZ() const { return m_vecPos.z / 8.0f; }
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(FindTextIndexForString, _ZN7CPickup22FindTextIndexForStringEPc, int, char* pString);
+    DECL_FASTCALL_SIMPLE(FindStringForTextIndex, _ZN7CPickup22FindStringForTextIndexEi, char*, int TextIndex);
+
     // Member values
     float             m_fRevenueValue;
     CObject          *m_pObject;

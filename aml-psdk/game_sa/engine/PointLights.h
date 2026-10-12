@@ -11,6 +11,18 @@ enum ePointLightType : unsigned char
     PLTYPE_POINTLIGHT = 0,
     PLTYPE_SPOTLIGHT = 1,
     PLTYPE_DARKLIGHT = 2,
+    PLTYPE_DIRECTIONAL = 1,
+    PLTYPE_ANTILIGHT = 2,
+    PLTYPE_ONLYFOGEFFECT_ALWAYS = 3,
+    PLTYPE_ONLYFOGEFFECT = 4,
+    PLTYPE_SMOG = 5,
+};
+
+enum eFogEffect : unsigned char
+{
+    FOGEFF_OFF = 0,
+    FOGEFF_ON = 1,
+    FOGEFF_ALWAYS = 2,
 };
 
 struct CPointLight
@@ -45,9 +57,15 @@ DECL_CLASS(CPointLights)
     // STATIC members
     DECL_VALUE_PLT_I32(NumLights, BYBIT(0x6770C8, 0x84C1C8));
     DECL_OBJECT_ARRAY_PLT(CPointLight, aLights, BYBIT(0x676FF8, 0x84C028));
+    DECL_OBJECT_ARRAY_SYM(CVector, aCachedMapReads, _ZN12CPointLights15aCachedMapReadsE);
+    DECL_OBJECT_ARRAY_SYM(float, aCachedMapReadResults, _ZN12CPointLights21aCachedMapReadResultsE);
+    DECL_OBJECT_SYM(i32, NextCachedValue, _ZN12CPointLights15NextCachedValueE);
 DECL_CLASS_END()
 
 #define NumLights NumLights()
 #define aLights aLights()
+#define aCachedMapReads aCachedMapReads()
+#define aCachedMapReadResults aCachedMapReadResults()
+#define NextCachedValue NextCachedValue()
 
 #endif // __AML_PSDK_SAPOINTLIGHTS_H

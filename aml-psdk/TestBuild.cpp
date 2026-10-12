@@ -116,6 +116,14 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/IplStore.h>
 #include <aml-psdk/game_sa/engine/QuadTree.h>
 #include <aml-psdk/game_sa/engine/ColStore.h>
+#include <aml-psdk/game_sa/engine/CarAI.h>
+#include <aml-psdk/game_sa/engine/Renderer.h>
+#include <aml-psdk/game_sa/other/LoadedCarGroup.h>
+#include <aml-psdk/game_sa/other/Population.h>
+#include <aml-psdk/game_sa/other/PopCycle.h>
+#include <aml-psdk/game_sa/engine/CarCtrl.h>
+#include <aml-psdk/game_sa/engine/CarGenerators.h>
+#include <aml-psdk/game_sa/other/Pickups.h>
 
 #include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>
 

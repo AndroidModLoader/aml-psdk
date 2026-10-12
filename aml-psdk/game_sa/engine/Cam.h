@@ -26,12 +26,16 @@ DECL_CLASS(CCam)
     DECL_THISCALL_SIMPLE(GetVectorsReadyForRW, _ZN4CCam20GetVectorsReadyForRWEv, void);
     DECL_THISCALL_SIMPLE(GetWeaponFirstPersonOn, _ZN4CCam22GetWeaponFirstPersonOnEv, bool);
     DECL_THISCALL_SIMPLE(Init, _ZN4CCam4InitEv, void);
+    DECL_THISCALL_SIMPLE(Process, _ZN4CCam7ProcessEv, void);
     DECL_THISCALL_SIMPLE(LookLeft, _ZN4CCam8LookLeftEv, bool);
     DECL_THISCALL_SIMPLE(CacheLastSettingsDWCineyCam, _ZN4CCam27CacheLastSettingsDWCineyCamEv, void);
     DECL_THISCALL_SIMPLE(ProcessArrestCamTwo, _ZN4CCam19ProcessArrestCamTwoEv, bool);
     
     DECL_THISCALL_HEAD(Process_FollowCar_SA, _ZN4CCam20Process_FollowCar_SAERK7CVectorfffb, void, CVector const &ThisCamsTarget, float TargetOrientation, float SpeedVar, float SpeedVarDesired, bool bScriptSetAngles)
     DECL_THISCALL_TAIL(Process_FollowCar_SA, ThisCamsTarget, TargetOrientation, SpeedVar, SpeedVarDesired, bScriptSetAngles)
+
+    DECL_THISCALL_HEAD(Process_BehindCar, _ZN4CCam17Process_BehindCarERK7CVectorfff, void, CVector const &ThisCamsTarget, float TargetOrientation, float SpeedVar, float SpeedVarDesired)
+    DECL_THISCALL_TAIL(Process_BehindCar, ThisCamsTarget, TargetOrientation, SpeedVar, SpeedVarDesired)
     
     DECL_THISCALL_HEAD(Process_FollowPedWithMouse, _ZN4CCam26Process_FollowPedWithMouseERK7CVectorfff, void, CVector const &ThisCamsTarget, float TargetOrientation, float SpeedVar, float SpeedVarDesired)
     DECL_THISCALL_TAIL(Process_FollowPedWithMouse, ThisCamsTarget, TargetOrientation, SpeedVar, SpeedVarDesired)
@@ -96,7 +100,7 @@ DECL_CLASS(CCam)
     DECL_THISCALL_HEAD(KeepTrackOfTheSpeed, _ZN4CCam19KeepTrackOfTheSpeedERK7CVectorS2_S2_RKfS4_S4_, void, CVector const &TheSource, CVector const &TheTargetToLookAt, CVector const &TheUpVector, float const &TrueAlpha, float const &TrueBeta, float const &TheFOV)
     DECL_THISCALL_TAIL(KeepTrackOfTheSpeed, TheSource, TheTargetToLookAt, TheUpVector, TrueAlpha, TrueBeta, TheFOV)
     
-    DECL_THISCALL_HEAD(LookRight, _ZN4CCam9LookRightEb, void, bool bIsRight)
+    DECL_THISCALL_HEAD(LookRight, _ZN4CCam9LookRightEb, bool, bool bIsRight)
     DECL_THISCALL_TAIL(LookRight, bIsRight)
     
     DECL_THISCALL_HEAD(GetBoatLook_L_R_HeightOffset, _ZN4CCam28GetBoatLook_L_R_HeightOffsetERf, bool, float &HeightOffset)
@@ -122,6 +126,12 @@ DECL_CLASS(CCam)
     
     DECL_THISCALL_HEAD(RotCamIfInFrontCar, _ZN4CCam18RotCamIfInFrontCarERK7CVectorf, bool, CVector const &TargetCoors, float TargetOrientation)
     DECL_THISCALL_TAIL(RotCamIfInFrontCar, TargetCoors, TargetOrientation)
+
+    DECL_THISCALL_HEAD(IsTargetInWater, _ZN4CCam15IsTargetInWaterERK7CVector, bool, CVector const &TargetCoors)
+    DECL_THISCALL_TAIL(IsTargetInWater, TargetCoors)
+
+    DECL_THISCALL_HEAD(DoAverageOnVector, _ZN4CCam17DoAverageOnVectorERK7CVector, CVector, CVector const &Vector)
+    DECL_THISCALL_TAIL(DoAverageOnVector, Vector)
     
     DECL_THISCALL_HEAD(Get_TwoPlayer_AimVector, _ZN4CCam23Get_TwoPlayer_AimVectorER7CVector, CEntity*, CVector &vecFront)
     DECL_THISCALL_TAIL(Get_TwoPlayer_AimVector, vecFront)
