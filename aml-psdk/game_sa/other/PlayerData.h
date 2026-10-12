@@ -11,6 +11,7 @@ struct RpAtomic;
 struct CEntity;
 struct CPed;
 struct CVehicle;
+struct CAutomobile;
 
 DECL_CLASS(CPlayerData)
     // Construct/Deconstruct functions
@@ -30,12 +31,12 @@ DECL_CLASS(CPlayerData)
     float m_fMoveBlendRatio;
     float m_fTimeCanRun;
     float m_fMoveSpeed;
-    unsigned char m_nChosenWeapon;
+    signed char m_nChosenWeapon;
     unsigned char m_nCarDangerCounter;
-    unsigned int m_nStandStillTimer;
+    int m_nStandStillTimer;
     unsigned int m_nHitAnimDelayTimer;
     float m_fAttackButtonCounter;
-    CVehicle *m_pDangerCar;
+    CAutomobile *m_pDangerCar;
     unsigned int m_bStoppedMoving : 1;
     unsigned int m_bAdrenaline : 1;
     unsigned int m_bHaveTargetSelected : 1;             // Needed to work out whether we lost target this frame
@@ -49,7 +50,7 @@ DECL_CLASS(CPlayerData)
     unsigned int m_bGroupNeverFollow : 1;               // The group is told to always follow the player (used for girlfriend missions)
     unsigned int m_bInVehicleDontAllowWeaponChange : 1; // stop weapon change once driveby weapon has been given
     unsigned int m_bRenderWeapon : 1;                   // set to false during cutscenes so that knuckledusters are not rendered
-    unsigned int m_nPlayerGroup;
+    int m_nPlayerGroup;
     unsigned int m_nAdrenalineEndTime;
     unsigned char m_nDrunkenness;
     unsigned char m_nFadeDrunkenness;
@@ -74,13 +75,13 @@ DECL_CLASS(CPlayerData)
     bool m_bForceInteriorLighting;
     unsigned short m_nPadDownPressedInMilliseconds;
     unsigned short m_nPadUpPressedInMilliseconds;
-    unsigned char m_nWetness;
-    bool m_bPlayersGangActive;
+    signed char m_nWetness;
+    unsigned char m_bPlayersGangActive;
     unsigned char m_nWaterCoverPerc;
     float m_fWaterHeight;
     unsigned int m_nFireHSMissilePressedTime;
     CEntity *m_LastHSMissileTarget;
-    unsigned int m_nModelIndexOfLastBuildingShot;
+    int m_nModelIndexOfLastBuildingShot;
     unsigned int m_nLastHSMissileLOSTime : 31;
     unsigned int m_bLastHSMissileLOS : 1;
     CPed *m_pCurrentProstitutePed;

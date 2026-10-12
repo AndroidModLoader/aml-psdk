@@ -69,12 +69,12 @@ DECL_CLASS(CPickup, B64MACRO(__attribute__((packed)) __attribute__((aligned(4)))
     // Member values
     float             m_fRevenueValue;
     CObject          *m_pObject;
-    unsigned int      m_nAmmo;
+    int               m_nAmmo;
     unsigned int      m_nRegenerationTime;
     CompressedVector  m_vecPos;
     unsigned short    m_nMoneyPerDay;
-    short             m_nModelIndex;
-    short             m_nReferenceIndex;
+    unsigned short    m_nModelIndex;
+    unsigned short    m_nReferenceIndex;
     unsigned char     m_nPickupType; // see ePickupType
     struct
     {

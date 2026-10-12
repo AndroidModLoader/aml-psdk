@@ -7,6 +7,8 @@
 #include "AECollisionAudioEntity.h"
 #include "AEPedlessSpeechAudioEntity.h"
 
+struct CAEGlobalWeaponAudioEntity;
+
 struct tBeatInfoBeat
 {
     int Time;
@@ -23,15 +25,15 @@ struct tBeatInfo
 
 DECL_CLASS(CAudioEngine)
     // Member values
-    bool m_bMissionCompleteActive;
-    bool m_bStoppingMissionComplete;
-    char m_nCurrentRadiostationId;
+    unsigned char m_bMissionCompleteActive;
+    unsigned char m_bStoppingMissionComplete;
+    signed char m_nCurrentRadiostationId;
     int m_nAudioStreamClientHandle;
     tBeatInfo m_BeatInfo;
     CAEFrontendAudioEntity m_FrontendAudio;
     CAEScriptAudioEntity m_scriptAudio;
     CAECollisionAudioEntity m_collisionAudio;
-    int m_pWeaponAudio;
+    CAEGlobalWeaponAudioEntity *m_pWeaponAudio;
     CAEPedlessSpeechAudioEntity m_pedlessSpeechAudio;
     CAEDoorAudioEntity m_doorAudio;
 DECL_CLASS_END()

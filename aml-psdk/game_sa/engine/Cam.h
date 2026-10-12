@@ -6,6 +6,7 @@
 
 struct CEntity;
 struct CVehicle;
+struct CAutomobile;
 struct CPed;
 struct CColSphere;
 
@@ -158,10 +159,10 @@ DECL_CLASS(CCam)
     bool          m_bRotating;
     eCamMode      m_nMode;
     unsigned int  m_nFinishTime;
-    unsigned int  m_nDoCollisionChecksOnFrameNum;
-    unsigned int  m_nDoCollisionCheckEveryNumOfFrames;
-    unsigned int  m_nFrameNumWereAt;
-    unsigned int  m_nDirectionWasLooking;
+    int           m_nDoCollisionChecksOnFrameNum;
+    int           m_nDoCollisionCheckEveryNumOfFrames;
+    int           m_nFrameNumWereAt;
+    int           m_nDirectionWasLooking;
     float         m_fSyphonModeTargetZOffSet;
     float         m_fAlphaSpeedOverOneFrame;
     float         m_fBetaSpeedOverOneFrame;
@@ -232,12 +233,12 @@ DECL_CLASS(CCam)
     CVector       m_avecPreviousVectors[2];
     CVector       m_avecTargetHistoryPos[4];
     unsigned int  m_anTargetHistoryTime[4];
-    unsigned int  m_nCurrentHistoryPoints;
+    int           m_nCurrentHistoryPoints;
     CEntity      *m_pCamTargetEntity;
     float         m_fCameraDistance;
     float         m_fIdealAlpha;
     float         m_fPlayerVelocity;
-    CVehicle     *m_pLastCarEntered;
+    CAutomobile  *m_pLastCarEntered;
     CPed         *m_pLastPedLookedAt;
     bool          m_bFirstPersonRunAboutActive;
 DECL_CLASS_END()

@@ -13,6 +13,7 @@ struct FxBox_c;
 struct CEntity;
 struct FxSphere_c;
 struct FxPrim_c;
+struct RwCamera;
 
 enum eFxSystemKillStatus : u8
 {
@@ -122,8 +123,8 @@ DECL_CLASS_BASED(FxSystem_c, ListItem_c)
     RwMatrix          *m_pParentMatrix;
     CEntity           *m_pEntity; // mobile stuff
     RwMatrix           m_localMatrix;
-    unsigned char      m_nPlayStatus; // see eFxSystemPlayStatus
-    unsigned char      m_nKillStatus; // see eFxSystemKillStatus
+    signed char        m_nPlayStatus; // see eFxSystemPlayStatus
+    signed char        m_nKillStatus; // see eFxSystemKillStatus
     unsigned char      m_bConstTimeSet;
     float              m_fCurrentProgress;
     float              m_fCameraDistance;

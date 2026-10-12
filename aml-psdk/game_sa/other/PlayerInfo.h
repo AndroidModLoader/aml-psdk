@@ -44,13 +44,13 @@ DECL_CLASS(CPlayerInfo)
     CVehicle *m_pSpecCar;                   // which car is using the special collision model
     int m_nMoney;                           // Points for this player
     int m_nDisplayMoney;                    // Points as they would be displayed
-    unsigned int m_nCollectablesPickedUp;   // How many bags of sugar do we have
-    unsigned int m_nTotalNumCollectables;   // How many bags of sugar are there to be had in the game
+    int m_nCollectablesPickedUp;   // How many bags of sugar do we have
+    int m_nTotalNumCollectables;   // How many bags of sugar are there to be had in the game
     unsigned int m_nLastBumpPlayerCarTimer; // Keeps track of when the last ped bumped into the player car
     unsigned int m_nTaxiTimer;              // Keeps track of how long the player has been in a taxi with a passenger (in msecs)
     unsigned int m_nVehicleTimeCounter;     // keeps track of how long player has been in car for driving skill
-    bool m_bTaxiTimerScore;                 // If TRUE then add 1 to score for each second that the player is driving a taxi
-    bool m_bTryingToExitCar;                // if player holds exit car button, want to trigger getout once car slowed enough with a passenger
+    unsigned char m_bTaxiTimerScore;                 // If TRUE then add 1 to score for each second that the player is driving a taxi
+    unsigned char m_bTryingToExitCar;                // if player holds exit car button, want to trigger getout once car slowed enough with a passenger
     CVehicle *m_pLastTargetVehicle;         // Last vehicle player tried to enter.
     unsigned char m_nPlayerState;           // see ePlayerState
     bool m_bAfterRemoteVehicleExplosion;
@@ -79,9 +79,9 @@ DECL_CLASS(CPlayerInfo)
     unsigned short m_nCarDensityForCurrentZone;
     float m_fRoadDensityAroundPlayer;       // 1.0f for an average city.
     unsigned int m_nTimeOfLastCarExplosionCaused;
-    unsigned int m_nExplosionMultiplier;
-    unsigned int m_nHavocCaused;            // A counter going up when the player does bad stuff.
-    unsigned short m_nNumHoursDidntEat;
+    int m_nExplosionMultiplier;
+    int m_nHavocCaused;            // A counter going up when the player does bad stuff.
+    short m_nNumHoursDidntEat;
     float m_fCurrentChaseValue;             // How 'ill' is the chase at the moment
     bool m_bDoesNotGetTired;
     bool m_bFastReload;

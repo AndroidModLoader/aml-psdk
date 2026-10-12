@@ -12,29 +12,29 @@ struct ChunkHeader
 
 struct CText__TDat
 {
-    char* data;
+    GxtChar* data;
     int size;
 };
 struct CText__TablEntry
 {
     char name[8];
-    int offset;
+    unsigned int offset;
 };
 struct CText__Tabl
 {
     CText__TablEntry data[200];
-    short size;
+    unsigned short size;
     short __pad;
 };
 struct tGXT_VERSION_2_TKEY_item
 {
-    unsigned long int Position;		// TDAT + 8 offset
-    unsigned long int KeyHash;
+    uintptr_t Position; // Native text pointer after loading
+    unsigned int KeyHash;
 };
 struct CText__TKey
 {
     tGXT_VERSION_2_TKEY_item* data;
-    short size;
+    unsigned int size;
 };
 
 DECL_CLASS(CText)
@@ -72,11 +72,11 @@ DECL_CLASS(CText)
     CText__TKey tkeyMission;
     CText__TDat tdatMission;
     char        encoding;
-    char        haveTabl;
-    char        cderrorInitialized;
-    char        missionTableLoaded;
+    unsigned char haveTabl;
+    unsigned char cderrorInitialized;
+    unsigned char missionTableLoaded;
     char        missionTableName[8];
-    char        cderrorText[256];
+    char        cderrorText[255];
     CText__Tabl tabl;
 DECL_CLASS_END()
 CHECKSIZE(CText, 0xA90, 0xAB0);

@@ -28,6 +28,7 @@ DECL_CLASS(TextureCategory)
     u16           defaultStreamMode;
 DECL_CLASS_END()
 
+#pragma pack(push, 1)
 DECL_CLASS(TextureDatabaseEntry)
     // Member functions
     DECL_THISCALL_HEAD(LoadInstance, _ZN20TextureDatabaseEntry12LoadInstanceERK23TextureListingContainer, RwTexture*, TextureListingContainer const& container)
@@ -51,8 +52,13 @@ DECL_CLASS(TextureDatabaseEntry)
     u8            detailTiling;
     u16           width;
     u16           height;
-    RwTexture    *instance;
+    union
+    {
+        RwTexture *instance;
+        const char *matchingName;
+    };
 DECL_CLASS_END()
+CHECKSIZE(TextureDatabaseEntry, 0x17, 0x1F);
 
 DECL_CLASS(TextureListing)
     // Member functions
@@ -71,6 +77,7 @@ DECL_CLASS(TextureListing)
     u16           height : 15;
     u16           hasMipChain : 1;
 DECL_CLASS_END()
+CHECKSIZE(TextureListing, 0x08, 0x08);
 
 DECL_CLASS(TextureListingContainer)
     TextureListing  listing;
@@ -78,6 +85,8 @@ DECL_CLASS(TextureListingContainer)
     unsigned int    dataSize;
     bool            ownsData;
 DECL_CLASS_END()
+CHECKSIZE(TextureListingContainer, 0x11, 0x15);
+#pragma pack(pop)
 
 DECL_CLASS_VTABLE(TextureDatabase)
     // Member functions

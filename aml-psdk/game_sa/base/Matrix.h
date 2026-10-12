@@ -124,15 +124,15 @@ DECL_CLASS(CMatrix)
 
     // Member values
     CVector   right;
-    u32       flags;
+    float     flags;
     CVector   up;
-    u32       pad1;
+    float     pad1;
     CVector   at;
-    u32       pad2;
+    float     pad2;
     CVector   pos;
-    u32       pad3;
+    float     pad3;
     RwMatrix* m_pAttachMatrix;
-    bool      m_bOwnsAttachedMatrix;
+    unsigned int m_bOwnsAttachedMatrix;
 DECL_CLASS_END()
 
 #endif // __AML_PSDK_GTAMATRIX_H

@@ -30,8 +30,8 @@ DECL_CLASS(cTransmission)
 
     // Member values
     tTransmissionGear m_aGears[6];
-    unsigned char     m_nDriveType; // F/R/4
-    unsigned char     m_nEngineType; // P/D/E
+    char              m_nDriveType; // F/R/4
+    char              m_nEngineType; // P/D/E
     unsigned char     m_nNumberOfGears; // 1 to 6
     unsigned int      m_nHandlingFlags;
     float             m_fEngineAcceleration; // 0.1 to 10.0
@@ -58,7 +58,7 @@ struct tHandlingData
     cTransmission m_transmissionData;
     float         m_fBrakeDeceleration; // 0.1 to 10.0
     float         m_fBrakeBias; // 0.0 > x > 1.0
-    char          m_bABS; // 0/1
+    bool          m_bABS; // 0/1
     float         m_fSteeringLock; // 10.0 to 40.0
     float         m_fTractionLoss;
     float         m_fTractionBias;

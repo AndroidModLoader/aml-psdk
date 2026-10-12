@@ -6,9 +6,9 @@
 struct CRect
 {
     float left;          // x1
-    float bottom;        // y1
+    float top;           // y1
     float right;         // x2
-    float top;           // y2
+    float bottom;        // y2
 
     CRect(float _left, float _top, float _right, float _bottom)
     {

@@ -264,19 +264,19 @@ DECL_CLASS(CRunningScript)
     unsigned short  m_nSP;
     tScriptParam    m_aLocalVars[40];
     int             m_anTimers[2];
-    bool            m_bIsActive;
-    bool            m_bCondResult;
-    bool            m_bUseMissionCleanup;
-    bool            m_bIsExternal;
-    bool            m_bTextBlockOverride;
-    char            m_nScriptBrainType; // missing on PC
-    int             m_nWakeTime;
+    unsigned char   m_bIsActive;
+    unsigned char   m_bCondResult;
+    unsigned char   m_bUseMissionCleanup;
+    unsigned char   m_bIsExternal;
+    unsigned char   m_bTextBlockOverride;
+    signed char     m_nScriptBrainType; // missing on PC
+    unsigned int    m_nWakeTime;
     unsigned short  m_nLogicalOp;
-    bool            m_bNotFlag;
-    bool            m_bWastedBustedCheck;
-    bool            m_bWastedOrBusted;
+    unsigned char   m_bNotFlag;
+    unsigned char   m_bWastedBustedCheck;
+    unsigned char   m_bWastedOrBusted;
     int             m_pSceneSkipIP; // not a pointer!
-    bool            m_bIsMission;
+    unsigned char   m_bIsMission;
 DECL_CLASS_END()
 CHECKSIZE(CRunningScript, 0x100, 0x130);
 

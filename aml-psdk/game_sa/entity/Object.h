@@ -25,7 +25,7 @@ DECL_CLASS_BASED(CObject, CPhysical)
     DECL_DLCALL(CObject, _ZN7CObjectdlEPv);
 
     // Member values
-    void           *m_pControlCodeList;
+    CPtrNodeDoubleLink *m_pControlCodeList;
     unsigned char   m_nObjectType; // see enum eObjectType
     unsigned char   m_nBonusValue;
     unsigned short  m_wCostValue;
@@ -69,14 +69,14 @@ DECL_CLASS_BASED(CObject, CPhysical)
     
     unsigned char   m_nColDamageEffect;
     unsigned char   m_nStoredColDamageEffect;
-    char KeepieUppyCounter;
-    char            m_nGarageDoorGarageIndex;
-    unsigned char   m_nLastWeaponDamage;
+    unsigned char KeepieUppyCounter;
+    signed char     m_nGarageDoorGarageIndex;
+    signed char     m_nLastWeaponDamage;
     unsigned char   m_nDayBrightness : 4;
     unsigned char   m_nNightBrightness : 4;
     short           m_nRefModelIndex;
     unsigned char   m_nCarColor[4]; // this is used for detached car parts
-    int             m_dwRemovalTime; // time when this object must be deleted
+    unsigned int    m_dwRemovalTime; // time when this object must be deleted
     float           m_fHealth;
     float           m_fDoorStartAngle; // this is used for door objects
     float           m_fScale;
@@ -93,18 +93,18 @@ CHECKSIZE(CObject, 0x184, 0x1F8);
 
 DECL_CLASS_BASED(CHandObject, CObject)
     CPed       *m_pPed;
-    unsigned int m_nBoneIndex;
+    int m_nBoneIndex;
     RwTexture   *m_pTexture;
-    bool         m_bUpdatedMatricesArray;
+    unsigned char m_bUpdatedMatricesArray;
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CCutsceneObject, CObject)
     union
     {
         RwFrame *m_pAttachTo;
-        unsigned int m_nAttachBone; // this one if m_pAttachmentObject != 0
+        int m_nAttachBone; // this one if m_pAttachmentObject != 0
     };
-    CObject *m_pAttachmentObject;
+    CCutsceneObject *m_pAttachmentObject;
     CVector m_vWorldPosition;
     CVector m_vForce;
 DECL_CLASS_END()

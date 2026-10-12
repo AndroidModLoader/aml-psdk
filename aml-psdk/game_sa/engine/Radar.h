@@ -140,13 +140,13 @@ struct airstrip_info
 struct tRadarTrace
 {
     unsigned int   m_nColour; // see eBlipColour
-    unsigned int   m_nEntityHandle;
+    int            m_nEntityHandle;
     CVector        m_vecPos;
     unsigned short m_nCounter;
     float          m_fSphereRadius;
-    unsigned short m_nBlipSize;
+    short          m_nBlipSize;
     CEntryExit       *m_pEntryExit;
-    unsigned char  m_nRadarSprite; // see eRadarSprite
+    signed char    m_nRadarSprite; // see eRadarSprite
     unsigned char  m_bBright : 1; // It makes use of bright colors. Always set.
     unsigned char  m_bInUse : 1; // It is available.
     unsigned char  m_bShortRange : 1; // It doesn't show permanently on the radar.

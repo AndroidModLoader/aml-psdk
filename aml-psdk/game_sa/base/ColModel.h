@@ -29,13 +29,13 @@ struct __attribute__((aligned(4))) CColTrianglePlane
 
 struct CCollisionData
 {
-    unsigned short      m_nNumSpheres;
-    unsigned short      m_nNumBoxes;
-    unsigned short      m_nNumTriangles;
+    short               m_nNumSpheres;
+    short               m_nNumBoxes;
+    short               m_nNumTriangles;
     union
     {
-        unsigned char   m_nNumLines;
-        unsigned char   m_nNumDisks;
+        signed char     m_nNumLines;
+        signed char     m_nNumDisks;
     };
     struct
     {
@@ -55,8 +55,8 @@ struct CCollisionData
     CollisionVector    *m_pVertices;
     CColTriangle       *m_pTriangles;
     CColTrianglePlane  *m_pTrianglePlanes;
-    unsigned int        m_nNumShadowTriangles;
-    unsigned int        m_nNumShadowVertices;
+    int                 m_nNumShadowTriangles;
+    int                 m_nNumShadowVertices;
     CollisionVector    *m_pShadowVertices;
     CColTriangle       *m_pShadowTriangles;
     int32_t            *m_modelSec;
@@ -125,8 +125,11 @@ struct CColDisk : CColSphere
 
 struct CBoundingBox : CBox
 {
+    CSphere m_boundSphere;
+
     CBoundingBox() : CBox() {}
 };
+CHECKSIZE(CBoundingBox, 0x28, 0x28);
 
 DECL_CLASS(CColModel)
     // Construct/Deconstruct functions
@@ -147,7 +150,7 @@ DECL_CLASS(CColModel)
     DECL_THISCALL_TAIL(AllocateData2, size)
 
     // Member values
-    CBoundingBox m_boundBox;
+    CBox m_boundBox;
     CSphere m_boundSphere;
     unsigned char m_nColSlot;
     union

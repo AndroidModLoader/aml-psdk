@@ -46,7 +46,7 @@ DECL_CLASS(CWeaponInfo)
     float          m_fWeaponRange; // absolute gun range / default melee attack range
     int            m_nModelId;     // modelinfo id
     int            m_nModelId2;    // second modelinfo id
-    unsigned int   m_nSlot;
+    int            m_nSlot;
     struct {
         unsigned int bCanAim : 1;
         unsigned int bAimWithArm : 1;
@@ -69,11 +69,11 @@ DECL_CLASS(CWeaponInfo)
         unsigned int bExpands : 1;
     } m_nFlags;
     unsigned int   m_nAnimToPlay; // instead of storing pointers directly to anims, use anim association groups
-    unsigned short m_nAmmoClip; // ammo in one clip
-    unsigned short m_nDamage; // damage inflicted per hit
+    short m_nAmmoClip; // ammo in one clip
+    short m_nDamage; // damage inflicted per hit
     CVector        m_vecFireOffset; // offset from weapon origin to projectile starting point
     unsigned int   m_nSkillLevel; // what's the skill level of this weapontype
-    unsigned int   m_nReqStatLevel; // what stat level is required for this skill level
+    int            m_nReqStatLevel; // what stat level is required for this skill level
     float          m_fAccuracy; // modify accuracy of weapon
     float          m_fMoveSpeed; // how fast can move with weapon
     float          m_fAnimLoopStart; // start of animation loop
@@ -87,9 +87,9 @@ DECL_CLASS(CWeaponInfo)
     float          m_fRadius; // radius affected
     float          m_fLifespan; // time taken for shot to dissipate
     float          m_fSpread; // angle inside which shots are created
-    unsigned short m_nAimOffsetIndex; // index into array of aiming offsets
-    unsigned char  m_nBaseCombo; // base combo for this melee weapon
-    unsigned char  m_nNumCombos; // how many further combos are available
+    short m_nAimOffsetIndex; // index into array of aiming offsets
+    signed char    m_nBaseCombo; // base combo for this melee weapon
+    signed char    m_nNumCombos; // how many further combos are available
 DECL_CLASS_END()
 
 DECL_OBJECT_ARRAY_PLT_GLOBAL(CWeaponInfo, aWeaponInfo, BYBIT(0x678ED0, 0x84FDC8) );

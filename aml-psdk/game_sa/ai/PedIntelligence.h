@@ -112,10 +112,10 @@ DECL_CLASS(CPedIntelligence)
     eDecisionMakerType m_nDecisionMakerTypeInGroup;
     float              m_fHearingRange;
     float              m_fSeeingRange;
-    unsigned int       m_nDmNumPedsToScan;
+    int                m_nDmNumPedsToScan;
     float              m_fDmRadius;
     float              m_FollowNodeThresholdDistance;
-    char               m_NextEventResponseSequence;
+    signed char        m_NextEventResponseSequence;
     unsigned char      m_nEventId;
     unsigned char      m_nEventPriority;
     CEntityScanner     m_vehicleScanner;
@@ -125,7 +125,7 @@ DECL_CLASS(CPedIntelligence)
     CCollisionEventScanner m_collisionScanner;
     CPedStuckChecker   m_pedStuckChecker;
     int                m_AnotherStaticCounter;
-    int                m_StaticCounter;
+    unsigned int       m_StaticCounter;
     CVector            m_vecLastPedPosDuringDamageEntity;
     CEntity*           m_apInterestingEntities[3];
 DECL_CLASS_END()

@@ -22,7 +22,7 @@ DECL_CLASS(FxMemoryPool_c)
     DECL_THISCALL_TAIL(GetMem, numBytes, alignment)
 
     // Member values
-    char *data;
+    unsigned char *data;
     unsigned int size;
     unsigned int position;
 DECL_CLASS_END()
@@ -94,7 +94,7 @@ DECL_CLASS(FxManager_c)
     RwV3d                  *m_pWindDir;
     float                  *m_pfWindSpeed;
     FxFrustumInfo_c         m_frustum;
-    unsigned int            m_nCurrentMatrix;
+    int                     m_nCurrentMatrix;
     RwMatrix               *m_apMatrices[8];
     FxMemoryPool_c          m_pool;
     unsigned char           m_bFoundHeatHazeInfo;

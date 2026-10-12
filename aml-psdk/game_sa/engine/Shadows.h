@@ -8,6 +8,8 @@ struct RwTexture;
 struct CRealTimeShadow;
 struct CVehicle;
 struct CPhysical;
+struct CEntity;
+struct CPtrList;
 
 enum eShadowType
 {
@@ -45,9 +47,9 @@ struct CPolyBunch
 {
     CVector             m_avecPosn[7];
     CPolyBunch         *m_pNext;
-    unsigned short      m_wNumVerts;
-    char                m_aU[7];
-    char                m_aV[7];
+    short               m_wNumVerts;
+    unsigned char       m_aU[7];
+    unsigned char       m_aV[7];
 };
 
 struct CRegisteredShadow
@@ -61,16 +63,25 @@ struct CRegisteredShadow
     float               m_fScale;
     RwTexture          *m_pTexture;
     CRealTimeShadow    *m_pRTShadow;
-    unsigned short      m_nIntensity;
+    short      m_nIntensity;
     unsigned char       m_nType;
     unsigned char       m_nRed;
     unsigned char       m_nGreen;
     unsigned char       m_nBlue;
-    struct
+    union
     {
-        unsigned char   bDrawOnWater : 1;
-        unsigned char   bIgnoreMapObjects : 1;
-        unsigned char   bDrawOnBuildings : 1;
+        struct
+        {
+            unsigned char   bDrawOnWater : 1;
+            unsigned char   bIgnoreMapObjects : 1;
+            unsigned char   bDrawOnBuildings : 1;
+        };
+        struct
+        {
+            unsigned char   : 1;
+            unsigned char   bRendered : 1;
+            unsigned char   bIsPlayer : 1;
+        };
     } m_nFlags;
 };
 CHECKSIZE(CRegisteredShadow, 0x34, 0x40);
@@ -87,7 +98,7 @@ struct CPermanentShadow
     unsigned int        m_nTimeCreated;
     unsigned int        m_nTimeDuration;
     RwTexture          *m_pTexture;
-    unsigned short      m_nIntensity;
+    short      m_nIntensity;
     unsigned char       m_nType;
     unsigned char       m_nRed;
     unsigned char       m_nGreen;
@@ -117,14 +128,14 @@ DECL_CLASS(CStaticShadow)
     float           m_fZDistance;
     float           m_fScale;
     RwTexture      *m_pTexture;
-    unsigned short  m_nIntensity;
+    short  m_nIntensity;
     unsigned char   m_nType;
     unsigned char   m_nRed;
     unsigned char   m_nGreen;
     unsigned char   m_nBlue;
-    char            m_bJustCreated;
-    char            m_bRendered;
-    char            m_bTemporaryShadow; // delete after 5000ms
+    unsigned char   m_bJustCreated;
+    bool            m_bRendered;
+    bool            m_bTemporaryShadow; // delete after 5000ms
     union {
         struct {
             unsigned char m_nDayIntensity : 4;

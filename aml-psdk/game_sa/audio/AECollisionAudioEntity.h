@@ -11,7 +11,7 @@ struct tCollisionAudioEntry
     CEntity *pEntityB;
     CAESound *pSound;
     unsigned int LoopStopTimeMs;
-    char SoundStatus;
+    signed char SoundStatus;
     unsigned char SurfaceA;
     unsigned char SurfaceB;
 };

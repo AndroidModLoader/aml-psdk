@@ -41,6 +41,9 @@ DECL_CLASS_BASED(CBike, CVehicle)
     DECL_CTORCALL_ARG_HEAD(CBike, _ZN5CBikeC2Eih, int modelIdx, u8 createdBy)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CBike, _ZN5CBikeD2Ev);
+
+    // Virtual functions
+    virtual bool ProcessAI(unsigned int &);
     
     // Member values
     RwFrame       *m_aBikeNodes[BIKE_NUM_NODES];
@@ -73,8 +76,8 @@ DECL_CLASS_BASED(CBike, CVehicle)
     float m_aWheelCounts[4];
     float m_fBrakeCount;
     int            m_anWheelSurfaceType[2];
-    char m_aBloodyWheel[2];
-    char m_aMoreSkidmarks[2];
+    bool m_aBloodyWheel[2];
+    bool m_aMoreSkidmarks[2];
     float          m_afWheelRotationX[2];
     float m_fWheelSpeed[2];
     float m_fSuspensionHeights[2];
@@ -87,15 +90,15 @@ DECL_CLASS_BASED(CBike, CVehicle)
     float m_fForkYOff;
     float m_fForkZOff;
     float m_fSteerAngleTan;
-    short m_nBrakes;
+    unsigned short m_nBrakes;
     float m_fTyreTemp;
     float m_fBrakingSliding;
-    bool           m_bPedLeftHandFixed;
-    bool           m_bPedRightHandFixed;
-    bool           m_bTestPedCol;
+    unsigned char  m_bPedLeftHandFixed;
+    unsigned char  m_bPedRightHandFixed;
+    unsigned char  m_bTestPedCol;
     float m_fPreviousSpeed;
     float m_fBurningTimer; // starts when vehicle health is lower than 250.0, bike blows up when it hits 5000.0
-    CEntity       *m_apWheelCollisionEntity[4];
+    CPhysical     *m_apWheelCollisionEntity[4];
     CVector        m_avTouchPointsLocalSpace[4];
     CEntity       *m_pDamager;
     unsigned char  m_nNumContactWheels;

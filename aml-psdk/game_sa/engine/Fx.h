@@ -128,7 +128,7 @@ DECL_CLASS(Fx_c)
     FxSystem_c *m_pPrtWheeldirt;
     FxSystem_c *m_pPrtGlass;
     TList_c<ListItem_c> m_entityFxList;
-    unsigned int m_nBloodPoolsCount;
+    int m_nBloodPoolsCount;
     FxQuality_e m_fxQuality;
 DECL_CLASS_END()
 CHECKSIZE(Fx_c, 0x58, 0xA8);

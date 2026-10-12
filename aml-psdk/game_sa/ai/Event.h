@@ -5,10 +5,12 @@
 
 struct CPed;
 
+struct CEvent;
+
 DECL_CLASS_VTABLE(CEventGroup)
     CPed         *m_pPed;
-    unsigned int  m_dwCount;
-    void         *m_apEvents[16];
+    int           m_dwCount;
+    CEvent       *m_apEvents[16];
 DECL_CLASS_END()
 
 #endif // __AML_PSDK_SAAIEVENT_H

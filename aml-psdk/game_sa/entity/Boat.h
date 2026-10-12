@@ -42,8 +42,8 @@ DECL_CLASS_BASED(CBoat, CVehicle)
     CDoor              m_boatFlap; // for marquis model
     tBoatHandlingData *m_pBoatHandling;
     float              m_fAnchoredAngle; // radians, initialised with -9999.99
-    int                m_nAttackPlayerTime;
-    int                m_nLastParticleTime; // initialised with 0, not used
+    unsigned int       m_nAttackPlayerTime;
+    unsigned int       m_nLastParticleTime; // initialised with 0, not used
     float              m_fBurningTimer; // starts when vehicle health is lower than 250.0, boat blows up when it hits 5000.0
     CEntity           *m_pWhoDestroyedMe;
     CVector            m_vecBoatMoveForce; // m_vecBoatMoveForce = m_vecMoveForce + m_vecFrictionMoveForce
@@ -53,7 +53,7 @@ DECL_CLASS_BASED(CBoat, CVehicle)
     unsigned char      m_nCurrentField; // initialised with 0
     unsigned char      m_nPadNumber; // 0 - 3
     float              m_fWaterResistance; // initialised with 7.0f, 0.0f - not in water
-    short              m_nNumWaterTrailPoints;
+    unsigned short     m_nNumWaterTrailPoints;
     CVector2D          m_avecWakePoints[32];
     float              m_afWakePointLifeTime[32];
     unsigned char      m_anWakePointIntensity[32]; // m_anWakePointIntensity[i] = boat->m_vecMoveForce.Magnitude() * 100.0f;

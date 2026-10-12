@@ -95,7 +95,7 @@ DECL_CLASS(CAESound)
     short                 m_nSoundIdInSlot;
     CAEAudioEntity       *m_pBaseAudio;
     CEntity              *m_pPhysicalEntity;
-    unsigned int          m_nEvent;
+    int                   m_nEvent;
     float                 m_fMaxVolume;
     float                 m_fVolume;
     float                 m_fSoundDistance;
@@ -109,7 +109,7 @@ DECL_CLASS(CAESound)
     float                 m_fCurrCamDist;
     float                 m_fPrevCamDist;
     float                 m_fTimeScale;
-    char                  m_FrameDelay;
+    unsigned char         m_FrameDelay;
     union
     {
         unsigned short m_nEnvironmentFlags;
@@ -133,10 +133,10 @@ DECL_CLASS(CAESound)
     unsigned short        m_nIsUsed;
     unsigned short        m_bAudioHardwareAware;
     short                 m_nCurrentPlayPosition;
-    short                 m_bPhysicallyPlaying;
+    unsigned short        m_bPhysicallyPlaying;
     float                 m_fFinalVolume;
     float                 m_fFrequency;
-    short                 m_nPlayingState;
+    unsigned short        m_nPlayingState;
     float                 m_fSoundHeadRoom;
     short                 m_nSoundLength;
 DECL_CLASS_END()
@@ -144,7 +144,7 @@ CHECKSIZE(CAESound, 0x74, 0x80);
 
 
 
-DECL_CLASS_VTABLE(CAEAudioEntity)
+DECL_CLASS(CAEAudioEntity)
     CEntity *m_pEntity;
     CAESound m_tempSound;
     virtual void UpdateParameters(CAESound *pSound, short PlayPosition);
@@ -157,13 +157,13 @@ DECL_CLASS_BASED(CAETwinLoopSoundEntity, CAEAudioEntity)
     short           m_nBankSlotId;
     short           m_nSoundType[2];
     CAEAudioEntity *m_pBaseAudio;
-    short           m_bIsInitialised;
+    unsigned short  m_bIsInitialised;
     short           m_nFirstLength;
     short           m_nSecondLength;
-    short           m_nPlayTimeMin;
-    short           m_nPlayTimeMax;
+    unsigned short  m_nPlayTimeMin;
+    unsigned short  m_nPlayTimeMax;
     unsigned int    m_nTimeToSwapSounds;
-    bool            m_bPlayingFirstSound;
+    unsigned char   m_bPlayingFirstSound;
     short           m_anStartingPlayPercentage[2];
     CAESound       *m_apSounds[2];
 DECL_CLASS_END()
@@ -172,15 +172,15 @@ CHECKSIZE(CAETwinLoopSoundEntity, 0xA8, 0xC8);
 
 
 DECL_CLASS_BASED(CAEPedAudioEntity, CAEAudioEntity)
-    bool m_bInitialised;
+    unsigned char m_bInitialised;
     short m_nLastSwimSplashSoundId;
-    int m_nLastSwimWakeTriggerTimeMs;
+    unsigned int m_nLastSwimWakeTriggerTimeMs;
     float m_fCurrentJetPackThrustVolume;
     float m_fCurrentJetPackGasVolume;
     float m_fCurrentJetPackRoarVolume;
     float m_fCurrentJetPackRoarFrequency;
     CPed *m_pPed;
-    char m_bJetpackOn;
+    unsigned char m_bJetpackOn;
     CAESound *m_pJetPackThrustSound;
     CAESound *m_pJetPackGasSound;
     CAESound *m_pJetPackRoarSound;
@@ -194,41 +194,54 @@ CHECKSIZE(CAEPedAudioEntity, 0x15C, 0x1A8);
 
 
 DECL_CLASS_BASED(CAEPedSpeechAudioEntity, CAEAudioEntity)
+    // Virtual functions
+    virtual void AddScriptSayEvent(i32 audioEvent, i32 pedContext, u8 overrideSilence, u8 forceAudible, u8 frontEnd);
+    virtual void Terminate();
+    virtual void PlayLoadedSound();
+    virtual i16 GetAllocatedVoice();
+    virtual u8 WillPedChatAboutTopic(i16 topic);
+    virtual i16 GetPedType();
+    virtual u8 IsPedFemaleForAudio();
+
+    // Member values
     CAESound* m_aSounds[5];
-    bool m_bInitialised;
+    unsigned char m_bInitialised;
     short m_nVoiceType; // see eAudioPedType
     short m_nVoiceID;
     short m_nVoiceGender;
-    bool m_bTalking;
-    bool m_bEnableVocalType;
-    bool m_bMuted;
-    char m_nVocalEnableFlag;
-    bool m_bFrontEnd;
-    bool m_bForceAudible;
+    unsigned char m_bTalking;
+    unsigned char m_bEnableVocalType;
+    unsigned char m_bMuted;
+    union
+    {
+        unsigned char m_bFrontEnd;
+        unsigned char m_nVocalEnableFlag;
+    };
+    unsigned char m_bForceAudible;
     CAESound *m_pSound;
     short m_nSoundId;
     short m_nBankId;
     short m_nPedSpeechSlotIndex;
     float m_fVoiceVolume;
     short m_nCurrentPhraseId;
-    int m_NextTimeCanSayPain[19];
+    unsigned int m_NextTimeCanSayPain[19];
 DECL_CLASS_END()
 CHECKSIZE(CAEPedSpeechAudioEntity, 0x100, 0x130);
 
 
 
 DECL_CLASS_BASED(CAEWeaponAudioEntity, CAEAudioEntity)
-    bool m_bPlayedMiniGunFireSound;
-    bool m_bMiniGunFireActive;
-    char m_nLastWeaponPlaneFrequencyIndex;
-    char m_nState;
-    char m_nChainsawSoundState;
-    int m_dwFlameThrowerLastPlayedTime;
-    int m_dwSpraycanLastPlayedTime;
-    int m_dwExtinguisherLastPlayedTime;
-    int m_dwMiniGunFireSoundPlayedTime;
-    int m_dwTimeChainsaw;
-    int m_dwTimeLastFired;
+    unsigned char m_bPlayedMiniGunFireSound;
+    unsigned char m_bMiniGunFireActive;
+    signed char m_nLastWeaponPlaneFrequencyIndex;
+    signed char m_nState;
+    signed char m_nChainsawSoundState;
+    unsigned int m_dwFlameThrowerLastPlayedTime;
+    unsigned int m_dwSpraycanLastPlayedTime;
+    unsigned int m_dwExtinguisherLastPlayedTime;
+    unsigned int m_dwMiniGunFireSoundPlayedTime;
+    unsigned int m_dwTimeChainsaw;
+    unsigned int m_dwTimeLastFired;
     CAESound *m_pSounds;
 DECL_CLASS_END()
 CHECKSIZE(CAEWeaponAudioEntity, 0xA0, 0xB8);
@@ -236,14 +249,14 @@ CHECKSIZE(CAEWeaponAudioEntity, 0xA0, 0xB8);
 
 
 DECL_CLASS_BASED(CAEPedWeaponAudioEntity, CAEWeaponAudioEntity)
-    bool m_bActive;
+    unsigned char m_bActive;
     CPed* m_pPed;
 DECL_CLASS_END()
 CHECKSIZE(CAEPedWeaponAudioEntity, 0xA8, 0xC8);
 
 
 
-enum eVehicleSoundType : char
+enum eVehicleSoundType : signed char
 {
     VEHICLE_SOUND_CAR = 0x0,
     VEHICLE_SOUND_MOTORCYCLE = 0x1,
@@ -258,16 +271,16 @@ enum eVehicleSoundType : char
     VEHICLE_SOUND_SPECIAL = 0xA,
 };
 
-enum eRadioType : char
+enum eRadioType : signed char
 {
     RADIO_CIVILIAN = 0x0,
     RADIO_SPECIAL = 0x1,
     RADIO_UNKNOWN = 0x2,
     RADIO_EMERGENCY = 0x3,
-    RADIO_DISABLED = 0xFF,
+    RADIO_DISABLED = -1,
 };
 
-enum eRadioID : char
+enum eRadioID : signed char
 {
     RADIO_PLAYBACK_FM=1,
     RADIO_K_ROSE,
@@ -289,47 +302,47 @@ struct tVehicleAudioSettings
     eVehicleSoundType  m_nVehicleSoundType;
     short m_nEngineOnSoundBankId;
     short m_nEngineOffSoundBankId;
-    char  m_nBassSetting;   // m_nStereo
+    signed char m_nBassSetting;   // m_nStereo
     float m_fBassEq;
     float m_fEnginePitch;
-    char  m_bHornTon;   // sfx id
+    signed char m_bHornTon;   // sfx id
     float m_fHornHigh;
-    char  m_nDoorSound;
-    char m_nEngineUpgrade;
+    signed char m_nDoorSound;
+    signed char m_nEngineUpgrade;
     eRadioID m_nRadioID;
     eRadioType m_nRadioType;
-    char vehTypeForAudio;
+    signed char vehTypeForAudio;
     float m_fHornVolumeDelta;
 };
 
 struct tVehicleSound
 {
-    unsigned int  m_nIndex;
+    short         m_nIndex;
     CAESound     *m_pSound;
 };
 
 DECL_CLASS_BASED(CAEVehicleAudioEntity, CAEAudioEntity)
     short                   m_nStallCounter;
     tVehicleAudioSettings   m_settings;
-    bool                    m_bEnabled;
-    bool                    m_bPlayerDriver;
-    bool                    m_bPlayerPassenger;
-    bool                    m_bVehicleRadioPaused;
-    bool                    m_bSoundsStopped;
-    char                    m_nEngineState;
-    char                    m_nAudioGear;
+    unsigned char           m_bEnabled;
+    unsigned char           m_bPlayerDriver;
+    unsigned char           m_bPlayerPassenger;
+    unsigned char           m_bVehicleRadioPaused;
+    unsigned char           m_bSoundsStopped;
+    signed char             m_nEngineState;
+    unsigned char           m_nAudioGear;
     float                   m_CrzCount;
-    bool                    m_bInhibitAccForLowSpeed;
+    unsigned char           m_bInhibitAccForLowSpeed;
     short                   m_nRainDropCounter;
     short                   m_nStalledCounter;
     unsigned int            m_nSwapStalledTime;
-    bool                    m_bSilentStalled;
-    bool                    m_bDisableHeliEngineSounds;
-    bool                    m_bHornOn;
-    bool                    m_bSirenOrAlarmPlaying;
-    bool                    m_bHornPlaying;
+    unsigned char           m_bSilentStalled;
+    unsigned char           m_bDisableHeliEngineSounds;
+    unsigned char           m_bHornOn;
+    unsigned char           m_bSirenOrAlarmPlaying;
+    unsigned char           m_bHornPlaying;
     float                   m_fSirenVolume;
-    bool                    m_bModelWithSiren;
+    unsigned char           m_bModelWithSiren;
     unsigned int            m_nBoatHitWaveLastPlayedTime;
     unsigned int            m_nTimeToInhibitAcc;
     unsigned int            m_nTimeToInhibitCrz;
@@ -364,7 +377,7 @@ DECL_CLASS_BASED(CAEVehicleAudioEntity, CAEAudioEntity)
     float                   m_fMovingPartSmoothedSpeed;
     float                   m_fFadeIn;
     float                   m_fFadeOut;
-    bool                    m_bNitroSoundPresent;
+    unsigned char           m_bNitroSoundPresent;
     float                   m_CurrentNitroRadio;
 DECL_CLASS_END()
 CHECKSIZE(CAEVehicleAudioEntity, 0x24C, 0x310);

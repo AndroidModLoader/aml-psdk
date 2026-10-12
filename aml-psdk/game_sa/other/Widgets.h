@@ -4,6 +4,7 @@
 #include <aml-psdk/game_sa/engine/Sprite2d.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/gta_base/RGBA.h>
+#include <aml-psdk/gta_base/DrawVertices.h>
 #include "../enum/HID.h"
 
 struct WidgetPosition
@@ -22,8 +23,11 @@ DECL_CLASS(CHoldEffect)
     CRect m_RectScreen;
     float m_fProgress;
     bool m_bSquare;
-    // ...
+    CRGBA m_Color;
+    bool m_bExplicitRender;
+    RwIm2DVertex maVertices[48];
 DECL_CLASS_END()
+CHECKSIZE(CHoldEffect, 0x568, 0x578);
 
 
 
@@ -35,7 +39,7 @@ DECL_CLASS_BASED(CWidget, SimpleVTable)
     virtual void DrawHelpIcon(char const*,float,float,float,int);
     virtual void Draw(void);
     virtual float GetPinchDistance(void);
-    virtual int GetWidgetValue(void);
+    virtual float GetWidgetValue(void);
     virtual void GetWidgetValue2(float *,float *);
     virtual bool IsButton(void);
     virtual bool IsDoubleTapped(void);

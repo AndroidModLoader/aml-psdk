@@ -143,41 +143,80 @@ DECL_CLASS_BASED(CPhysical, CEntity)
     float m_fPrevDistFromCam;
     unsigned int m_nLastCollisionTime;
 
-    unsigned int bMakeMassTwiceAsBig : 1;
-    unsigned int bApplyGravity : 1;
-    unsigned int bDisableCollisionForce : 1;
-    unsigned int bCollidable : 1;
-    unsigned int bDisableTurnForce : 1;
-    unsigned int bDisableMoveForce : 1;
-    unsigned int bInfiniteMass : 1;
-    unsigned int bDisableZ : 1;
-
-    unsigned int bSubmergedInWater : 1;
-    unsigned int bOnSolidSurface : 1;
-    unsigned int bBroken : 1;
-    unsigned int bProcessCollisionEvenIfStationary : 1;
-    unsigned int bSkipLineCol : 1;
-    unsigned int bDontApplySpeed : 1;
-    unsigned int bDontLoadCollision : 1;
-    unsigned int bProcessingShift : 1;
-
-    unsigned int bForceHitReturnFalse : 1;
-    unsigned int bDisableSimpleCollision : 1;
-    unsigned int bBulletProof : 1;
-    unsigned int bFireProof : 1;
-    unsigned int bCollisionProof : 1;
-    unsigned int bMeleeProof : 1;
-    unsigned int bInvulnerable : 1;
-    unsigned int bExplosionProof : 1;
-
-    unsigned int bDontCollideWithFlyers : 1;
-    unsigned int bAttachedToEntity : 1;
-    unsigned int bAddMovingCollisionSpeed : 1;
-    unsigned int bTouchingWater : 1;
-    unsigned int bCanBeCollidedWith : 1;
-    unsigned int bDestroyed : 1;
-    unsigned int bDoorHitEndStop : 1;
-    unsigned int bCarriedByRope : 1;
+    union
+    {
+        unsigned int m_nPhysicalFlags;
+        struct
+        {
+            unsigned int bExtraHeavy : 1;
+            unsigned int bDoGravity : 1;
+            unsigned int bInfiniteMass : 1;
+            unsigned int bInfiniteMassFixed : 1;
+            unsigned int bPedPhysics : 1;
+            unsigned int bDoorPhysics : 1;
+            unsigned int bHangingPhysics : 1;
+            unsigned int bPoolBallPhysics : 1;
+            unsigned int bIsInWater : 1;
+            unsigned int bCollidedThisFrame : 1;
+            unsigned int bUnFreezable : 1;
+            unsigned int bTrainForceCol : 1;
+            unsigned int bSkipLineCol : 1;
+            unsigned int bCoorsFrozenByScript : 1;
+            unsigned int bDontLoadCollision : 1;
+            unsigned int bHalfSpeedCollision : 1;
+            unsigned int bForceHitReturnFalse : 1;
+            unsigned int bDontProcessCollisionOurSelves : 1;
+            unsigned int bNotDamagedByBullets : 1;
+            unsigned int bNotDamagedByFlames : 1;
+            unsigned int bNotDamagedByCollisions : 1;
+            unsigned int bNotDamagedByMelee : 1;
+            unsigned int bOnlyDamagedByPlayer : 1;
+            unsigned int bIgnoresExplosions : 1;
+            unsigned int bFlyer : 1;
+            unsigned int bNeverGoStatic : 1;
+            unsigned int bUsingSpecialColModel : 1;
+            unsigned int bForceFullWaterCheck : 1;
+            unsigned int bUsesCollisionRecords : 1;
+            unsigned int bRenderScorched : 1;
+            unsigned int bDoorHitEndStop : 1;
+            unsigned int bCarriedByRope : 1;
+        };
+        struct
+        {
+            unsigned int bMakeMassTwiceAsBig : 1;
+            unsigned int bApplyGravity : 1;
+            unsigned int bDisableCollisionForce : 1;
+            unsigned int bCollidable : 1;
+            unsigned int bDisableTurnForce : 1;
+            unsigned int bDisableMoveForce : 1;
+            unsigned int : 1;
+            unsigned int bDisableZ : 1;
+            unsigned int bSubmergedInWater : 1;
+            unsigned int bOnSolidSurface : 1;
+            unsigned int bBroken : 1;
+            unsigned int bProcessCollisionEvenIfStationary : 1;
+            unsigned int : 1;
+            unsigned int bDontApplySpeed : 1;
+            unsigned int : 1;
+            unsigned int bProcessingShift : 1;
+            unsigned int : 1;
+            unsigned int bDisableSimpleCollision : 1;
+            unsigned int bBulletProof : 1;
+            unsigned int bFireProof : 1;
+            unsigned int bCollisionProof : 1;
+            unsigned int bMeleeProof : 1;
+            unsigned int bInvulnerable : 1;
+            unsigned int bExplosionProof : 1;
+            unsigned int bDontCollideWithFlyers : 1;
+            unsigned int bAttachedToEntity : 1;
+            unsigned int bAddMovingCollisionSpeed : 1;
+            unsigned int bTouchingWater : 1;
+            unsigned int bCanBeCollidedWith : 1;
+            unsigned int bDestroyed : 1;
+            unsigned int : 1;
+            unsigned int : 1;
+        };
+    };
 
     CVector          m_vecMoveSpeed;
     CVector          m_vecTurnSpeed;
@@ -213,7 +252,7 @@ DECL_CLASS_BASED(CPhysical, CEntity)
     CVector          m_vecLastCollisionPosn;
     unsigned short   m_nPieceType;
 
-    CPhysical       *m_pAttachedTo;
+    CEntity         *m_pAttachedTo;
     CVector          m_vecAttachOffset;
     CVector          m_vecAttachedEntityPosn;
     CQuaternion      m_qAttachedEntityRotation;

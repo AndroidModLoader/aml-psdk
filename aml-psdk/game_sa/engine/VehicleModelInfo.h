@@ -20,18 +20,18 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     RpMaterial      *m_pPlateMaterial;
     char             m_szPlateText[9];
     unsigned char    m_nPlateType;
-    char             m_szGameName[10];
+    char             m_szGameName[8];
     unsigned int     m_nVehicleType;
     float            m_fWheelSizeFront;
     float            m_fWheelSizeRear;
     short            m_nWheelModelIndex;
-    unsigned short   m_nHandlingId;
-    unsigned char    m_nNumDoors;
-    unsigned char    m_nVehicleClass; // see eVehicleClass
-    unsigned char    m_nFlags;
-    unsigned char    m_nWheelUpgradeClass;
-    unsigned char    m_nTimesUsed;
-    unsigned short   m_nFrq;
+    short            m_nHandlingId;
+    signed char      m_nNumDoors;
+    signed char      m_nVehicleClass; // see eVehicleClass
+    signed char      m_nFlags;
+    signed char      m_nWheelUpgradeClass;
+    signed char      m_nTimesUsed;
+    short            m_nFrq;
     union
     {
         unsigned int m_nCompRules;
@@ -55,7 +55,7 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
         UpgradePosnDesc m_aUpgrades[18];
         RpAtomic       *m_apExtras[6];
         RpAtomic       *m_apExtrasLOD[6];
-        unsigned char   m_nNumExtras;
+        signed char     m_nNumExtras;
         unsigned int    m_nMaskComponentsDamagable;
 
         // STATIC member
@@ -79,7 +79,11 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     unsigned char       m_nCurrentQuaternaryColor;
     short               m_anUpgrades[18];
     const char         *m_anRemaps[4]; // Not TXDs on mobile
-    CAnimBlock         *m_pAnimBlock;
+    union
+    {
+        uintptr_t m_nAnimFileIndex;
+        uintptr_t       m_pAnimBlock;
+    };
 DECL_CLASS_END()
 CHECKSIZE(CVehicleModelInfo, 0x3A8, 0x6B0);
 

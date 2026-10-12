@@ -105,8 +105,8 @@ enum eCarNodes
 
 struct CBouncingPanel
 {
-    unsigned short m_nFrameId;
-    unsigned short m_nAxis;
+    short m_nFrameId;
+    short m_nAxis;
     float          m_fAngleLimit;
     CVector        m_vecRotation;
     CVector        m_vecPos;
@@ -163,6 +163,7 @@ DECL_CLASS_BASED(CAutomobile, CVehicle)
     DECL_DTORCALL(CAutomobile, _ZN11CAutomobileD2Ev);
 
     // Virtual functions
+    virtual bool ProcessAI(unsigned int &);
     virtual void ResetSuspension(void);
     virtual void ProcessFlyingCarStuff(void);
     virtual void DoHoverSuspensionRatios(void);
@@ -204,13 +205,13 @@ DECL_CLASS_BASED(CAutomobile, CVehicle)
             unsigned char bIsMonsterTruck : 1;
         };
     };
-    short m_nBrakesOn;
-    short m_wMiscComponentAngle;
-    short m_wVoodooSuspension;
-    int m_dwBusDoorTimerEnd;
-    int m_dwBusDoorTimerStart;
+    unsigned short m_nBrakesOn;
+    unsigned short m_wMiscComponentAngle;
+    unsigned short m_wVoodooSuspension;
+    unsigned int m_dwBusDoorTimerEnd;
+    unsigned int m_dwBusDoorTimerStart;
     float wheelOffsetZ[4];
-    int lineLength[4];
+    float lineLength[4];
     float m_fFrontHeightAboveRoad;
     float m_fRearHeightAboveRoad;
     float m_fCarTraction;
@@ -222,7 +223,7 @@ DECL_CLASS_BASED(CAutomobile, CVehicle)
     CVector m_vecOldTurnSpeed;
     float m_aDoorRotation[6];
     float m_fBurningTimer; // starts when vehicle health is lower than 250.0, car blows up when it hits 5000.0
-    CEntity *m_pWheelCollisionEntity[4];
+    CPhysical *m_pWheelCollisionEntity[4];
     CVector m_vWheelCollisionPos[4];
     CEntity* m_pAttacker;
     float m_fTransformPos;
@@ -451,8 +452,8 @@ DECL_CLASS_BASED(CHeli, CAutomobile)
     float               m_fMinAltitude;
     float               m_fFlightDirection;
     bool                m_bStopFlyingForAWhile;
-    char                m_nNumSwatOccupants;
-    char                m_anSwatIDs[4];
+    unsigned char       m_nNumSwatOccupants;
+    unsigned char       m_anSwatIDs[4];
     float               m_afOldSearchLightX[6];
     float               m_afOldSearchLightY[6];
     u32                 m_nLastSearchLightSample;
@@ -461,8 +462,8 @@ DECL_CLASS_BASED(CHeli, CAutomobile)
     u32                 m_nLastTimeSearchLightWasTooFarAwayToShoot;
     u32                 m_nNextTalkTimer;
     FxSystem_c        **m_ppGunflashFx;
-    char                m_nFiringMultiplier;
-    bool                m_bSearchLightEnabled;
+    unsigned char                m_nFiringMultiplier;
+    unsigned char       m_bSearchLightEnabled;
     float               m_fCrashAndBurnTurnSpeed;
 DECL_CLASS_END()
 CHECKSIZE(CHeli, 0xA2C, 0xC60);
@@ -535,7 +536,7 @@ DECL_CLASS_BASED(CPlane, CAutomobile)
     FxSystem_c     *m_apJettrusParticles[4];
     FxSystem_c     *m_pSmokeParticle;
     int32_t         m_nSmokeTimer;
-    bool            m_bSmokeEjectorEnabled;
+    unsigned char   m_bSmokeEjectorEnabled;
 DECL_CLASS_END()
 CHECKSIZE(CPlane, 0xA18, 0xC68);
 

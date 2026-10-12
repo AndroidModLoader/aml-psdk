@@ -14,10 +14,10 @@ struct CRect;
 
 struct CQueuedMode
 {
-    unsigned short m_nMode;
+    short m_nMode;
     float          m_fDuration;
-    unsigned short m_nMinZoom;
-    unsigned short m_nMaxZoom;
+    short m_nMinZoom;
+    short m_nMaxZoom;
 };
 
 struct CCamPathSplines
@@ -203,7 +203,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     bool m_bPlayerWasOnBike;
     bool m_bJustCameOutOfGarage;
     bool m_bJustInitalised;
-    bool m_bJust_Switched;
+    unsigned char m_bJust_Switched;
     bool m_bLookingAtPlayer;
     bool m_bLookingAtVector;
     bool m_bMoveCamToAvoidGeom;
@@ -212,7 +212,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     bool m_bRestoreByJumpCut;
     bool m_bUseNearClipScript;
     bool m_bStartInterScript;
-    bool m_bStartingSpline;
+    unsigned char m_bStartingSpline;
     bool m_bTargetJustBeenOnTrain;
     bool m_bTargetJustCameOffTrain;
     bool m_bUseSpecialFovTrain;
@@ -231,10 +231,10 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     bool m_bCooperativeCamMode;
     bool m_bAllowShootingWith2PlayersInCar;
     bool m_bDisableFirstPersonInCar;
-    unsigned short m_nModeForTwoPlayersSeparateCars;
-    unsigned short m_nModeForTwoPlayersSameCarShootingAllowed;
-    unsigned short m_nModeForTwoPlayersSameCarShootingNotAllowed;
-    unsigned short m_nModeForTwoPlayersNotBothInCar;
+    short m_nModeForTwoPlayersSeparateCars;
+    short m_nModeForTwoPlayersSameCarShootingAllowed;
+    short m_nModeForTwoPlayersSameCarShootingNotAllowed;
+    short m_nModeForTwoPlayersNotBothInCar;
     bool m_bGarageFixedCamPositionSet;
     bool m_bDoingSpecialInterPolation;
     bool m_bScriptParametersSetForInterPol;
@@ -244,8 +244,8 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     bool m_bFailedCullZoneTestPreviously;
     bool m_bFadeTargetIsSplashScreen;
     bool m_bWorldViewerBeingUsed;
-    bool m_bTransitionJUSTStarted;
-    bool m_bTransitionState;
+    unsigned char m_bTransitionJUSTStarted;
+    unsigned char m_bTransitionState;
     unsigned char m_nActiveCam;
     unsigned int m_nCamShakeStart;
     unsigned int m_nFirstPersonCamLastInputTime;
@@ -257,24 +257,24 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     unsigned int m_nTimeTransitionStart;
     unsigned int m_nTransitionDuration;
     unsigned int m_nTransitionDurationTargetCoors;
-    unsigned int m_nBlurBlue;
-    unsigned int m_nBlurGreen;
-    unsigned int m_nBlurRed;
-    unsigned int m_nBlurType;
-    unsigned int m_nWorkOutSpeedThisNumFrames;
-    unsigned int m_nNumFramesSoFar;
-    unsigned int m_nCurrentTrainCamNode;
-    unsigned int m_nMotionBlur;
-    unsigned int m_nMotionBlurAddAlpha;
-    unsigned int m_nCheckCullZoneThisNumFrames;
-    unsigned int m_nZoneCullFrameNumWereAt;
-    unsigned int m_nWhoIsInControlOfTheCamera;
-    unsigned int m_nCarZoom;
+    int m_nBlurBlue;
+    int m_nBlurGreen;
+    int m_nBlurRed;
+    int m_nBlurType;
+    int m_nWorkOutSpeedThisNumFrames;
+    int m_nNumFramesSoFar;
+    int m_nCurrentTrainCamNode;
+    int m_nMotionBlur;
+    int m_nMotionBlurAddAlpha;
+    int m_nCheckCullZoneThisNumFrames;
+    int m_nZoneCullFrameNumWereAt;
+    int m_nWhoIsInControlOfTheCamera;
+    int m_nCarZoom;
     float m_fCarZoomBase;
     float m_fCarZoomTotal;
     float m_fCarZoomSmoothed;
     float m_fCarZoomValueScript;
-    unsigned int m_nPedZoom;
+    int m_nPedZoom;
     float m_fPedZoomBase;
     float m_fPedZoomTotal;
     float m_fPedZoomSmoothed;
@@ -314,7 +314,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     float m_fSoundDistUpAsRead;
     float m_fSoundDistUpAsReadOld;
     float m_fAvoidTheGeometryProbsTimer;
-    unsigned short m_nAvoidTheGeometryProbsDirn;
+    short m_nAvoidTheGeometryProbsDirn;
     float m_fWideScreenReductionAmount;
     float m_fStartingFOVForInterPol;
     CCam m_aCams[3];
@@ -381,7 +381,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     float m_fScriptPercentageInterToStopMoving;
     float m_fScriptPercentageInterToCatchUp;
     unsigned int m_nScriptTimeForInterPolation;
-    unsigned short m_nFadeInOutFlag;
+    short m_nFadeInOutFlag;
     int m_nModeObbeCamIsInForCar;
     short m_nModeToGoTo;    // see eCamMode
     short m_nMusicFadingDirection;
@@ -408,7 +408,7 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     float m_fEndZoomTime;
     float m_fZoomInFactor;
     float m_fZoomOutFactor;
-    unsigned char m_nZoomMode;
+    bool m_nZoomMode;
     bool m_bFOVLerpProcessed;
     float m_fFOVNew;
     float m_vectorMoveStartTime;

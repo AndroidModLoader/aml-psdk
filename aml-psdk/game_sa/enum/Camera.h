@@ -7,7 +7,7 @@ enum eSwitchType : unsigned short
     SWITCHTYPE_JUMPCUT
 };
 
-enum eCamMode : unsigned short
+enum eCamMode : short
 {
     MODE_NONE = 0x0,
     MODE_TOPDOWN = 0x1,

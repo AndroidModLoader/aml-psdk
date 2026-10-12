@@ -51,20 +51,20 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
     DECL_DTORCALL(CEntity, _ZN7CEntityD2Ev);
 
     // Virtual functions
-    virtual int Add();
-    virtual int Add(CRect&);
-    virtual int Remove();
+    virtual void Add();
+    virtual void Add(const CRect&);
+    virtual void Remove();
     virtual void SetIsStatic(bool isStatic);
-    virtual void SetModelIndex(int modelIdx);
-    virtual void SetModelIndexNoCreate(int modelIdx);
-    virtual RwObject* CreateRwObject();
+    virtual void SetModelIndex(u32 modelIdx);
+    virtual void SetModelIndexNoCreate(u32 modelIdx);
+    virtual void CreateRwObject();
     virtual void DeleteRwObject();
-    virtual CRect GetBoundRect();
+    virtual CRect GetBoundRect() const;
     virtual void ProcessControl();
     virtual void ProcessCollision();
     virtual void ProcessShift();
     virtual bool TestCollision(bool applySpeed);
-    virtual void Teleport(CVector destination, bool resetRotation = false);
+    virtual void Teleport(CVector destination, u8 resetRotation = false);
     virtual void SpecialEntityPreCollisionStuff(CPhysical *pPhysical,bool bDoingShift,bool &bSkipTestEntirely,bool &bSkipCol,bool &bForceBuildingCol,bool &bForceSoftCol);
     virtual uint8_t SpecialEntityCalcCollisionSteps(bool& bProcessCollisionBeforeSettingTimeStep, bool& bDoPreCheckAtHalfSpeed);
     virtual void PreRender();                                                                                     
@@ -200,11 +200,11 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
     u32 dummy_flag_pad; // both versions.
 
     unsigned short m_nRandomSeed;
-    unsigned short m_nModelIndex;
+    short m_nModelIndex;
     CReference *m_pReferences;
     void *m_pStreamingLink;
-    short m_nScanCode;
-    char m_nIplIndex;
+    unsigned short m_nScanCode;
+    unsigned char m_nIplIndex;
     union
     {
         unsigned char m_nInterior;
@@ -217,7 +217,7 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
         CEntity *m_pLod;
     };
     unsigned char m_nNumLodChildren;
-    unsigned char m_nNumLodChildrenRendered;
+    signed char m_nNumLodChildrenRendered;
     union
     {
         i8 m_nTypeStatus;

@@ -17,15 +17,15 @@ struct CAudioLink
 };
 
 DECL_CLASS_BASED(CAEExplosionAudioEntity, CAEAudioEntity)
-    char m_nLastExplosionFrequencyIndex;
+    signed char m_nLastExplosionFrequencyIndex;
 DECL_CLASS_END()
 
 DECL_CLASS(CAEScriptAudioEntity)
     CAEAudioEntity audio;
-    bool m_bMiniGameOneShotTriggered;
-    bool m_bInACrane;
-    char m_nMeshGateTriggerCount;
-    int m_dwLastTimeHornPlayed;
+    unsigned char m_bMiniGameOneShotTriggered;
+    unsigned char m_bInACrane;
+    signed char m_nMeshGateTriggerCount;
+    unsigned int m_dwLastTimeHornPlayed;
     float m_fCraneVolume;
     float m_fCraneFrequencyScaling;
     float m_fMissionSoundEnvelopePhase;

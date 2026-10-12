@@ -87,7 +87,7 @@ DECL_CLASS(FxSphere_c)
     // Member values
     RwV3d        m_vecCenter;
     float        m_fRadius;
-    unsigned int m_nNumPlanesPassed;
+    int m_nNumPlanesPassed;
 DECL_CLASS_END()
 
 

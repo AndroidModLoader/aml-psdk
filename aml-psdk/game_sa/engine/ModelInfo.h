@@ -6,6 +6,7 @@
 #include "../enum/WeaponType.h"
 
 struct CBox;
+struct CBoundingBox;
 struct C2dEffect;
 struct CColModel;
 struct RwObject;
@@ -47,7 +48,7 @@ struct tTimeInfo
 struct RwObjectNameIdAssocation
 {
     char *m_pName;
-    unsigned int m_dwHierarchyId;
+    int m_dwHierarchyId;
     unsigned int m_dwFlags;
 };
 
@@ -65,12 +66,12 @@ DECL_CLASS_VTABLE(CBaseModelInfo)
     virtual void Init();
     virtual void Shutdown();
     virtual void DeleteRwObject();
-    virtual u32 GetRwModelType();
+    virtual i32 GetRwModelType();
     virtual RwObject* CreateInstance();
     virtual RwObject* CreateInstance(RwMatrix* matrix);
     virtual void SetAnimFile(const char* filename);
     virtual void ConvertAnimFileIndex();
-    virtual i32 GetAnimFileIndex();
+    virtual uintptr_t GetAnimFileIndex();
 
     // Member functions
     DECL_THISCALL_SIMPLE(DeleteCollisionModel, _ZN14CBaseModelInfo20DeleteCollisionModelEv, void);
@@ -95,8 +96,8 @@ DECL_CLASS_VTABLE(CBaseModelInfo)
 
     // Member values
     unsigned int   m_nKey;
-    char           m_szModelName[22];
-    unsigned short m_nRefCount;
+    char           m_szModelName[21];
+    short m_nRefCount;
     short          m_nTxdIndex;
     unsigned char  m_nAlpha; // 0 - 255
     unsigned char  m_nNum2dEffects;
@@ -176,11 +177,11 @@ DECL_CLASS_BASED(CClumpModelInfo, CBaseModelInfo)
     union
     {
         char        *m_animFileName;
-        unsigned int m_dwAnimFileIndex;
+        uintptr_t m_dwAnimFileIndex;
     };
 
     // Virtual functions
-    virtual CBox *GetBoundingBox();
+    virtual CBoundingBox &GetBoundingBox();
     virtual void SetClump(RpClump *clump);
 
     // Member functions
@@ -215,8 +216,8 @@ DECL_CLASS_BASED(CPedModelInfo, CClumpModelInfo)
     unsigned short m_nCarsCanDriveMask;
     unsigned short m_nPedFlags;
     CColModel     *m_pHitColModel;
-    unsigned char  m_nRadio1;
-    unsigned char  m_nRadio2;
+    signed char    m_nRadio1;
+    signed char    m_nRadio2;
     unsigned char  m_nRace;
     short          m_nPedAudioType;
     short          m_nVoice1;

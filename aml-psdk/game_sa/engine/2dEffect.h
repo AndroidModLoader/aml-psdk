@@ -44,13 +44,13 @@ struct tEffectLight
     float m_fShadowSize;
     unsigned short m_nFlags;
     unsigned char m_nCoronaFlashType;
-    bool m_bCoronaEnableReflection;
+    unsigned char m_bCoronaEnableReflection;
     unsigned char m_nCoronaFlareType;
     unsigned char m_nShadowColorMultiplier;
-    char m_nShadowZDistance;
-    char offsetX;
-    char offsetY;
-    char offsetZ;
+    unsigned char m_nShadowZDistance;
+    signed char offsetX;
+    signed char offsetY;
+    signed char offsetZ;
     RwTexture *m_pCoronaTex;
     RwTexture *m_pShadowTex;
 };
@@ -108,7 +108,7 @@ struct tEffectRoadsign
 struct tEffectCoverPoint
 {
     RwV2d m_vecDirection;
-    unsigned char m_nType;
+    signed char m_nType;
 };
 
 struct tEffectEscalator
@@ -116,27 +116,27 @@ struct tEffectEscalator
     RwV3d m_vecBottom;
     RwV3d m_vecTop;
     RwV3d m_vecEnd;
-    unsigned char m_nDirection;
+    bool m_nDirection;
 };
 
 struct tEffectInterior
 {
     unsigned char m_nType;
-    char m_nGroup;
+    signed char m_nGroup;
     unsigned char m_nWidth;
     unsigned char m_nDepth;
     unsigned char m_nHeight;
-    char m_nDoor;
-    char m_nLeftDoor[2];
-    char m_nRightDoor[2];
-    char m_nTDoor[2];
-    char m_nLeftWindow[2];
-    char m_nRightWindow[2];
-    char m_nTWindow[2];
-    char m_noGoLeft[3];
-    char m_noGoBottom[3];
-    char m_noGoWidth[3];
-    char m_noGoDepth[3];
+    signed char m_nDoor;
+    signed char m_nLeftDoor[2];
+    signed char m_nRightDoor[2];
+    signed char m_nTDoor[2];
+    signed char m_nLeftWindow[2];
+    signed char m_nRightWindow[2];
+    signed char m_nTWindow[2];
+    signed char m_noGoLeft[3];
+    signed char m_noGoBottom[3];
+    signed char m_noGoWidth[3];
+    signed char m_noGoDepth[3];
     unsigned char m_seed;
     unsigned char m_status;
     float m_rot;
@@ -150,7 +150,7 @@ struct tEffectTrigger
 DECL_CLASS(C2dEffect)
     // Member values
     CVector m_vecPosn;
-    unsigned int m_nType; // see e2dEffectType
+    unsigned char m_nType; // see e2dEffectType
     union
     {
         tEffectLight light;

@@ -6,10 +6,10 @@
 DECL_CLASS(CAEFrontendAudioEntity)
     CAEAudioEntity audio;
     unsigned char m_bWakeupAmplifierEventTriggered;
-    unsigned char m_nLoadingTrackIndex;
-    unsigned short m_nLastRetuneSoundID;
-    unsigned short m_nNumBulletSounds;
-    unsigned short bankId;
+    signed char m_nLoadingTrackIndex;
+    short m_nLastRetuneSoundID;
+    short m_nNumBulletSounds;
+    short bankId;
     unsigned int m_LastPickupEventFrame;
     unsigned int m_LastPartMissionCompleteEventFrame;
     unsigned int m_LastBulletPassEventFrame;

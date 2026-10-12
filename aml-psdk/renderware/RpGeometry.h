@@ -57,7 +57,7 @@ enum RpGeometryLockMode : RwInt32
 struct RpTriangle
 {
     RwUInt16            vertIndex[3];
-    RwUInt16            matIndex;
+    RwInt16             matIndex;
 };
 struct RwTexCoords
 {

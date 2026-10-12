@@ -110,21 +110,21 @@ DECL_CLASS_VTABLE(CEvent)
     DECL_DLCALL(CEvent, _ZN6CEventdlEPv);
 
     // Virtual functions
-    virtual eEventType GetEventType();
-    virtual int GetEventPriority(); // TODO: eEventPriorityList
-    virtual int GetLifeTime();
-    virtual CEvent* Clone();
-    virtual bool AffectsPed(CPed* pPed);
-    virtual bool AffectsPedGroup(CPedGroup* pPedGroup);
-    virtual bool IsCriminalEvent();
-    virtual void ReportCriminalEvent(CPed* pPed);
-    virtual bool HasEditableResponse();
-    virtual CEntity* GetSourceEntity();
-    virtual bool TakesPriorityOver(CEvent* otherEvent);
-    virtual float GetLocalSoundLevel();
-    virtual bool DoInformVehiclreOccupants(CPed* pPed);
-    virtual bool IsValid(CPed* pPed);
-    virtual bool CanBeInterruptedBySameEvent();
+    virtual eEventType GetEventType() const;
+    virtual int GetEventPriority() const; // TODO: eEventPriorityList
+    virtual int GetLifeTime() const;
+    virtual CEvent* Clone() const;
+    virtual bool AffectsPed(CPed* pPed) const;
+    virtual bool AffectsPedGroup(CPedGroup* pPedGroup) const;
+    virtual bool IsCriminalEvent() const;
+    virtual void ReportCriminalEvent(CPed* pPed) const;
+    virtual bool HasEditableResponse() const;
+    virtual CEntity* GetSourceEntity() const;
+    virtual bool TakesPriorityOver(const CEvent& otherEvent) const;
+    virtual float GetLocalSoundLevel() const;
+    virtual bool DoInformVehiclreOccupants(CPed* pPed) const;
+    virtual bool IsValid(CPed* pPed) const;
+    virtual bool CanBeInterruptedBySameEvent() const;
 
     // Member values
     int m_iAccumulatedTime;

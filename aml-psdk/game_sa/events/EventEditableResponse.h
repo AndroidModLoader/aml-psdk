@@ -7,6 +7,9 @@ DECL_CLASS_BASED(CEventEditableResponse, CEvent)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CEventEditableResponse, _ZN22CEventEditableResponseC2Ev);
 
+    // Virtual functions
+    virtual CEvent* CloneEditable() const;
+
     // Member functions
     DECL_THISCALL_SIMPLE(WillRespond, _ZNK22CEventEditableResponse11WillRespondEv, bool);
     

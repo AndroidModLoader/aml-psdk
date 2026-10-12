@@ -10,6 +10,7 @@ struct CPed;
 struct CPedIntelligence;
 struct CPlayerData;
 struct AnimBlendFrameData;
+struct CAnimBlendAssociation;
 struct RwFrame;
 struct CAccident;
 struct CPedStat;
@@ -87,33 +88,33 @@ DECL_CLASS(CPedIK)
 
     DECL_THISCALL_SIMPLE(PitchForSlope, _ZN6CPedIK13PitchForSlopeEv, void);
 
-    DECL_THISCALL_HEAD(ExtractYawAndPitchWorld, _ZN6CPedIK23ExtractYawAndPitchWorldEP11RwMatrixTagRfS2_, void, RwMatrix* pMatrix, float* yaw, float* pitch)
+    DECL_THISCALL_HEAD(ExtractYawAndPitchWorld, _ZN6CPedIK23ExtractYawAndPitchWorldEP11RwMatrixTagRfS2_, void, RwMatrix* pMatrix, float& yaw, float& pitch)
     DECL_THISCALL_TAIL(ExtractYawAndPitchWorld, pMatrix, yaw, pitch)
 
-    DECL_THISCALL_HEAD(MoveLimb1, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfo, i32, LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo)
+    DECL_THISCALL_HEAD(MoveLimb1, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfo, MoveLimbResult, LimbOrientation& limb, float yaw, float pitch, LimbMovementInfo& limbInfo)
     DECL_THISCALL_TAIL(MoveLimb1, limb, yaw, pitch, limbInfo)
 
-    DECL_THISCALL_HEAD(MoveLimb2, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfof, i32, LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo, float fBlendAmount)
+    DECL_THISCALL_HEAD(MoveLimb2, _ZN6CPedIK8MoveLimbER15LimbOrientationffR16LimbMovementInfof, MoveLimbResult, LimbOrientation& limb, float yaw, float pitch, LimbMovementInfo& limbInfo, float fBlendAmount)
     DECL_THISCALL_TAIL(MoveLimb2, limb, yaw, pitch, limbInfo, fBlendAmount)
 
-    DECL_THISCALL_HEAD(PointGunAtPosition, _ZN6CPedIK18PointGunAtPositionERK7CVectorf, bool, const CVector* pos, float fBlendAmount)
+    DECL_THISCALL_HEAD(PointGunAtPosition, _ZN6CPedIK18PointGunAtPositionERK7CVectorf, bool, const CVector& pos, float fBlendAmount)
     DECL_THISCALL_TAIL(PointGunAtPosition, pos, fBlendAmount)
 
     DECL_THISCALL_HEAD(PointGunInDirection, _ZN6CPedIK19PointGunInDirectionEffbf, bool, float yaw, float pitch, bool bRollPitch, float fBlendAmount)
     DECL_THISCALL_TAIL(PointGunInDirection, yaw, pitch, bRollPitch, fBlendAmount)
 
-    DECL_THISCALL_HEAD(RotateTorso, _ZN6CPedIK11RotateTorsoEP18AnimBlendFrameDataR15LimbOrientationb, void, AnimBlendFrameData* pFrameData, LimbOrientation* torso, bool bCancelRoll)
+    DECL_THISCALL_HEAD(RotateTorso, _ZN6CPedIK11RotateTorsoEP18AnimBlendFrameDataR15LimbOrientationb, void, AnimBlendFrameData* pFrameData, LimbOrientation& torso, bool bCancelRoll)
     DECL_THISCALL_TAIL(RotateTorso, pFrameData, torso, bCancelRoll)
 
-    DECL_THISCALL_HEAD(RotateTorsoForArm, _ZN6CPedIK17RotateTorsoForArmERK7CVector, void, const CVector* vecTarget)
+    DECL_THISCALL_HEAD(RotateTorsoForArm, _ZN6CPedIK17RotateTorsoForArmERK7CVector, void, const CVector& vecTarget)
     DECL_THISCALL_TAIL(RotateTorsoForArm, vecTarget)
 
     // Helper functions
-    inline i32 MoveLimb(LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo)
+    inline i32 MoveLimb(LimbOrientation& limb, float yaw, float pitch, LimbMovementInfo& limbInfo)
     {
         return MoveLimb1(limb, yaw, pitch, limbInfo);
     }
-    inline i32 MoveLimb(LimbOrientation* limb, float yaw, float pitch, LimbMovementInfo* limbInfo, float fBlendAmount)
+    inline i32 MoveLimb(LimbOrientation& limb, float yaw, float pitch, LimbMovementInfo& limbInfo, float fBlendAmount)
     {
         return MoveLimb2(limb, yaw, pitch, limbInfo, fBlendAmount);
     }
@@ -195,10 +196,10 @@ DECL_CLASS_BASED(CPed, CPhysical)
     DECL_THISCALL_SIMPLE(ReleaseCoverPoint, _ZN4CPed17ReleaseCoverPointEv, void);
     DECL_THISCALL_SIMPLE(ClearWeapons, _ZN4CPed12ClearWeaponsEv, void);
     DECL_THISCALL_SIMPLE(UpdateStatLeavingVehicle, _ZN4CPed24UpdateStatLeavingVehicleEv, void);
-    DECL_THISCALL_SIMPLE(Initialise, _ZN4CPed10InitialiseEv, void);
+    DECL_FASTCALL_SIMPLE(Initialise, _ZN4CPed10InitialiseEv, void);
     DECL_THISCALL_SIMPLE(SetPedDefaultDecisionMaker, _ZN4CPed26SetPedDefaultDecisionMakerEv, void);
     DECL_THISCALL_SIMPLE(CanUseTorsoWhenLooking, _ZN4CPed22CanUseTorsoWhenLookingEv, bool);
-    DECL_THISCALL_SIMPLE(Update, _ZN4CPed6UpdateEv, void);
+    DECL_FASTCALL_SIMPLE(Update, _ZN4CPed6UpdateEv, void);
     DECL_THISCALL_SIMPLE(PositionAnyPedOutOfCollision, _ZN4CPed28PositionAnyPedOutOfCollisionEv, bool);
     DECL_THISCALL_SIMPLE(ClearAimFlag, _ZN4CPed12ClearAimFlagEv, void);
     DECL_THISCALL_SIMPLE(ClearLookFlag, _ZN4CPed13ClearLookFlagEv, void);
@@ -261,6 +262,186 @@ DECL_CLASS_BASED(CPed, CPhysical)
 
     
 
+    DECL_THISCALL_HEAD(SetCharCreatedBy, _ZN4CPed16SetCharCreatedByEh, void, u8 const createdBy)
+    DECL_THISCALL_TAIL(SetCharCreatedBy, createdBy)
+
+    DECL_THISCALL_HEAD(DisablePedSpeech, _ZN4CPed16DisablePedSpeechEs, void, i16 stopCurrentSpeech)
+    DECL_THISCALL_TAIL(DisablePedSpeech, stopCurrentSpeech)
+
+    DECL_THISCALL_HEAD(DisablePedSpeechForScriptSpeech, _ZN4CPed31DisablePedSpeechForScriptSpeechEs, void, i16 stopCurrentSpeech)
+    DECL_THISCALL_TAIL(DisablePedSpeechForScriptSpeech, stopCurrentSpeech)
+
+    DECL_THISCALL_HEAD(SayScript, _ZN4CPed9SayScriptEihhh, void, i32 audioEvent, u8 overrideSilence, u8 forceAudible, u8 frontEnd)
+    DECL_THISCALL_TAIL(SayScript, audioEvent, overrideSilence, forceAudible, frontEnd)
+
+    DECL_THISCALL_HEAD(Say, _ZN4CPed3SayEtjfhhh, i16, u16 audioEvent, u32 delay, float probability, u8 overrideSilence, u8 forceAudible, u8 frontEnd)
+    DECL_THISCALL_TAIL(Say, audioEvent, delay, probability, overrideSilence, forceAudible, frontEnd)
+
+    DECL_THISCALL_HEAD(SetPedStats, _ZN4CPed11SetPedStatsE9ePedStats, void, ePedStats pedStats)
+    DECL_THISCALL_TAIL(SetPedStats, pedStats)
+
+    DECL_THISCALL_HEAD(WorkOutHeadingForMovingFirstPerson, _ZN4CPed34WorkOutHeadingForMovingFirstPersonEf, float, float heading)
+    DECL_THISCALL_TAIL(WorkOutHeadingForMovingFirstPerson, heading)
+
+    DECL_THISCALL_HEAD(OurPedCanSeeThisEntity, _ZN4CPed22OurPedCanSeeThisEntityEP7CEntityb, bool, CEntity* pEntity, bool isSpotted)
+    DECL_THISCALL_TAIL(OurPedCanSeeThisEntity, pEntity, isSpotted)
+
+    DECL_THISCALL_HEAD(SortPeds, _ZN4CPed8SortPedsEPPS_ii, void, CPed** ppPeds, i32 start, i32 end)
+    DECL_THISCALL_TAIL(SortPeds, ppPeds, start, end)
+
+    DECL_THISCALL_HEAD(GetLocalDirection, _ZN4CPed17GetLocalDirectionERK9CVector2D, i32, CVector2D const& offset)
+    DECL_THISCALL_TAIL(GetLocalDirection, offset)
+
+    DECL_THISCALL_HEAD(DoFootLanded, _ZN4CPed12DoFootLandedEbh, void, bool leftFoot, u8 playSound)
+    DECL_THISCALL_TAIL(DoFootLanded, leftFoot, playSound)
+
+    DECL_THISCALL_HEAD(SetWeaponLockOnTarget, _ZN4CPed21SetWeaponLockOnTargetEP7CEntity, void, CEntity* pEntity)
+    DECL_THISCALL_TAIL(SetWeaponLockOnTarget, pEntity)
+
+    DECL_THISCALL_HEAD(GetHeadAndFootPositions, _ZN4CPed23GetHeadAndFootPositionsER7CVectorS1_b, void, CVector& headPos, CVector& footPos, bool isTransformed)
+    DECL_THISCALL_TAIL(GetHeadAndFootPositions, headPos, footPos, isTransformed)
+
+    DECL_THISCALL_HEAD(AddWeaponModel, _ZN4CPed14AddWeaponModelEi, void, i32 modelId)
+    DECL_THISCALL_TAIL(AddWeaponModel, modelId)
+
+    DECL_THISCALL_HEAD(RemoveWeaponModel, _ZN4CPed17RemoveWeaponModelEi, void, i32 modelId)
+    DECL_THISCALL_TAIL(RemoveWeaponModel, modelId)
+
+    DECL_THISCALL_HEAD(AddGogglesModel, _ZN4CPed15AddGogglesModelEiPb, void, i32 modelId, bool* pGogglesState)
+    DECL_THISCALL_TAIL(AddGogglesModel, modelId, pGogglesState)
+
+    DECL_THISCALL_NAMED_HEAD(SetCurrentWeapon1, SetCurrentWeapon, _ZN4CPed16SetCurrentWeaponEi, void, i32 weapon)
+    DECL_THISCALL_TAIL(SetCurrentWeapon1, weapon)
+
+    DECL_THISCALL_NAMED_HEAD(SetCurrentWeapon2, SetCurrentWeapon, _ZN4CPed16SetCurrentWeaponE11eWeaponType, void, eWeaponType weapon)
+    DECL_THISCALL_TAIL(SetCurrentWeapon2, weapon)
+
+    DECL_THISCALL_HEAD(GiveWeapon, _ZN4CPed10GiveWeaponE11eWeaponTypejb, i32, eWeaponType weaponType, u32 ammo, bool makeCurrent)
+    DECL_THISCALL_TAIL(GiveWeapon, weaponType, ammo, makeCurrent)
+
+    DECL_THISCALL_HEAD(GiveDelayedWeapon, _ZN4CPed17GiveDelayedWeaponE11eWeaponTypej, void, eWeaponType weaponType, u32 ammo)
+    DECL_THISCALL_TAIL(GiveDelayedWeapon, weaponType, ammo)
+
+    DECL_THISCALL_HEAD(GetWeaponSlot, _ZN4CPed13GetWeaponSlotE11eWeaponType, i32, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(GetWeaponSlot, weaponType)
+
+    DECL_THISCALL_HEAD(GrantAmmo, _ZN4CPed9GrantAmmoE11eWeaponTypej, void, eWeaponType weaponType, u32 ammo)
+    DECL_THISCALL_TAIL(GrantAmmo, weaponType, ammo)
+
+    DECL_THISCALL_HEAD(SetAmmo, _ZN4CPed7SetAmmoE11eWeaponTypej, void, eWeaponType weaponType, u32 ammo)
+    DECL_THISCALL_TAIL(SetAmmo, weaponType, ammo)
+
+    DECL_THISCALL_HEAD(ClearWeapon, _ZN4CPed11ClearWeaponE11eWeaponType, void, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(ClearWeapon, weaponType)
+
+    DECL_THISCALL_HEAD(DoWeHaveWeaponAvailable, _ZN4CPed23DoWeHaveWeaponAvailableE11eWeaponType, bool, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(DoWeHaveWeaponAvailable, weaponType)
+
+    DECL_THISCALL_HEAD(RemoveWeaponWhenEnteringVehicle, _ZN4CPed31RemoveWeaponWhenEnteringVehicleEi, void, i32 vehicleType)
+    DECL_THISCALL_TAIL(RemoveWeaponWhenEnteringVehicle, vehicleType)
+
+    DECL_THISCALL_HEAD(DoGunFlash, _ZN4CPed10DoGunFlashEib, bool, i32 duration, bool leftHand)
+    DECL_THISCALL_TAIL(DoGunFlash, duration, leftHand)
+
+    DECL_THISCALL_HEAD(SetGunFlashAlpha, _ZN4CPed16SetGunFlashAlphaEb, void, bool leftHand)
+    DECL_THISCALL_TAIL(SetGunFlashAlpha, leftHand)
+
+    DECL_THISCALL_NAMED_HEAD(GetWeaponSkill2, GetWeaponSkill, _ZN4CPed14GetWeaponSkillE11eWeaponType, i8, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(GetWeaponSkill2, weaponType)
+
+    DECL_THISCALL_HEAD(SetWeaponSkill, _ZN4CPed14SetWeaponSkillE11eWeaponTypea, void, eWeaponType weaponType, i8 skill)
+    DECL_THISCALL_TAIL(SetWeaponSkill, weaponType, skill)
+
+    DECL_THISCALL_HEAD(SetPedState, _ZN4CPed11SetPedStateE9ePedState, void, ePedState const pedState)
+    DECL_THISCALL_TAIL(SetPedState, pedState)
+
+    DECL_THISCALL_NAMED_HEAD(SetLook1, SetLook, _ZN4CPed7SetLookEf, void, float target)
+    DECL_THISCALL_TAIL(SetLook1, target)
+
+    DECL_THISCALL_NAMED_HEAD(SetLook2, SetLook, _ZN4CPed7SetLookEP7CEntity, void, CEntity* target)
+    DECL_THISCALL_TAIL(SetLook2, target)
+
+    DECL_THISCALL_HEAD(SetLookTimer, _ZN4CPed12SetLookTimerEj, void, u32 time)
+    DECL_THISCALL_TAIL(SetLookTimer, time)
+
+    DECL_THISCALL_NAMED_HEAD(SetAimFlag1, SetAimFlag, _ZN4CPed10SetAimFlagEf, void, float target)
+    DECL_THISCALL_TAIL(SetAimFlag1, target)
+
+    DECL_THISCALL_NAMED_HEAD(SetAimFlag2, SetAimFlag, _ZN4CPed10SetAimFlagEP7CEntity, void, CEntity* target)
+    DECL_THISCALL_TAIL(SetAimFlag2, target)
+
+    DECL_THISCALL_NAMED_HEAD(SetLookFlag1, SetLookFlag, _ZN4CPed11SetLookFlagEfbb, void, float target, bool keepTrying, bool ignoreLookTimer)
+    DECL_THISCALL_TAIL(SetLookFlag1, target, keepTrying, ignoreLookTimer)
+
+    DECL_THISCALL_NAMED_HEAD(SetLookFlag2, SetLookFlag, _ZN4CPed11SetLookFlagEP7CEntitybb, void, CEntity* target, bool keepTrying, bool ignoreLookTimer)
+    DECL_THISCALL_TAIL(SetLookFlag2, target, keepTrying, ignoreLookTimer)
+
+    DECL_THISCALL_HEAD(SetMoveState, _ZN4CPed12SetMoveStateE10eMoveState, void, eMoveState moveState)
+    DECL_THISCALL_TAIL(SetMoveState, moveState)
+
+    DECL_THISCALL_HEAD(SetMoveAnimSpeed, _ZN4CPed16SetMoveAnimSpeedEP21CAnimBlendAssociation, void, CAnimBlendAssociation* pAssociation)
+    DECL_THISCALL_TAIL(SetMoveAnimSpeed, pAssociation)
+
+    DECL_THISCALL_HEAD(KillPedWithCar, _ZN4CPed14KillPedWithCarEP8CVehiclefb, void, CVehicle* pVehicle, float damageIntensity, bool playDeadAnimation)
+    DECL_THISCALL_TAIL(KillPedWithCar, pVehicle, damageIntensity, playDeadAnimation)
+
+    DECL_THISCALL_HEAD(CanSeeEntity, _ZN4CPed12CanSeeEntityEP7CEntityf, bool, CEntity* pEntity, float limitAngle)
+    DECL_THISCALL_TAIL(CanSeeEntity, pEntity, limitAngle)
+
+    DECL_THISCALL_HEAD(CreateDeadPedPickupCoors, _ZN4CPed24CreateDeadPedPickupCoorsEPfS0_S0_, void, float* pX, float* pY, float* pZ)
+    DECL_THISCALL_TAIL(CreateDeadPedPickupCoors, pX, pY, pZ)
+
+    DECL_THISCALL_HEAD(RemoveBodyPart, _ZN4CPed14RemoveBodyPartEia, void, i32 boneId, i8 direction)
+    DECL_THISCALL_TAIL(RemoveBodyPart, boneId, direction)
+
+    DECL_THISCALL_HEAD(SpawnFlyingComponent, _ZN4CPed20SpawnFlyingComponentEia, void, i32 boneId, i8 direction)
+    DECL_THISCALL_TAIL(SpawnFlyingComponent, boneId, direction)
+
+    DECL_THISCALL_HEAD(DoesLOSBulletHitPed, _ZN4CPed19DoesLOSBulletHitPedER9CColPoint, u8, CColPoint& colPoint)
+    DECL_THISCALL_TAIL(DoesLOSBulletHitPed, colPoint)
+
+    DECL_THISCALL_HEAD(IsPedHeadAbovePos, _ZN4CPed17IsPedHeadAbovePosEf, u8, float height)
+    DECL_THISCALL_TAIL(IsPedHeadAbovePos, height)
+
+    DECL_FASTCALL_SIMPLE(RestoreHeadingRateCB, _ZN4CPed20RestoreHeadingRateCBEP21CAnimBlendAssociationPv, void, CAnimBlendAssociation* pAssociation, void* pData);
+
+    DECL_THISCALL_HEAD(MakeTyresMuddySectorList, _ZN4CPed24MakeTyresMuddySectorListER8CPtrList, void, CPtrList& list)
+    DECL_THISCALL_TAIL(MakeTyresMuddySectorList, list)
+
+    DECL_THISCALL_HEAD(RemoveWeaponAnims, _ZN4CPed17RemoveWeaponAnimsEif, void, i32 animGroup, float blendDelta)
+    DECL_THISCALL_TAIL(RemoveWeaponAnims, animGroup, blendDelta)
+
+    DECL_THISCALL_HEAD(PositionPedOutOfCollision, _ZN4CPed25PositionPedOutOfCollisionEiP8CVehicleb, bool, i32 vehicleDoor, CVehicle* pVehicle, bool findClosestNode)
+    DECL_THISCALL_TAIL(PositionPedOutOfCollision, vehicleDoor, pVehicle, findClosestNode)
+
+    DECL_FASTCALL_SIMPLE(FinishJumpCB, _ZN4CPed12FinishJumpCBEP21CAnimBlendAssociationPv, void, CAnimBlendAssociation* pAssociation, void* pData);
+
+    DECL_THISCALL_HEAD(AttachPedToEntity, _ZN4CPed17AttachPedToEntityEP7CEntity7CVectortf11eWeaponType, CEntity*, CEntity* pEntity, CVector offset, u16 position, float angle, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(AttachPedToEntity, pEntity, offset, position, angle, weaponType)
+
+    DECL_THISCALL_HEAD(AttachPedToBike, _ZN4CPed15AttachPedToBikeEP7CEntity7CVectortff11eWeaponType, CEntity*, CEntity* pEntity, CVector offset, u16 position, float angle, float verticalLimit, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(AttachPedToBike, pEntity, offset, position, angle, verticalLimit, weaponType)
+
+    DECL_THISCALL_HEAD(Undress, _ZN4CPed7UndressEPc, void, char* pModelName)
+    DECL_THISCALL_TAIL(Undress, pModelName)
+
+    DECL_THISCALL_HEAD(DropEntityThatThisPedIsHolding, _ZN4CPed30DropEntityThatThisPedIsHoldingEh, void, u8 deleteEntity)
+    DECL_THISCALL_TAIL(DropEntityThatThisPedIsHolding, deleteEntity)
+
+    DECL_THISCALL_HEAD(PedIsReadyForConversation, _ZN4CPed25PedIsReadyForConversationEb, bool, bool checkPedState)
+    DECL_THISCALL_TAIL(PedIsReadyForConversation, checkPedState)
+
+    DECL_FASTCALL_SIMPLE(ShoulderBoneRotation, _ZN4CPed20ShoulderBoneRotationEP7RpClump, void, RpClump* pClump);
+
+    DECL_THISCALL_HEAD(GetBonePosition, _ZN4CPed15GetBonePositionER5RwV3djb, void, RwV3d& pos, u32 boneId, bool updateSkinBones)
+    DECL_THISCALL_TAIL(GetBonePosition, pos, boneId, updateSkinBones)
+
+    DECL_THISCALL_HEAD(GetTransformedBonePosition, _ZN4CPed26GetTransformedBonePositionER5RwV3djb, void, RwV3d& pos, u32 boneId, bool updateSkinBones)
+    DECL_THISCALL_TAIL(GetTransformedBonePosition, pos, boneId, updateSkinBones)
+
+    DECL_THISCALL_HEAD(GiveObjectToPedToHold, _ZN4CPed21GiveObjectToPedToHoldEih, CEntity*, i32 modelId, u8 replaceObject)
+    DECL_THISCALL_TAIL(GiveObjectToPedToHold, modelId, replaceObject)
+
     // Member values
     CAEPedAudioEntity           m_pedAudio;
     CAEPedSpeechAudioEntity     m_pedSpeech;
@@ -269,7 +450,7 @@ DECL_CLASS_BASED(CPed, CPhysical)
     CPlayerData*                m_pPlayerData;
     unsigned char               m_nCreatedBy; // see ePedCreatedBy
     ePedState                   m_ePedState;
-    int                         m_nMoveState; // see eMoveState
+    eMoveState                  m_nMoveState;
     CStoredCollPoly             m_storedCollPoly;
     float                       m_fDistTravelledSinceLastHeightCheck;
 
@@ -408,10 +589,10 @@ DECL_CLASS_BASED(CPed, CPhysical)
     unsigned int        m_nAnimGroup;
     CVector2D           m_vecAnimMovingShiftLocal;
     CPedAcquaintance    m_acquaintance;
-    RwObject           *m_pWeaponObject;
+    RpClump            *m_pWeaponObject;
     RwFrame            *m_pGunflashObject;
-    RwObject           *m_pGogglesObject;
-    unsigned char      *m_pGogglesState;
+    RpClump            *m_pGogglesObject;
+    bool               *m_pGogglesState;
     short               m_nWeaponGunflashAlphaMP1;
     short               m_nGunFlashBlendOutRate;
     short               m_nWeaponGunflashAlphaMP2;
@@ -423,7 +604,7 @@ DECL_CLASS_BASED(CPed, CPhysical)
     float               m_fHealth;
     float               m_fMaxHealth;
     float               m_fArmour;
-    int                 m_nTimeTillWeNeedThisPed;
+    unsigned int        m_nTimeTillWeNeedThisPed;
     CVector2D           m_vecAnimMovingShift;
     float               m_fCurrentRotation;
     float               m_fAimingRotation;
@@ -443,33 +624,34 @@ DECL_CLASS_BASED(CPed, CPhysical)
     eWeaponType         m_nSavedWeapon;
     eWeaponType         m_nDelayedWeapon;
     unsigned int        m_nDelayedWeaponAmmo;
-    unsigned char       m_nSelectedWepSlot;
+    signed char         m_nSelectedWepSlot;
     unsigned char       m_nWeaponShootingRate;
     unsigned char       m_nWeaponAccuracy;
-    CObject            *m_pTargetedObject;
+    CEntity            *m_pTargetedObject;
     CEntity            *m_pEntMagnetizeTarget;
     CVector             m_vecWeaponPrevPos;
-    char                m_nWeaponSkill;
-    char                m_nFightingStyle; // see eFightingStyle
-    char                m_nAllowedAttackMoves;
+    unsigned char       m_nWeaponSkill;
+    unsigned char       m_nFightingStyle; // see eFightingStyle
+    unsigned char       m_nAllowedAttackMoves;
+    unsigned char       m_nBleedingFrames;
     CFire              *m_pFire;
     float               m_fFireDamageMultiplier;
     CEntity            *m_pLookingAtEntity;
     float               m_fLookingDirection;
     int                 m_nWeaponModelId;
     uint32_t            m_nUnconsciousTimer;
-    int                 m_nLookingTime;
+    unsigned int        m_nLookingTime;
     uint32_t            m_nAttackTimer;
-    int                 m_nDeathTime;
-    char                m_nBodypartToRemove;
-    short               m_nMoneyCount;
+    unsigned int        m_nDeathTime;
+    signed char         m_nBodypartToRemove;
+    unsigned short      m_nMoneyCount;
     float               m_wobble;
     float               m_wobbleSpeed;
-    char                m_nLastWeaponDamage;
+    signed char         m_nLastWeaponDamage;
     CEntity            *m_pLastEntityDamage;
     uint32_t            m_nLastDamagedTime;
     CVector             m_vecTurretOffset;
-    short               m_nTurretPosnMode;
+    unsigned short      m_nTurretPosnMode;
     float               m_fTurretAngleA;
     float               m_fTurretAngleB;
     int                 m_nTurretAmmo;

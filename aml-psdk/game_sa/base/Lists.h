@@ -60,24 +60,24 @@ struct CEntryInfoList
 
 struct CNodeAddress
 {
-    short m_nAreaId;
-    short m_nNodeId;
+    unsigned short m_nAreaId;
+    unsigned short m_nNodeId;
 
     inline CNodeAddress() {
         Clear();
     }
 
-    inline CNodeAddress(short areaId, short nodeId) {
+    inline CNodeAddress(unsigned short areaId, unsigned short nodeId) {
         Set(areaId, nodeId);
     }
 
-    inline void Set(short areaId, short nodeId) {
+    inline void Set(unsigned short areaId, unsigned short nodeId) {
         m_nAreaId = areaId;
         m_nNodeId = nodeId;
     }
 
     inline bool IsEmpty() const {
-        return m_nAreaId == -1 || m_nNodeId == -1;
+        return m_nAreaId == 0xFFFF || m_nNodeId == 0xFFFF;
     }
 
     inline void Clear() {
@@ -212,7 +212,7 @@ struct List_c
     List_c() { last = NULL; first = NULL; count = 0; }
     ListItem_c *first;
     ListItem_c *last;
-    unsigned int count;
+    int count;
 
     inline void AddItem(ListItem_c *pItem)
     {

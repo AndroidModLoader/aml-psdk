@@ -5,8 +5,8 @@ struct CTaskTimer
 {
     int m_nStartTime;
     int m_nInterval;
-    bool m_bStarted;
-    bool m_bStopped;
+    unsigned char m_bStarted;
+    unsigned char m_bStopped;
 
     inline CTaskTimer()
     {

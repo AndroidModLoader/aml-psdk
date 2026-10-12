@@ -22,12 +22,12 @@ DECL_CLASS_VTABLE(CTask)
     DECL_DLCALL(CTask, _ZN5CTaskdlEPv);
 
     // Virtual functions
-    virtual CTask* Clone();
-    virtual CTask* GetSubTask();
-    virtual bool IsSimple();
-    virtual eTaskType GetTaskType();
-    virtual void StopTimer(CEvent* event);
-    virtual bool MakeAbortable(CPed* ped, eAbortPriority priority, CEvent* event);
+    virtual CTask* Clone() const;
+    virtual CTask* GetSubTask() const;
+    virtual bool IsSimple() const;
+    virtual eTaskType GetTaskType() const;
+    virtual void StopTimer(const CEvent* event);
+    virtual bool MakeAbortable(CPed* ped, eAbortPriority priority, const CEvent* event);
     virtual void Serialize();
 
     // Member values
@@ -35,8 +35,8 @@ DECL_CLASS_VTABLE(CTask)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CTaskSimple, CTask)
-    virtual void ProcessPed(CPed *);
-    virtual void SetPedPosition(CPed *);
+    virtual bool ProcessPed(CPed *);
+    virtual bool SetPedPosition(CPed *);
 DECL_CLASS_END()
 
 #endif // __AML_PSDK_SATASK_H

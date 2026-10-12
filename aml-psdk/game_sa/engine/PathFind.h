@@ -9,6 +9,7 @@
 #define NUM_PATH_INTERIOR_AREAS 8
 
 struct RwStream;
+struct CTempPathNode;
 
 struct CPathNode
 {
@@ -20,33 +21,57 @@ struct CPathNode
     CPathNode *m_pNext;
     CPathNode *m_pPrev;
     CompressedVector m_vecPosn;
-    unsigned short m_nSearchList; //!< search list id
+    short m_nSearchList; //!< search list id
     short m_nBaseLinkId;
     union
     {
         struct 
         {
-            short m_nAreaId;
-            short m_nNodeId;
+            unsigned short m_nAreaId;
+            unsigned short m_nNodeId;
         };
         CNodeAddress m_Node;
     };
     unsigned char m_nPathWidth;
     unsigned char m_nFloodFill;
     
-    unsigned char m_nNumLinks : 4;
-    unsigned char m_nTrafficLevel : 2;
-    unsigned char m_bRoadBlocks : 1;
-    unsigned char m_bWaterNode : 1;
-
-    unsigned char m_bEmergencyVehiclesOnly : 1;
-    unsigned char m_bAlreadyFound : 1;   //!< not used in paths data files
-    unsigned char m_bDontWander : 1;
-    unsigned char m_bInteriorNode : 1;   //!< not used in paths data files
-    unsigned char m_bNotHighway : 1;
-    unsigned char m_bHighway : 1;
-    unsigned char unk3 : 1;	 //!< not used in paths data files
-    unsigned char unk4 : 1;	 //!< not used in paths data files
+    union
+    {
+        struct
+        {
+            unsigned char m_nNumLinks : 4;
+            unsigned char m_nTrafficLevel : 2;
+            unsigned char m_bRoadBlocks : 1;
+            unsigned char m_bWaterNode : 1;
+        };
+        struct
+        {
+            unsigned char : 4;
+            unsigned char m_bOnDeadEnd : 1;
+            unsigned char m_bSwitchedOff : 1;
+            unsigned char : 2;
+        };
+    };
+    union
+    {
+        struct
+        {
+            unsigned char m_bEmergencyVehiclesOnly : 1;
+            unsigned char m_bAlreadyFound : 1;   //!< not used in paths data files
+            unsigned char m_bDontWander : 1;
+            unsigned char m_bInteriorNode : 1;   //!< not used in paths data files
+            unsigned char m_bNotHighway : 1;
+            unsigned char m_bHighway : 1;
+            unsigned char unk3 : 1;             //!< not used in paths data files
+            unsigned char unk4 : 1;             //!< not used in paths data files
+        };
+        struct
+        {
+            unsigned char : 4;
+            unsigned char m_nSpeed : 2;
+            unsigned char : 2;
+        };
+    };
 
     unsigned char m_nSpawnProbability : 4;
     unsigned char m_nBehaviourType : 4; //!< 1 - roadblock, 2 - parking node
@@ -56,9 +81,9 @@ struct CCarPathLink
 {
     CompressedVector2D m_vecPosn;
     CNodeAddress m_address;
-    char m_nDirX;
-    char m_nDirY;
-    char m_nPathNodeWidth;
+    signed char m_nDirX;
+    signed char m_nDirY;
+    unsigned char m_nPathNodeWidth;
     
     unsigned char m_nNumLeftLanes : 3;
     unsigned char m_nNumRightLanes : 3;
@@ -84,7 +109,7 @@ struct CForbiddenArea
     float m_fZ1;
     float m_fZ2;
     bool m_bEnable;
-    unsigned char m_nType;
+    bool m_nType;
 };
 
 struct CLinkAddress
@@ -346,7 +371,7 @@ DECL_CLASS(CPathFind)
     }
 
     // Member values
-    CNodeAddress            info;
+    unsigned char           info[2];
     CPathNode              *m_apNodesSearchLists[512];
     CPathNode              *m_pPathNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
     CCarPathLink           *m_pNaviNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
@@ -354,17 +379,17 @@ DECL_CLASS(CPathFind)
     unsigned char          *m_pLinkLengths[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
     CPathIntersectionInfo  *m_pPathIntersections[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
     CCarPathLinkAddress    *m_pNaviLinks[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    void                   *m_pTemporaryNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumVehicleNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumPedNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumCarPathLinks[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumAddresses[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    CTempPathNode          *m_pTemporaryNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    int                     m_dwNumNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    int                     m_dwNumVehicleNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    int                     m_dwNumPedNodes[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    int                     m_dwNumCarPathLinks[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
+    int                     m_dwNumAddresses[NUM_PATH_MAP_AREAS + NUM_PATH_INTERIOR_AREAS];
     int                     m_dwOldAddressIndex[NUM_PATH_MAP_AREAS][16];
     int                     m_dwNewAddressIndex[NUM_PATH_MAP_AREAS][16];
-    unsigned int            m_dwTotalNumNodesInSearchList;
+    int                     m_dwTotalNumNodesInSearchList;
     unsigned int            m_nInteriorID[NUM_PATH_INTERIOR_AREAS];
-    unsigned int            m_dwNumForbiddenAreas;
+    int                     m_dwNumForbiddenAreas;
     CForbiddenArea          m_aForbiddenAreas[NUM_PATH_MAP_AREAS];
     bool                    m_bForbiddenForScriptedCarsEnabled;
     float                   m_fForbiddenForScrCarsX1;

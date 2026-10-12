@@ -41,7 +41,7 @@ DECL_CLASS_BASED(CTrain, CVehicle)
     DECL_DTORCALL(CTrain, _ZN6CTrainD2Ev);
 
     // Member values
-    short             m_nNodeIndex;
+    unsigned short    m_nNodeIndex;
     float             m_fTrainSpeed; // 1.0 - train derails
     float             m_fCurrentRailDistance;
     float             m_fLength;
@@ -60,9 +60,9 @@ DECL_CLASS_BASED(CTrain, CVehicle)
         unsigned char bForceSlowDown : 1;
         unsigned char bIsStreakModel : 1;
     } m_nTrainFlags;
-    int               m_nTimeWhenStoppedAtStation;
-    char              m_nTrackId;
-    int               m_nTimeWhenCreated;
+    unsigned int      m_nTimeWhenStoppedAtStation;
+    unsigned char     m_nTrackId;
+    unsigned int      m_nTimeWhenCreated;
     short m_nDoorsState; // initialized with 0, not referenced
     unsigned char     m_nPassengersGenerationState; // see eTrainPassengersGenerationState
     unsigned char     m_nNumPassengersToLeave : 4; // 0 to 4

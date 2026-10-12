@@ -95,7 +95,7 @@ enum eDoors : int
     MAX_DOORS = 0x6,
 };
 
-enum eCarDrivingStyle : char
+enum eCarDrivingStyle : signed char
 {
     DRIVINGSTYLE_STOP_FOR_CARS,
     DRIVINGSTYLE_SLOW_DOWN_FOR_CARS,
@@ -119,9 +119,17 @@ struct CRideAnimData
     float        m_fSteerAngle;
     float        m_fAnimLean;
     float        m_fDesiredAnimLean;
-    float        m_fAnimLeanFwd;
-    float        m_fHandlebarsAngle;
-    float        m_fAnimPercentageState;
+    float        m_fLeanFwd;
+    union
+    {
+        float m_fAnimLeanLeft;
+        float    m_fHandlebarsAngle;
+    };
+    union
+    {
+        float    m_fAnimLeanFwd;
+        float    m_fAnimPercentageState;
+    };
 };
 
 DECL_CLASS(CDoor)
@@ -142,7 +150,7 @@ DECL_CLASS(CDoor)
     // Member values
     float         m_fOpenAngle;
     float         m_fClosedAngle;
-    short         m_nDirn;
+    unsigned short m_nDirn;
     unsigned char m_nAxis;
     eDoorState m_nDoorState;
     float         m_fAngle;
@@ -154,33 +162,33 @@ DECL_CLASS(CAutoPilot)
     CNodeAddress         m_currentAddress;
     CNodeAddress         m_startingRouteNode;
     CNodeAddress         m_preStartingRouteNode;
-    unsigned int         m_nStartSpeedScaleFactor;
-    unsigned int         m_nSpeedScaleFactor;
+    int                  m_nStartSpeedScaleFactor;
+    int                  m_nSpeedScaleFactor;
     CCarPathLinkAddress  m_nCurrentPathNodeInfo;
     CCarPathLinkAddress  m_nNextPathNodeInfo;
     CCarPathLinkAddress  m_nPreviousPathNodeInfo;
     unsigned int         m_nTimeToStartMission;
     unsigned int         m_nTimeSwitchedToRealPhysics;
-    char                 _smthPreCurr;
-    char                 _smthCurr;
-    char                 _smthNext;
-    char                 m_nCurrentLane;
-    char                 m_nNextLane;
+    signed char          _smthPreCurr;
+    signed char          _smthCurr;
+    signed char          _smthNext;
+    signed char          m_nCurrentLane;
+    signed char          m_nNextLane;
     eCarDrivingStyle     m_nCarDrivingStyle;
     eCarMission          m_nCarMission;
-    char                 m_nTempAction;
+    signed char          m_nTempAction;
     unsigned int         m_nTempActionTime;
     unsigned int         _someStartTime;
-    char                 m_nReverseType;
-    char                 m_nTimesWantToChangeNode;
+    unsigned char        m_nReverseType;
+    unsigned char        m_nTimesWantToChangeNode;
     float                m_fActualTrafficSpeed;
     float                m_fMaxTrafficSpeed;
-    char                 m_nCruiseSpeed;
-    char                 m_nSpeedFromNodes;
+    unsigned char        m_nCruiseSpeed;
+    signed char          m_nSpeedFromNodes;
     float                m_fSpeedMult;
-    char                 m_nHooverDistFromTarget;
-    char                 heliThrustPower;
-    char                 m_nMoveAheadOfTarget;
+    unsigned char        m_nHooverDistFromTarget;
+    signed char          heliThrustPower;
+    signed char          m_nMoveAheadOfTarget;
     union
     {
         unsigned char    m_nCarCtrlFlags;
@@ -198,20 +206,20 @@ DECL_CLASS(CAutoPilot)
             unsigned char bCarHasToReverseFirst : 1;
         };
     };
-    char                 m_nSwitchToStraightLineDistance;
-    char                 m_nStraightLineDistance;
-    char                 m_nTargetReachedDistance;
-    char                 m_nLaneChangeCounter;
-    char                 m_nFloatingFrames;
+    unsigned char        m_nSwitchToStraightLineDistance;
+    unsigned char        m_nStraightLineDistance;
+    unsigned char        m_nTargetReachedDistance;
+    signed char          m_nLaneChangeCounter;
+    signed char          m_nFloatingFrames;
     short                m_nAreaConstrainX[2];
     short                m_nAreaConstrainY[2];
     CVector              m_vecDestinationCoors;
     CNodeAddress         m_aPathFindNodesInfo[8];
-    unsigned short       m_nPathFindNodesCount;
-    CVehicle            *m_pTargetCar;
+    short                m_nPathFindNodesCount;
+    CEntity             *m_pTargetCar;
     CEntity             *m_pCarWeMakingSlowDownFor;
-    char                 m_nRecordingId;
-    char                 m_nDiversion;
+    signed char          m_nRecordingId;
+    signed char          m_nDiversion;
 DECL_CLASS_END()
 
 
@@ -224,25 +232,25 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     DECL_DTORCALL(CVehicle, _ZN8CVehicleD2Ev);
     DECL_NEWCALL(CVehicle, BYBIT(_ZN8CVehiclenwEj, _ZN8CVehiclenwEm) );
     DECL_DLCALL(CVehicle, _ZN8CVehicledlEPv);
-    
+
     // Virtual functions
     virtual void ProcessControlCollisionCheck(bool);
     virtual void ProcessControlInputs(unsigned char);
     virtual void GetComponentWorldPosition(int,CVector &);
-    virtual bool IsComponentPresent(int);
+    virtual bool IsComponentPresent(int) const;
     virtual void OpenDoor(CPed *,int,eDoors,float,bool);
     virtual void ProcessOpenDoor(CPed *,unsigned int,unsigned int,unsigned int,float);
-    virtual float GetDooorAngleOpenRatio(eDoors);
-    virtual bool IsDoorReady(eDoors);
-    virtual bool IsDoorFullyOpen(eDoors);
-    virtual bool IsDoorClosed(eDoors);
-    virtual bool IsDoorMissing(eDoors);
-    virtual float GetDooorAngleOpenRatio(unsigned int);
-    virtual bool IsDoorReady(unsigned int);
-    virtual bool IsDoorFullyOpen(unsigned int);
-    virtual bool IsDoorClosed(unsigned int);
-    virtual bool IsDoorMissing(unsigned int);
-    virtual bool IsOpenTopCar(void);
+    virtual float GetDooorAngleOpenRatio(eDoors) const;
+    virtual bool IsDoorReady(eDoors) const;
+    virtual bool IsDoorFullyOpen(eDoors) const;
+    virtual bool IsDoorClosed(eDoors) const;
+    virtual bool IsDoorMissing(eDoors) const;
+    virtual float GetDooorAngleOpenRatio(unsigned int) const;
+    virtual bool IsDoorReady(unsigned int) const;
+    virtual bool IsDoorFullyOpen(unsigned int) const;
+    virtual bool IsDoorClosed(unsigned int) const;
+    virtual bool IsDoorMissing(unsigned int) const;
+    virtual bool IsOpenTopCar(void) const;
     virtual void RemoveRefsToVehicle(CEntity *);
     virtual void BlowUpCar(CEntity *,unsigned char);
     virtual void BlowUpCarCutSceneNoExtras(bool,bool,bool,bool);
@@ -256,12 +264,12 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     virtual void Fix(void);
     virtual void SetupDamageAfterLoad(void);
     virtual void DoBurstAndSoftGroundRatios(void);
-    virtual float GetHeightAboveRoad(void);
+    virtual float GetHeightAboveRoad(void) const;
     virtual void PlayCarHorn(void);
     virtual int GetNumContactWheels(void);
     virtual void VehicleDamage(float,unsigned short,CEntity *,CVector *,CVector *,eWeaponType);
-    virtual bool CanPedStepOutCar(bool);
-    virtual bool CanPedJumpOutCar(CPed *);
+    virtual bool CanPedStepOutCar(bool) const;
+    virtual bool CanPedJumpOutCar(CPed *) const;
     virtual bool GetTowHitchPos(CVector &,bool,CVehicle*);
     virtual bool GetTowBarPos(CVector &,bool,CVehicle*);
     virtual bool SetTowLink(CVehicle*,bool);
@@ -269,8 +277,7 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     virtual float FindWheelWidth(bool);
     virtual bool Save(void);
     virtual bool Load(void);
-    virtual bool ProcessAI(unsigned int &);
-    
+
     // Member functions
 
     // Helper functions
@@ -308,7 +315,7 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     inline CBike* AsBike()                     { return (CBike*)this; }
     inline CBmx* AsBmx()                       { return (CBmx*)this; }
     inline CTrailer* AsTrailer()               { return (CTrailer*)this; }
-    
+
     // Member values
     CAEVehicleAudioEntity m_vehicleAudio;
     tHandlingData* m_pHandlingData;
@@ -414,17 +421,17 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     unsigned char bHasBeenResprayed : 1; // Has been resprayed in a respray garage. Reset after it has been checked.
     unsigned char bUseCarCheats : 1; // If this is true will set the car cheat stuff up in ProcessControl()
     unsigned char bDontSetColourWhenRemapping : 1;// If the texture gets remapped we don't want to change the colour with it.
-    
+
     unsigned int   m_nCreationTime;
     unsigned char  m_nPrimaryColor;
     unsigned char  m_nSecondaryColor;
     unsigned char  m_nTertiaryColor;
     unsigned char  m_nQuaternaryColor;
-    char           m_anExtras[2];
+    signed char    m_anExtras[2];
     short          m_anUpgrades[15];
     float          m_fWheelScale;
     unsigned short m_nAlarmState;
-    short          m_nForcedRandomRouteSeed; // if this is non-zero the random wander gets deterministic
+    unsigned short m_nForcedRandomRouteSeed; // if this is non-zero the random wander gets deterministic
     CPed*          m_pDriver;
     CPed*          m_apPassengers[8];
     unsigned char  m_nNumPassengers;
@@ -433,8 +440,8 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     unsigned char  m_nGettingOutFlags;
     unsigned char  m_nMaxPassengers;
     unsigned char  m_nWindowsOpenFlags; // initialised, but not used?
-    unsigned char  m_nNitroBoosts;
-    unsigned char  m_nSpecialColModel;
+    signed char    m_nNitroBoosts;
+    signed char    m_nSpecialColModel;
     CEntity       *m_pEntityWeAreOn; // we get it from CWorld::ProcessVerticalLine or ProcessEntityCollision, it's entity under us, 
     //only static entities (buildings or roads)
     CFire         *m_pFire;
@@ -443,9 +450,9 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     float          m_fGasPedal;
     float          m_fBreakPedal;
     unsigned char  m_nCreatedBy; // see eVehicleCreatedBy
-    
+
     float          cachedTotalSteer; // MOBILE STUFF.
-    
+
     short          m_nExtendedRemovalRange; // when game wants to delete a vehicle, it gets min(m_wExtendedRemovalRange, 170.0)
     unsigned char  m_nBombOnBoard : 3; // 0 = None
     // 1 = Timed
@@ -469,18 +476,18 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     float          m_fHealth; // 1000.0f = full health. 0 -> explode
     CVehicle      *m_pTractor;
     CVehicle      *m_pTrailer;
-    
+
     bool           m_bFireAutoFlare; // MOBILE STUFF.
-    
-    CPed*          m_pWhoInstalledBombOnMe;
+
+    CEntity*       m_pWhoInstalledBombOnMe;
     unsigned int   m_nTimeTillWeNeedThisCar; // game won't try to delete this car while this time won't reach
     unsigned int   m_nGunFiringTime; // last time when gun on vehicle was fired (used on boats)
     unsigned int   m_nTimeWhenBlowedUp; // game will delete vehicle when 60 seconds after this time will expire
-    short          m_nCopsInCarTimer; // timer for police car (which is following player) occupants to stay in car. If this timer reachs 
+    unsigned short m_nCopsInCarTimer; // timer for police car (which is following player) occupants to stay in car. If this timer reachs
                                       // some value, they will leave a car. The timer increases each frame if player is stopped in car, 
                                       // otherway it resets
-    short          m_wBombTimer;     // goes down with each frame
-    CPed          *m_pWhoDetonatedMe; // if vehicle was detonated, game copies m_pWhoInstalledBombOnMe here
+    unsigned short m_wBombTimer;     // goes down with each frame
+    CEntity       *m_pWhoDetonatedMe; // if vehicle was detonated, game copies m_pWhoInstalledBombOnMe here
     float          m_fVehicleFrontGroundZ; // we get these values from CCollision::IsStoredPolyStillValidVerticalLine
     float          m_fVehicleRearGroundZ;  // 
     unsigned char  m_nOilSpills;
@@ -490,17 +497,17 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     unsigned int   m_nProjectileWeaponFiringTime; // manual-aimed projectiles for hunter, lock-on projectile for hydra
     unsigned int   m_nAdditionalProjectileWeaponFiringTime; // manual-aimed projectiles for hydra
     unsigned int   m_nTimeForMinigunFiring; // minigun on hunter
-    unsigned char  m_nLastWeaponDamageType; // see eWeaponType, -1 if no damage
+    signed char    m_nLastWeaponDamageType; // see eWeaponType, -1 if no damage
     CEntity       *m_pLastDamageEntity;
-    char           m_nRadioStation; // not used?
-    char           m_nRainHitCount; // initialised, but not used?
-    char           m_nSoundIndex; // initialised, but not used?
-    char           m_nVehicleWeaponInUse; // see enum eCarWeapon
+    unsigned char  m_nRadioStation; // not used?
+    unsigned char  m_nRainHitCount; // initialised, but not used?
+    unsigned char  m_nSoundIndex; // initialised, but not used?
+    unsigned char  m_nVehicleWeaponInUse; // see enum eCarWeapon
     unsigned int   m_nHornCounter;
-    char           m_nHornPattern; // random id related to siren
-    char           m_nNoHornCounter; // car horn related
-    char           m_nComedyControlsStatus;
-    char           m_nHasslePosId;
+    unsigned char  m_nHornPattern; // random id related to siren
+    unsigned char  m_nNoHornCounter; // car horn related
+    unsigned char  m_nComedyControlsStatus;
+    unsigned char  m_nHasslePosId;
     CStoredCollPoly m_FrontCollPoly; // poly which is under front part of car
     CStoredCollPoly m_RearCollPoly; // poly which is under rear part of car
     unsigned char  m_anCollisionLighting[4]; // left front, left rear, right front, right rear
@@ -518,8 +525,8 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     };
     RwTexture     *m_pCustomCarPlate;
     float          m_fSteer;
-    unsigned int   m_nVehicleClass; // see enum eVehicleClass
-    unsigned int   m_nVehicleSubClass;
+    int            m_nVehicleClass; // see enum eVehicleClass
+    int            m_nVehicleSubClass;
     const char    *m_szPreviousRemapTxdName;
     const char    *m_szRemapTxdName;
     RwTexture     *m_pRemapTexture;

@@ -11,9 +11,9 @@
 
 struct tFontData
 {
-    char m_propValues[208];
-    char m_spaceValue;
-    char m_unpropValue;
+    unsigned char m_propValues[208];
+    unsigned char m_spaceValue;
+    unsigned char m_unpropValue;
 };
 
 enum eFontAlignment : unsigned char
