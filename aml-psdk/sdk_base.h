@@ -63,8 +63,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
 #define DECL_VALUE_PLT_BASE(_type, _name, _addr) \
         _type& operator()() { return Get(); } \
         static inline _type& Get() { \
-            if(!m_Pointer) m_Pointer = *(_type**)(GetMainLibraryAddress() + _addr); \
-            return *m_Pointer; \
+            return **(_type**)(GetMainLibraryAddress() + _addr); \
         }
 
 #define DECL_VALUE_ADDR_BASE(_type, _name, _addr) \

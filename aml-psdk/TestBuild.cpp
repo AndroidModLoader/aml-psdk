@@ -77,6 +77,8 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/other/TextureDatabase.h>
 #include <aml-psdk/game_sa/engine/OS.h>
 #include <aml-psdk/game_sa/utils/ThreadSyncer.h>
+#include <aml-psdk/game_sa/utils/PoolUtils.h>
+#include <aml-psdk/game_sa/utils/StreamingUtils.h>
 #include <aml-psdk/game_sa/engine/TxdStore.h>
 #include <aml-psdk/game_sa/engine/Hud.h>
 #include <aml-psdk/game_sa/engine/Radar.h>
@@ -138,6 +140,14 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/enum/AnimGroup.h>
 
 #include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>
+#include <aml-psdk/game_sa/anim/AnimBlendClumpData.h>
+#include <aml-psdk/game_sa/base/References.h>
+#include <aml-psdk/game_sa/other/BulletInfo.h>
+#include <aml-psdk/game_sa/other/ShotInfo.h>
+#include <aml-psdk/game_sa/other/ProjectileInfo.h>
+#include <aml-psdk/game_sa/entity/Projectile.h>
+#include <aml-psdk/game_sa/utils/TextureUtils.h>
+#include <aml-psdk/game_sa/utils/RenderWareUtils.h>
 
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {

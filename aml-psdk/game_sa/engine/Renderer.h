@@ -70,26 +70,26 @@ DECL_CLASS(CRenderer)
     DECL_FASTCALL_SIMPLE(ProcessLodRenderLists, _ZN9CRenderer21ProcessLodRenderListsEv, void);
 
     // STATIC values
-    DECL_OBJECT_SYM(CVector, ms_vecCameraPosition, _ZN9CRenderer20ms_vecCameraPositionE);
-    DECL_OBJECT_SYM(float, ms_fCameraHeading, _ZN9CRenderer17ms_fCameraHeadingE);
-    DECL_OBJECT_SYM(float, ms_fFarClipPlane, _ZN9CRenderer16ms_fFarClipPlaneE);
-    DECL_OBJECT_SYM(bool, ms_bRenderOutsideTunnels, _ZN9CRenderer24ms_bRenderOutsideTunnelsE);
-    DECL_OBJECT_SYM(bool, ms_bRenderTunnels, _ZN9CRenderer17ms_bRenderTunnelsE);
-    DECL_OBJECT_SYM(i32, ms_nNoOfVisibleEntities, _ZN9CRenderer23ms_nNoOfVisibleEntitiesE);
-    DECL_OBJECT_SYM(i32, ms_nNoOfVisibleLods, _ZN9CRenderer19ms_nNoOfVisibleLodsE);
-    DECL_OBJECT_SYM(i32, ms_nNoOfVisibleSuperLods, _ZN9CRenderer24ms_nNoOfVisibleSuperLodsE);
-    DECL_OBJECT_SYM(i32, ms_nNoOfInVisibleEntities, _ZN9CRenderer25ms_nNoOfInVisibleEntitiesE);
-    DECL_OBJECT_ARRAY_SYM(CEntity*, ms_aVisibleEntityPtrs, _ZN9CRenderer21ms_aVisibleEntityPtrsE);
-    DECL_OBJECT_ARRAY_SYM(CEntity*, ms_aVisibleLodPtrs, _ZN9CRenderer18ms_aVisibleLodPtrsE);
-    DECL_OBJECT_ARRAY_SYM(CEntity*, ms_aVisibleSuperLodPtrs, _ZN9CRenderer23ms_aVisibleSuperLodPtrsE);
-    DECL_OBJECT_ARRAY_SYM(CEntity*, ms_aInVisibleEntityPtrs, _ZN9CRenderer23ms_aInVisibleEntityPtrsE);
-    DECL_OBJECT_SYM(bool, m_loadingPriority, _ZN9CRenderer17m_loadingPriorityE);
-    DECL_OBJECT_SYM(bool, ms_bInTheSky, _ZN9CRenderer12ms_bInTheSkyE);
-    DECL_OBJECT_SYM(CEntity*, m_pFirstPersonVehicle, _ZN9CRenderer21m_pFirstPersonVehicleE);
-    DECL_OBJECT_SYM(float, ms_lodDistScale, _ZN9CRenderer15ms_lodDistScaleE);
-    DECL_OBJECT_SYM(float, ms_lowLodDistScale, _ZN9CRenderer18ms_lowLodDistScaleE);
-    DECL_OBJECT_SYM(tRenderListEntry*, ms_pLodRenderList, _ZN9CRenderer17ms_pLodRenderListE);
-    DECL_OBJECT_SYM(tRenderListEntry*, ms_pLodDontRenderList, _ZN9CRenderer21ms_pLodDontRenderListE);
+    DECL_OBJECT_PLT(CVector, ms_vecCameraPosition, BYBIT(0x678BF0, 0x84F808));
+    DECL_OBJECT_PLT(float, ms_fCameraHeading, BYBIT(0x67600C, 0x84A088));
+    DECL_OBJECT_PLT(float, ms_fFarClipPlane, BYBIT(0x67759C, 0x84CB78));
+    DECL_OBJECT_PLT(bool, ms_bRenderOutsideTunnels, BYBIT(0x6764DC, 0x84AA10));
+    DECL_OBJECT_PLT(bool, ms_bRenderTunnels, BYBIT(0x6789C8, 0x84F3B0));
+    DECL_OBJECT_PLT(i32, ms_nNoOfVisibleEntities, BYBIT(0x6771F8, 0x84C428));
+    DECL_OBJECT_PLT(i32, ms_nNoOfVisibleLods, BYBIT(0x676220, 0x84A4A0));
+    DECL_OBJECT_PLT(i32, ms_nNoOfVisibleSuperLods, BYBIT(0x678584, 0x84EB20));
+    DECL_OBJECT_PLT(i32, ms_nNoOfInVisibleEntities, BYBIT(0x6793BC, 0x850790));
+    DECL_OBJECT_ARRAY_PLT(CEntity*, ms_aVisibleEntityPtrs, BYBIT(0x6778F4, 0x84D210));
+    DECL_OBJECT_ARRAY_PLT(CEntity*, ms_aVisibleLodPtrs, BYBIT(0x676484, 0x84A958));
+    DECL_OBJECT_ARRAY_PLT(CEntity*, ms_aVisibleSuperLodPtrs, BYBIT(0x676B2C, 0x84B6A0));
+    DECL_OBJECT_ARRAY_PLT(CEntity*, ms_aInVisibleEntityPtrs, BYBIT(0x678B88, 0x84F738));
+    DECL_OBJECT_PLT(bool, m_loadingPriority, BYBIT(0x679150, 0x8502C8));
+    DECL_OBJECT_PLT(bool, ms_bInTheSky, BYBIT(0x679018, 0x850058));
+    DECL_OBJECT_PLT(CEntity*, m_pFirstPersonVehicle, BYBIT(0x6785E0, 0x84EBD8));
+    DECL_OBJECT_PLT(float, ms_lodDistScale, BYBIT(0x679B4C, 0x8516B8));
+    DECL_OBJECT_PLT(float, ms_lowLodDistScale, BYBIT(0x677844, 0x84D0B0));
+    DECL_OBJECT_PLT(tRenderListEntry*, ms_pLodRenderList, BYBIT(0x6787A4, 0x84EF70));
+    DECL_OBJECT_PLT(tRenderListEntry*, ms_pLodDontRenderList, BYBIT(0x679930, 0x851280));
 DECL_CLASS_END()
 
 #define ms_vecCameraPosition ms_vecCameraPosition()

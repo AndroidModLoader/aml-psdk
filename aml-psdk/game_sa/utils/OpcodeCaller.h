@@ -36,96 +36,140 @@ struct OpcodeCaller
         g_Script.m_bWastedBustedCheck = true;
     }
 
-    static inline bool ReserveBuffer(uint16_t size)
+    __attribute__((always_inline)) static inline bool ReserveBuffer(uint16_t size, uint16_t& bufferPos, bool& bufferError)
     {
-        if(g_bBufferError) return false;
-        if(size > sizeof(g_ScriptBuffer) || g_nBufferPos > sizeof(g_ScriptBuffer) - size)
+        if(bufferError) return false;
+        if(size > sizeof(g_ScriptBuffer) || bufferPos > sizeof(g_ScriptBuffer) - size)
         {
-            g_bBufferError = true;
+            bufferError = true;
             return false;
         }
         return true;
     }
 
-    static inline void PushVarToBuffer(ZeroArg)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(ZeroArg, uint16_t& bufferPos, uint8_t&, bool& bufferError)
     {
-        if(!ReserveBuffer(1)) return;
-        g_ScriptBuffer[g_nBufferPos++] = 0x00;
+        if(!ReserveBuffer(1, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos++] = 0x00;
     }
-    static inline void PushVarToBuffer(int v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(int v, uint16_t& bufferPos, uint8_t&, bool& bufferError)
     {
-        if(!ReserveBuffer(5)) return;
-        g_ScriptBuffer[g_nBufferPos] = 0x01;
-        memcpy(&g_ScriptBuffer[++g_nBufferPos], &v, 4);
-        g_nBufferPos += 4;
+        if(__builtin_constant_p(v) && v >= -128 && v <= 127)
+        {
+            if(!ReserveBuffer(2, bufferPos, bufferError)) return;
+            g_ScriptBuffer[bufferPos++] = 0x04;
+            g_ScriptBuffer[bufferPos++] = (int8_t)v;
+            return;
+        }
+        if(__builtin_constant_p(v) && v >= -32768 && v <= 32767)
+        {
+            if(!ReserveBuffer(3, bufferPos, bufferError)) return;
+            int16_t value = v;
+            g_ScriptBuffer[bufferPos++] = 0x05;
+            memcpy(&g_ScriptBuffer[bufferPos], &value, 2);
+            bufferPos += 2;
+            return;
+        }
+        if(!ReserveBuffer(5, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos] = 0x01;
+        memcpy(&g_ScriptBuffer[++bufferPos], &v, 4);
+        bufferPos += 4;
     }
-    static inline void PushVarToBuffer(unsigned int v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(unsigned int v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        if(!ReserveBuffer(5)) return;
-        g_ScriptBuffer[g_nBufferPos] = 0x01;
-        memcpy(&g_ScriptBuffer[++g_nBufferPos], &v, 4);
-        g_nBufferPos += 4;
+        if(__builtin_constant_p(v) && v <= 32767)
+        {
+            PushVarToBuffer((int)v, bufferPos, varsCount, bufferError);
+            return;
+        }
+        if(!ReserveBuffer(5, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos] = 0x01;
+        memcpy(&g_ScriptBuffer[++bufferPos], &v, 4);
+        bufferPos += 4;
     }
-    static inline void PushVarToBuffer(float v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(float v, uint16_t& bufferPos, uint8_t&, bool& bufferError)
     {
-        if(!ReserveBuffer(5)) return;
-        g_ScriptBuffer[g_nBufferPos] = 0x06;
-        memcpy(&g_ScriptBuffer[++g_nBufferPos], &v, 4);
-        g_nBufferPos += 4;
+        if(!ReserveBuffer(5, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos] = 0x06;
+        memcpy(&g_ScriptBuffer[++bufferPos], &v, 4);
+        bufferPos += 4;
     }
-    static inline void PushVarToBuffer(double v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(double v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        PushVarToBuffer((float)v);
+        PushVarToBuffer((float)v, bufferPos, varsCount, bufferError);
     }
-    static inline void PushVarToBuffer(const char* s)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(const char* s, uint16_t& bufferPos, uint8_t&, bool& bufferError)
     {
-        if(g_bBufferError) return;
+        if(bufferError) return;
         if(!s)
         {
-            g_bBufferError = true;
+            bufferError = true;
             return;
         }
         size_t aLen = strnlen(s, 128);
         if(aLen == 128)
         {
-            g_bBufferError = true;
+            bufferError = true;
             return;
         }
-        if(!ReserveBuffer(aLen + 2)) return;
-        g_ScriptBuffer[g_nBufferPos] = 0x0E;
-        g_ScriptBuffer[++g_nBufferPos] = aLen;
-        memcpy(&g_ScriptBuffer[++g_nBufferPos], s, aLen);
-        g_nBufferPos += aLen;
+        if(!ReserveBuffer(aLen + 2, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos] = 0x0E;
+        g_ScriptBuffer[++bufferPos] = aLen;
+        memcpy(&g_ScriptBuffer[++bufferPos], s, aLen);
+        bufferPos += aLen;
     }
-    static inline void PushVariable(void *v)
+    __attribute__((always_inline)) static inline void PushVariable(void *v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        if(g_bBufferError) return;
-        if(!v || g_nVarsCount >= sizeof(g_ScriptVarPointers) / sizeof(g_ScriptVarPointers[0]))
+        if(bufferError) return;
+        if(!v || varsCount >= sizeof(g_ScriptVarPointers) / sizeof(g_ScriptVarPointers[0]))
         {
-            g_bBufferError = true;
+            bufferError = true;
             return;
         }
-        if(!ReserveBuffer(3)) return;
-        g_ScriptBuffer[g_nBufferPos] = 0x03;
-        g_ScriptVarPointers[g_nVarsCount] = (uint32_t*)v;
-        memcpy(&g_Script.m_aLocalVars[g_nVarsCount], v, 4);
-        uint16_t varIndex = g_nVarsCount;
-        memcpy(&g_ScriptBuffer[++g_nBufferPos], &varIndex, 2);
-        g_nBufferPos += 2;
-        ++g_nVarsCount;
+        if(!ReserveBuffer(3, bufferPos, bufferError)) return;
+        g_ScriptBuffer[bufferPos] = 0x03;
+        g_ScriptVarPointers[varsCount] = (uint32_t*)v;
+        memcpy(&g_Script.m_aLocalVars[varsCount], v, 4);
+        uint16_t varIndex = varsCount;
+        memcpy(&g_ScriptBuffer[++bufferPos], &varIndex, 2);
+        bufferPos += 2;
+        ++varsCount;
     }
-    static inline void PushVarToBuffer(int *v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(int *v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        PushVariable(v);
+        PushVariable(v, bufferPos, varsCount, bufferError);
     }
-    static inline void PushVarToBuffer(unsigned int *v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(unsigned int *v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        PushVariable(v);
+        PushVariable(v, bufferPos, varsCount, bufferError);
     }
-    static inline void PushVarToBuffer(float *v)
+    __attribute__((always_inline)) static inline void PushVarToBuffer(float *v, uint16_t& bufferPos, uint8_t& varsCount, bool& bufferError)
     {
-        PushVariable(v);
+        PushVariable(v, bufferPos, varsCount, bufferError);
     }
+
+    static inline bool ReserveBuffer(uint16_t size) { return ReserveBuffer(size, g_nBufferPos, g_bBufferError); }
+    static inline void PushVarToBuffer(ZeroArg v) { PushVarToBuffer(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(int v) { PushVarToBuffer(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(unsigned int v) { PushVarToBuffer(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(float v) { PushVarToBuffer(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(double v) { PushVarToBuffer(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(const char* s) { PushVarToBuffer(s, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVariable(void *v) { PushVariable(v, g_nBufferPos, g_nVarsCount, g_bBufferError); }
+    static inline void PushVarToBuffer(int *v) { PushVariable(v); }
+    static inline void PushVarToBuffer(unsigned int *v) { PushVariable(v); }
+    static inline void PushVarToBuffer(float *v) { PushVariable(v); }
+
+    template<typename T>
+    static inline void ReadVarFromScript(T, uint8_t&) {}
+
+    static inline void ReadVariable(void *v, uint8_t& index)
+    {
+        memcpy(v, &g_Script.m_aLocalVars[index++], 4);
+    }
+    static inline void ReadVarFromScript(int *v, uint8_t& index) { ReadVariable(v, index); }
+    static inline void ReadVarFromScript(unsigned int *v, uint8_t& index) { ReadVariable(v, index); }
+    static inline void ReadVarFromScript(float *v, uint8_t& index) { ReadVariable(v, index); }
 
     static inline CRunningScript g_Script { 0 };
     static inline uint8_t g_ScriptBuffer[512] { 0 };
@@ -160,13 +204,16 @@ __attribute__((always_inline)) inline bool CommandByIDDirect(uint16_t opcode, Ar
     ++OpcodeCaller::g_nCallDepth;
     OpcodeCaller::ResetCommand();
     memcpy(OpcodeCaller::g_ScriptBuffer, &opcode, 2);
-    OpcodeCaller::g_nBufferPos = 2;
-    OpcodeCaller::g_nVarsCount = 0;
-    OpcodeCaller::g_bBufferError = false;
-    PushVars(args...);
+    uint16_t bufferPos = 2;
+    uint8_t varsCount = 0;
+    bool bufferError = false;
+    (OpcodeCaller::PushVarToBuffer(args, bufferPos, varsCount, bufferError), ...);
+    OpcodeCaller::g_nBufferPos = bufferPos;
+    OpcodeCaller::g_nVarsCount = varsCount;
+    OpcodeCaller::g_bBufferError = bufferError;
 
     bool result = false;
-    if(!OpcodeCaller::g_bBufferError)
+    if(!bufferError)
     {
         if(!OpcodeCaller::g_pScriptParams)
         {
@@ -175,15 +222,12 @@ __attribute__((always_inline)) inline bool CommandByIDDirect(uint16_t opcode, Ar
         tScriptParam* pScriptParams = OpcodeCaller::g_pScriptParams;
         if(pScriptParams)
         {
-            uint8_t varsCount = OpcodeCaller::g_nVarsCount;
             bool saveParams = !OpcodeCaller::g_nBatchDepth || OpcodeCaller::g_nCallDepth > 1;
             if(saveParams) memcpy(OpcodeCaller::g_SavedScriptParams, pScriptParams, sizeof(OpcodeCaller::g_SavedScriptParams));
             OpcodeCaller::g_Script.ProcessOneCommand();
             if(saveParams) memcpy(pScriptParams, OpcodeCaller::g_SavedScriptParams, sizeof(OpcodeCaller::g_SavedScriptParams));
-            for(int i = 0; i < varsCount; ++i)
-            {
-                memcpy(OpcodeCaller::g_ScriptVarPointers[i], &OpcodeCaller::g_Script.m_aLocalVars[i], 4);
-            }
+            uint8_t outputIndex = 0;
+            (OpcodeCaller::ReadVarFromScript(args, outputIndex), ...);
             result = OpcodeCaller::g_Script.m_bCondResult;
         }
     }

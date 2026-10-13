@@ -84,9 +84,9 @@ DECL_CLASS(CUserDisplay)
     DECL_FASTCALL_SIMPLE(Init, _ZN12CUserDisplay4InitEv, void);
     DECL_FASTCALL_SIMPLE(Process, _ZN12CUserDisplay7ProcessEv, void);
 
-    DECL_OBJECT_SYM(CPlaceName, PlaceName, _ZN12CUserDisplay9PlaceNameE);
-    DECL_OBJECT_SYM(COnscreenTimer, OnscnTimer, _ZN12CUserDisplay10OnscnTimerE);
-    DECL_OBJECT_SYM(CCurrentVehicle, CurrentVehicle, _ZN12CUserDisplay14CurrentVehicleE);
+    DECL_OBJECT_PLT(CPlaceName, PlaceName, BYBIT(0x6760F4, 0x84A248));
+    DECL_OBJECT_PLT(COnscreenTimer, OnscnTimer, BYBIT(0x678800, 0x84F028));
+    DECL_OBJECT_PLT(CCurrentVehicle, CurrentVehicle, BYBIT(0x676968, 0x84B320));
 DECL_CLASS_END()
 
 #define PlaceName PlaceName()

@@ -184,25 +184,25 @@ DECL_CLASS(CCarCtrl)
     DECL_FASTCALL_SIMPLE(FindSpeedMultiplierWithSpeedFromNodes, _ZN8CCarCtrl37FindSpeedMultiplierWithSpeedFromNodesEa, float, i8 arg1);
 
     // STATIC values
-    DECL_OBJECT_SYM(float, CarDensityMultiplier, _ZN8CCarCtrl20CarDensityMultiplierE);
-    DECL_OBJECT_SYM(i32, NumRandomCars, _ZN8CCarCtrl13NumRandomCarsE);
-    DECL_OBJECT_SYM(i32, NumLawEnforcerCars, _ZN8CCarCtrl18NumLawEnforcerCarsE);
-    DECL_OBJECT_SYM(i32, NumMissionCars, _ZN8CCarCtrl14NumMissionCarsE);
-    DECL_OBJECT_SYM(i32, NumParkedCars, _ZN8CCarCtrl13NumParkedCarsE);
-    DECL_OBJECT_SYM(i32, NumPermanentVehicles, _ZN8CCarCtrl20NumPermanentVehiclesE);
-    DECL_OBJECT_SYM(i32, NumAmbulancesOnDuty, _ZN8CCarCtrl19NumAmbulancesOnDutyE);
-    DECL_OBJECT_SYM(i32, NumFireTrucksOnDuty, _ZN8CCarCtrl19NumFireTrucksOnDutyE);
-    DECL_OBJECT_SYM(u32, LastTimeAmbulanceCreated, _ZN8CCarCtrl24LastTimeAmbulanceCreatedE);
-    DECL_OBJECT_SYM(u32, LastTimeFireTruckCreated, _ZN8CCarCtrl24LastTimeFireTruckCreatedE);
-    DECL_OBJECT_SYM(u32, LastTimeLawEnforcerCreated, _ZN8CCarCtrl26LastTimeLawEnforcerCreatedE);
-    DECL_OBJECT_SYM(float, TimeNextMadDriverChaseCreated, _ZN8CCarCtrl29TimeNextMadDriverChaseCreatedE);
-    DECL_OBJECT_SYM(u8, CountDownToCarsAtStart, _ZN8CCarCtrl22CountDownToCarsAtStartE);
-    DECL_OBJECT_SYM(bool, bCarsGeneratedAroundCamera, _ZN8CCarCtrl26bCarsGeneratedAroundCameraE);
-    DECL_OBJECT_SYM(i32, MaxNumberOfCarsInUse, _ZN8CCarCtrl20MaxNumberOfCarsInUseE);
+    DECL_OBJECT_PLT(float, CarDensityMultiplier, BYBIT(0x678D18, 0x84FA58));
+    DECL_OBJECT_PLT(i32, NumRandomCars, BYBIT(0x676658, 0x84AD08));
+    DECL_OBJECT_PLT(i32, NumLawEnforcerCars, BYBIT(0x679550, 0x850AB0));
+    DECL_OBJECT_PLT(i32, NumMissionCars, BYBIT(0x678174, 0x84E300));
+    DECL_OBJECT_PLT(i32, NumParkedCars, BYBIT(0x677AB8, 0x84D598));
+    DECL_OBJECT_PLT(i32, NumPermanentVehicles, BYBIT(0x679B78, 0x851710));
+    DECL_OBJECT_PLT(i32, NumAmbulancesOnDuty, BYBIT(0x676608, 0x84AC68));
+    DECL_OBJECT_PLT(i32, NumFireTrucksOnDuty, BYBIT(0x677018, 0x84C068));
+    DECL_OBJECT_PLT(u32, LastTimeAmbulanceCreated, BYBIT(0x677DB4, 0x84DB88));
+    DECL_OBJECT_PLT(u32, LastTimeFireTruckCreated, BYBIT(0x676240, 0x84A4E0));
+    DECL_OBJECT_PLT(u32, LastTimeLawEnforcerCreated, BYBIT(0x678B58, 0x84F6D8));
+    DECL_OBJECT_PLT(float, TimeNextMadDriverChaseCreated, BYBIT(0x678120, 0x84E258));
+    DECL_OBJECT_PLT(u8, CountDownToCarsAtStart, BYBIT(0x6765C0, 0x84ABD8));
+    DECL_OBJECT_PLT(bool, bCarsGeneratedAroundCamera, BYBIT(0x677A3C, 0x84D4A0));
+    DECL_OBJECT_PLT(i32, MaxNumberOfCarsInUse, BYBIT(0x677054, 0x84C0E0));
     DECL_OBJECT_SYM(i32, MiamiViceCycle, _ZN8CCarCtrl14MiamiViceCycleE);
     DECL_OBJECT_SYM(u32, LastTimeMiamiViceGenerated, _ZN8CCarCtrl26LastTimeMiamiViceGeneratedE);
-    DECL_OBJECT_SYM(bool, bAllowEmergencyServicesToBeCreated, _ZN8CCarCtrl34bAllowEmergencyServicesToBeCreatedE);
-    DECL_OBJECT_SYM(bool, bCarIsBeingCreated, _ZN8CCarCtrl18bCarIsBeingCreatedE);
+    DECL_OBJECT_PLT(bool, bAllowEmergencyServicesToBeCreated, BYBIT(0x677D84, 0x84DB28));
+    DECL_OBJECT_PLT(bool, bCarIsBeingCreated, BYBIT(0x676550, 0x84AAF8));
 DECL_CLASS_END()
 CHECKSIZE(CCarCtrl, 0x1, 0x1);
 

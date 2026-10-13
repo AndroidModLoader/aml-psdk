@@ -37,7 +37,7 @@ DECL_CLASS(CMotionBlurStreaks)
     DECL_FASTCALL_SIMPLE(Update, _ZN18CMotionBlurStreaks6UpdateEv, void);
 
     // STATIC values
-    DECL_OBJECT_ARRAY_SYM(CRegisteredMotionBlurStreak, aStreaks, _ZN18CMotionBlurStreaks8aStreaksE);
+    DECL_OBJECT_ARRAY_PLT(CRegisteredMotionBlurStreak, aStreaks, BYBIT(0x6798AC, 0x851178));
 
 DECL_CLASS_END()
 

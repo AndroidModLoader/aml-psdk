@@ -33,8 +33,8 @@ DECL_CLASS(CBrightLights)
     DECL_FASTCALL_SIMPLE(RegisterOne, _ZN13CBrightLights11RegisterOneE7CVectorS0_S0_S0_hhhh, void, CVector Coors, CVector Up, CVector Side, CVector Front, u8 Type, u8 Red, u8 Green, u8 Blue);
 
     // STATIC values
-    DECL_OBJECT_ARRAY_SYM(CBrightLight, aBrightLights, _ZN13CBrightLights13aBrightLightsE);
-    DECL_OBJECT_SYM(i32, NumBrightLights, _ZN13CBrightLights15NumBrightLightsE);
+    DECL_OBJECT_ARRAY_PLT(CBrightLight, aBrightLights, BYBIT(0x6777F4, 0x84D010));
+    DECL_OBJECT_PLT(i32, NumBrightLights, BYBIT(0x677D2C, 0x84DA78));
 
 DECL_CLASS_END()
 

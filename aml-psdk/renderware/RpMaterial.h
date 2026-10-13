@@ -53,6 +53,8 @@ struct RpMultiTexture
 CHECKSIZE(RwSurfaceProperties, 0xC, 0xC);
 CHECKSIZE(RpMultiTexture, 0x38, 0x68);
 
+DECL_FASTCALL_SIMPLE_GLO(RpMaterialSetTexture, _Z20RpMaterialSetTextureP10RpMaterialP9RwTexture, RpMaterial*, RpMaterial* material, RwTexture* texture);
+
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialCreateMultiTexture, _Z28RpMaterialCreateMultiTextureP10RpMaterial12RwPlatformIDj, RpMaterial*, RpMaterial* material, RwPlatformID platformID, RwUInt32 numTextures);
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialDestroyMultiTexture, _Z29RpMaterialDestroyMultiTextureP10RpMaterial12RwPlatformID, RpMaterial*, RpMaterial* material, RwPlatformID platformID);
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialGetMultiTexture, _Z25RpMaterialGetMultiTexturePK10RpMaterial12RwPlatformID, RpMultiTexture*, const RpMaterial* material, RwPlatformID platformID);

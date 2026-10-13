@@ -43,13 +43,13 @@ DECL_CLASS(CWeaponEffects)
 DECL_CLASS_END()
 CHECKSIZE(CWeaponEffects, 0x2C, 0x2C);
 
-DECL_OBJECT_ARRAY_SYM_GLOBAL(CWeaponEffects, gCrossHair, gCrossHair);
+DECL_OBJECT_ARRAY_PLT_GLOBAL(CWeaponEffects, gCrossHair, BYBIT(0x677D88, 0x84DB30));
 #define gCrossHair gCrossHair()
 
 DECL_OBJECT_PLT_GLOBAL(RwTexture*, gpCrossHairTex, BYBIT(0x676278, 0x84A550));
 #define gpCrossHairTex gpCrossHairTex()
 
-DECL_OBJECT_ARRAY_SYM_GLOBAL(RwTexture*, gpCrossHairTexFlight, gpCrossHairTexFlight);
+DECL_OBJECT_ARRAY_PLT_GLOBAL(RwTexture*, gpCrossHairTexFlight, BYBIT(0x6798E0, 0x8511E0));
 #define gpCrossHairTexFlight gpCrossHairTexFlight()
 
 #endif // __AML_PSDK_SAWEAPONEFFECTS_H

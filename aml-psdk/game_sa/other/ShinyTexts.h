@@ -41,8 +41,8 @@ DECL_CLASS(CShinyTexts)
     DECL_FASTCALL_SIMPLE(RegisterOne, _ZN11CShinyTexts11RegisterOneE7CVectorS0_S0_S0_ffffffffhhhhf, void, CVector Coors1, CVector Coors2, CVector Coors3, CVector Coors4, float Tex1U, float Tex1V, float Tex2U, float Tex2V, float Tex3U, float Tex3V, float Tex4U, float Tex4V, u8 Type, u8 Red, u8 Green, u8 Blue, float Range);
 
     // STATIC values
-    DECL_OBJECT_ARRAY_SYM(CShinyText, aShinyTexts, _ZN11CShinyTexts11aShinyTextsE);
-    DECL_OBJECT_SYM(i32, NumShinyTexts, _ZN11CShinyTexts13NumShinyTextsE);
+    DECL_OBJECT_ARRAY_PLT(CShinyText, aShinyTexts, BYBIT(0x679AC0, 0x8515A0));
+    DECL_OBJECT_PLT(i32, NumShinyTexts, BYBIT(0x6779F8, 0x84D418));
 
 DECL_CLASS_END()
 

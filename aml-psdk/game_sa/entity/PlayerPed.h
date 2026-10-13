@@ -154,11 +154,11 @@ DECL_CLASS_BASED(CPlayerPed, CPed)
     DECL_THISCALL_SIMPLE(IsHidden, _ZNK10CPlayerPed8IsHiddenEv, bool);
 
     // STATIC values
-    DECL_OBJECT_SYM(bool, bDebugPlayerInvincible, _ZN10CPlayerPed22bDebugPlayerInvincibleE);
-    DECL_OBJECT_SYM(bool, bDebugTargetting, _ZN10CPlayerPed16bDebugTargettingE);
-    DECL_OBJECT_SYM(bool, bDebugTapToTarget, _ZN10CPlayerPed17bDebugTapToTargetE);
-    DECL_OBJECT_SYM(bool, bSwipeTargetHeads, _ZN10CPlayerPed17bSwipeTargetHeadsE);
-    DECL_OBJECT_SYM(bool, bHasDisplayedPlayerQuitEnterCarHelpText, _ZN10CPlayerPed39bHasDisplayedPlayerQuitEnterCarHelpTextE);
+    DECL_OBJECT_PLT(bool, bDebugPlayerInvincible, BYBIT(0x676A3C, 0x84B4C0));
+    DECL_OBJECT_PLT(bool, bDebugTargetting, BYBIT(0x6761FC, 0x84A458));
+    DECL_OBJECT_PLT(bool, bDebugTapToTarget, BYBIT(0x6760D4, 0x84A218));
+    DECL_OBJECT_PLT(bool, bSwipeTargetHeads, BYBIT(0x676794, 0x84AF80));
+    DECL_OBJECT_PLT(bool, bHasDisplayedPlayerQuitEnterCarHelpText, BYBIT(0x67661C, 0x84AC90));
 
     // Member values
     CPed *m_pPlayerTargettedPed;

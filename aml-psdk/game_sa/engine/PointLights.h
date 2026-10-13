@@ -57,9 +57,9 @@ DECL_CLASS(CPointLights)
     // STATIC members
     DECL_VALUE_PLT_I32(NumLights, BYBIT(0x6770C8, 0x84C1C8));
     DECL_OBJECT_ARRAY_PLT(CPointLight, aLights, BYBIT(0x676FF8, 0x84C028));
-    DECL_OBJECT_ARRAY_SYM(CVector, aCachedMapReads, _ZN12CPointLights15aCachedMapReadsE);
-    DECL_OBJECT_ARRAY_SYM(float, aCachedMapReadResults, _ZN12CPointLights21aCachedMapReadResultsE);
-    DECL_OBJECT_SYM(i32, NextCachedValue, _ZN12CPointLights15NextCachedValueE);
+    DECL_OBJECT_ARRAY_PLT(CVector, aCachedMapReads, BYBIT(0x6785D4, 0x84EBC0));
+    DECL_OBJECT_ARRAY_PLT(float, aCachedMapReadResults, BYBIT(0x676D1C, 0x84BA80));
+    DECL_OBJECT_PLT(i32, NextCachedValue, BYBIT(0x6772D8, 0x84C5E8));
 DECL_CLASS_END()
 
 #define NumLights NumLights()

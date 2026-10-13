@@ -80,11 +80,11 @@ DECL_CLASS_BASED(CObject, CPhysical)
     DECL_THISCALL_SIMPLE(Load, _ZN7CObject4LoadEv, bool);
 
     // STATIC values
-    DECL_OBJECT_SYM(u16, nNoTempObjects, _ZN7CObject14nNoTempObjectsE);
+    DECL_OBJECT_PLT(u16, nNoTempObjects, BYBIT(0x677F68, 0x84DEF0));
     DECL_OBJECT_SYM(i16, nBodyCastHealth, _ZN7CObject15nBodyCastHealthE);
-    DECL_OBJECT_SYM(float, fDistToNearestTree, _ZN7CObject18fDistToNearestTreeE);
-    DECL_OBJECT_SYM(bool, bArea51SamSiteDisabled, _ZN7CObject22bArea51SamSiteDisabledE);
-    DECL_OBJECT_SYM(bool, bAircraftCarrierSamSiteDisabled, _ZN7CObject31bAircraftCarrierSamSiteDisabledE);
+    DECL_OBJECT_PLT(float, fDistToNearestTree, BYBIT(0x676FC4, 0x84BFC0));
+    DECL_OBJECT_PLT(bool, bArea51SamSiteDisabled, BYBIT(0x678368, 0x84E6E8));
+    DECL_OBJECT_PLT(bool, bAircraftCarrierSamSiteDisabled, BYBIT(0x679D88, 0x851B28));
 
     // Member values
     CPtrNodeDoubleLink *m_pControlCodeList;

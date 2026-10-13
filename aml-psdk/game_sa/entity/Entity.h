@@ -237,6 +237,7 @@ DECL_CLASS_BASED(CDummy, CEntity)
     DECL_NEWCALL(CDummy, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
     DECL_DLCALL(CDummy, _ZN6CDummydlEPv);
 DECL_CLASS_END()
+CHECKSIZE(CDummy, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummyObject, CDummy)
     // Construct/Deconstruct functions
@@ -263,6 +264,7 @@ DECL_CLASS_BASED(CBuilding, CEntity)
     DECL_THISCALL_HEAD(ReplaceWithNewModel, _ZN9CBuilding19ReplaceWithNewModelEi, void, int index)
     DECL_THISCALL_TAIL(ReplaceWithNewModel, index)
 DECL_CLASS_END()
+CHECKSIZE(CBuilding, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CAnimatedBuilding, CBuilding)
     // has overloaded virtual functions

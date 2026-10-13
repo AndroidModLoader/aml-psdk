@@ -22,6 +22,9 @@ struct RwFrame
 
 typedef RwFrame *(*RwFrameCallBack)(RwFrame *frame, void *data);
 
+DECL_FASTCALL_SIMPLE_GLO(GetFrameNodeName, _Z16GetFrameNodeNameP7RwFrame, const char*, RwFrame* frame);
+DECL_FASTCALL_SIMPLE_GLO(SetFrameNodeName, _Z16SetFrameNodeNameP7RwFramePKc, void, RwFrame* frame, const char* name);
+
 DECL_FASTCALL_SIMPLE_GLO(RwFrameSetFreeListCreateParams, _Z30RwFrameSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameOpen, _Z12_rwFrameOpenPvii, void*, void* instance, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO(_rwFrameClose, _Z13_rwFrameClosePvii, void*, void* instance, RwInt32 offset, RwInt32 size);

@@ -44,7 +44,7 @@ DECL_CLASS(CObjectData)
     DECL_FASTCALL_SIMPLE(SetObjectData, _ZN11CObjectData13SetObjectDataEiR7CObject, void, i32 modelIndex, CObject& object);
 
     // STATIC values
-    DECL_OBJECT_ARRAY_SYM(CObjectInfo, ms_aObjectInfo, _ZN11CObjectData14ms_aObjectInfoE);
+    DECL_OBJECT_ARRAY_PLT(CObjectInfo, ms_aObjectInfo, BYBIT(0x6774A8, 0x84C988));
 DECL_CLASS_END()
 CHECKSIZE(CObjectData, 0x1, 0x1);
 

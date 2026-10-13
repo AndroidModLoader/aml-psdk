@@ -39,6 +39,8 @@ typedef RwTexture *(*RwTextureCallBackFind)(const char *);
 typedef RwRaster *(*RwTextureCallBackMipmapGeneration)(RwRaster *, RwImage *);
 typedef RwBool (*RwTextureCallBackMipmapName)(RwChar *, RwChar *, RwUInt8, RwInt32);
 typedef RwTexture *(*RwTextureCallBackRead)(const char *, const char *);
+typedef RwTexture *(*RwTextureCallBack)(RwTexture *, void *);
+typedef RwTexDictionary *(*RwTexDictionaryCallBack)(RwTexDictionary *, void *);
 
 DECL_FASTCALL_SIMPLE_GLO(RwTextureCreate, _Z15RwTextureCreateP8RwRaster, RwTexture*, RwRaster *);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureDestroy, _Z16RwTextureDestroyP9RwTexture, RwBool, RwTexture *);
@@ -72,5 +74,24 @@ DECL_FASTCALL_SIMPLE_GLO(RwTextureStreamGetSize, _Z22RwTextureStreamGetSizePK9Rw
 DECL_FASTCALL_SIMPLE_GLO(RwTextureStreamRead, _Z19RwTextureStreamReadP8RwStream, RwTexture*, RwStream *);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureStreamWrite, _Z20RwTextureStreamWritePK9RwTextureP8RwStream, const RwTexture*, RwTexture const*,RwStream *);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureValidatePlugins, _Z24RwTextureValidatePluginsPK9RwTexture, RwBool, RwTexture const*);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryCreate, _Z21RwTexDictionaryCreatev, RwTexDictionary*);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryDestroy, _Z22RwTexDictionaryDestroyP15RwTexDictionary, RwBool, RwTexDictionary* dict);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryAddTexture, _Z25RwTexDictionaryAddTextureP15RwTexDictionaryP9RwTexture, RwTexture*, RwTexDictionary* dict, RwTexture* texture);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryRemoveTexture, _Z28RwTexDictionaryRemoveTextureP9RwTexture, RwTexture*, RwTexture* texture);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryFindNamedTexture, _Z31RwTexDictionaryFindNamedTextureP15RwTexDictionaryPKc, RwTexture*, RwTexDictionary* dict, const char* name);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryFindHashNamedTexture, _Z35RwTexDictionaryFindHashNamedTextureP15RwTexDictionaryj, RwTexture*, RwTexDictionary* dict, RwUInt32 key);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetNumTextures, _Z29RwTexDictionaryGetNumTexturesP15RwTexDictionary, RwInt32, RwTexDictionary* dict);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetTextureByIndex, _Z32RwTexDictionaryGetTextureByIndexP15RwTexDictionaryi, RwTexture*, RwTexDictionary* dict, RwInt32 index);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetCurrent, _Z25RwTexDictionaryGetCurrentv, RwTexDictionary*);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionarySetCurrent, _Z25RwTexDictionarySetCurrentP15RwTexDictionary, RwTexDictionary*, RwTexDictionary* dict);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryForAllTextures, _Z29RwTexDictionaryForAllTexturesPK15RwTexDictionaryPFP9RwTextureS3_PvES4_, const RwTexDictionary*,
+    const RwTexDictionary* dict, RwTextureCallBack callback, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryForAllTexDictionaries, _Z36RwTexDictionaryForAllTexDictionariesPFP15RwTexDictionaryS0_PvES1_, RwBool,
+    RwTexDictionaryCallBack callback, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamRead, _Z25RwTexDictionaryStreamReadP8RwStream, RwTexDictionary*, RwStream* stream);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamWrite, _Z26RwTexDictionaryStreamWritePK15RwTexDictionaryP8RwStream, const RwTexDictionary*, const RwTexDictionary* dict, RwStream* stream);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamGetSize, _Z28RwTexDictionaryStreamGetSizePK15RwTexDictionary, RwUInt32, const RwTexDictionary* dict);
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGtaStreamRead, _Z28RwTexDictionaryGtaStreamReadP8RwStream, RwTexDictionary*, RwStream* stream);
 
 #endif // __AML_PSDK_RWTEXTURE_H

@@ -101,9 +101,9 @@ DECL_CLASS(CClothes)
     DECL_FASTCALL_SIMPLE(LoadClothesFile, _ZN8CClothes15LoadClothesFileEv, void);
 
     // STATIC values
-    DECL_OBJECT_ARRAY_SYM(u32, ms_clothesRules, _ZN8CClothes15ms_clothesRulesE);
-    DECL_OBJECT_SYM(u32, ms_numRuleTags, _ZN8CClothes14ms_numRuleTagsE);
-    DECL_OBJECT_SYM(i32, ms_clothesImageId, _ZN8CClothes17ms_clothesImageIdE);
+    DECL_OBJECT_ARRAY_PLT(u32, ms_clothesRules, BYBIT(0x677DE4, 0x84DBE8));
+    DECL_OBJECT_PLT(u32, ms_numRuleTags, BYBIT(0x67722C, 0x84C490));
+    DECL_OBJECT_PLT(i32, ms_clothesImageId, BYBIT(0x678108, 0x84E228));
 DECL_CLASS_END()
 CHECKSIZE(CClothes, 0x1, 0x1);
 
@@ -150,10 +150,10 @@ DECL_CLASS(CClothesBuilder)
     DECL_FASTCALL_SIMPLE(PutOnClothes, _ZN15CClothesBuilder12PutOnClothesEP9RwTextureS1_b, RwTexture*, RwTexture* texture1, RwTexture* texture2, bool arg3);
 
     // STATIC values
-    DECL_OBJECT_SYM(CPedClothesDesc const*, ms_pOldClothesState, _ZN15CClothesBuilder19ms_pOldClothesStateE);
-    DECL_OBJECT_SYM(bool, ms_ratiosHaveChanged, _ZN15CClothesBuilder20ms_ratiosHaveChangedE);
-    DECL_OBJECT_SYM(bool, ms_geometryHasChanged, _ZN15CClothesBuilder21ms_geometryHasChangedE);
-    DECL_OBJECT_SYM(bool, ms_textureHasChanged, _ZN15CClothesBuilder20ms_textureHasChangedE);
+    DECL_OBJECT_PLT(CPedClothesDesc const*, ms_pOldClothesState, BYBIT(0x678648, 0x84ECB8));
+    DECL_OBJECT_PLT(bool, ms_ratiosHaveChanged, BYBIT(0x6765FC, 0x84AC50));
+    DECL_OBJECT_PLT(bool, ms_geometryHasChanged, BYBIT(0x67941C, 0x850850));
+    DECL_OBJECT_PLT(bool, ms_textureHasChanged, BYBIT(0x677BE8, 0x84D7F0));
 DECL_CLASS_END()
 CHECKSIZE(CClothesBuilder, 0x1, 0x1);
 
