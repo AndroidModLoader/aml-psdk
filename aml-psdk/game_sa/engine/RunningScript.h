@@ -74,10 +74,10 @@ DECL_CLASS(CRunningScript)
     DECL_THISCALL_SIMPLE(ProcessOneCommand, _ZN14CRunningScript17ProcessOneCommandEv, i8);
     DECL_THISCALL_SIMPLE(DoDeatharrestCheck, _ZN14CRunningScript18DoDeatharrestCheckEv, void);
 
-    DECL_THISCALL_HEAD(GetPointerToLocalVariable, _ZN14CRunningScript25GetPointerToLocalVariableEj, void*, u32 VarIndex)
+    DECL_THISCALL_HEAD(GetPointerToLocalVariable, _ZN14CRunningScript25GetPointerToLocalVariableEj, i32*, u32 VarIndex)
     DECL_THISCALL_TAIL(GetPointerToLocalVariable, VarIndex)
 
-    DECL_THISCALL_HEAD(GetPointerToLocalArrayElement, _ZN14CRunningScript29GetPointerToLocalArrayElementEjth, void*, u32 BaseAddress, u16 ElementNumber, u8 SizeOfEachElement)
+    DECL_THISCALL_HEAD(GetPointerToLocalArrayElement, _ZN14CRunningScript29GetPointerToLocalArrayElementEjth, i32*, u32 BaseAddress, u16 ElementNumber, u8 SizeOfEachElement)
     DECL_THISCALL_TAIL(GetPointerToLocalArrayElement, BaseAddress, ElementNumber, SizeOfEachElement)
 
     DECL_THISCALL_HEAD(ReadArrayInformation, _ZN14CRunningScript20ReadArrayInformationEiPtPi, void, i32 bUpdatePC, u16 *pReturnArrayBaseAddress, i32 *pReturnArrayIndex)
@@ -104,7 +104,7 @@ DECL_CLASS(CRunningScript)
     DECL_THISCALL_HEAD(RemoveScriptFromList, _ZN14CRunningScript20RemoveScriptFromListEPPS_, void, CRunningScript **ppList)
     DECL_THISCALL_TAIL(RemoveScriptFromList, ppList)
 
-    DECL_THISCALL_HEAD(IsPedDead, _ZN14CRunningScript9IsPedDeadEP4CPed, bool, CPed* pPed)
+    DECL_THISCALL_HEAD(IsPedDead, _ZN14CRunningScript9IsPedDeadEP4CPed, u8, CPed* pPed)
     DECL_THISCALL_TAIL(IsPedDead, pPed)
 
     DECL_THISCALL_HEAD(GivePedScriptedTask, _ZN14CRunningScript19GivePedScriptedTaskEiP5CTaski, void, i32 iPedID, CTask *pTask, i32 CurrCommand)

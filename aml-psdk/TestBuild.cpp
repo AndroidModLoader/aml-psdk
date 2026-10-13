@@ -32,6 +32,7 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/entity/Boat.h>
 #include <aml-psdk/game_sa/entity/Train.h>
 #include <aml-psdk/game_sa/entity/Pickup.h>
+#include <aml-psdk/game_sa/entity/Object.h>
 #include <aml-psdk/game_sa/other/Widgets.h>
 #include <aml-psdk/game_sa/engine/RunningScript.h>
 #include <aml-psdk/game_sa/audio/AudioEngine.h>
@@ -124,6 +125,17 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/CarCtrl.h>
 #include <aml-psdk/game_sa/engine/CarGenerators.h>
 #include <aml-psdk/game_sa/other/Pickups.h>
+#include <aml-psdk/game_sa/engine/EntryExit.h>
+#include <aml-psdk/game_sa/engine/Zones.h>
+#include <aml-psdk/game_sa/engine/OnscreenTimer.h>
+#include <aml-psdk/game_sa/engine/ObjectData.h>
+#include <aml-psdk/game_sa/other/Clothes.h>
+#include <aml-psdk/game_sa/other/WeaponEffects.h>
+#include <aml-psdk/game_sa/other/MotionBlurStreaks.h>
+#include <aml-psdk/game_sa/other/ShinyTexts.h>
+#include <aml-psdk/game_sa/other/BrightLights.h>
+#include <aml-psdk/game_sa/enum/LevelName.h>
+#include <aml-psdk/game_sa/enum/AnimGroup.h>
 
 #include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>
 

@@ -11,6 +11,7 @@
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/game_sa/enum/PedEnums.h>
+#include <aml-psdk/game_sa/enum/LevelName.h>
 #include <aml-psdk/game_sa/other/LoadedCarGroup.h>
 
 struct CPed;
@@ -20,15 +21,6 @@ struct CDummy;
 struct CDummyObject;
 struct C2dEffect;
 struct CEntity;
-
-enum eLevelName : u32
-{
-    LEVEL_GENERIC,
-    LEVEL_LOSANGELES,
-    LEVEL_SANFRANCISCO,
-    LEVEL_LASVEGAS,
-    MAX_LEVELS
-};
 
 DECL_CLASS(CPopulation)
     // STATIC functions

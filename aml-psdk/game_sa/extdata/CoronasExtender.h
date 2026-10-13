@@ -13,7 +13,9 @@
 #include <aml-psdk/renderware/RwRender.h>
 #include "../Events.h"
 
-#define MAX_EXT_CORONAS_STORAGE 16 // Set your value there. Keep it as low as possible to be optimised :)
+#ifndef MAX_EXT_CORONAS_STORAGE
+    #define MAX_EXT_CORONAS_STORAGE 16 // Set your value there. Keep it as low as possible to be optimised :)
+#endif
 
 struct CoronasExtender
 {
@@ -21,13 +23,67 @@ struct CoronasExtender
     {
         Events::renderCoronasEvent.after += DrawExtCoronasCB;
         Events::updateCoronasEvent.after += UpdateExtCoronasCB;
+        Events::reInitGameEvent.before += Clear;
+        Events::shutdownGameEvent.before += Clear;
     }
 
     // The functions you should use
+    static inline CRegisteredCorona* FindCorona(uintptr_t ID)
+    {
+        if(!ID) return NULL;
+        for(int i = 0; i < MAX_EXT_CORONAS_STORAGE; ++i)
+        {
+            if(m_aCoronas[i].m_dwId == ID) return &m_aCoronas[i];
+        }
+        return NULL;
+    }
+    static inline void RemoveCorona(CRegisteredCorona* corona)
+    {
+        if(!corona || !corona->m_dwId) return;
+        if(corona->m_pAttachedTo) corona->m_pAttachedTo->CleanUpOldReference(&corona->m_pAttachedTo);
+        memset(corona, 0, sizeof(*corona));
+        --m_nCoronasNum;
+    }
+    static inline bool RemoveCorona(uintptr_t ID)
+    {
+        CRegisteredCorona* corona = FindCorona(ID);
+        if(!corona) return false;
+        RemoveCorona(corona);
+        return true;
+    }
+    static inline void Clear()
+    {
+        for(int i = 0; i < MAX_EXT_CORONAS_STORAGE; ++i) RemoveCorona(&m_aCoronas[i]);
+        m_nCoronasNum = 0;
+    }
+    static inline int GetCount() { return m_nCoronasNum; }
+    static inline int GetCapacity() { return MAX_EXT_CORONAS_STORAGE; }
+    static inline CVector GetWorldPosition(CVector const& Coors, CEntity* pAttachedToEntity)
+    {
+        if(!pAttachedToEntity) return Coors;
+        CMatrix* mat = pAttachedToEntity->GetMatrix();
+        if(mat)
+        {
+            if(pAttachedToEntity->IsVehicle() && pAttachedToEntity->AsVehicle()->IsSubBike())
+            {
+                mat = &pAttachedToEntity->AsVehicle()->AsBike()->m_mLeanMatrix;
+            }
+            return *mat * Coors + mat->GetPosition();
+        }
+        return pAttachedToEntity->GetPosition() + pAttachedToEntity->GetRightDirection() * Coors.x +
+            pAttachedToEntity->GetTopDirection() * Coors.y + CVector(0.0f, 0.0f, Coors.z);
+    }
+    static inline void RegisterCorona(uintptr_t ID, CVector const& Coors, CRGBA const& Color, float Size, float Range,
+        eCoronaType CoronaType = CORONATYPE_SHINYSTAR, CEntity* pAttachedToEntity = NULL)
+    {
+        RegisterCorona(ID, pAttachedToEntity, Color.r, Color.g, Color.b, Color.a, Coors, Size, Range, CoronaType,
+            FLARETYPE_NONE, 0, 0, 0, 0.0f, false, 0.0f, true, 15.0f, false, false);
+    }
     static inline void RegisterCorona(uintptr_t ID, CEntity *pAttachedToEntity, u8 R, u8 G, u8 B, u8 Intensity, CVector const& Coors, float Size,
         float Range, eCoronaType CoronaType, eCoronaFlareType FlareType, u8 ReflType, u8 LOSCheck, u8 UsesTrails, float fNormalAngle,
         bool bNeonFade, float ArgPullTowardsCam, bool bFullBrightAtStart, float FadeSpeed, bool bOnlyFromBelow, bool bWhiteCore)
     {
+        if(CoronaType < CORONATYPE_SHINYSTAR || CoronaType >= CORONATYPE_NONE) return;
         RegisterCorona(ID, pAttachedToEntity, R, G, B, Intensity, Coors, Size, Range, gpCoronaTexture[CoronaType], FlareType, ReflType, LOSCheck,
             UsesTrails, fNormalAngle, bNeonFade, ArgPullTowardsCam, bFullBrightAtStart, FadeSpeed, bOnlyFromBelow, bWhiteCore);
     }
@@ -36,11 +92,8 @@ struct CoronasExtender
         float Range, RwTexture *pCoronaTex, eCoronaFlareType FlareType, u8 ReflType, u8 LOSCheck, u8 UsesTrails, float fNormalAngle,
         bool bNeonFade, float ArgPullTowardsCam, bool bFullBrightAtStart, float FadeSpeed, bool bOnlyFromBelow, bool bWhiteCore)
     {
-        CVector worldPos = Coors;
-        if(pAttachedToEntity && pAttachedToEntity->GetMatrix())
-        {
-            worldPos = *pAttachedToEntity->GetMatrix() * Coors + pAttachedToEntity->GetPosition();
-        }
+        if(!ID || Range <= 0.0f) return;
+        CVector worldPos = GetWorldPosition(Coors, pAttachedToEntity);
 
         const CVector& camPos = TheCamera.GetPosition();
         if(SQ(Range) < (camPos - worldPos).MagnitudeSqr2D()) return;
@@ -57,6 +110,7 @@ struct CoronasExtender
         }
         
         CRegisteredCorona* corona = NULL;
+        CRegisteredCorona* freeCorona = NULL;
         for(int i = 0; i < MAX_EXT_CORONAS_STORAGE; ++i)
         {
             if(m_aCoronas[i].m_dwId == (uintptr_t)ID)
@@ -64,27 +118,20 @@ struct CoronasExtender
                 corona = &m_aCoronas[i];
                 if(!corona->m_Color.a && !alpha)
                 {
-                    corona->m_dwId = 0;
-                    --m_nCoronasNum;
+                    RemoveCorona(corona);
                     return;
                 }
                 break;
             }
+            if(!m_aCoronas[i].m_dwId && !freeCorona) freeCorona = &m_aCoronas[i];
         }
         if(!corona)
         {
-            for(int i = 0; i < MAX_EXT_CORONAS_STORAGE; ++i)
-            {
-                if(m_aCoronas[i].m_dwId == 0)
-                {
-                    corona = &m_aCoronas[i];
-                    ++m_nCoronasNum;
-                    break;
-                }
-            }
+            corona = freeCorona;
             if(!corona) return;
+            ++m_nCoronasNum;
 
-            corona->m_nFadeState       = bFullBrightAtStart ? 255 : 0;
+            corona->m_nFadeState       = bFullBrightAtStart ? alpha : 0;
             corona->m_bOffScreen       = true;
             corona->m_bReflectionDelay = false;
             corona->m_bJustCreated     = true;
@@ -109,23 +156,30 @@ struct CoronasExtender
         corona->m_bDrawWithWhiteCore   = bWhiteCore;
 
         corona->m_bAttached            = !!pAttachedToEntity;
-        corona->m_pAttachedTo          = pAttachedToEntity;
-        if(pAttachedToEntity)
+        if(corona->m_pAttachedTo != pAttachedToEntity)
         {
-            pAttachedToEntity->RegisterReference(&corona->m_pAttachedTo);
+            if(corona->m_pAttachedTo) corona->m_pAttachedTo->CleanUpOldReference(&corona->m_pAttachedTo);
+            corona->m_pAttachedTo = pAttachedToEntity;
+            if(pAttachedToEntity) pAttachedToEntity->RegisterReference(&corona->m_pAttachedTo);
         }
     }
 
     // Callbacks
     static inline void DrawExtCoronasCB()
     {
+        if(!m_nCoronasNum) return;
+        CSprite::FlushSpriteBuffer();
+        const RwRenderState states[] = { rwRENDERSTATEZWRITEENABLE, rwRENDERSTATEVERTEXALPHAENABLE,
+            rwRENDERSTATESRCBLEND, rwRENDERSTATEDESTBLEND, rwRENDERSTATEZTESTENABLE, rwRENDERSTATETEXTURERASTER };
+        void* savedStates[6] { NULL };
+        bool restoreStates[6];
+        for(int i = 0; i < 6; ++i) restoreStates[i] = !!RwRenderStateGet(states[i], &savedStates[i]);
         RwRenderStateSet(rwRENDERSTATEZWRITEENABLE,      (void*)false);
         RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
         RwRenderStateSet(rwRENDERSTATESRCBLEND,          (void*)rwBLENDONE);
         RwRenderStateSet(rwRENDERSTATEDESTBLEND,         (void*)rwBLENDONE);
         RwRenderStateSet(rwRENDERSTATEZTESTENABLE,       (void*)true);
 
-        CRect screenRect { 0.0f, 0.0f, (float)RsGlobal.maximumWidth, (float)RsGlobal.maximumHeight };
         CVector2D halfscreen { 0.5f * RsGlobal.maximumWidth, 0.5f * RsGlobal.maximumHeight };
 
         bool zTestEnable = true;
@@ -135,16 +189,7 @@ struct CoronasExtender
             CRegisteredCorona& c = m_aCoronas[i];
             if(!c.m_dwId || (!c.m_nFadeState && !c.m_Color.a) ) continue;
 
-            CVector cpos = c.m_vPosn;
-            if(c.m_pAttachedTo && c.m_pAttachedTo->GetMatrix())
-            {
-                CMatrix* mat = c.m_pAttachedTo->GetMatrix();
-                if(c.m_pAttachedTo->IsVehicle() && c.m_pAttachedTo->AsVehicle()->IsSubBike())
-                {
-                    mat = &c.m_pAttachedTo->AsVehicle()->AsBike()->m_mLeanMatrix;
-                }
-                cpos = *mat * cpos + mat->GetPosition();
-            }
+            CVector cpos = GetWorldPosition(c.m_vPosn, c.m_pAttachedTo);
 
             CVector2D onScrSize;
             CVector   onScrPos;
@@ -165,7 +210,6 @@ struct CoronasExtender
 
             if(c.m_pTexture && intensity > 0)
             {
-                RwRenderStateSet(rwRENDERSTATEZTESTENABLE,   (void*)true);
                 RwRenderStateSet(rwRENDERSTATETEXTURERASTER, *(void**)c.m_pTexture);
                 const float scale = fminf(40.0f, onScrPos.z) * CWeather::Foggyness / 40.0f + 1.0f;
                 const float colorScale = 1.0f / scale;
@@ -189,8 +233,7 @@ struct CoronasExtender
                 }
             }
 
-            // Flare (TODO: need to test!)
-            if(c.m_nFlareType != FLARETYPE_NONE)
+            if(c.m_nFlareType != FLARETYPE_NONE && gpCoronaTexture[CORONATYPE_SHINYSTAR])
             {
                 RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)false);
                 RwRenderStateSet(rwRENDERSTATETEXTURERASTER, *(void**)(gpCoronaTexture[CORONATYPE_SHINYSTAR]));
@@ -208,9 +251,10 @@ struct CoronasExtender
 
                 CColPoint hitCP;
                 CEntity* hitEntity;
+                bool visible = !CWorld::ProcessLineOfSight(cpos, camPos, hitCP, hitEntity, false, true, true, false, false, false, false, true);
                 while(flare->Sprite)
                 {
-                    if(!CWorld::ProcessLineOfSight(cpos, camPos, hitCP, hitEntity, false, true, true, false, false, false, false, true))
+                    if(visible)
                     {
                         const CRGBA flareColor(
                             (u8)( c.m_Color.r * colorMult * flare->RedMult ),
@@ -229,19 +273,20 @@ struct CoronasExtender
                     }
                     ++flare;
                 }
+                CSprite::FlushSpriteBuffer();
             }
 
-            // TODO: HeadlightsSpectrum (do we need this..?)
-            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)true);
-            if(c.m_nFlareType == FLARETYPE_HEADLIGHTS && CWeather::HeadLightsSpectrum != 0.0f && CGame::CanSeeOutSideFromCurrArea())
-            {
-
-            }
+            RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)(intptr_t)zTestEnable);
         }
         CSprite::FlushSpriteBuffer();
+        for(int i = 0; i < 6; ++i)
+        {
+            if(restoreStates[i]) RwRenderStateSet(states[i], savedStates[i]);
+        }
     }
     static inline void UpdateExtCoronasCB()
     {
+        if(!m_nCoronasNum) return;
         CVector& camPos = TheCamera.GetPosition();
         const float timeStep = CTimer::GetTimeStep();
 
@@ -254,15 +299,15 @@ struct CoronasExtender
                 if(!c.m_bRegisteredThisFrame) c.m_Color.a = 0;
                 if(c.m_bAttached && !c.m_pAttachedTo)
                 {
-                    c.m_dwId = 0;
-                    --m_nCoronasNum;
+                    RemoveCorona(&c);
                     continue;
                 }
 
                 const float fadeStep = timeStep * c.m_fFadeSpeed;
-                if(!c.m_bCheckObstacles || CWorld::GetIsLineOfSightClear(c.m_vPosn, camPos, true, false, false, false, false, false, false) )
+                CVector worldPos = GetWorldPosition(c.m_vPosn, c.m_pAttachedTo);
+                if(!c.m_bCheckObstacles || CWorld::GetIsLineOfSightClear(worldPos, camPos, true, false, false, false, false, false, false) )
                 {
-                    if(c.m_bOffScreen || (c.m_bOnlyFromBelow && camPos.z > c.m_vPosn.z) )
+                    if(c.m_bOffScreen || (c.m_bOnlyFromBelow && camPos.z > worldPos.z) )
                     {
                         c.m_nFadeState = (u8)(fmaxf(0.0f, (float)c.m_nFadeState - fadeStep));
                     }
@@ -292,8 +337,7 @@ struct CoronasExtender
 
                 if(!c.m_nFadeState && !c.m_bJustCreated)
                 {
-                    c.m_dwId = 0;
-                    --m_nCoronasNum;
+                    RemoveCorona(&c);
                 }
 
                 c.m_bJustCreated = false;
