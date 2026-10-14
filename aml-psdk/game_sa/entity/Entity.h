@@ -99,7 +99,7 @@ DECL_CLASS_BASED(CEntity, CPlaceable)
     //DECL_THISCALL_SIMPLE(Add, _ZN7CEntity3AddEv, void); // virtual
     //DECL_THISCALL_SIMPLE(Remove, _ZN7CEntity6RemoveEv, void); // virtual
     DECL_THISCALL_SIMPLE(GetDistanceFromCentreOfMassToBaseOfModel, _ZN7CEntity40GetDistanceFromCentreOfMassToBaseOfModelEv, float);
-    DECL_THISCALL_SIMPLE(GetColModel, _ZN7CEntity11GetColModelEv, CColModel*);
+    DECL_THISCALL_SIMPLE(GetColModel, _ZN7CEntity11GetColModelEv, CColModel&);
     DECL_THISCALL_SIMPLE(SetupBigBuilding, _ZN7CEntity16SetupBigBuildingEv, void);
     DECL_THISCALL_SIMPLE(ModifyMatrixForBannerInWind, _ZN7CEntity27ModifyMatrixForBannerInWindEv, void);
     DECL_THISCALL_SIMPLE(PruneReferences, _ZN7CEntity15PruneReferencesEv, void);
@@ -241,11 +241,14 @@ CHECKSIZE(CDummy, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummyObject, CDummy)
     // Construct/Deconstruct functions
+    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCDummyObject1, _ZN12CDummyObjectC2EP7CObject, void, CDummyObject* self, CObject* pObject);
+    CDummyObject(CObject* pObject) { FuncProxy_ctorCDummyObject1(this, pObject); }
     DECL_CTORCALL(CDummyObject, _ZN12CDummyObjectC2Ev);
     DECL_DTORCALL(CDummyObject, _ZN12CDummyObjectD2Ev);
-    DECL_NEWCALL(CDummyObject, BYBIT(_ZN12CDummyObjectnwEj, _ZN12CDummyObjectnwEm) );  // NOT EXPORTED BY 2.00 OR 2.10: resolves to NULL on both
-    DECL_DLCALL(CDummyObject, _ZN12CDummyObjectdlEPv);  // NOT EXPORTED BY 2.00 OR 2.10: resolves to NULL on both
+    DECL_NEWCALL(CDummyObject, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
+    DECL_DLCALL(CDummyObject, _ZN6CDummydlEPv);
     
+
     // Member functions
 
     DECL_THISCALL_SIMPLE(CreateObject, _ZN12CDummyObject12CreateObjectEv, CObject*);
@@ -260,6 +263,7 @@ DECL_CLASS_BASED(CBuilding, CEntity)
     DECL_NEWCALL(CBuilding, BYBIT(_ZN9CBuildingnwEj, _ZN9CBuildingnwEm) );
     DECL_DLCALL(CBuilding, _ZN9CBuildingdlEPv);
     
+
     // Member functions
     DECL_THISCALL_HEAD(ReplaceWithNewModel, _ZN9CBuilding19ReplaceWithNewModelEi, void, int index)
     DECL_THISCALL_TAIL(ReplaceWithNewModel, index)

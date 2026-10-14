@@ -6,6 +6,7 @@
 #include <aml-psdk/game_sa/base/Lists.h>
 #include <aml-psdk/game_sa/base/ColModel.h>
 #include <aml-psdk/game_sa/other/PlayerInfo.h>
+#include <aml-psdk/game_sa/enum/LevelName.h>
 
 struct CEntity;
 struct CSector;
@@ -16,9 +17,16 @@ struct CBox;
 struct CMatrix;
 struct CVehicle;
 struct CPed;
+struct CPhysical;
 
 DECL_CLASS(CWorld)
     // STATIC functions
+    DECL_FASTCALL_SIMPLE(CheckBlockListIntegrity, _ZN6CWorld23CheckBlockListIntegrityEv, void);
+    DECL_FASTCALL_SIMPLE(TestForBuildingsOnTopOfEachOther1, _ZN6CWorld32TestForBuildingsOnTopOfEachOtherEv, void);
+    DECL_FASTCALL_SIMPLE(TestForBuildingsOnTopOfEachOther2, _ZN6CWorld32TestForBuildingsOnTopOfEachOtherER8CPtrList, void, CPtrList& ptrList);
+    DECL_FASTCALL_SIMPLE(TestForUnusedModels1, _ZN6CWorld19TestForUnusedModelsEv, void);
+    DECL_FASTCALL_SIMPLE(HandleCollisionZoneChange, _ZN6CWorld25HandleCollisionZoneChangeE10eLevelNameS0_, void, eLevelName arg1, eLevelName arg2);
+    DECL_FASTCALL_SIMPLE(DoZoneTestForChaser, _ZN6CWorld19DoZoneTestForChaserEP9CPhysical, void, CPhysical* pCPhysical1);
     DECL_FASTCALL_SIMPLE(ResetLineTestOptions, _ZN6CWorld20ResetLineTestOptionsEv, void);
     DECL_FASTCALL_SIMPLE(Initialise, _ZN6CWorld10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(ShutDown, _ZN6CWorld8ShutDownEv, void);
@@ -132,6 +140,12 @@ DECL_CLASS(CWorld)
     DECL_FASTCALL_SIMPLE(FindUnsuspectingTargetCar, _ZN6CWorld25FindUnsuspectingTargetCarE7CVectorS0_, CVehicle*, CVector Coors, CVector AimTowardsCoors);
     DECL_FASTCALL_SIMPLE(FindUnsuspectingTargetPed, _ZN6CWorld25FindUnsuspectingTargetPedE7CVectorS0_, CPed*, CVector Coors, CVector AimTowardsCoors);
     
+
+    // STATIC values
+    DECL_VALUE_PLT_U8(bDoingCarCollisions, BYBIT(0x678710, 0x84EE48));
+    DECL_OBJECT_PLT(CVector, SnookerTableMax, BYBIT(0x679318, 0x850648));
+    DECL_OBJECT_PLT(CVector, SnookerTableMin, BYBIT(0x6775E8, 0x84CC00));
+
     // STATIC members
     DECL_OBJECT_ARRAY_PLT(CPlayerInfo, Players, BYBIT(0x6783C8, 0x84E7A8));
     DECL_VALUE_PLT_U8(PlayerInFocus, BYBIT(0x679B5C, 0x8516D8));
@@ -167,5 +181,9 @@ DECL_CLASS_END()
 #define ms_listMovingEntityPtrs ms_listMovingEntityPtrs()
 #define ms_listObjectsWithControlCode ms_listObjectsWithControlCode()
 #define ms_nCurrentScanCode ms_nCurrentScanCode()
+
+#define bDoingCarCollisions bDoingCarCollisions()
+#define SnookerTableMax SnookerTableMax()
+#define SnookerTableMin SnookerTableMin()
 
 #endif // __AML_PSDK_SAWORLD_H

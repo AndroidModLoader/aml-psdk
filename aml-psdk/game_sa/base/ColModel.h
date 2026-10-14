@@ -3,6 +3,7 @@
 
 #include <aml-psdk/gta_base/Vector.h>
 #include "../enum/SurfaceType.h"
+#include "Lists.h"
 
 struct CColSphere;
 struct CColDisk;
@@ -27,8 +28,10 @@ struct __attribute__((aligned(4))) CColTrianglePlane
     u8              m_nOrientation;
 };
 
-struct CCollisionData
-{
+DECL_CLASS(CCollisionData)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CCollisionData, _ZN14CCollisionDataC2Ev);
+
     short               m_nNumSpheres;
     short               m_nNumBoxes;
     short               m_nNumTriangles;
@@ -40,10 +43,8 @@ struct CCollisionData
     struct
     {
         unsigned char   bUsesDisks : 1;
-        unsigned char   bNotEmpty : 1;
+        unsigned char   bUsesColModelSections : 1;
         unsigned char   bHasShadowTris : 1;
-        unsigned char   bHasFaceGroups : 1; // cant confirm this one exists
-        unsigned char   bHasShadow : 1; // cant confirm this one exists
     } m_nFlags;
     CColSphere         *m_pSpheres;
     CColBox            *m_pBoxes;
@@ -60,7 +61,23 @@ struct CCollisionData
     CollisionVector    *m_pShadowVertices;
     CColTriangle       *m_pShadowTriangles;
     int32_t            *m_modelSec;
-};
+
+    // Member functions
+    DECL_THISCALL_HEAD(Copy, _ZN14CCollisionData4CopyERKS_, CCollisionData&, CCollisionData const& arg0)
+    DECL_THISCALL_TAIL(Copy, arg0)
+    DECL_THISCALL_SIMPLE(RemoveCollisionVolumes, _ZN14CCollisionData22RemoveCollisionVolumesEv, void);
+    DECL_THISCALL_HEAD(GetTrianglePoint, _ZNK14CCollisionData16GetTrianglePointER7CVectori, void, CVector& outVec, i32 vertId)
+    DECL_THISCALL_TAIL(GetTrianglePoint, outVec, vertId)
+    DECL_THISCALL_HEAD(GetShadTrianglePoint, _ZNK14CCollisionData20GetShadTrianglePointER7CVectori, void, CVector& outVec, i32 vertId)
+    DECL_THISCALL_TAIL(GetShadTrianglePoint, outVec, vertId)
+    DECL_THISCALL_SIMPLE(CalculateTrianglePlanes, _ZN14CCollisionData23CalculateTrianglePlanesEv, void);
+    DECL_THISCALL_SIMPLE(RemoveTrianglePlanes, _ZN14CCollisionData20RemoveTrianglePlanesEv, void);
+    DECL_THISCALL_HEAD(SetLinkPtr, _ZN14CCollisionData10SetLinkPtrEP5CLinkIPS_E, void, CLink<CCollisionData *>* link)
+    DECL_THISCALL_TAIL(SetLinkPtr, link)
+    DECL_THISCALL_SIMPLE(GetLinkPtr, _ZN14CCollisionData10GetLinkPtrEv, CLink<CCollisionData *>*);
+    DECL_THISCALL_SIMPLE(GetNoVectors, _ZNK14CCollisionData12GetNoVectorsEv, i32);
+    DECL_THISCALL_SIMPLE(GetNoShadVectors, _ZNK14CCollisionData16GetNoShadVectorsEv, i32);
+DECL_CLASS_END()
 
 struct ColData
 {
@@ -69,8 +86,12 @@ struct ColData
     u8 m_lighting;
 };
 
-struct CBox
-{
+DECL_CLASS(CBox)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN4CBox3SetERK7CVectorS2_, void, CVector const& vecMin, CVector const& vecMax)
+    DECL_THISCALL_TAIL(Set, vecMin, vecMax)
+    DECL_THISCALL_SIMPLE(Recalc, _ZN4CBox6RecalcEv, void);
+
     CVector m_vecMin;
     CVector m_vecMax;
     CBox()
@@ -78,12 +99,18 @@ struct CBox
         m_vecMin = CVector( 1,  1,  1);
         m_vecMax = CVector(-1, -1, -1);
     }
-};
+DECL_CLASS_END()
 
-struct CColBox : CBox
-{
+DECL_CLASS_BASED(CColBox, CBox)
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN7CColBoxaSERKS_, CColBox&, const CColBox &box)
+    DECL_THISCALL_TAIL(Assign, box)
+
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN7CColBox3SetERK7CVectorS2_hhh, void, CVector const& sup, CVector const& inf, u8 material, u8 flags, u8 lighting)
+    DECL_THISCALL_TAIL(Set, sup, inf, material, flags, lighting)
+
     ColData m_data;
-};
+DECL_CLASS_END()
 
 struct CSphere
 {
@@ -101,10 +128,21 @@ struct CSphere
     }
 };
 
-struct CColSphere : CSphere
-{
+DECL_CLASS_BASED(CColSphere, CSphere)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN10CColSphere3SetEfRK7CVectorhhh, void, float radius, CVector const& center, u8 material, u8 flags, u8 lighting)
+    DECL_THISCALL_TAIL(Set, radius, center, material, flags, lighting)
+    DECL_THISCALL_HEAD(IntersectRay, _ZNK10CColSphere12IntersectRayERK7CVectorS2_RS0_S3_, bool, CVector const& rayStart, CVector const& rayEnd, CVector& intPoint1, CVector& intPoint2)
+    DECL_THISCALL_TAIL(IntersectRay, rayStart, rayEnd, intPoint1, intPoint2)
+    DECL_THISCALL_HEAD(IntersectEdge, _ZNK10CColSphere13IntersectEdgeERK7CVectorS2_RS0_S3_, bool, CVector const& arg1, CVector const& arg2, CVector& arg3, CVector& arg4)
+    DECL_THISCALL_TAIL(IntersectEdge, arg1, arg2, arg3, arg4)
+    DECL_THISCALL_HEAD(IntersectPoint, _ZNK10CColSphere14IntersectPointERK7CVector, bool, CVector const& arg1)
+    DECL_THISCALL_TAIL(IntersectPoint, arg1)
+    DECL_THISCALL_HEAD(IntersectSphere, _ZNK10CColSphere15IntersectSphereERKS_, bool, CColSphere const& arg1)
+    DECL_THISCALL_TAIL(IntersectSphere, arg1)
+
     ColData m_data;
-};
+DECL_CLASS_END()
 
 struct CColDisk : CColSphere
 {
@@ -135,8 +173,13 @@ DECL_CLASS(CColModel)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CColModel, _ZN9CColModelC2Ev);
     DECL_DTORCALL(CColModel, _ZN9CColModelD2Ev);
+    DECL_NEWCALL(CColModel, BYBIT(_ZN9CColModelnwEj, _ZN9CColModelnwEm));
+    DECL_DLCALL(CColModel, _ZN9CColModeldlEPv);
 
     // Member functions
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN9CColModelaSERKS_, CColModel&, const CColModel &model)
+    DECL_THISCALL_TAIL(Assign, model)
+
     DECL_THISCALL_SIMPLE(MakeMultipleAlloc, _ZN9CColModel17MakeMultipleAllocEv, void);
     DECL_THISCALL_SIMPLE(AllocateData, _ZN9CColModel12AllocateDataEv, void);
     DECL_THISCALL_SIMPLE(RemoveCollisionVolumes, _ZN9CColModel22RemoveCollisionVolumesEv, void);
@@ -172,8 +215,12 @@ struct tColLighting
     unsigned char day : 4;
     unsigned char night : 4;
 };
-struct CColPoint
-{
+DECL_CLASS(CColPoint)
+    // Member functions
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN9CColPointaSERKS_, CColPoint&, const CColPoint &point)
+    DECL_THISCALL_TAIL(Assign, point)
+
+    // Member values
     CVector m_vecPoint;
     float field_C;
     CVector m_vecNormal;
@@ -181,13 +228,12 @@ struct CColPoint
     unsigned char m_nSurfaceTypeA; // see eSurfaceType
     unsigned char m_nPieceTypeA;
     tColLighting m_nLightingA;
-    char _pad;
     unsigned char m_nSurfaceTypeB; // see eSurfaceType
     unsigned char m_nPieceTypeB;
     tColLighting m_nLightingB;
-    char _pad2;
     float m_fDepth;
-};
+DECL_CLASS_END()
+CHECKSIZE(CColPoint, 0x2C, 0x2C);
 
 struct CStoredCollPoly
 {

@@ -24,6 +24,13 @@ struct DirectoryInfo
 CHECKSIZE(DirectoryInfo, 0x20, 0x20);  // 64-bit from the IDB; 32-bit measured from this layout
 
 DECL_CLASS(CDirectory)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CDirectory, _ZN10CDirectoryC2Ei, i32 capacity)
+    DECL_CTORCALL_ARG_TAIL(capacity)
+    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCDirectory1, _ZN10CDirectoryC2Ev, void, CDirectory* self);
+    CDirectory() { FuncProxy_ctorCDirectory1(this); }
+    DECL_DTORCALL(CDirectory, _ZN10CDirectoryD2Ev);
+
     typedef ::DirectoryInfo DirectoryInfo;
 
     DirectoryInfo*                     m_pDirInfo;

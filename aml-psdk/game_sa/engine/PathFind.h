@@ -77,8 +77,10 @@ struct CPathNode
     unsigned char m_nBehaviourType : 4; //!< 1 - roadblock, 2 - parking node
 };
 
-struct CCarPathLink
-{
+DECL_CLASS(CCarPathLink)
+    // Member functions
+    DECL_THISCALL_SIMPLE(OneWayLaneOffset, _ZN12CCarPathLink16OneWayLaneOffsetEv, float);
+
     CompressedVector2D m_vecPosn;
     CNodeAddress m_address;
     signed char m_nDirX;
@@ -92,7 +94,7 @@ struct CCarPathLink
 
     unsigned char m_nTrafficLightState : 2; //!< 1 - North-South, 2 - West-East cycle
     unsigned char m_bTrainCrossing : 1;
-};
+DECL_CLASS_END()
 
 struct CPathIntersectionInfo
 {
@@ -122,6 +124,24 @@ DECL_CLASS(CPathFind)
     CPathFind(){}
     
     // Member functions
+    DECL_THISCALL_HEAD(StoreNodeInfoCar, _ZN9CPathFind16StoreNodeInfoCarEssaasssfaabbhbbhh, void, i16 arg1, i16 arg2, i8 arg3, i8 arg4, i16 arg5, i16 arg6, i16 arg7, float arg8, i8 arg9, i8 arg10, bool arg11, bool arg12, u8 arg13, bool arg14, bool arg15, u8 arg16, u8 arg17)
+    DECL_THISCALL_TAIL(StoreNodeInfoCar, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+    DECL_THISCALL_HEAD(StoreNodeInfoPed, _ZN9CPathFind16StoreNodeInfoPedEssaasssfbhbh, void, i16 arg1, i16 arg2, i8 arg3, i8 arg4, i16 arg5, i16 arg6, i16 arg7, float arg8, bool arg9, u8 arg10, bool arg11, u8 arg12)
+    DECL_THISCALL_TAIL(StoreNodeInfoPed, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+    DECL_THISCALL_HEAD(StoreDetachedNodeInfoPed, _ZN9CPathFind24StoreDetachedNodeInfoPedEiaiffffbbbhbhb, void, i32 arg1, i8 arg2, i32 arg3, float arg4, float arg5, float arg6, float arg7, bool arg8, bool arg9, bool arg10, u8 arg11, bool arg12, u8 arg13, bool arg14)
+    DECL_THISCALL_TAIL(StoreDetachedNodeInfoPed, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+    DECL_THISCALL_HEAD(StoreDetachedNodeInfoCar, _ZN9CPathFind24StoreDetachedNodeInfoCarEiaiffffaabbhbbhbh, void, i32 arg1, i8 arg2, i32 arg3, float arg4, float arg5, float arg6, float arg7, i8 arg8, i8 arg9, bool arg10, bool arg11, u8 arg12, bool arg13, bool arg14, u8 arg15, bool arg16, u8 arg17)
+    DECL_THISCALL_TAIL(StoreDetachedNodeInfoCar, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+    DECL_THISCALL_HEAD(RegisterMarker, _ZN9CPathFind14RegisterMarkerEP7CVector, void, CVector* pCVector1)
+    DECL_THISCALL_TAIL(RegisterMarker, pCVector1)
+    DECL_THISCALL_HEAD(SwitchRoadsInAngledArea, _ZN9CPathFind23SwitchRoadsInAngledAreaEfffffffhh, void, float arg1, float arg2, float arg3, float arg4, float arg5, float arg6, float arg7, u8 arg8, u8 arg9)
+    DECL_THISCALL_TAIL(SwitchRoadsInAngledArea, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+    DECL_THISCALL_HEAD(MarkRoadsBetweenLevelsInArea, _ZN9CPathFind28MarkRoadsBetweenLevelsInAreaEffffff, void, float arg1, float arg2, float arg3, float arg4, float arg5, float arg6)
+    DECL_THISCALL_TAIL(MarkRoadsBetweenLevelsInArea, arg1, arg2, arg3, arg4, arg5, arg6)
+    DECL_THISCALL_HEAD(PedMarkRoadsBetweenLevelsInArea, _ZN9CPathFind31PedMarkRoadsBetweenLevelsInAreaEffffff, void, float arg1, float arg2, float arg3, float arg4, float arg5, float arg6)
+    DECL_THISCALL_TAIL(PedMarkRoadsBetweenLevelsInArea, arg1, arg2, arg3, arg4, arg5, arg6)
+    DECL_THISCALL_HEAD(MarkRoadsBetweenLevelsNodeAndNeighbours, _ZN9CPathFind39MarkRoadsBetweenLevelsNodeAndNeighboursEi, void, i32 arg1)
+    DECL_THISCALL_TAIL(MarkRoadsBetweenLevelsNodeAndNeighbours, arg1)
     DECL_THISCALL_SIMPLE(Init, _ZN9CPathFind4InitEv, void);
     DECL_THISCALL_SIMPLE(ReInit, _ZN9CPathFind6ReInitEv, void);
     DECL_THISCALL_SIMPLE(ReleaseRequestedNodes, _ZN9CPathFind21ReleaseRequestedNodesEv, void);
@@ -240,7 +260,7 @@ DECL_CLASS(CPathFind)
     DECL_THISCALL_HEAD(FindNodeOrientationForCarPlacement, _ZN9CPathFind34FindNodeOrientationForCarPlacementE12CNodeAddress, float, CNodeAddress CarNode)
     DECL_THISCALL_TAIL(FindNodeOrientationForCarPlacement, CarNode)
 
-    DECL_THISCALL_HEAD(FindNodeOrientationForCarPlacementFacingDestination, _ZN9CPathFind51FindNodeOrientationForCarPlacementFacingDestinationE12CNodeAddressffb, void, CNodeAddress CarNode, float DestX, float DestY, bool bTowardsDest)
+    DECL_THISCALL_HEAD(FindNodeOrientationForCarPlacementFacingDestination, _ZN9CPathFind51FindNodeOrientationForCarPlacementFacingDestinationE12CNodeAddressffb, float, CNodeAddress CarNode, float DestX, float DestY, bool bTowardsDest)
     DECL_THISCALL_TAIL(FindNodeOrientationForCarPlacementFacingDestination, CarNode, DestX, DestY, bTowardsDest)
 
     DECL_THISCALL_HEAD(ThisNodeWillLeadIntoADeadEnd, _ZN9CPathFind28ThisNodeWillLeadIntoADeadEndEP9CPathNodeS1_, bool, CPathNode *pToNode, CPathNode *pFromNode)
@@ -270,7 +290,7 @@ DECL_CLASS(CPathFind)
     DECL_THISCALL_HEAD(TestCrossesRoad, _ZN9CPathFind15TestCrossesRoadE12CNodeAddressS0_, bool, CNodeAddress Node1, CNodeAddress Node2)
     DECL_THISCALL_TAIL(TestCrossesRoad, Node1, Node2)
 
-    DECL_THISCALL_HEAD(FindStartPointOfRegion, _ZN9CPathFind22FindStartPointOfRegionEiiRfS0_, void, i32 RegionX, i32 RegionY, float *ResultX, float *ResultY)
+    DECL_THISCALL_HEAD(FindStartPointOfRegion, _ZN9CPathFind22FindStartPointOfRegionEiiRfS0_, void, i32 RegionX, i32 RegionY, float &ResultX, float &ResultY)
     DECL_THISCALL_TAIL(FindStartPointOfRegion, RegionX, RegionY, ResultX, ResultY)
 
     DECL_THISCALL_HEAD(SetLinksBridgeLights, _ZN9CPathFind20SetLinksBridgeLightsEffffb, void, float MinX, float MaxX, float MinY, float MaxY, bool Value)

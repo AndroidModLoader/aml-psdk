@@ -1,6 +1,8 @@
 #ifndef __AML_PSDK_GTALISTS_H
 #define __AML_PSDK_GTALISTS_H
 
+#include <aml-psdk/game_sa/plugin.h>
+
 struct CPtrNode
 {
     void *m_pVoid;
@@ -16,18 +18,28 @@ struct CPtrNodeDoubleLink : CPtrNode
     CPtrNodeDoubleLink *m_pPrevious;
 };
 
-struct CPtrList
-{
+DECL_CLASS(CPtrList)
+    // Member functions
+    DECL_THISCALL_SIMPLE(CountElements, _ZN8CPtrList13CountElementsEv, i32);
+    DECL_THISCALL_HEAD(IsMemberOfList, _ZN8CPtrList14IsMemberOfListEPv, bool, void* data)
+    DECL_THISCALL_TAIL(IsMemberOfList, data)
+
     CPtrNode *m_pHead;
-};
+DECL_CLASS_END()
 
-struct CPtrListDoubleLink : CPtrList
-{
-};
+DECL_CLASS_BASED(CPtrListDoubleLink, CPtrList)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(CPtrListDoubleLink, _ZN18CPtrListDoubleLinkD2Ev);
 
-struct CPtrListSingleLink : CPtrList
-{
-};
+    // Member functions
+    DECL_THISCALL_SIMPLE(Flush, _ZN18CPtrListDoubleLink5FlushEv, void);
+DECL_CLASS_END()
+
+DECL_CLASS_BASED(CPtrListSingleLink, CPtrList)
+    // Member functions
+    DECL_THISCALL_SIMPLE(Flush, _ZN18CPtrListSingleLink5FlushEv, void);
+
+DECL_CLASS_END()
 
 struct CSector
 {
@@ -38,6 +50,12 @@ struct CSector
 struct CRepeatSector
 {
     CPtrListDoubleLink m_ptrListArray[3];
+};
+
+template <class T, int N> struct CStore
+{
+    int m_nCount;
+    T m_objects[N];
 };
 
 struct CEntryInfoNode
@@ -53,10 +71,12 @@ struct CEntryInfoNode
     CEntryInfoNode *m_pNext;
 };
 
-struct CEntryInfoList
-{
+DECL_CLASS(CEntryInfoList)
+    // Member functions
+    DECL_THISCALL_SIMPLE(Flush, _ZN14CEntryInfoList5FlushEv, void);
+
     CEntryInfoNode *m_pHead;
-};
+DECL_CLASS_END()
 
 struct CNodeAddress
 {
@@ -204,15 +224,19 @@ template <class T> struct OSArray
 #define TDBArray OSArray
 #define SArray OSArray
 
-struct ListItem_c
-{
+DECL_CLASS(ListItem_c)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(ListItem_c, _ZN10ListItem_cD2Ev);
+
     ListItem_c() { next = NULL; prev = NULL; }
     ListItem_c *next;
     ListItem_c *prev;
-};
+DECL_CLASS_END()
 
-struct List_c
-{
+DECL_CLASS(List_c)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(List_c, _ZN6List_cD2Ev);
+
     List_c() { last = NULL; first = NULL; count = 0; }
     ListItem_c *first;
     ListItem_c *last;
@@ -224,7 +248,7 @@ struct List_c
 
         first = pItem;
         pItem->prev = NULL;
-        pItem->next = first;
+        pItem->next = oldHead;
         if(oldHead)
         {
             oldHead->prev = pItem;
@@ -239,7 +263,7 @@ struct List_c
     {
         if(pItem->next)
         {
-            pItem->next->prev = pItem->next;
+            pItem->next->prev = pItem->prev;
         }
         else
         {
@@ -259,21 +283,23 @@ struct List_c
     inline ListItem_c *GetHead(void) { return first; }
     inline ListItem_c *RemoveHead(void)
     {
-        if(first)
+        ListItem_c* oldHead = first;
+        if(oldHead)
         {
-            if(first == last)
+            first = oldHead->next;
+            if(first)
             {
-                last = NULL;
                 first->prev = NULL;
             }
             else
             {
-                first = first->next;
-                if(first) first->prev = NULL;
+                last = NULL;
             }
+            oldHead->next = NULL;
+            oldHead->prev = NULL;
             --count;
         }
-        return first;
+        return oldHead;
     }
     inline ListItem_c *GetNext(ListItem_c *pItem) { return pItem->next; }
     inline ListItem_c *GetPrev(ListItem_c *pItem) { return pItem->prev; }
@@ -306,7 +332,19 @@ struct List_c
         }
         return ret;
     }
-};
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(RemoveAll, _ZN6List_c9RemoveAllEv, i32);
+    DECL_THISCALL_SIMPLE(GetNumItems, _ZN6List_c11GetNumItemsEv, i32);
+    DECL_THISCALL_HEAD(AppendItem, _ZN6List_c10AppendItemEP10ListItem_c, i32, ListItem_c* pListItem_c1)
+    DECL_THISCALL_TAIL(AppendItem, pListItem_c1)
+    DECL_THISCALL_HEAD(InsertAfterItem, _ZN6List_c15InsertAfterItemEP10ListItem_cS1_, i32, ListItem_c* pListItem_c1, ListItem_c* pListItem_c2)
+    DECL_THISCALL_TAIL(InsertAfterItem, pListItem_c1, pListItem_c2)
+    DECL_THISCALL_HEAD(InsertBeforeItem, _ZN6List_c16InsertBeforeItemEP10ListItem_cS1_, i32, ListItem_c* pListItem_c1, ListItem_c* pListItem_c2)
+    DECL_THISCALL_TAIL(InsertBeforeItem, pListItem_c1, pListItem_c2)
+    DECL_THISCALL_SIMPLE(RemoveTail, _ZN6List_c10RemoveTailEv, ListItem_c*);
+    DECL_THISCALL_SIMPLE(GetTail, _ZN6List_c7GetTailEv, ListItem_c*);
+DECL_CLASS_END()
 
 template <typename ItemType>
 struct TList_c : public List_c

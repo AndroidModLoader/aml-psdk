@@ -30,11 +30,20 @@ DECL_CLASS_VTABLE(CTask)
     virtual bool MakeAbortable(CPed* ped, eAbortPriority priority, const CEvent* event);
     virtual void Serialize();
 
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(IsTaskPtr, _ZN5CTask9IsTaskPtrEPv, bool, void* pData);
+    DECL_FASTCALL_SIMPLE(IsGoToTask, _ZN5CTask10IsGoToTaskEPKS_, u8, CTask const* pTask);
+    DECL_FASTCALL_SIMPLE(CreateTask, _ZN5CTask10CreateTaskEv, CTask*);
+
     // Member values
     CTask *m_pParentTask;
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CTaskSimple, CTask)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CTaskSimple, _ZN11CTaskSimpleC2Ev);
+    DECL_DTORCALL(CTaskSimple, _ZN11CTaskSimpleD2Ev);
+
     virtual bool ProcessPed(CPed *);
     virtual bool SetPedPosition(CPed *);
 DECL_CLASS_END()

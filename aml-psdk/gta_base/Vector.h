@@ -3,6 +3,8 @@
 
 #include <aml-psdk/sdk_basetypes.h>
 
+struct CMatrix;
+
 struct CVector2D
 {
     float x, y;
@@ -79,8 +81,13 @@ struct CVector2D
     }
 };
 
-struct CVector
-{
+DECL_CLASS(CVector)
+    // Member functions
+    DECL_THISCALL_HEAD(FromMultiply, _ZN7CVector12FromMultiplyERK7CMatrixRKS_, void, CMatrix const& arg1, CVector const& arg2)
+    DECL_THISCALL_TAIL(FromMultiply, arg1, arg2)
+    DECL_THISCALL_HEAD(FromMultiply3X3, _ZN7CVector15FromMultiply3X3ERK7CMatrixRKS_, void, CMatrix const& arg1, CVector const& arg2)
+    DECL_THISCALL_TAIL(FromMultiply3X3, arg1, arg2)
+
     union
     {
         CVector2D m_vec2D;
@@ -254,7 +261,7 @@ struct CVector
         ret.Normalise();
         return ret;
     }
-};
+DECL_CLASS_END()
 inline CVector operator*(const CVector& vecOne, const CVector& vecTwo)
 {
     return { vecOne.x * vecTwo.x, vecOne.y * vecTwo.y, vecOne.z * vecTwo.z };

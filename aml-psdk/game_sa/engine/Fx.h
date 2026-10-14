@@ -21,6 +21,10 @@ enum FxQuality_e : unsigned int
 };
 
 DECL_CLASS(Fx_c)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(Fx_c, _ZN4Fx_cC2Ev);
+    DECL_DTORCALL(Fx_c, _ZN4Fx_cD2Ev);
+
     // Member functions
     DECL_THISCALL_SIMPLE(Init, _ZN4Fx_c4InitEv, u8);
     DECL_THISCALL_SIMPLE(InitStaticSystems, _ZN4Fx_c17InitStaticSystemsEv, void);

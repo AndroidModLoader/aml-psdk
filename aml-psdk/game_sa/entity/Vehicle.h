@@ -28,6 +28,10 @@ struct CTrain;
 struct CBike;
 struct CBmx;
 struct CTrailer;
+struct tBoatHandlingData;
+struct CVehicleModelInfo;
+struct CBaseModelInfo;
+struct UpgradePosnDesc;
 
 enum eCarWeapon
 {
@@ -113,8 +117,11 @@ enum eDoorState : unsigned char
     DOOR_SLAM_SHUT
 };
 
-struct CRideAnimData
-{
+DECL_CLASS(CRideAnimData)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CRideAnimData, _ZN13CRideAnimDataC2Ev);
+    DECL_DTORCALL(CRideAnimData, _ZN13CRideAnimDataD2Ev);
+
     unsigned int m_nAnimGroup;
     float        m_fSteerAngle;
     float        m_fAnimLean;
@@ -130,9 +137,12 @@ struct CRideAnimData
         float    m_fAnimLeanFwd;
         float    m_fAnimPercentageState;
     };
-};
+DECL_CLASS_END()
 
 DECL_CLASS(CDoor)
+    // STATIC values
+    DECL_VALUE_PLT_FLT(DOOR_SPEED_MAX_CAPPED, BYBIT(0x677BC8, 0x84D7B0));
+
     // Member functions
     DECL_THISCALL_SIMPLE(GetAngleOpenRatio, _ZNK5CDoor17GetAngleOpenRatioEv, float);
     DECL_THISCALL_SIMPLE(IsClosed, _ZNK5CDoor8IsClosedEv, bool);
@@ -144,7 +154,7 @@ DECL_CLASS(CDoor)
     DECL_THISCALL_HEAD(ProcessImpact, _ZN5CDoor13ProcessImpactEP8CVehicleR7CVectorS3_S3_, bool, CVehicle *pVehicle, CVector &vecOldMoveSpeed, CVector &vecOldTurnSpeed, CVector &vecOffset)
     DECL_THISCALL_TAIL(ProcessImpact, pVehicle, vecOldMoveSpeed, vecOldTurnSpeed, vecOffset)
 
-    DECL_THISCALL_HEAD(Open, _ZN5CDoor4OpenEf, bool, float fAngRatio)
+    DECL_THISCALL_HEAD(Open, _ZN5CDoor4OpenEf, void, float fAngRatio)
     DECL_THISCALL_TAIL(Open, fAngRatio)
 
     // Member values
@@ -159,6 +169,11 @@ DECL_CLASS(CDoor)
 DECL_CLASS_END()
 
 DECL_CLASS(CAutoPilot)
+    // Member functions
+    DECL_THISCALL_HEAD(ModifySpeed, _ZN10CAutoPilot11ModifySpeedEf, void, float arg1)
+    DECL_THISCALL_TAIL(ModifySpeed, arg1)
+    DECL_THISCALL_SIMPLE(RemoveOnePathNode, _ZN10CAutoPilot17RemoveOnePathNodeEv, void);
+
     CNodeAddress         m_currentAddress;
     CNodeAddress         m_startingRouteNode;
     CNodeAddress         m_preStartingRouteNode;
@@ -278,7 +293,257 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     virtual bool Save(void);
     virtual bool Load(void);
 
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(Shutdown, _ZN8CVehicle8ShutdownEv, void);
+    DECL_FASTCALL_SIMPLE(SetComponentAtomicAlpha, _ZN8CVehicle23SetComponentAtomicAlphaEP8RpAtomici, void, RpAtomic* atomic, i32 alpha);
+    DECL_FASTCALL_SIMPLE(SetTappedGasTankVehicle, _ZN8CVehicle23SetTappedGasTankVehicleEP7CEntity, void, CEntity* pTappedGasTankVehicle);
+
+    // STATIC values
+    DECL_VALUE_PLT_FLT(WHEELSPIN_TARGET_RATE, BYBIT(0x677194, 0x84C358));
+    DECL_VALUE_PLT_FLT(WHEELSPIN_INAIR_TARGET_RATE, BYBIT(0x677000, 0x84C038));
+    DECL_VALUE_PLT_FLT(WHEELSPIN_RISE_RATE, BYBIT(0x67811C, 0x84E250));
+    DECL_VALUE_PLT_FLT(WHEELSPIN_FALL_RATE, BYBIT(0x676BF0, 0x84B828));
+    DECL_VALUE_PLT_U8(ms_forceVehicleLightsOff, BYBIT(0x679D90, 0x851B38));
+    DECL_VALUE_PLT_BOOL(s_bPlaneGunsEjectShellCasings, BYBIT(0x676740, 0x84AED8));
+    DECL_VALUE_PLT_FLT(m_fAirResistanceMult, BYBIT(0x678FAC, 0x84FF80));
+    DECL_VALUE_PLT_FLT(ms_fRailTrackResistance, BYBIT(0x6787AC, 0x84EF80));
+    DECL_VALUE_PLT_FLT(ms_fRailTrackResistanceDefault, BYBIT(0x679A78, 0x851510));
+    DECL_VALUE_PLT_BOOL(bDisableRemoteDetonation, BYBIT(0x677384, 0x84C740));
+    DECL_VALUE_PLT_BOOL(bDisableRemoteDetonationOnContact, BYBIT(0x676F18, 0x84BE70));
+    DECL_VALUE_PLT_BOOL(m_bEnableMouseSteering, BYBIT(0x676FEC, 0x84C010));
+    DECL_VALUE_PLT_BOOL(m_bEnableMouseFlying, BYBIT(0x677014, 0x84C060));
+    DECL_OBJECT_ARRAY_PLT(CColModel, m_aSpecialColModel, BYBIT(0x675F1C, 0x849EA8));
+    DECL_OBJECT_ARRAY_PLT(CVehicle*, m_aSpecialColVehicle, BYBIT(0x677D90, 0x84DB40));
+    DECL_OBJECT_PLT(CEntity*, m_pTappedGasTankVehicle, BYBIT(0x67951C, 0x850A48));
+
     // Member functions
+    DECL_THISCALL_SIMPLE(GetHasDualExhausts, _ZN8CVehicle18GetHasDualExhaustsEv, bool);
+    DECL_THISCALL_SIMPLE(GetNewSteeringAmt, _ZN8CVehicle17GetNewSteeringAmtEv, float);
+    DECL_THISCALL_SIMPLE(SetupRender, _ZN8CVehicle11SetupRenderEv, void);
+    DECL_THISCALL_SIMPLE(ResetAfterRender, _ZN8CVehicle16ResetAfterRenderEv, void);
+    DECL_THISCALL_SIMPLE(CanBeDeleted, _ZNK8CVehicle12CanBeDeletedEv, u8);
+    DECL_THISCALL_HEAD(SetRemapTexDictionary, _ZN8CVehicle21SetRemapTexDictionaryEPKc, void, char const* txdId)
+    DECL_THISCALL_TAIL(SetRemapTexDictionary, txdId)
+    DECL_THISCALL_SIMPLE(GetRemapIndex, _ZN8CVehicle13GetRemapIndexEv, i32);
+    DECL_THISCALL_HEAD(SetRemap, _ZN8CVehicle8SetRemapEi, void, i32 remapIndex)
+    DECL_THISCALL_TAIL(SetRemap, remapIndex)
+    DECL_THISCALL_SIMPLE(DoDriveByShootings, _ZN8CVehicle18DoDriveByShootingsEv, void);
+    DECL_THISCALL_SIMPLE(UpdateClumpAlpha, _ZN8CVehicle16UpdateClumpAlphaEv, void);
+    DECL_THISCALL_SIMPLE(KillPedsInVehicle, _ZN8CVehicle17KillPedsInVehicleEv, void);
+    DECL_THISCALL_SIMPLE(KillPedsGettingInVehicle, _ZN8CVehicle24KillPedsGettingInVehicleEv, void);
+    DECL_THISCALL_SIMPLE(ActivateBomb, _ZN8CVehicle12ActivateBombEv, void);
+    DECL_THISCALL_SIMPLE(ActivateBombWhenEntered, _ZN8CVehicle23ActivateBombWhenEnteredEv, void);
+    DECL_THISCALL_SIMPLE(ProcessDelayedExplosion, _ZN8CVehicle23ProcessDelayedExplosionEv, void);
+    DECL_THISCALL_HEAD(SetGettingInFlags, _ZN8CVehicle17SetGettingInFlagsEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(SetGettingInFlags, doorId)
+    DECL_THISCALL_HEAD(SetGettingOutFlags, _ZN8CVehicle18SetGettingOutFlagsEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(SetGettingOutFlags, doorId)
+    DECL_THISCALL_HEAD(ClearGettingInFlags, _ZN8CVehicle19ClearGettingInFlagsEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(ClearGettingInFlags, doorId)
+    DECL_THISCALL_HEAD(ClearGettingOutFlags, _ZN8CVehicle20ClearGettingOutFlagsEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(ClearGettingOutFlags, doorId)
+    DECL_THISCALL_NAMED_HEAD(AddPassenger1, AddPassenger, _ZN8CVehicle12AddPassengerEP4CPed, bool, CPed* passenger)
+    DECL_THISCALL_TAIL(AddPassenger1, passenger)
+    DECL_THISCALL_NAMED_HEAD(AddPassenger2, AddPassenger, _ZN8CVehicle12AddPassengerEP4CPedh, bool, CPed* passenger, u8 seatNumber)
+    DECL_THISCALL_TAIL(AddPassenger2, passenger, seatNumber)
+    DECL_THISCALL_HEAD(RemovePassenger, _ZN8CVehicle15RemovePassengerEP4CPed, void, CPed* passenger)
+    DECL_THISCALL_TAIL(RemovePassenger, passenger)
+    DECL_THISCALL_HEAD(SetDriver, _ZN8CVehicle9SetDriverEP4CPed, void, CPed* driver)
+    DECL_THISCALL_TAIL(SetDriver, driver)
+    DECL_THISCALL_HEAD(RemoveDriver, _ZN8CVehicle12RemoveDriverEb, void, bool arg0)
+    DECL_THISCALL_TAIL(RemoveDriver, arg0)
+    DECL_THISCALL_HEAD(SetUpDriver, _ZN8CVehicle11SetUpDriverEibb, CPed*, i32 pedType, bool arg1, bool arg2)
+    DECL_THISCALL_TAIL(SetUpDriver, pedType, arg1, arg2)
+    DECL_THISCALL_HEAD(SetupPassenger, _ZN8CVehicle14SetupPassengerEiibb, CPed*, i32 seatNumber, i32 pedType, bool arg2, bool arg3)
+    DECL_THISCALL_TAIL(SetupPassenger, seatNumber, pedType, arg2, arg3)
+    DECL_THISCALL_HEAD(FillVehicleWithPeds, _ZN8CVehicle19FillVehicleWithPedsEb, void, bool bSetClothesToAfro)
+    DECL_THISCALL_TAIL(FillVehicleWithPeds, bSetClothesToAfro)
+    DECL_THISCALL_NAMED_HEAD(IsPassenger1, IsPassenger, _ZNK8CVehicle11IsPassengerEPK4CPed, bool, CPed const* pCPed1)
+    DECL_THISCALL_TAIL(IsPassenger1, pCPed1)
+    DECL_THISCALL_NAMED_HEAD(IsPassenger2, IsPassenger, _ZNK8CVehicle11IsPassengerEi, bool, i32 iModelIndex)
+    DECL_THISCALL_TAIL(IsPassenger2, iModelIndex)
+    DECL_THISCALL_NAMED_HEAD(IsDriver1, IsDriver, _ZNK8CVehicle8IsDriverEPK4CPed, bool, CPed const* pCPed1)
+    DECL_THISCALL_TAIL(IsDriver1, pCPed1)
+    DECL_THISCALL_NAMED_HEAD(IsDriver2, IsDriver, _ZNK8CVehicle8IsDriverEi, bool, i32 iModelIndex)
+    DECL_THISCALL_TAIL(IsDriver2, iModelIndex)
+    DECL_THISCALL_SIMPLE(UpdatePassengerList, _ZN8CVehicle19UpdatePassengerListEv, void);
+    DECL_THISCALL_SIMPLE(PickRandomPassenger, _ZN8CVehicle19PickRandomPassengerEv, CPed*);
+    DECL_THISCALL_HEAD(ProcessWheelRotation, _ZN8CVehicle20ProcessWheelRotationE11tWheelStateRK7CVectorS3_f, float, tWheelState wheelState, CVector const& arg1, CVector const& arg2, float arg3)
+    DECL_THISCALL_TAIL(ProcessWheelRotation, wheelState, arg1, arg2, arg3)
+    DECL_THISCALL_HEAD(SetCollisionLighting, _ZN8CVehicle20SetCollisionLightingEh, void, u8 lighting)
+    DECL_THISCALL_TAIL(SetCollisionLighting, lighting)
+    DECL_THISCALL_SIMPLE(UpdateLightingFromStoredPolys, _ZN8CVehicle29UpdateLightingFromStoredPolysEv, void);
+    DECL_THISCALL_SIMPLE(CalculateLightingFromCollision, _ZN8CVehicle30CalculateLightingFromCollisionEv, void);
+    DECL_THISCALL_HEAD(FindTyreNearestPoint, _ZN8CVehicle20FindTyreNearestPointEff, u32, float x, float y)
+    DECL_THISCALL_TAIL(FindTyreNearestPoint, x, y)
+    DECL_THISCALL_HEAD(ReduceVehicleDamage, _ZN8CVehicle19ReduceVehicleDamageERf, void, float& fDamage)
+    DECL_THISCALL_TAIL(ReduceVehicleDamage, fDamage)
+    DECL_THISCALL_SIMPLE(CanUseCameraHeightSetting, _ZN8CVehicle25CanUseCameraHeightSettingEv, bool);
+    DECL_THISCALL_HEAD(CanVehicleBeDamaged, _ZN8CVehicle19CanVehicleBeDamagedEP7CEntity11eWeaponTypePh, u8, CEntity* damager, eWeaponType weapon, u8* arg2)
+    DECL_THISCALL_TAIL(CanVehicleBeDamaged, damager, weapon, arg2)
+    DECL_THISCALL_SIMPLE(IsUpsideDown, _ZNK8CVehicle12IsUpsideDownEv, u8);
+    DECL_THISCALL_SIMPLE(IsOnItsSide, _ZNK8CVehicle11IsOnItsSideEv, u8);
+    DECL_THISCALL_SIMPLE(UsesSiren, _ZNK8CVehicle9UsesSirenEv, u8);
+    DECL_THISCALL_SIMPLE(CarHasRoof, _ZNK8CVehicle10CarHasRoofEv, u8);
+    DECL_THISCALL_HEAD(CanPedOpenLocks, _ZNK8CVehicle15CanPedOpenLocksEPK4CPed, u8, CPed const* ped)
+    DECL_THISCALL_TAIL(CanPedOpenLocks, ped)
+    DECL_THISCALL_SIMPLE(CanDoorsBeDamaged, _ZNK8CVehicle17CanDoorsBeDamagedEv, u8);
+    DECL_THISCALL_SIMPLE(CanPedEnterCar, _ZNK8CVehicle14CanPedEnterCarEv, bool);
+    DECL_THISCALL_HEAD(IsSphereTouchingVehicle, _ZN8CVehicle23IsSphereTouchingVehicleEffff, bool, float x, float y, float z, float radius)
+    DECL_THISCALL_TAIL(IsSphereTouchingVehicle, x, y, z, radius)
+    DECL_THISCALL_SIMPLE(ProcessCarAlarm, _ZN8CVehicle15ProcessCarAlarmEv, void);
+    DECL_THISCALL_SIMPLE(DoFixedMachineGuns, _ZN8CVehicle18DoFixedMachineGunsEv, void);
+    DECL_THISCALL_SIMPLE(IsVehicleNormal, _ZNK8CVehicle15IsVehicleNormalEv, bool);
+    DECL_THISCALL_HEAD(ChangeLawEnforcerState, _ZN8CVehicle22ChangeLawEnforcerStateEh, void, u8 state)
+    DECL_THISCALL_TAIL(ChangeLawEnforcerState, state)
+    DECL_THISCALL_SIMPLE(IsLawEnforcementVehicle, _ZNK8CVehicle23IsLawEnforcementVehicleEv, u8);
+    DECL_THISCALL_SIMPLE(ShufflePassengersToMakeSpace, _ZN8CVehicle28ShufflePassengersToMakeSpaceEv, bool);
+    DECL_THISCALL_SIMPLE(ExtinguishCarFire, _ZN8CVehicle17ExtinguishCarFireEv, void);
+    DECL_THISCALL_HEAD(FlyingControl, _ZN8CVehicle13FlyingControlE12eFlightModelffff, void, eFlightModel flightModel, float arg1, float arg2, float arg3, float arg4)
+    DECL_THISCALL_TAIL(FlyingControl, flightModel, arg1, arg2, arg3, arg4)
+    DECL_THISCALL_HEAD(HeightAboveCeiling, _ZN8CVehicle18HeightAboveCeilingEf12eFlightModel, float, float arg0, eFlightModel arg1)
+    DECL_THISCALL_TAIL(HeightAboveCeiling, arg0, arg1)
+    DECL_THISCALL_HEAD(DoBladeCollision, _ZN8CVehicle16DoBladeCollisionE7CVectorR7CMatrixsff, bool, CVector arg0, CMatrix& matrix, i16 arg2, float arg3, float arg4)
+    DECL_THISCALL_TAIL(DoBladeCollision, arg0, matrix, arg2, arg3, arg4)
+    DECL_THISCALL_HEAD(BladeColSectorList, _ZN8CVehicle18BladeColSectorListER8CPtrListR9CColModelR7CMatrixsf, bool, CPtrList& ptrList, CColModel& colModel, CMatrix& matrix, i16 arg3, float arg4)
+    DECL_THISCALL_TAIL(BladeColSectorList, ptrList, colModel, matrix, arg3, arg4)
+    DECL_THISCALL_HEAD(SetComponentVisibility, _ZN8CVehicle22SetComponentVisibilityEP7RwFramej, void, RwFrame* component, u32 visibilityState)
+    DECL_THISCALL_TAIL(SetComponentVisibility, component, visibilityState)
+    DECL_THISCALL_HEAD(SetComponentRotation, _ZN8CVehicle20SetComponentRotationEP7RwFrameifb, void, RwFrame* component, i32 axis, float angle, bool bResetPosition)
+    DECL_THISCALL_TAIL(SetComponentRotation, component, axis, angle, bResetPosition)
+    DECL_THISCALL_HEAD(SetTransmissionRotation, _ZN8CVehicle23SetTransmissionRotationEP7RwFrameff7CVectorb, void, RwFrame* component, float arg1, float arg2, CVector posn, bool isFront)
+    DECL_THISCALL_TAIL(SetTransmissionRotation, component, arg1, arg2, posn, isFront)
+    DECL_THISCALL_HEAD(ProcessBoatControl, _ZN8CVehicle18ProcessBoatControlEP17tBoatHandlingDataRfbb, void, tBoatHandlingData* boatHandling, float& arg1, bool arg2, bool arg3)
+    DECL_THISCALL_TAIL(ProcessBoatControl, boatHandling, arg1, arg2, arg3)
+    DECL_THISCALL_HEAD(ApplyBoatWaterResistance, _ZN8CVehicle24ApplyBoatWaterResistanceEP17tBoatHandlingDataf, void, tBoatHandlingData* boatHandling, float arg1)
+    DECL_THISCALL_TAIL(ApplyBoatWaterResistance, boatHandling, arg1)
+    DECL_THISCALL_HEAD(DoBoatSplashes, _ZN8CVehicle14DoBoatSplashesEf, void, float arg0)
+    DECL_THISCALL_TAIL(DoBoatSplashes, arg0)
+    DECL_THISCALL_SIMPLE(FireFixedMachineGuns, _ZN8CVehicle20FireFixedMachineGunsEv, void);
+    DECL_THISCALL_SIMPLE(DoSunGlare, _ZN8CVehicle10DoSunGlareEv, void);
+    DECL_THISCALL_SIMPLE(GetVehicleAppearance, _ZNK8CVehicle20GetVehicleAppearanceEv, eVehicleApperance);
+    DECL_THISCALL_SIMPLE(AddDamagedVehicleParticles, _ZN8CVehicle26AddDamagedVehicleParticlesEv, void);
+    DECL_THISCALL_HEAD(MakeDirty, _ZN8CVehicle9MakeDirtyER9CColPoint, void, CColPoint& colPoint)
+    DECL_THISCALL_TAIL(MakeDirty, colPoint)
+    DECL_THISCALL_HEAD(AddWheelDirtAndWater, _ZN8CVehicle20AddWheelDirtAndWaterER9CColPointjhh, u32, CColPoint& colPoint, u32 arg1, u8 arg2, u8 arg3)
+    DECL_THISCALL_TAIL(AddWheelDirtAndWater, colPoint, arg1, arg2, arg3)
+    DECL_THISCALL_SIMPLE(AddWaterSplashParticles, _ZN8CVehicle23AddWaterSplashParticlesEv, void);
+    DECL_THISCALL_SIMPLE(AddExhaustParticles, _ZN8CVehicle19AddExhaustParticlesEv, void);
+    DECL_THISCALL_HEAD(AddSingleWheelParticles, _ZN8CVehicle23AddSingleWheelParticlesE11tWheelStatejffP9CColPointP7CVectorfijPbj, u32, tWheelState arg0, u32 arg1, float arg2, float arg3, CColPoint* arg4, CVector* arg5, float arg6, i32 arg7, u32 surfaceType, bool* bloodState, u32 arg10)
+    DECL_THISCALL_TAIL(AddSingleWheelParticles, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, surfaceType, bloodState, arg10)
+    DECL_THISCALL_SIMPLE(GetVehicleLightsStatus, _ZN8CVehicle22GetVehicleLightsStatusEv, u8);
+    DECL_THISCALL_HEAD(DoHeadLightEffect, _ZN8CVehicle17DoHeadLightEffectEiR7CMatrixhh, u8, i32 dummyId, CMatrix& vehicleMatrix, u8 lightId, u8 lightState)
+    DECL_THISCALL_TAIL(DoHeadLightEffect, dummyId, vehicleMatrix, lightId, lightState)
+    DECL_THISCALL_HEAD(DoHeadLightBeam, _ZN8CVehicle15DoHeadLightBeamEiR7CMatrixh, void, i32 arg0, CMatrix& matrix, u8 arg2)
+    DECL_THISCALL_TAIL(DoHeadLightBeam, arg0, matrix, arg2)
+    DECL_THISCALL_HEAD(DoHeadLightReflectionSingle, _ZN8CVehicle27DoHeadLightReflectionSingleER7CMatrixh, void, CMatrix& matrix, u8 lightId)
+    DECL_THISCALL_TAIL(DoHeadLightReflectionSingle, matrix, lightId)
+    DECL_THISCALL_HEAD(DoHeadLightReflectionTwin, _ZN8CVehicle25DoHeadLightReflectionTwinER7CMatrix, void, CMatrix& matrix)
+    DECL_THISCALL_TAIL(DoHeadLightReflectionTwin, matrix)
+    DECL_THISCALL_HEAD(DoHeadLightReflection, _ZN8CVehicle21DoHeadLightReflectionER7CMatrixjhh, void, CMatrix& matrix, u32 flags, u8 left, u8 right)
+    DECL_THISCALL_TAIL(DoHeadLightReflection, matrix, flags, left, right)
+    DECL_THISCALL_HEAD(DoTailLightEffect, _ZN8CVehicle17DoTailLightEffectEiR7CMatrixhhjh, u8, i32 lightId, CMatrix& matrix, u8 arg2, u8 arg3, u32 arg4, u8 arg5)
+    DECL_THISCALL_TAIL(DoTailLightEffect, lightId, matrix, arg2, arg3, arg4, arg5)
+    DECL_THISCALL_HEAD(DoReverseLightEffect, _ZN8CVehicle20DoReverseLightEffectEiR7CMatrixhhjh, void, i32 lightId, CMatrix& matVehicle, u8 isRight, u8 forcedOff, u32 nLightFlags, u8 lightsOn)
+    DECL_THISCALL_TAIL(DoReverseLightEffect, lightId, matVehicle, isRight, forcedOff, nLightFlags, lightsOn)
+    DECL_THISCALL_HEAD(DoVehicleLights, _ZN8CVehicle15DoVehicleLightsER7CMatrixj, void, CMatrix& matrix, u32 flags)
+    DECL_THISCALL_TAIL(DoVehicleLights, matrix, flags)
+    DECL_THISCALL_SIMPLE(GetSpecialColModel, _ZN8CVehicle18GetSpecialColModelEv, bool);
+    DECL_THISCALL_HEAD(AddVehicleUpgrade, _ZN8CVehicle17AddVehicleUpgradeEi, i32, i32 modelId)
+    DECL_THISCALL_TAIL(AddVehicleUpgrade, modelId)
+    DECL_THISCALL_HEAD(RemoveVehicleUpgrade, _ZN8CVehicle20RemoveVehicleUpgradeEi, void, i32 upgradeModelIndex)
+    DECL_THISCALL_TAIL(RemoveVehicleUpgrade, upgradeModelIndex)
+    DECL_THISCALL_SIMPLE(RemoveAllUpgrades, _ZN8CVehicle17RemoveAllUpgradesEv, void);
+    DECL_THISCALL_SIMPLE(SetupUpgradesAfterLoad, _ZN8CVehicle22SetupUpgradesAfterLoadEv, void);
+    DECL_THISCALL_HEAD(GetUpgrade, _ZN8CVehicle10GetUpgradeEi, i32, i32 upgradeId)
+    DECL_THISCALL_TAIL(GetUpgrade, upgradeId)
+    DECL_THISCALL_HEAD(GetReplacementUpgrade, _ZN8CVehicle21GetReplacementUpgradeEi, i32, i32 nodeId)
+    DECL_THISCALL_TAIL(GetReplacementUpgrade, nodeId)
+    DECL_THISCALL_HEAD(SetWindowOpenFlag, _ZN8CVehicle17SetWindowOpenFlagEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(SetWindowOpenFlag, doorId)
+    DECL_THISCALL_HEAD(ClearWindowOpenFlag, _ZN8CVehicle19ClearWindowOpenFlagEh, void, u8 doorId)
+    DECL_THISCALL_TAIL(ClearWindowOpenFlag, doorId)
+    DECL_THISCALL_SIMPLE(GetSpareHasslePosId, _ZN8CVehicle19GetSpareHasslePosIdEv, i32);
+    DECL_THISCALL_HEAD(SetHasslePosId, _ZN8CVehicle14SetHasslePosIdEib, void, i32 hasslePos, bool enable)
+    DECL_THISCALL_TAIL(SetHasslePosId, hasslePos, enable)
+    DECL_THISCALL_HEAD(InitWinch, _ZN8CVehicle9InitWinchEi, void, i32 arg0)
+    DECL_THISCALL_TAIL(InitWinch, arg0)
+    DECL_THISCALL_SIMPLE(UpdateWinch, _ZN8CVehicle11UpdateWinchEv, void);
+    DECL_THISCALL_SIMPLE(RemoveWinch, _ZN8CVehicle11RemoveWinchEv, void);
+    DECL_THISCALL_SIMPLE(ReleasePickedUpEntityWithWinch, _ZN8CVehicle30ReleasePickedUpEntityWithWinchEv, void);
+    DECL_THISCALL_HEAD(PickUpEntityWithWinch, _ZN8CVehicle21PickUpEntityWithWinchEP7CEntity, void, CEntity* arg0)
+    DECL_THISCALL_TAIL(PickUpEntityWithWinch, arg0)
+    DECL_THISCALL_SIMPLE(QueryPickedUpEntityWithWinch, _ZN8CVehicle28QueryPickedUpEntityWithWinchEv, CPhysical*);
+    DECL_THISCALL_SIMPLE(GetRopeHeightForHeli, _ZN8CVehicle20GetRopeHeightForHeliEv, float);
+    DECL_THISCALL_HEAD(SetRopeHeightForHeli, _ZN8CVehicle20SetRopeHeightForHeliEf, void, float height)
+    DECL_THISCALL_TAIL(SetRopeHeightForHeli, height)
+    DECL_THISCALL_SIMPLE(RenderDriverAndPassengers, _ZN8CVehicle25RenderDriverAndPassengersEv, void);
+    DECL_THISCALL_SIMPLE(PreRenderDriverAndPassengers, _ZN8CVehicle28PreRenderDriverAndPassengersEv, void);
+    DECL_THISCALL_SIMPLE(ProcessWeapons, _ZN8CVehicle14ProcessWeaponsEv, void);
+    DECL_THISCALL_HEAD(GetPlaneWeaponFiringStatus, _ZN8CVehicle26GetPlaneWeaponFiringStatusERbR13eOrdnanceType, CEntity*, bool& status, eOrdnanceType& ordnanceType)
+    DECL_THISCALL_TAIL(GetPlaneWeaponFiringStatus, status, ordnanceType)
+    DECL_THISCALL_HEAD(SelectPlaneWeapon, _ZN8CVehicle17SelectPlaneWeaponEb13eOrdnanceType, void, bool bChange, eOrdnanceType ordnanceType)
+    DECL_THISCALL_TAIL(SelectPlaneWeapon, bChange, ordnanceType)
+    DECL_THISCALL_HEAD(DoPlaneGunFireFX, _ZN8CVehicle16DoPlaneGunFireFXEP7CWeaponR7CVectorS3_i, void, CWeapon* weapon, CVector& particlePos, CVector& gunshellPos, i32 particleIndex)
+    DECL_THISCALL_TAIL(DoPlaneGunFireFX, weapon, particlePos, gunshellPos, particleIndex)
+    DECL_THISCALL_SIMPLE(FirePlaneGuns, _ZN8CVehicle13FirePlaneGunsEv, void);
+    DECL_THISCALL_HEAD(FireUnguidedMissile, _ZN8CVehicle19FireUnguidedMissileE13eOrdnanceTypeb, void, eOrdnanceType ordnanceType, bool bCheckTime)
+    DECL_THISCALL_TAIL(FireUnguidedMissile, ordnanceType, bCheckTime)
+    DECL_THISCALL_HEAD(ScanAndMarkTargetForHeatSeekingMissile, _ZN8CVehicle38ScanAndMarkTargetForHeatSeekingMissileEP7CEntity, CEntity*, CEntity* entity)
+    DECL_THISCALL_TAIL(ScanAndMarkTargetForHeatSeekingMissile, entity)
+    DECL_THISCALL_HEAD(FireHeatSeakingMissile, _ZN8CVehicle22FireHeatSeakingMissileEP7CEntity13eOrdnanceTypeb, void, CEntity* targetEntity, eOrdnanceType ordnanceType, bool arg2)
+    DECL_THISCALL_TAIL(FireHeatSeakingMissile, targetEntity, ordnanceType, arg2)
+    DECL_THISCALL_HEAD(PossiblyDropFreeFallBombForPlayer, _ZN8CVehicle33PossiblyDropFreeFallBombForPlayerE13eOrdnanceTypeb, void, eOrdnanceType ordnanceType, bool arg1)
+    DECL_THISCALL_TAIL(PossiblyDropFreeFallBombForPlayer, ordnanceType, arg1)
+    DECL_THISCALL_SIMPLE(GetPlaneNumGuns, _ZN8CVehicle15GetPlaneNumGunsEv, i32);
+    DECL_THISCALL_SIMPLE(GetPlaneGunsAutoAimAngle, _ZN8CVehicle24GetPlaneGunsAutoAimAngleEv, float);
+    DECL_THISCALL_SIMPLE(GetPlaneGunsRateOfFire, _ZN8CVehicle22GetPlaneGunsRateOfFireEv, u32);
+    DECL_THISCALL_HEAD(GetPlaneGunsPosition, _ZN8CVehicle20GetPlaneGunsPositionEi, CVector, i32 gunId)
+    DECL_THISCALL_TAIL(GetPlaneGunsPosition, gunId)
+    DECL_THISCALL_HEAD(GetPlaneOrdnanceRateOfFire, _ZN8CVehicle26GetPlaneOrdnanceRateOfFireE13eOrdnanceType, u32, eOrdnanceType ordnanceType)
+    DECL_THISCALL_TAIL(GetPlaneOrdnanceRateOfFire, ordnanceType)
+    DECL_THISCALL_HEAD(GetPlaneOrdnancePosition, _ZN8CVehicle24GetPlaneOrdnancePositionE13eOrdnanceType, CVector, eOrdnanceType ordnanceType)
+    DECL_THISCALL_TAIL(GetPlaneOrdnancePosition, ordnanceType)
+    DECL_THISCALL_HEAD(SetFiringRateMultiplier, _ZN8CVehicle23SetFiringRateMultiplierEf, void, float multiplier)
+    DECL_THISCALL_TAIL(SetFiringRateMultiplier, multiplier)
+    DECL_THISCALL_SIMPLE(GetFiringRateMultiplier, _ZN8CVehicle23GetFiringRateMultiplierEv, float);
+    DECL_THISCALL_SIMPLE(CanBeDriven, _ZNK8CVehicle11CanBeDrivenEv, bool);
+    DECL_THISCALL_HEAD(UpdateTrailerLink, _ZN8CVehicle17UpdateTrailerLinkEbb, void, bool arg0, bool arg1)
+    DECL_THISCALL_TAIL(UpdateTrailerLink, arg0, arg1)
+    DECL_THISCALL_HEAD(UpdateTractorLink, _ZN8CVehicle17UpdateTractorLinkEbb, void, bool arg0, bool arg1)
+    DECL_THISCALL_TAIL(UpdateTractorLink, arg0, arg1)
+    DECL_THISCALL_HEAD(ReactToVehicleDamage, _ZN8CVehicle20ReactToVehicleDamageEP4CPed, void, CPed* ped)
+    DECL_THISCALL_TAIL(ReactToVehicleDamage, ped)
+    DECL_THISCALL_HEAD(ProcessSirenAndHorn, _ZN8CVehicle19ProcessSirenAndHornEb, void, bool arg0)
+    DECL_THISCALL_TAIL(ProcessSirenAndHorn, arg0)
+    DECL_THISCALL_HEAD(SetVehicleCreatedBy, _ZN8CVehicle19SetVehicleCreatedByEib, void, i32 NewVehicleCreatedBy, bool DontAdd)
+    DECL_THISCALL_TAIL(SetVehicleCreatedBy, NewVehicleCreatedBy, DontAdd)
+    DECL_THISCALL_HEAD(CanPedLeanOut, _ZNK8CVehicle13CanPedLeanOutEP4CPed, bool, CPed* ped)
+    DECL_THISCALL_TAIL(CanPedLeanOut, ped)
+    DECL_THISCALL_SIMPLE(GetGasTankPosition, _ZN8CVehicle18GetGasTankPositionEv, CVector);
+    DECL_THISCALL_HEAD(CustomCarPlate_TextureCreate, _ZN8CVehicle28CustomCarPlate_TextureCreateEP17CVehicleModelInfo, u8, CVehicleModelInfo* model)
+    DECL_THISCALL_TAIL(CustomCarPlate_TextureCreate, model)
+    DECL_THISCALL_SIMPLE(CustomCarPlate_TextureDestroy, _ZN8CVehicle29CustomCarPlate_TextureDestroyEv, void);
+    DECL_THISCALL_HEAD(ProcessWheel, _ZN8CVehicle12ProcessWheelER7CVectorS1_S1_S1_ifffcPfP11tWheelStatet, void, CVector& arg0, CVector& arg1, CVector& arg2, CVector& arg3, i32 arg4, float arg5, float arg6, float arg7, char arg8, float* arg9, tWheelState* arg10, u16 arg11)
+    DECL_THISCALL_TAIL(ProcessWheel, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
+    DECL_THISCALL_HEAD(ProcessBikeWheel, _ZN8CVehicle16ProcessBikeWheelER7CVectorS1_S1_S1_iffffcPfP11tWheelState17eBikeWheelSpecialt, void, CVector& arg0, CVector& arg1, CVector& arg2, CVector& arg3, i32 arg4, float arg5, float arg6, float arg7, float arg8, char arg9, float* arg10, tWheelState* arg11, eBikeWheelSpecial arg12, u16 arg13)
+    DECL_THISCALL_TAIL(ProcessBikeWheel, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)
+    DECL_THISCALL_HEAD(CreateUpgradeAtomic, _ZN8CVehicle19CreateUpgradeAtomicEP14CBaseModelInfoPK15UpgradePosnDescP7RwFrameb, RpAtomic*, CBaseModelInfo* model, UpgradePosnDesc const* upgradePosn, RwFrame* parentComponent, bool isDamaged)
+    DECL_THISCALL_TAIL(CreateUpgradeAtomic, model, upgradePosn, parentComponent, isDamaged)
+    DECL_THISCALL_HEAD(CreateReplacementAtomic, _ZN8CVehicle23CreateReplacementAtomicEP14CBaseModelInfoP7RwFrameibb, RpAtomic*, CBaseModelInfo* model, RwFrame* component, i32 arg2, bool bDamaged, bool bIsWheel)
+    DECL_THISCALL_TAIL(CreateReplacementAtomic, model, component, arg2, bDamaged, bIsWheel)
+    DECL_THISCALL_HEAD(AddUpgrade, _ZN8CVehicle10AddUpgradeEii, void, i32 modelIndex, i32 upgradeIndex)
+    DECL_THISCALL_TAIL(AddUpgrade, modelIndex, upgradeIndex)
+    DECL_THISCALL_HEAD(RemoveUpgrade, _ZN8CVehicle13RemoveUpgradeEi, void, i32 upgradeId)
+    DECL_THISCALL_TAIL(RemoveUpgrade, upgradeId)
+    DECL_THISCALL_HEAD(AddReplacementUpgrade, _ZN8CVehicle21AddReplacementUpgradeEii, void, i32 modelIndex, i32 nodeId)
+    DECL_THISCALL_TAIL(AddReplacementUpgrade, modelIndex, nodeId)
+    DECL_THISCALL_HEAD(RemoveReplacementUpgrade, _ZN8CVehicle24RemoveReplacementUpgradeEi, void, i32 nodeId)
+    DECL_THISCALL_TAIL(RemoveReplacementUpgrade, nodeId)
+    DECL_THISCALL_HEAD(SetVehicleUpgradeFlags, _ZN8CVehicle22SetVehicleUpgradeFlagsEiiRi, bool, i32 upgradeModelIndex, i32 componentIndex, i32& resultModelIndex)
+    DECL_THISCALL_TAIL(SetVehicleUpgradeFlags, upgradeModelIndex, componentIndex, resultModelIndex)
+    DECL_THISCALL_HEAD(ClearVehicleUpgradeFlags, _ZN8CVehicle24ClearVehicleUpgradeFlagsEii, bool, i32 arg0, i32 componentIndex)
+    DECL_THISCALL_TAIL(ClearVehicleUpgradeFlags, arg0, componentIndex)
 
     // Helper functions
     inline bool IsVehicleTypeValid()     const { return m_nVehicleClass != -1; }
@@ -541,5 +806,24 @@ DECL_FASTCALL_SIMPLE_GLO(SetVehicleAtomicVisibility_RwFrame, _Z28SetVehicleAtomi
 DECL_FASTCALL_SIMPLE_GLO(SetCompAlphaCB, _Z14SetCompAlphaCBP10RpMaterialPv, RpMaterial*, RpMaterial* pMaterial, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(RemoveUpgradeCB, _Z15RemoveUpgradeCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(FindUpgradeCB, _Z13FindUpgradeCBP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
+
+#define DOOR_SPEED_MAX_CAPPED DOOR_SPEED_MAX_CAPPED()
+
+#define WHEELSPIN_TARGET_RATE WHEELSPIN_TARGET_RATE()
+#define WHEELSPIN_INAIR_TARGET_RATE WHEELSPIN_INAIR_TARGET_RATE()
+#define WHEELSPIN_RISE_RATE WHEELSPIN_RISE_RATE()
+#define WHEELSPIN_FALL_RATE WHEELSPIN_FALL_RATE()
+#define ms_forceVehicleLightsOff ms_forceVehicleLightsOff()
+#define s_bPlaneGunsEjectShellCasings s_bPlaneGunsEjectShellCasings()
+#define m_fAirResistanceMult m_fAirResistanceMult()
+#define ms_fRailTrackResistance ms_fRailTrackResistance()
+#define ms_fRailTrackResistanceDefault ms_fRailTrackResistanceDefault()
+#define bDisableRemoteDetonation bDisableRemoteDetonation()
+#define bDisableRemoteDetonationOnContact bDisableRemoteDetonationOnContact()
+#define m_bEnableMouseSteering m_bEnableMouseSteering()
+#define m_bEnableMouseFlying m_bEnableMouseFlying()
+#define m_aSpecialColModel m_aSpecialColModel()
+#define m_aSpecialColVehicle m_aSpecialColVehicle()
+#define m_pTappedGasTankVehicle m_pTappedGasTankVehicle()
 
 #endif // __AML_PSDK_SAVEHICLE_H

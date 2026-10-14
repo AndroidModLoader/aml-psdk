@@ -49,8 +49,8 @@ DECL_CLASS(CTaskManager)
     DECL_THISCALL_HEAD(AddSubTasks, _ZN12CTaskManager11AddSubTasksEP5CTask, void, CTask *pTask)
     DECL_THISCALL_TAIL(AddSubTasks, pTask)
 
-    DECL_THISCALL_HEAD(GetSimplestTask, _ZN12CTaskManager15GetSimplestTaskEP5CTask, CTask*, CTask *pTask)
-    DECL_THISCALL_TAIL(GetSimplestTask, pTask)
+    DECL_FASTCALL_SIMPLE(FuncProxy_GetSimplestTask, _ZN12CTaskManager15GetSimplestTaskEP5CTask, CTask*, CTask *pTask);
+    static inline CTask* GetSimplestTask(CTask *pTask) { return FuncProxy_GetSimplestTask(pTask); }
 
     DECL_THISCALL_NAMED_HEAD(GetSimplestTask1, GetSimplestTask, _ZNK12CTaskManager15GetSimplestTaskEi, CTask*, const int iPriority)
     DECL_THISCALL_TAIL(GetSimplestTask1, iPriority)
@@ -76,7 +76,7 @@ DECL_CLASS(CTaskManager)
     DECL_THISCALL_HEAD(ParentsControlChildren, _ZN12CTaskManager22ParentsControlChildrenEP5CTask, void, CTask *pTask)
     DECL_THISCALL_TAIL(ParentsControlChildren, pTask)
 
-    DECL_THISCALL_HEAD(StopTimers, _ZN12CTaskManager10StopTimersEPK6CEvent, void, CEvent *pEvent)
+    DECL_THISCALL_HEAD(StopTimers, _ZN12CTaskManager10StopTimersEPK6CEvent, void, const CEvent *pEvent)
     DECL_THISCALL_TAIL(StopTimers, pEvent)
 
     // Member values

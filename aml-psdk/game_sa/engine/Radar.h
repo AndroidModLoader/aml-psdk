@@ -2,6 +2,7 @@
 #define __AML_PSDK_SARADAR_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include "Sprite2d.h"
 #include <aml-psdk/gta_base/RGBA.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/gta_base/Rect.h>
@@ -160,6 +161,9 @@ struct tRadarTrace
 CHECKSIZE(tRadarTrace, 0x28, 0x30);
 
 DECL_CLASS(CRadar)
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(SetRadarMarkerState, _ZN6CRadar19SetRadarMarkerStateEih, void, i32 arg0, u8 arg1);
+
     // Functions
     DECL_FASTCALL_SIMPLE(Initialise, _ZN6CRadar10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(ClearActualBlip, _ZN6CRadar15ClearActualBlipEi, void, int idx);
@@ -175,14 +179,14 @@ DECL_CLASS(CRadar)
     DECL_FASTCALL_SIMPLE(DrawBlips, _ZN6CRadar9DrawBlipsEf, void, float circleSize);
     DECL_FASTCALL_SIMPLE(SetupAirstripBlips, _ZN6CRadar18SetupAirstripBlipsEv, void);
     DECL_FASTCALL_SIMPLE(TransformRadarPointToScreenSpace, _ZN6CRadar32TransformRadarPointToScreenSpaceER9CVector2DRKS0_, void, CVector2D& screen, CVector2D const &radar);
-    DECL_FASTCALL_SIMPLE(TransformRealWorldPointToRadarSpace, _ZN6CRadar35TransformRealWorldPointToRadarSpaceER9CVector2DRKS0_, void, CVector2D& radar, CVector const &world);
-    DECL_FASTCALL_SIMPLE(LimitRadarPoint, _ZN6CRadar15LimitRadarPointER9CVector2D, void, CVector2D& radar);
+    DECL_FASTCALL_SIMPLE(TransformRealWorldPointToRadarSpace, _ZN6CRadar35TransformRealWorldPointToRadarSpaceER9CVector2DRKS0_, void, CVector2D& radar, CVector2D const &world);
+    DECL_FASTCALL_SIMPLE(LimitRadarPoint, _ZN6CRadar15LimitRadarPointER9CVector2D, float, CVector2D& radar);
     DECL_FASTCALL_SIMPLE(DrawRadarSprite, _ZN6CRadar15DrawRadarSpriteEtffh, void, u16 id, float x, float y, u8 alpha);
-    DECL_FASTCALL_SIMPLE(DisplayThisBlip, _ZN6CRadar15DisplayThisBlipEia, u8, i32 idx, u8 alpha);
-    DECL_FASTCALL_SIMPLE(DrawCoordBlip, _ZN6CRadar13DrawCoordBlipEihif, void, i32 idx, u8 sprite, u8 alpha, float circleSize);
-    DECL_FASTCALL_SIMPLE(DrawEntityBlip, _ZN6CRadar14DrawEntityBlipEihif, void, i32 idx, u8 sprite, u8 alpha, float circleSize);
+    DECL_FASTCALL_SIMPLE(DisplayThisBlip, _ZN6CRadar15DisplayThisBlipEia, u8, i32 idx, i8 alpha);
+    DECL_FASTCALL_SIMPLE(DrawCoordBlip, _ZN6CRadar13DrawCoordBlipEihif, void, i32 idx, u8 sprite, i32 alpha, float circleSize);
+    DECL_FASTCALL_SIMPLE(DrawEntityBlip, _ZN6CRadar14DrawEntityBlipEihif, void, i32 idx, u8 sprite, i32 alpha, float circleSize);
     DECL_FASTCALL_SIMPLE(DrawYouAreHereSprite, _ZN6CRadar20DrawYouAreHereSpriteEff, void, float x, float y);
-    DECL_FASTCALL_SIMPLE(DrawRotatingRadarSprite, _ZN6CRadar23DrawRotatingRadarSpriteEP9CSprite2dffff5CRGBA, void, CSprite2d* sprite, float x, float y, float angle, float scale, CRGBA& color);
+    DECL_FASTCALL_SIMPLE(DrawRotatingRadarSprite, _ZN6CRadar23DrawRotatingRadarSpriteEP9CSprite2dffff5CRGBA, void, CSprite2d* sprite, float x, float y, float angle, float scale, CRGBA color);
     DECL_FASTCALL_SIMPLE(GetRadarTraceColour, _ZN6CRadar19GetRadarTraceColourEjhh, u32, u32 colorIdx, u8 bBrightness, u8 bFriend);
     DECL_FASTCALL_SIMPLE(ShowRadarMarker, _ZN6CRadar15ShowRadarMarkerE7CVectorjf, void, CVector pos, u32 color, float scale);
     DECL_FASTCALL_SIMPLE(CalculateBlipAlpha, _ZN6CRadar18CalculateBlipAlphaEf, u8, float alphaMult);
@@ -194,11 +198,11 @@ DECL_CLASS(CRadar)
     DECL_FASTCALL_SIMPLE(Draw3dMarkers, _ZN6CRadar13Draw3dMarkersEv, void);
     DECL_FASTCALL_SIMPLE(LimitToMap, _ZN6CRadar10LimitToMapEPfS0_, void, float* x, float* y);
     DECL_FASTCALL_SIMPLE(TransformScreenSpaceToRadarPoint, _ZN6CRadar32TransformScreenSpaceToRadarPointER9CVector2DS1_, void, CVector2D& screen, CVector2D& radar);
-    DECL_FASTCALL_SIMPLE(TransformRadarPointToRealWorldSpace, _ZN6CRadar35TransformRadarPointToRealWorldSpaceER9CVector2DRKS0_, void, CVector2D& world, CVector2D& radar);
+    DECL_FASTCALL_SIMPLE(TransformRadarPointToRealWorldSpace, _ZN6CRadar35TransformRadarPointToRealWorldSpaceER9CVector2DRKS0_, void, CVector2D& world, CVector2D const& radar);
     DECL_FASTCALL_SIMPLE(TransformRealWorldToTexCoordSpace, _ZN6CRadar33TransformRealWorldToTexCoordSpaceER9CVector2DRKS0_ii, void, CVector2D& texCoord, CVector2D const& world, int x, int y);
-    DECL_FASTCALL_SIMPLE(SetCoordBlip, _ZN6CRadar12SetCoordBlipE9eBlipType7CVectorj12eBlipDisplayPc, i32, eBlipType type, CVector pos, u32 color, eBlipDisplay displaytype, const char* unused);
-    DECL_FASTCALL_SIMPLE(SetShortRangeCoordBlip, _ZN6CRadar22SetShortRangeCoordBlipE9eBlipType7CVectorj12eBlipDisplayPc, i32, eBlipType type, CVector pos, u32 color, eBlipDisplay displaytype, const char* unused);
-    DECL_FASTCALL_SIMPLE(SetEntityBlip, _ZN6CRadar13SetEntityBlipE9eBlipTypeij12eBlipDisplayPc, i32, eBlipType type, i32 poolIdx, u32 color, eBlipDisplay displaytype, const char* unused);
+    DECL_FASTCALL_SIMPLE(SetCoordBlip, _ZN6CRadar12SetCoordBlipE9eBlipType7CVectorj12eBlipDisplayPc, i32, eBlipType type, CVector pos, u32 color, eBlipDisplay displaytype, char* unused);
+    DECL_FASTCALL_SIMPLE(SetShortRangeCoordBlip, _ZN6CRadar22SetShortRangeCoordBlipE9eBlipType7CVectorj12eBlipDisplayPc, i32, eBlipType type, CVector pos, u32 color, eBlipDisplay displaytype, char* unused);
+    DECL_FASTCALL_SIMPLE(SetEntityBlip, _ZN6CRadar13SetEntityBlipE9eBlipTypeij12eBlipDisplayPc, i32, eBlipType type, i32 poolIdx, u32 color, eBlipDisplay displaytype, char* unused);
     DECL_FASTCALL_SIMPLE(ClearBlipForEntity, _ZN6CRadar18ClearBlipForEntityE9eBlipTypei, void, eBlipType type, i32 poolIdx);
     DECL_FASTCALL_SIMPLE(ClearBlip, _ZN6CRadar9ClearBlipEi, void, i32 idx);
     DECL_FASTCALL_SIMPLE(ChangeBlipColour, _ZN6CRadar16ChangeBlipColourEij, void, i32 idx, u32 color);
@@ -226,6 +230,7 @@ DECL_CLASS(CRadar)
     DECL_FASTCALL_SIMPLE(Save, _ZN6CRadar4SaveEv, bool);
     DECL_FASTCALL_SIMPLE(Load, _ZN6CRadar4LoadEv, bool);
     
+
     // Helper functions
     static void StreamRadarSections(i32 x, i32 y)
     {
@@ -263,7 +268,7 @@ DECL_CLASS(CRadar)
     DECL_OBJECT_PLT(CRect, m_radarRect, BYBIT(0x677C44, 0x84D8A8));
     DECL_VALUE_PLT_I32(airstrip_blip, BYBIT(0x678D98, 0x84FB58));
     DECL_VALUE_PLT_U8(airstrip_location, BYBIT(0x6760E4, 0x84A238));
-    DECL_OBJECT_PLT(CSprite2d, RadarBlipSprites, BYBIT(0x6776F8, 0x84CE18));
+    DECL_OBJECT_ARRAY_PLT(CSprite2d, RadarBlipSprites, BYBIT(0x6776F8, 0x84CE18));
 DECL_CLASS_END()
 
 #define MapLegendList MapLegendList()

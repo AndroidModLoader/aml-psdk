@@ -22,14 +22,25 @@ struct CVehicle;
 struct CWanted;
 struct CTaskSimpleHoldEntity;
 
-struct CPedAcquaintance
-{
+DECL_CLASS(CPedAcquaintance)
+    // Member functions
+    DECL_THISCALL_HEAD(SetAcquaintances, _ZN13CAcquaintance16SetAcquaintancesEij, void, i32 arg1, u32 arg2)
+    DECL_THISCALL_TAIL(SetAcquaintances, arg1, arg2)
+    DECL_THISCALL_HEAD(GetAcquaintances, _ZNK13CAcquaintance16GetAcquaintancesEi, u32, i32 arg1)
+    DECL_THISCALL_TAIL(GetAcquaintances, arg1)
+    DECL_THISCALL_HEAD(SetAsAcquaintance, _ZN13CAcquaintance17SetAsAcquaintanceEij, void, i32 arg1, u32 arg2)
+    DECL_THISCALL_TAIL(SetAsAcquaintance, arg1, arg2)
+    DECL_THISCALL_HEAD(ClearAsAcquaintance, _ZN13CAcquaintance19ClearAsAcquaintanceEij, void, i32 arg1, u32 arg2)
+    DECL_THISCALL_TAIL(ClearAsAcquaintance, arg1, arg2)
+    DECL_THISCALL_HEAD(ClearAcquaintances, _ZN13CAcquaintance18ClearAcquaintancesEi, void, i32 arg1)
+    DECL_THISCALL_TAIL(ClearAcquaintances, arg1)
+
     unsigned int m_nRespect;
     unsigned int m_nLike;
     unsigned int m_nIgnore;
     unsigned int m_nDislike;
     unsigned int m_nHate;
-};
+DECL_CLASS_END()
 
 struct LimbOrientation
 {
@@ -155,37 +166,8 @@ DECL_CLASS_BASED(CPed, CPhysical)
     virtual bool Save();
     virtual bool Load();
 
-    // Helper functions
-    inline float GetHealth()
-    {
-        return m_fHealth;
-    }
-    inline float GetMaxHealth()
-    {
-        return m_fMaxHealth;
-    }
-    inline bool IsMaxHealth()
-    {
-        return (GetHealth() >= GetMaxHealth());
-    }
-    inline void SetHealth(float hp)
-    {
-        m_fHealth = hp;
-    }
-    inline void AddHealth(float hp)
-    {
-        SetHealth(GetHealth() + hp);
-    }
-    inline void SetHealthSafe(float hp)
-    {
-        if(hp < 0.0f) m_fHealth = 0.0f;
-        else if(hp > GetMaxHealth()) m_fHealth = GetMaxHealth();
-        else m_fHealth = hp;
-    }
-    inline void AddHealthSafe(float hp)
-    {
-        SetHealthSafe(GetHealth() + hp);
-    }
+    // STATIC values
+    DECL_VALUE_PLT_U16(m_sGunFlashBlendStart, BYBIT(0x6782BC, 0x84E590));
 
     // Member functions
     DECL_THISCALL_SIMPLE(PedIsInvolvedInConversation, _ZN4CPed27PedIsInvolvedInConversationEv, bool);
@@ -441,6 +423,38 @@ DECL_CLASS_BASED(CPed, CPhysical)
 
     DECL_THISCALL_HEAD(GiveObjectToPedToHold, _ZN4CPed21GiveObjectToPedToHoldEih, CEntity*, i32 modelId, u8 replaceObject)
     DECL_THISCALL_TAIL(GiveObjectToPedToHold, modelId, replaceObject)
+
+    // Helper functions
+    inline float GetHealth()
+    {
+        return m_fHealth;
+    }
+    inline float GetMaxHealth()
+    {
+        return m_fMaxHealth;
+    }
+    inline bool IsMaxHealth()
+    {
+        return (GetHealth() >= GetMaxHealth());
+    }
+    inline void SetHealth(float hp)
+    {
+        m_fHealth = hp;
+    }
+    inline void AddHealth(float hp)
+    {
+        SetHealth(GetHealth() + hp);
+    }
+    inline void SetHealthSafe(float hp)
+    {
+        if(hp < 0.0f) m_fHealth = 0.0f;
+        else if(hp > GetMaxHealth()) m_fHealth = GetMaxHealth();
+        else m_fHealth = hp;
+    }
+    inline void AddHealthSafe(float hp)
+    {
+        SetHealthSafe(GetHealth() + hp);
+    }
 
     // Member values
     CAEPedAudioEntity           m_pedAudio;
@@ -701,5 +715,7 @@ DECL_FASTCALL_SIMPLE_GLO(IsPedPointerValid_NotInWorld, _Z28IsPedPointerValid_Not
 DECL_FASTCALL_SIMPLE_GLO(LOSBlockedBetweenPeds, _Z21LOSBlockedBetweenPedsP7CEntityS0_, bool, CEntity* pPed1, CEntity* pPed2);
 DECL_FASTCALL_SIMPLE_GLO(SetPedAtomicVisibilityCB, _Z24SetPedAtomicVisibilityCBP8RwObjectPv, RwObject*, RwObject* pObject, void* pData);
 DECL_FASTCALL_SIMPLE_GLO(RecurseFrameChildrenVisibilityCB, _Z32RecurseFrameChildrenVisibilityCBP7RwFramePv, RwFrame*, RwFrame* pFrame, void* pData);
+
+#define m_sGunFlashBlendStart m_sGunFlashBlendStart()
 
 #endif // __AML_PSDK_SAPED_H

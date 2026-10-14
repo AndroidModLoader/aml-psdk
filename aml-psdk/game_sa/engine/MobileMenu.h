@@ -11,8 +11,8 @@ struct RwTexture;
 
 DECL_CLASS(MobileMenu)
     // Construct/Deconstruct functions
+    DECL_DTORCALL(MobileMenu, _ZN10MobileMenuD2Ev);
     DECL_CTORCALL(MobileMenu, _ZN10MobileMenuC2Ev);
-    DECL_DTORCALL_PLT(MobileMenu, BYBIT(0x67626C, 0x84A538));
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(DrawQuad1, _ZN10MobileMenu8DrawQuadE9CVector2DS0_P5CRGBA, void, CVector2D ul, CVector2D lr, CRGBA *col);
@@ -21,12 +21,13 @@ DECL_CLASS(MobileMenu)
     DECL_FASTCALL_SIMPLE(DrawSprite2, _ZN10MobileMenu10DrawSpriteEP9RwTexture5CRGBA9CVector2DS3_S3_S3_, void, RwTexture *texture, CRGBA col, CVector2D ul, CVector2D lr, CVector2D uv1, CVector2D uv2);
     DECL_FASTCALL_SIMPLE(DrawSprite3, _ZN10MobileMenu10DrawSpriteEP9RwTexture5CRGBA9CVector2DS3_, void, RwTexture *texture, CRGBA col, CVector2D ul, CVector2D lr);
     
+
     // Member functions
     DECL_THISCALL_SIMPLE(Initialize, _ZN10MobileMenu10InitializeEv, void);
     DECL_THISCALL_SIMPLE(CalcBGUVSize, _ZN10MobileMenu12CalcBGUVSizeEv, CVector2D);
     DECL_THISCALL_SIMPLE(GetRandomBGCoords, _ZN10MobileMenu17GetRandomBGCoordsEv, CVector2D);
     DECL_THISCALL_SIMPLE(Render, _ZN10MobileMenu6RenderEv, void);
-    DECL_THISCALL_SIMPLE(PrepareToRender, _ZN10MobileMenu15PrepareToRenderEv, void);
+    DECL_FASTCALL_SIMPLE(PrepareToRender, _ZN10MobileMenu15PrepareToRenderEv, void);
     DECL_THISCALL_SIMPLE(ProcessPending, _ZN10MobileMenu14ProcessPendingEv, void);
     DECL_THISCALL_SIMPLE(PopAllScreens, _ZN10MobileMenu13PopAllScreensEv, void);
     DECL_THISCALL_SIMPLE(Update, _ZN10MobileMenu6UpdateEv, void);

@@ -23,6 +23,19 @@ enum eWeaponFire : unsigned int
     WEAPON_FIRE_USE
 };
 
+struct tAnimAimOffsets
+{
+    float fAimFromX;
+    float fAimFromZ;
+    float fDuckAimX;
+    float fDuckAimZ;
+    u16 nReloadSampleA;
+    u16 nReloadSampleB;
+    u16 nReloadSampleCrouchedA;
+    u16 nReloadSampleCrouchedB;
+};
+CHECKSIZE(tAnimAimOffsets, 0x18, 0x18);
+
 DECL_CLASS(CWeaponInfo)
     // STATIC functions
     DECL_FASTCALL_SIMPLE(Initialise, _ZN11CWeaponInfo10InitialiseEv, void);
@@ -34,6 +47,7 @@ DECL_CLASS(CWeaponInfo)
     DECL_FASTCALL_SIMPLE(FindWeaponType, _ZN11CWeaponInfo14FindWeaponTypeEPKc, eWeaponType, const char *pString);
 
     // STATIC values
+    DECL_OBJECT_ARRAY_PLT(tAnimAimOffsets, ms_aWeaponAimOffsets, BYBIT(0x6790A4, 0x850170));
     DECL_OBJECT_ARRAY_PLT(const char*, ms_aWeaponNames, BYBIT(0x677E10, 0x84DC40) );
 
     // Member functions
@@ -96,5 +110,7 @@ DECL_OBJECT_ARRAY_PLT_GLOBAL(CWeaponInfo, aWeaponInfo, BYBIT(0x678ED0, 0x84FDC8)
 
 #define aWeaponInfo aWeaponInfo()
 #define ms_aWeaponNames ms_aWeaponNames()
+
+#define ms_aWeaponAimOffsets ms_aWeaponAimOffsets()
 
 #endif // __AML_PSDK_SAWEAPONINFO_H

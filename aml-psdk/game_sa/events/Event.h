@@ -2,6 +2,7 @@
 #define __AML_PSDK_SAEVENT_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include <aml-psdk/gta_base/Vector.h>
 
 struct CPed;
 struct CPedGroup;
@@ -125,6 +126,13 @@ DECL_CLASS_VTABLE(CEvent)
     virtual bool DoInformVehiclreOccupants(CPed* pPed) const;
     virtual bool IsValid(CPed* pPed) const;
     virtual bool CanBeInterruptedBySameEvent() const;
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(CalcSoundLevelIncrement, _ZN6CEvent23CalcSoundLevelIncrementEff, float, float fOrig, float fAdd);
+
+    // Member functions
+    DECL_THISCALL_HEAD(GetSoundLevel, _ZNK6CEvent13GetSoundLevelEPK7CEntityRK7CVector, float, CEntity const* pSourceEnt, CVector const& vecMicPos)
+    DECL_THISCALL_TAIL(GetSoundLevel, pSourceEnt, vecMicPos)
 
     // Member values
     int m_iAccumulatedTime;

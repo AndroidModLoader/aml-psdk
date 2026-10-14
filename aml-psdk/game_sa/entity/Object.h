@@ -40,6 +40,13 @@ DECL_CLASS_BASED(CObject, CPhysical)
     DECL_FASTCALL_SIMPLE(DeleteAllTempObjectsInArea, _ZN7CObject26DeleteAllTempObjectsInAreaE7CVectorf, void, CVector point, float radius);
     DECL_FASTCALL_SIMPLE(DeleteAllMissionObjects, _ZN7CObject23DeleteAllMissionObjectsEv, void);
 
+    // STATIC values
+    DECL_OBJECT_PLT(u16, nNoTempObjects, BYBIT(0x677F68, 0x84DEF0));
+    DECL_OBJECT_SYM(i16, nBodyCastHealth, _ZN7CObject15nBodyCastHealthE);
+    DECL_OBJECT_PLT(float, fDistToNearestTree, BYBIT(0x676FC4, 0x84BFC0));
+    DECL_OBJECT_PLT(bool, bArea51SamSiteDisabled, BYBIT(0x678368, 0x84E6E8));
+    DECL_OBJECT_PLT(bool, bAircraftCarrierSamSiteDisabled, BYBIT(0x679D88, 0x851B28));
+
     // Member functions
     DECL_THISCALL_SIMPLE(Init, _ZN7CObject4InitEv, void);
     DECL_THISCALL_SIMPLE(CanBeDeleted, _ZN7CObject12CanBeDeletedEv, u8);
@@ -78,13 +85,6 @@ DECL_CLASS_BASED(CObject, CPhysical)
     DECL_THISCALL_SIMPLE(DoBurnEffect, _ZN7CObject12DoBurnEffectEv, void);
     DECL_THISCALL_SIMPLE(Save, _ZN7CObject4SaveEv, bool);
     DECL_THISCALL_SIMPLE(Load, _ZN7CObject4LoadEv, bool);
-
-    // STATIC values
-    DECL_OBJECT_PLT(u16, nNoTempObjects, BYBIT(0x677F68, 0x84DEF0));
-    DECL_OBJECT_SYM(i16, nBodyCastHealth, _ZN7CObject15nBodyCastHealthE);
-    DECL_OBJECT_PLT(float, fDistToNearestTree, BYBIT(0x676FC4, 0x84BFC0));
-    DECL_OBJECT_PLT(bool, bArea51SamSiteDisabled, BYBIT(0x678368, 0x84E6E8));
-    DECL_OBJECT_PLT(bool, bAircraftCarrierSamSiteDisabled, BYBIT(0x679D88, 0x851B28));
 
     // Member values
     CPtrNodeDoubleLink *m_pControlCodeList;
@@ -154,6 +154,11 @@ DECL_CLASS_END()
 CHECKSIZE(CObject, 0x184, 0x1F8);
 
 DECL_CLASS_BASED(CHandObject, CObject)
+    // Construct/Deconstruct functions
+    CHandObject(){}
+    DECL_CTORCALL_ARG_HEAD(CHandObject, _ZN11CHandObjectC2EiP4CPedb, i32 modelId, CPed* pPed, bool bLeft)
+    DECL_CTORCALL_ARG_TAIL(modelId, pPed, bLeft)
+
     CPed       *m_pPed;
     int m_nBoneIndex;
     RwTexture   *m_pTexture;
@@ -161,6 +166,10 @@ DECL_CLASS_BASED(CHandObject, CObject)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CCutsceneObject, CObject)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CCutsceneObject, _ZN15CCutsceneObjectC2Ev);
+    DECL_DTORCALL(CCutsceneObject, _ZN15CCutsceneObjectD2Ev);
+
     union
     {
         RwFrame *m_pAttachTo;

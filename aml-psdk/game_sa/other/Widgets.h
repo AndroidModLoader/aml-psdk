@@ -16,6 +16,25 @@ struct WidgetPosition
 };
 
 DECL_CLASS(CHoldEffect)
+    // Construct/Deconstruct functions
+    CHoldEffect(){}
+    DECL_CTORCALL_ARG_HEAD(CHoldEffect, _ZN11CHoldEffectC2EPKcb5CRGBAb, char const* pchar1, bool arg2, CRGBA arg3, bool arg4)
+    DECL_CTORCALL_ARG_TAIL(pchar1, arg2, arg3, arg4)
+    DECL_DTORCALL(CHoldEffect, _ZN11CHoldEffectD2Ev);
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(UpdateAll, _ZN11CHoldEffect9UpdateAllEv, void);
+    DECL_FASTCALL_SIMPLE(DrawAll, _ZN11CHoldEffect7DrawAllEv, void);
+
+    // STATIC values
+    DECL_OBJECT_PLT(CHoldEffect*, m_pChainHead, BYBIT(0x676198, 0x84A390));
+    DECL_OBJECT_PLT(CHoldEffect*, m_pChainTail, BYBIT(0x6781FC, 0x84E410));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(Draw, _ZN11CHoldEffect4DrawEv, void);
+    DECL_THISCALL_HEAD(SetVertices, _ZN11CHoldEffect11SetVerticesEiPfS0_RK5CRGBA, void, i32 arg1, float* pfloat2, float* pfloat3, CRGBA const& arg4)
+    DECL_THISCALL_TAIL(SetVertices, arg1, pfloat2, pfloat3, arg4)
+
     // Member values
     CHoldEffect* m_pPrev;
     CHoldEffect* m_pNext;
@@ -32,6 +51,11 @@ CHECKSIZE(CHoldEffect, 0x568, 0x578);
 
 
 DECL_CLASS_BASED(CWidget, SimpleVTable)
+    // Construct/Deconstruct functions
+    CWidget(){}
+    DECL_CTORCALL_ARG_HEAD(CWidget, _ZN7CWidgetC2EPKcRK14WidgetPositionj10HIDMapping, char const* pszSprite, WidgetPosition const& WidgetPos, u32 nFlags, HIDMapping Mapping)
+    DECL_CTORCALL_ARG_TAIL(pszSprite, WidgetPos, nFlags, Mapping)
+    DECL_DTORCALL(CWidget, _ZN7CWidgetD2Ev);
 
     // Virtual functions
     virtual const char* GetName(void);
@@ -81,6 +105,17 @@ DECL_CLASS_BASED(CWidget, SimpleVTable)
     DECL_FASTCALL_SIMPLE(SetPinchZoomWidget, _ZN7CWidget18SetPinchZoomWidgetEPS_, void, CWidget *pWidget);
     DECL_FASTCALL_SIMPLE(SetTextureStatic, _ZN7CWidget16SetTextureStaticER9CSprite2dPc, void, CSprite2d& sprite, char *pTextureName);
 
+    // STATIC values
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pInitialTouchWidget, BYBIT(0x67656C, 0x84AB30));
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pReleasedWidget, BYBIT(0x678AC8, 0x84F5B8));
+    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pSwipedWidget, BYBIT(0x678AC4, 0x84F5B0));
+    DECL_OBJECT_PLT(CWidget*, m_pPinchZoomWidget, BYBIT(0x678220, 0x84E458));
+    DECL_OBJECT_ARRAY_PLT(CVector2D, m_vecTouchAnchor, BYBIT(0x678C50, 0x84F8C8));
+    DECL_OBJECT_PLT(double, m_fTime, BYBIT(0x676CCC, 0x84B9E0));
+    DECL_OBJECT_PLT(double, m_fElapsedTime, BYBIT(0x678AFC, 0x84F620));
+    DECL_VALUE_SYM_BOOL(m_bInsidePause, _ZN7CWidget14m_bInsidePauseE);
+    DECL_VALUE_PLT_FLT(SWIPE_DISTANCE, BYBIT(0x678ECC, 0x84FDC0));
+
     // Member functions
     DECL_THISCALL_SIMPLE(ClearTapHistory, _ZN7CWidget15ClearTapHistoryEv, void);
     DECL_THISCALL_SIMPLE(DecrementFrameCount, _ZN7CWidget19DecrementFrameCountEv, void);
@@ -106,18 +141,6 @@ DECL_CLASS_BASED(CWidget, SimpleVTable)
 
     DECL_THISCALL_HEAD(SetTexture, _ZN7CWidget10SetTextureER9CSprite2dPcb, void, CSprite2d& sprite, char *pTextureName, bool bilinear)
     DECL_THISCALL_TAIL(SetTexture, sprite, pTextureName, bilinear)
-
-    // STATIC values
-    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pInitialTouchWidget, BYBIT(0x67656C, 0x84AB30));
-    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pReleasedWidget, BYBIT(0x678AC8, 0x84F5B8));
-    DECL_OBJECT_ARRAY_PLT(CWidget*, m_pSwipedWidget, BYBIT(0x678AC4, 0x84F5B0));
-    DECL_OBJECT_PLT(CWidget*, m_pPinchZoomWidget, BYBIT(0x678220, 0x84E458));
-    DECL_OBJECT_ARRAY_PLT(CVector2D, m_vecTouchAnchor, BYBIT(0x678C50, 0x84F8C8));
-    DECL_OBJECT_PLT(double, m_fTime, BYBIT(0x676CCC, 0x84B9E0));
-    DECL_OBJECT_PLT(double, m_fElapsedTime, BYBIT(0x678AFC, 0x84F620));
-    DECL_VALUE_SYM_BOOL(m_bInsidePause, _ZN7CWidget14m_bInsidePauseE);
-    DECL_VALUE_PLT_FLT(SWIPE_DISTANCE, BYBIT(0x678ECC, 0x84FDC0));
-
 
     // Member values
     HIDMapping m_HIDMapping;
@@ -192,5 +215,8 @@ DECL_CLASS_BASED(CWidget, SimpleVTable)
     float m_fHoldEffectPeriod;
 DECL_CLASS_END()
 CHECKSIZE(CWidget, 0x90, 0xA8);
+
+#define m_pChainHead m_pChainHead()
+#define m_pChainTail m_pChainTail()
 
 #endif // __AML_PSDK_SAWIDGETS_H

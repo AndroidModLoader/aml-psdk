@@ -19,6 +19,7 @@ DECL_CLASS(cTransmission)
     DECL_CTORCALL(cTransmission, _ZN13cTransmissionC2Ev);
 
     // Member functions
+    DECL_THISCALL_SIMPLE(DisplayGearRatios, _ZN13cTransmission17DisplayGearRatiosEv, void);
     DECL_THISCALL_SIMPLE(InitGearRatios, _ZN13cTransmission14InitGearRatiosEv, void);
     
     DECL_THISCALL_HEAD(CalculateDriveAcceleration, _ZN13cTransmission26CalculateDriveAccelerationERKfRhRfS1_PfS4_hh, float,

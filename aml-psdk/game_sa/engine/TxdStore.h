@@ -24,6 +24,11 @@ struct TxdDef
 typedef CPool<TxdDef,TxdDef> CTxdPool;
 
 DECL_CLASS(CTxdStore)
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(LoadTxd1, _ZN9CTxdStore7LoadTxdEiPKc, bool, i32 arg1, char const* pchar2);
+    DECL_FASTCALL_SIMPLE(LoadTxd2, _ZN9CTxdStore7LoadTxdEiP8RwStream, bool, i32 index, RwStream* pStream);
+    DECL_FASTCALL_SIMPLE(FinishLoadTxd, _ZN9CTxdStore13FinishLoadTxdEiP8RwStream, bool, i32 index, RwStream* stream);
+
     // Functions
     DECL_FASTCALL_SIMPLE(Initialise, _ZN9CTxdStore10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(AddTxdSlot, _ZN9CTxdStore10AddTxdSlotEPKcS1_b, i32, const char *pName, const char *dbName, bool keepCPU);
@@ -35,13 +40,12 @@ DECL_CLASS(CTxdStore)
     DECL_FASTCALL_SIMPLE(RemoveTxdSlot, _ZN9CTxdStore13RemoveTxdSlotEi, void, i32 index);
     DECL_FASTCALL_SIMPLE(FindTxdSlot, _ZN9CTxdStore11FindTxdSlotEPKc, i32, const char *pName);
     DECL_FASTCALL_SIMPLE(FindTxdSlotFromHashKey, _ZN9CTxdStore22FindTxdSlotFromHashKeyEi, i32, const i32 hashKey);
-    DECL_FASTCALL_SIMPLE_PLT(LoadTxd, BYBIT(0x670828, 0x8410B8), bool, i32 index, const char *pFilename);
+    DECL_FASTCALL_SIMPLE(LoadTxd, _ZN9CTxdStore7LoadTxdEiPKc, bool, i32 index, const char *pFilename);
     DECL_FASTCALL_SIMPLE(SetupTxdParent, _ZN9CTxdStore14SetupTxdParentEi, void, i32 index);
     DECL_FASTCALL_SIMPLE(SetTxdParent, _ZN9CTxdStore12SetTxdParentEP15RwTexDictionaryS1_, void, RwTexDictionary *pTxd, RwTexDictionary *pParent);
     DECL_FASTCALL_SIMPLE(AddRef, _ZN9CTxdStore6AddRefEi, void, i32 index);
     //DECL_FASTCALL_SIMPLE(LoadTxd, _ZN9CTxdStore7LoadTxdEiP8RwStream, void, i32 index, RwStream *pStream);
     DECL_FASTCALL_SIMPLE(StartLoadTxd, _ZN9CTxdStore12StartLoadTxdEiP8RwStream, bool, i32 index, RwStream *pStream);
-    DECL_FASTCALL_SIMPLE_PLT(FinishLoadTxd, BYBIT(0x6707B4, 0x841020), bool, i32 index, RwStream *pStream);
     DECL_FASTCALL_SIMPLE(Create, _ZN9CTxdStore6CreateEi, void, i32 index);
     DECL_FASTCALL_SIMPLE(RemoveTxd, _ZN9CTxdStore9RemoveTxdEi, void, i32 index);
     DECL_FASTCALL_SIMPLE(RemoveRef, _ZN9CTxdStore9RemoveRefEi, void, i32 index);

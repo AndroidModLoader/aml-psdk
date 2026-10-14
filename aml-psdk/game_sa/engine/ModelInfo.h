@@ -4,6 +4,8 @@
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/renderware/RwMatrix.h>
 #include "../enum/WeaponType.h"
+#include "../base/Lists.h"
+#include "2dEffect.h"
 
 struct CBox;
 struct CBoundingBox;
@@ -23,6 +25,8 @@ struct CClumpModelInfo;
 struct CVehicleModelInfo;
 struct CPedModelInfo;
 struct RwFrame;
+
+typedef CStore<C2dEffect, 100> t2dEffectStore;
 
 enum ModelInfoType : i32
 {
@@ -173,20 +177,9 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CClumpModelInfo, CBaseModelInfo)
-    // Member values
-    union
-    {
-        char        *m_animFileName;
-        uintptr_t m_dwAnimFileIndex;
-    };
-
     // Virtual functions
     virtual CBoundingBox &GetBoundingBox();
     virtual void SetClump(RpClump *clump);
-
-    // Member functions
-    DECL_THISCALL_HEAD(SetFrameIds, _ZN15CClumpModelInfo11SetFrameIdsEP24RwObjectNameIdAssocation, void, RwObjectNameIdAssocation *pAssocArray)
-    DECL_THISCALL_TAIL(SetFrameIds, pAssocArray)
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(SetAtomicRendererCB, _ZN15CClumpModelInfo19SetAtomicRendererCBEP8RpAtomicPv, RpAtomic*, RpAtomic *pAtomic, void *pData);
@@ -197,6 +190,17 @@ DECL_CLASS_BASED(CClumpModelInfo, CBaseModelInfo)
     DECL_FASTCALL_SIMPLE(GetFrameFromId, _ZN15CClumpModelInfo14GetFrameFromIdEP7RpClumpi, RwFrame*, RpClump *pClump, i32 id);
     DECL_FASTCALL_SIMPLE(GetFrameFromName, _ZN15CClumpModelInfo16GetFrameFromNameEP7RpClumpPKc, RwFrame*, RpClump *pClump, const char *pName);
     DECL_FASTCALL_SIMPLE(FillFrameArray, _ZN15CClumpModelInfo14FillFrameArrayEP7RpClumpPP7RwFrame, void, RpClump *pClump, RwFrame **ppFrame);
+
+    // Member functions
+    DECL_THISCALL_HEAD(SetFrameIds, _ZN15CClumpModelInfo11SetFrameIdsEP24RwObjectNameIdAssocation, void, RwObjectNameIdAssocation *pAssocArray)
+    DECL_THISCALL_TAIL(SetFrameIds, pAssocArray)
+
+    // Member values
+    union
+    {
+        char        *m_animFileName;
+        uintptr_t m_dwAnimFileIndex;
+    };
 DECL_CLASS_END()
 
 
@@ -209,6 +213,25 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CPedModelInfo, CClumpModelInfo)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(CPedModelInfo, _ZN13CPedModelInfoD2Ev);
+
+    // STATIC values
+    DECL_OBJECT_ARRAY_PLT(RwObjectNameIdAssocation, m_pPedIds, BYBIT(0x67796C, 0x84D300));
+
+    // Member functions
+    DECL_THISCALL_HEAD(AddXtraAtomics, _ZN13CPedModelInfo14AddXtraAtomicsEP7RpClump, void, RpClump* pClump)
+    DECL_THISCALL_TAIL(AddXtraAtomics, pClump)
+    DECL_THISCALL_HEAD(SetFaceTexture, _ZN13CPedModelInfo14SetFaceTextureEP9RwTexture, void, RwTexture* pTexture)
+    DECL_THISCALL_TAIL(SetFaceTexture, pTexture)
+    DECL_THISCALL_HEAD(CreateHitColModelSkinned, _ZN13CPedModelInfo24CreateHitColModelSkinnedEP7RpClump, void, RpClump* pClump)
+    DECL_THISCALL_TAIL(CreateHitColModelSkinned, pClump)
+    DECL_THISCALL_HEAD(AnimatePedColModelSkinned, _ZN13CPedModelInfo25AnimatePedColModelSkinnedEP7RpClump, CColModel*, RpClump* pClump)
+    DECL_THISCALL_TAIL(AnimatePedColModelSkinned, pClump)
+    DECL_THISCALL_HEAD(AnimatePedColModelSkinnedWorld, _ZN13CPedModelInfo30AnimatePedColModelSkinnedWorldEP7RpClump, CColModel*, RpClump* pClump)
+    DECL_THISCALL_TAIL(AnimatePedColModelSkinnedWorld, pClump)
+    DECL_THISCALL_SIMPLE(IncrementVoice, _ZN13CPedModelInfo14IncrementVoiceEv, void);
+
     // Member values
     int            m_nAnimType;
     unsigned int   m_nPedType;
@@ -228,11 +251,15 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CDamageAtomicModelInfo, CAtomicModelInfo)
-    // Member values
-    RpAtomic* m_pDamagedAtomic;
-
     // STATIC values
     DECL_VALUE_PLT_BOOL(m_bCreateDamagedVersion, BYBIT(0x677244, 0x84C4C0));
+
+    // Member functions
+    DECL_THISCALL_HEAD(SetDamagedAtomic, _ZN22CDamageAtomicModelInfo16SetDamagedAtomicEP8RpAtomic, void, RpAtomic* pAtomic)
+    DECL_THISCALL_TAIL(SetDamagedAtomic, pAtomic)
+
+    // Member values
+    RpAtomic* m_pDamagedAtomic;
 DECL_CLASS_END()
 
 
@@ -246,6 +273,7 @@ DECL_CLASS_END()
 
 DECL_CLASS(CModelInfo)
     // STATIC functions
+    DECL_FASTCALL_SIMPLE(PrintModelInfoStoreUsage, _ZN10CModelInfo24PrintModelInfoStoreUsageEv, void);
     DECL_FASTCALL_SIMPLE(Initialise, _ZN10CModelInfo10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(AddAtomicModel, _ZN10CModelInfo14AddAtomicModelEi, CAtomicModelInfo*, i32 index);
     DECL_FASTCALL_SIMPLE(ReInit2dEffects, _ZN10CModelInfo15ReInit2dEffectsEv, void);
@@ -254,7 +282,7 @@ DECL_CLASS(CModelInfo)
     DECL_FASTCALL_SIMPLE(GetModelInfoFromHashKey, _ZN10CModelInfo23GetModelInfoFromHashKeyEjPi, CBaseModelInfo*, u32 key, i32 *pIndex);
     DECL_FASTCALL_SIMPLE(GetModelInfoUInt16, _ZN10CModelInfo18GetModelInfoUInt16EPKcPt, CBaseModelInfo*, const char *pName, u16 *pIndex);
     DECL_FASTCALL_SIMPLE(GetModelInfo2, _ZN10CModelInfo12GetModelInfoEPKcii, CBaseModelInfo*, const char *pName, i32 start, i32 end);
-    DECL_FASTCALL_SIMPLE(GetModelInfoFast, _ZN10CModelInfo16GetModelInfoFastEP21CModelInfoAcceleratorPKcPi, void, CModelInfoAccelerator *pAccel, const char *pName, i32 *pIndex);
+    DECL_FASTCALL_SIMPLE(GetModelInfoFast, _ZN10CModelInfo16GetModelInfoFastEP21CModelInfoAcceleratorPKcPi, CBaseModelInfo*, CModelInfoAccelerator *pAccel, const char *pName, i32 *pIndex);
     DECL_FASTCALL_SIMPLE(AddDamageAtomicModel, _ZN10CModelInfo20AddDamageAtomicModelEi, CDamageAtomicModelInfo*, i32 index);
     DECL_FASTCALL_SIMPLE(AddLodAtomicModel, _ZN10CModelInfo17AddLodAtomicModelEi, CLodAtomicModelInfo*, i32 index);
     DECL_FASTCALL_SIMPLE(AddTimeModel, _ZN10CModelInfo12AddTimeModelEi, CTimeModelInfo*, i32 index);
@@ -263,7 +291,7 @@ DECL_CLASS(CModelInfo)
     DECL_FASTCALL_SIMPLE(AddClumpModel, _ZN10CModelInfo13AddClumpModelEi, CClumpModelInfo*, i32 index);
     DECL_FASTCALL_SIMPLE(AddVehicleModel, _ZN10CModelInfo15AddVehicleModelEi, CVehicleModelInfo*, i32 index);
     DECL_FASTCALL_SIMPLE(AddPedModel, _ZN10CModelInfo11AddPedModelEi, CPedModelInfo*, i32 index);
-    DECL_FASTCALL_SIMPLE(Get2dEffectStore, _ZN10CModelInfo16Get2dEffectStoreEv, uintptr_t*);
+    DECL_FASTCALL_SIMPLE(Get2dEffectStore, _ZN10CModelInfo16Get2dEffectStoreEv, t2dEffectStore&);
     DECL_FASTCALL_SIMPLE(IsBoatModel, _ZN10CModelInfo11IsBoatModelEi, u8, i32 index);
     DECL_FASTCALL_SIMPLE(IsCarModel, _ZN10CModelInfo10IsCarModelEi, u8, i32 index);
     DECL_FASTCALL_SIMPLE(IsTrainModel, _ZN10CModelInfo12IsTrainModelEi, u8, i32 index);
@@ -275,7 +303,13 @@ DECL_CLASS(CModelInfo)
     DECL_FASTCALL_SIMPLE(IsQuadBikeModel, _ZN10CModelInfo15IsQuadBikeModelEi, u8, i32 index);
     DECL_FASTCALL_SIMPLE(IsBmxModel, _ZN10CModelInfo10IsBmxModelEi, u8, i32 index);
     DECL_FASTCALL_SIMPLE(IsTrailerModel, _ZN10CModelInfo14IsTrailerModelEi, u8, i32 index);
-    DECL_FASTCALL_SIMPLE(IsVehicleModelType, _ZN10CModelInfo18IsVehicleModelTypeEi, u8, i32 index);
+    DECL_FASTCALL_SIMPLE(IsVehicleModelType, _ZN10CModelInfo18IsVehicleModelTypeEi, i32, i32 index);
+
+    // STATIC values
+    DECL_VALUE_PLT_I32(ms_lastPositionSearched, BYBIT(0x676B64, 0x84B710));
+
+    // STATIC members
+    DECL_OBJECT_ARRAY_PLT(CBaseModelInfo*, ms_modelInfoPtrs, BYBIT(0x6796D4, 0x850DB8));
 
     // Helper functions
     static inline CBaseModelInfo* GetModelInfo(const char *pName, i32 *pIndex)
@@ -286,12 +320,13 @@ DECL_CLASS(CModelInfo)
     {
         return GetModelInfo2(pName, start, end);
     }
-
-    // STATIC members
-    DECL_OBJECT_ARRAY_PLT(CBaseModelInfo*, ms_modelInfoPtrs, BYBIT(0x6796D4, 0x850DB8));
 DECL_CLASS_END()
 
 #define ms_modelInfoPtrs ms_modelInfoPtrs()
 #define m_bCreateDamagedVersion m_bCreateDamagedVersion()
+
+#define m_pPedIds m_pPedIds()
+
+#define ms_lastPositionSearched ms_lastPositionSearched()
 
 #endif // __AML_PSDK_SAMODELINFO_H

@@ -54,8 +54,11 @@ struct FxEmitterPrt_c : Particle_c
     float         m_currRot;
 };
 
-struct FxPrtMult_c
-{
+DECL_CLASS(FxPrtMult_c)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(FxPrtMult_c, _ZN11FxPrtMult_cC2Efffffff, float red, float green, float blue, float alpha, float size, float arg5, float lastFactor)
+    DECL_CTORCALL_ARG_TAIL(red, green, blue, alpha, size, arg5, lastFactor)
+
     FxPrtMult_c()
     {
         m_color.red = m_color.green = m_color.blue = m_color.alpha = 1.0f;
@@ -66,7 +69,11 @@ struct FxPrtMult_c
     float m_fSize;
     float m_fRotation;
     float m_fLife;
-};
+
+    // Member functions
+    DECL_THISCALL_HEAD(SetUp, _ZN11FxPrtMult_c5SetUpEfffffff, void, float red, float green, float blue, float alpha, float size, float arg5, float lastFactor)
+    DECL_THISCALL_TAIL(SetUp, red, green, blue, alpha, size, arg5, lastFactor)
+DECL_CLASS_END()
 
 
 
@@ -74,7 +81,8 @@ struct FxPrtMult_c
 DECL_CLASS(FxSphere_c)
     // Construct/Deconstruct functions
     FxSphere_c() { m_nNumPlanesPassed = 0; }
-    DECL_NEWCALL(FxSphere_c, BYBIT(_ZN10FxSphere_cnwEji, _ZN10FxSphere_cnwEmi))
+    DECL_FASTCALL_SIMPLE(FuncProxy_opnewFxSphere_c, BYBIT(_ZN10FxSphere_cnwEji, _ZN10FxSphere_cnwEmi), FxSphere_c*, size_t size, i32 useHeap);
+    inline static FxSphere_c* Instantiate(size_t size = sizeof(FxSphere_c), i32 useHeap = 1) { return FuncProxy_opnewFxSphere_c(size, useHeap); }
     DECL_DLCALL(FxSphere_c, _ZN10FxSphere_cdlEPv)
 
     // Member functions

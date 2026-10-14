@@ -11,6 +11,8 @@ struct CDirectory;
 
 DECL_CLASS(CCutsceneMgr)
     // STATIC functions
+    DECL_FASTCALL_SIMPLE(AddCutsceneHead, _ZN12CCutsceneMgr15AddCutsceneHeadEP7CObjecti, CObject*, CObject* object, i32 arg1);
+    DECL_FASTCALL_SIMPLE(SetHeadAnim, _ZN12CCutsceneMgr11SetHeadAnimEPKcP7CObject, void, char const* animName, CObject* headObject);
     DECL_FASTCALL_SIMPLE(Initialise, _ZN12CCutsceneMgr10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(Shutdown, _ZN12CCutsceneMgr8ShutdownEv, void);
     DECL_FASTCALL_SIMPLE(LoadAnimationUncompressed, _ZN12CCutsceneMgr25LoadAnimationUncompressedEPKc, void, const char *pAnimName);

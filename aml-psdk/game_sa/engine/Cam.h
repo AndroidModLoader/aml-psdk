@@ -153,6 +153,13 @@ DECL_CLASS(CCam)
     DECL_THISCALL_HEAD(Process_FlyBy, _ZN4CCam13Process_FlyByERK7CVectorfff, void, CVector const &ThisCamsTarget, float TargetOrientation, float SpeedVar, float SpeedVarDesired)
     DECL_THISCALL_TAIL(Process_FlyBy, ThisCamsTarget, TargetOrientation, SpeedVar, SpeedVarDesired)
 
+
+    // STATIC values
+    DECL_VALUE_PLT_I32(CAM_BUMPED_SWING_PERIOD, BYBIT(0x675FB8, 0x849FE0));
+    DECL_VALUE_PLT_I32(CAM_BUMPED_END_TIME, BYBIT(0x677C70, 0x84D900));
+    DECL_VALUE_PLT_FLT(CAM_BUMPED_DAMP_RATE, BYBIT(0x677668, 0x84CD00));
+    DECL_VALUE_PLT_FLT(CAM_BUMPED_MOVE_MULT, BYBIT(0x677E9C, 0x84DD58));
+
     // Member values
     bool          m_bBelowMinDist;
     bool          m_bBehindPlayerDesired;
@@ -253,5 +260,10 @@ DECL_CLASS(CCam)
     bool          m_bFirstPersonRunAboutActive;
 DECL_CLASS_END()
 CHECKSIZE(CCam, 0x210, 0x228);
+
+#define CAM_BUMPED_SWING_PERIOD CAM_BUMPED_SWING_PERIOD()
+#define CAM_BUMPED_END_TIME CAM_BUMPED_END_TIME()
+#define CAM_BUMPED_DAMP_RATE CAM_BUMPED_DAMP_RATE()
+#define CAM_BUMPED_MOVE_MULT CAM_BUMPED_MOVE_MULT()
 
 #endif // __AML_PSDK_SACAM_H

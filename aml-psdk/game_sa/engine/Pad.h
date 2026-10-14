@@ -3,9 +3,13 @@
 
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
+#include <aml-psdk/renderware/RwVector.h>
 
-struct CControllerState
-{
+DECL_CLASS(CControllerState)
+    // Member functions
+    DECL_THISCALL_SIMPLE(Clear, _ZN16CControllerState5ClearEv, void);
+    DECL_THISCALL_SIMPLE(CheckForInput, _ZN16CControllerState13CheckForInputEv, bool);
+
     i16                                LeftStickX;
     i16                                LeftStickY;
     i16                                RightStickX;
@@ -30,11 +34,13 @@ struct CControllerState
     i16                                m_bPedWalk;
     i16                                m_bVehicleMouseLook;
     i16                                m_bRadioTrackSkip;
-};
+DECL_CLASS_END()
 CHECKSIZE(CControllerState, 0x30, 0x30);  // 64-bit from the IDB; 32-bit measured from this layout
 
-struct CMouseControllerState
-{
+DECL_CLASS(CMouseControllerState)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CMouseControllerState, _ZN21CMouseControllerStateC2Ev);
+
     u8                                 m_bLeftButton;
     u8                                 m_bRightButton;
     u8                                 m_bMiddleButton;
@@ -44,7 +50,11 @@ struct CMouseControllerState
     u8                                 m_bMsSecondXButton;
     float                              m_fWheelMoved;
     RwV2d                              m_AmountMoved;
-};
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(Clear, _ZN21CMouseControllerState5ClearEv, void);
+    DECL_THISCALL_SIMPLE(CheckForInput, _ZN21CMouseControllerState13CheckForInputEv, bool);
+DECL_CLASS_END()
 CHECKSIZE(CMouseControllerState, 0x14, 0x14);  // 64-bit from the IDB; 32-bit measured from this layout
 
 struct CAutomobile;
@@ -113,7 +123,7 @@ DECL_CLASS(CPad)
     DECL_FASTCALL_SIMPLE(ClearKeyBoardHistory, _ZN4CPad20ClearKeyBoardHistoryEv, void);
     DECL_THISCALL_SIMPLE(ClearMouseHistory, _ZN4CPad17ClearMouseHistoryEv, void);
     DECL_THISCALL_SIMPLE(UpdateMouse, _ZN4CPad11UpdateMouseEv, void);
-    DECL_THISCALL_HEAD(ReconcileTwoControllersInput, _ZN4CPad28ReconcileTwoControllersInputERK16CControllerStateS2_, i64, const CControllerState* a1, const CControllerState* a2)
+    DECL_THISCALL_HEAD(ReconcileTwoControllersInput, _ZN4CPad28ReconcileTwoControllersInputERK16CControllerStateS2_, CControllerState, const CControllerState& a1, const CControllerState& a2)
     DECL_THISCALL_TAIL(ReconcileTwoControllersInput, a1, a2)
     DECL_THISCALL_HEAD(SetDrunkInputDelay, _ZN4CPad18SetDrunkInputDelayEi, void, i32 FrameDelay)
     DECL_THISCALL_TAIL(SetDrunkInputDelay, FrameDelay)
@@ -140,7 +150,7 @@ DECL_CLASS(CPad)
     DECL_THISCALL_SIMPLE(GetSteeringMode, _ZN4CPad15GetSteeringModeEv, i32);
     DECL_THISCALL_SIMPLE(GetSteeringLeftRight, _ZN4CPad20GetSteeringLeftRightEv, i16);
     DECL_THISCALL_SIMPLE(GetSteeringUpDown, _ZN4CPad17GetSteeringUpDownEv, i16);
-    DECL_THISCALL_HEAD(GetCarGunUpDown, _ZN4CPad15GetCarGunUpDownEbP11CAutomobilefb, i64, bool bCheckHydraulics, CAutomobile* pAutomobile, float fLimit, bool bPoop)
+    DECL_THISCALL_HEAD(GetCarGunUpDown, _ZN4CPad15GetCarGunUpDownEbP11CAutomobilefb, i16, bool bCheckHydraulics, CAutomobile* pAutomobile, float fLimit, bool bPoop)
     DECL_THISCALL_TAIL(GetCarGunUpDown, bCheckHydraulics, pAutomobile, fLimit, bPoop)
     DECL_THISCALL_HEAD(GetCarGunLeftRight, _ZN4CPad18GetCarGunLeftRightEbb, i16, bool bCheckHydraulics, bool bPoop)
     DECL_THISCALL_TAIL(GetCarGunLeftRight, bCheckHydraulics, bPoop)
@@ -172,7 +182,7 @@ DECL_CLASS(CPad)
     DECL_THISCALL_SIMPLE(GetHandBrake, _ZN4CPad12GetHandBrakeEv, i16);
     DECL_THISCALL_SIMPLE(GetBrake, _ZN4CPad8GetBrakeEv, i16);
     DECL_THISCALL_SIMPLE(GetExitVehicle, _ZN4CPad14GetExitVehicleEv, bool);
-    DECL_THISCALL_HEAD(ExitVehicleJustDown, _ZN4CPad19ExitVehicleJustDownEbP8CVehiclebRK7CVector, bool, bool bCheckTouch, CVehicle* pVehicle, bool bEntering, const CVector* vecVehicle)
+    DECL_THISCALL_HEAD(ExitVehicleJustDown, _ZN4CPad19ExitVehicleJustDownEbP8CVehiclebRK7CVector, bool, bool bCheckTouch, CVehicle* pVehicle, bool bEntering, const CVector& vecVehicle)
     DECL_THISCALL_TAIL(ExitVehicleJustDown, bCheckTouch, pVehicle, bEntering, vecVehicle)
     DECL_THISCALL_SIMPLE(DropItemJustDown, _ZN4CPad16DropItemJustDownEv, bool);
     DECL_THISCALL_HEAD(GetWeapon, _ZN4CPad9GetWeaponEP4CPedb, i32, CPed* pPed, bool bShoulderPossible)

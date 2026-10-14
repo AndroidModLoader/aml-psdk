@@ -30,6 +30,12 @@ DECL_CLASS_BASED(CCamera, CPlaceable)
     DECL_CTORCALL(CCamera, _ZN7CCameraC2Ev)
     DECL_DTORCALL(CCamera, _ZN7CCameraD2Ev);
 
+    // STATIC values
+    DECL_VALUE_PLT_FLT(m_fMouseAccelHorzntl, BYBIT(0x676858, 0x84B108));
+    DECL_VALUE_PLT_FLT(m_fMouseAccelVertical, BYBIT(0x676B30, 0x84B6A8));
+    DECL_VALUE_PLT_FLT(m_f3rdPersonCHairMultX, BYBIT(0x679C34, 0x851880));
+    DECL_VALUE_PLT_FLT(m_f3rdPersonCHairMultY, BYBIT(0x678A10, 0x84F440));
+
     // Member functions
     DECL_THISCALL_SIMPLE(GetCamDirectlyBehind, _ZN7CCamera20GetCamDirectlyBehindEv, bool);
     DECL_THISCALL_SIMPLE(Find3rdPersonQuickAimPitch, _ZN7CCamera26Find3rdPersonQuickAimPitchEv, float);
@@ -446,5 +452,10 @@ CHECKSIZE(CCamera, 0xD00, 0xDB0);
 
 DECL_OBJECT_PLT_GLOBAL(CCamera, TheCamera, BYBIT(0x679B8C, 0x851738) );
 #define TheCamera TheCamera()
+
+#define m_fMouseAccelHorzntl m_fMouseAccelHorzntl()
+#define m_fMouseAccelVertical m_fMouseAccelVertical()
+#define m_f3rdPersonCHairMultX m_f3rdPersonCHairMultX()
+#define m_f3rdPersonCHairMultY m_f3rdPersonCHairMultY()
 
 #endif // __AML_PSDK_SACAMERA_H

@@ -6,7 +6,7 @@
 
 DECL_CLASS(CQuaternion)
     // Member functions
-    DECL_THISCALL_HEAD(Set, _ZN11CQuaternion3SetERK11RwMatrixTag, void, RwMatrix &mat)
+    DECL_THISCALL_HEAD(Set, _ZN11CQuaternion3SetERK11RwMatrixTag, void, const RwMatrix &mat)
     DECL_THISCALL_TAIL(Set, mat)
 
     DECL_THISCALL_NAMED_HEAD(Set1, Set, _ZN11CQuaternion3SetEfff, void, float ax, float ay, float az)

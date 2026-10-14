@@ -13,7 +13,7 @@ DECL_CLASS(CClock)
     DECL_FASTCALL_SIMPLE(Update, _ZN6CClock6UpdateEv, void);
     DECL_FASTCALL_SIMPLE(StoreClock, _ZN6CClock10StoreClockEv, void);
     DECL_FASTCALL_SIMPLE(RestoreClock, _ZN6CClock12RestoreClockEv, void);
-    DECL_FASTCALL_SIMPLE(OffsetClockByADay, _ZN6CClock17OffsetClockByADayEj, void, bool forward);
+    DECL_FASTCALL_SIMPLE(OffsetClockByADay, _ZN6CClock17OffsetClockByADayEj, void, u32 forward);
 
     // STATIC values
     DECL_OBJECT_ARRAY_PLT(u8, daysInMonth, BYBIT(0x676554, 0x84AB00));

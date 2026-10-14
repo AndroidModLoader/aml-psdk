@@ -115,10 +115,10 @@ struct CallEvent<Tag, Def, R(A...), Pick...>
 
 #define EVENT_SYM(name, ret, args, sym, ...) \
     struct name##_tag {}; \
-    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, #sym, 0} }
+    static inline CallEvent<name##_tag, EventPhase::After, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, PSDK_STRINGIFY(sym), 0} }
 #define EVENT_SYM_BEFORE(name, ret, args, sym, ...) \
     struct name##_tag {}; \
-    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, #sym, 0} }
+    static inline CallEvent<name##_tag, EventPhase::Before, ret args, ##__VA_ARGS__> name { EventHooker{EventHooker::EHT_SYM, PSDK_STRINGIFY(sym), 0} }
 
 #define EVENT_ADDR(name, ret, args, addr, ...) \
     struct name##_tag {}; \

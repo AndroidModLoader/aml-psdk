@@ -103,16 +103,33 @@ enum eCarNodes
     CAR_NUM_NODES
 };
 
-struct CBouncingPanel
-{
+DECL_CLASS(CBouncingPanel)
+    // STATIC values
+    DECL_VALUE_PLT_FLT(BOUNCE_SPRING_DAMP_MULT, BYBIT(0x678E60, 0x84FCE8));
+    DECL_VALUE_PLT_FLT(BOUNCE_SPRING_RETURN_MULT, BYBIT(0x6787EC, 0x84F000));
+    DECL_VALUE_PLT_FLT(BOUNCE_VEL_CHANGE_LIMIT, BYBIT(0x6779B0, 0x84D390));
+    DECL_VALUE_PLT_FLT(BOUNCE_HANGING_DAMP_MULT, BYBIT(0x67789C, 0x84D160));
+    DECL_VALUE_PLT_FLT(BOUNCE_HANGING_RETURN_MULT, BYBIT(0x676B54, 0x84B6F0));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(ResetPanel, _ZN14CBouncingPanel10ResetPanelEv, void);
+    DECL_THISCALL_HEAD(SetPanel, _ZN14CBouncingPanel8SetPanelEssf, void, i16 frameId, i16 axis, float angleLimit)
+    DECL_THISCALL_TAIL(SetPanel, frameId, axis, angleLimit)
+    DECL_THISCALL_HEAD(ProcessPanel, _ZN14CBouncingPanel12ProcessPanelEP8CVehicleP7RwFrame7CVectorS4_ff, void, CVehicle* vehicle, RwFrame* frame, CVector arg2, CVector arg3, float arg4, float arg5)
+    DECL_THISCALL_TAIL(ProcessPanel, vehicle, frame, arg2, arg3, arg4, arg5)
+
     short m_nFrameId;
     short m_nAxis;
     float          m_fAngleLimit;
     CVector        m_vecRotation;
     CVector        m_vecPos;
-};
+DECL_CLASS_END()
 
 DECL_CLASS(CDamageManager)
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(GetCarNodeIndexFromPanel, _ZN14CDamageManager24GetCarNodeIndexFromPanelE7ePanels, i32, ePanels panel);
+    DECL_FASTCALL_SIMPLE(GetCarNodeIndexFromDoor, _ZN14CDamageManager23GetCarNodeIndexFromDoorE6eDoors, i32, eDoors door);
+
     float m_fWheelDamageEffect;
     unsigned char m_nEngineStatus;
     union
@@ -151,6 +168,52 @@ DECL_CLASS(CDamageManager)
         };
     };
     unsigned int m_nPanelsStatus;
+
+    // Member functions
+    DECL_THISCALL_HEAD(GetComponentGroup, _ZN14CDamageManager17GetComponentGroupE10tComponentP15tComponentGroupPh, bool, tComponent component, tComponentGroup* group, u8* damageCompId)
+    DECL_THISCALL_TAIL(GetComponentGroup, component, group, damageCompId)
+    DECL_THISCALL_HEAD(ProgressEngineDamage, _ZN14CDamageManager20ProgressEngineDamageEf, bool, float arg0)
+    DECL_THISCALL_TAIL(ProgressEngineDamage, arg0)
+    DECL_THISCALL_HEAD(ProgressDoorDamage, _ZN14CDamageManager18ProgressDoorDamageEhP11CAutomobile, bool, u8 damageCompId, CAutomobile* car)
+    DECL_THISCALL_TAIL(ProgressDoorDamage, damageCompId, car)
+    DECL_THISCALL_HEAD(ProgressPanelDamage, _ZN14CDamageManager19ProgressPanelDamageEh, bool, u8 panel)
+    DECL_THISCALL_TAIL(ProgressPanelDamage, panel)
+    DECL_THISCALL_HEAD(ProgressWheelDamage, _ZN14CDamageManager19ProgressWheelDamageEh, bool, u8 wheel)
+    DECL_THISCALL_TAIL(ProgressWheelDamage, wheel)
+    DECL_THISCALL_HEAD(ProgressAeroplaneDamage, _ZN14CDamageManager23ProgressAeroplaneDamageEh, bool, u8 component)
+    DECL_THISCALL_TAIL(ProgressAeroplaneDamage, component)
+    DECL_THISCALL_SIMPLE(ResetDamageStatus, _ZN14CDamageManager17ResetDamageStatusEv, void);
+    DECL_THISCALL_HEAD(SetLightStatus, _ZN14CDamageManager14SetLightStatusE7eLightsj, void, eLights light, u32 status)
+    DECL_THISCALL_TAIL(SetLightStatus, light, status)
+    DECL_THISCALL_HEAD(GetLightStatus, _ZNK14CDamageManager14GetLightStatusE7eLights, u32, eLights light)
+    DECL_THISCALL_TAIL(GetLightStatus, light)
+    DECL_THISCALL_HEAD(SetPanelStatus, _ZN14CDamageManager14SetPanelStatusEij, void, i32 panel, u32 status)
+    DECL_THISCALL_TAIL(SetPanelStatus, panel, status)
+    DECL_THISCALL_HEAD(GetPanelStatus, _ZNK14CDamageManager14GetPanelStatusEi, u32, i32 arg0)
+    DECL_THISCALL_TAIL(GetPanelStatus, arg0)
+    DECL_THISCALL_HEAD(SetWheelStatus, _ZN14CDamageManager14SetWheelStatusEij, void, i32 wheel, u32 status)
+    DECL_THISCALL_TAIL(SetWheelStatus, wheel, status)
+    DECL_THISCALL_HEAD(GetWheelStatus, _ZNK14CDamageManager14GetWheelStatusEi, u32, i32 wheel)
+    DECL_THISCALL_TAIL(GetWheelStatus, wheel)
+    DECL_THISCALL_NAMED_HEAD(SetDoorStatus1, SetDoorStatus, _ZN14CDamageManager13SetDoorStatusE6eDoorsj, void, eDoors arg1, u32 arg2)
+    DECL_THISCALL_TAIL(SetDoorStatus1, arg1, arg2)
+    DECL_THISCALL_NAMED_HEAD(SetDoorStatus2, SetDoorStatus, _ZN14CDamageManager13SetDoorStatusEij, void, i32 iDoorIndex, u32 Status)
+    DECL_THISCALL_TAIL(SetDoorStatus2, iDoorIndex, Status)
+    DECL_THISCALL_NAMED_HEAD(GetDoorStatus1, GetDoorStatus, _ZNK14CDamageManager13GetDoorStatusEi, u32, i32 iDoorIndex)
+    DECL_THISCALL_TAIL(GetDoorStatus1, iDoorIndex)
+    DECL_THISCALL_NAMED_HEAD(GetDoorStatus2, GetDoorStatus, _ZNK14CDamageManager13GetDoorStatusE6eDoors, u32, eDoors arg1)
+    DECL_THISCALL_TAIL(GetDoorStatus2, arg1)
+    DECL_THISCALL_HEAD(SetEngineStatus, _ZN14CDamageManager15SetEngineStatusEj, void, u32 status)
+    DECL_THISCALL_TAIL(SetEngineStatus, status)
+    DECL_THISCALL_SIMPLE(GetEngineStatus, _ZNK14CDamageManager15GetEngineStatusEv, u32);
+    DECL_THISCALL_HEAD(SetAeroplaneCompStatus, _ZN14CDamageManager22SetAeroplaneCompStatusEij, void, i32 component, u32 status)
+    DECL_THISCALL_TAIL(SetAeroplaneCompStatus, component, status)
+    DECL_THISCALL_HEAD(GetAeroplaneCompStatus, _ZNK14CDamageManager22GetAeroplaneCompStatusEi, u32, i32 component)
+    DECL_THISCALL_TAIL(GetAeroplaneCompStatus, component)
+    DECL_THISCALL_HEAD(ApplyDamage, _ZN14CDamageManager11ApplyDamageEP11CAutomobile10tComponentff, bool, CAutomobile* car, tComponent component, float intensity, float arg3)
+    DECL_THISCALL_TAIL(ApplyDamage, car, component, intensity, arg3)
+    DECL_THISCALL_HEAD(FuckCarCompletely, _ZN14CDamageManager17FuckCarCompletelyEb, void, bool skipWheels)
+    DECL_THISCALL_TAIL(FuckCarCompletely, skipWheels)
 DECL_CLASS_END()
 
 
@@ -169,6 +232,109 @@ DECL_CLASS_BASED(CAutomobile, CVehicle)
     virtual void DoHoverSuspensionRatios(void);
     virtual void ProcessSuspension(void);
     
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(GetJackedCounter, _ZN11CAutomobile16GetJackedCounterEv, i32);
+    DECL_FASTCALL_SIMPLE(SetAllTaxiLights, _ZN11CAutomobile16SetAllTaxiLightsEb, void, bool arg0);
+
+    // STATIC values
+    DECL_VALUE_PLT_U8(m_sAllTaxiLights, BYBIT(0x679FA4, 0x851F58));
+    DECL_OBJECT_PLT(CVector, vecHunterGunPos, BYBIT(0x676E34, 0x84BCB0));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(GetAllWheelsOffGround, _ZNK11CAutomobile21GetAllWheelsOffGroundEv, u8);
+    DECL_THISCALL_SIMPLE(ReduceHornCounter, _ZN11CAutomobile17ReduceHornCounterEv, void);
+    DECL_THISCALL_SIMPLE(PlayHornIfNecessary, _ZN11CAutomobile19PlayHornIfNecessaryEv, void);
+    DECL_THISCALL_SIMPLE(RcbanditCheckHitWheels, _ZNK11CAutomobile22RcbanditCheckHitWheelsEv, u16);
+    DECL_THISCALL_HEAD(RcbanditCheck1CarWheels, _ZNK11CAutomobile23RcbanditCheck1CarWheelsER8CPtrList, u16, CPtrList& ptrlist)
+    DECL_THISCALL_TAIL(RcbanditCheck1CarWheels, ptrlist)
+    DECL_THISCALL_SIMPLE(HydraulicControl, _ZN11CAutomobile16HydraulicControlEv, void);
+    DECL_THISCALL_HEAD(UpdateMovingCollision, _ZN11CAutomobile21UpdateMovingCollisionEf, bool, float angle)
+    DECL_THISCALL_TAIL(UpdateMovingCollision, angle)
+    DECL_THISCALL_SIMPLE(GetMovingCollisionOffset, _ZN11CAutomobile24GetMovingCollisionOffsetEv, float);
+    DECL_THISCALL_SIMPLE(ProcessBuoyancy, _ZN11CAutomobile15ProcessBuoyancyEv, void);
+    DECL_THISCALL_HEAD(UpdateWheelMatrix, _ZN11CAutomobile17UpdateWheelMatrixEii, void, i32 nodeIndex, i32 flags)
+    DECL_THISCALL_TAIL(UpdateWheelMatrix, nodeIndex, flags)
+    DECL_THISCALL_SIMPLE(ShowAllComps, _ZN11CAutomobile12ShowAllCompsEv, void);
+    DECL_THISCALL_SIMPLE(HideAllComps, _ZN11CAutomobile12HideAllCompsEv, void);
+    DECL_THISCALL_HEAD(SetBumperDamage, _ZN11CAutomobile15SetBumperDamageE7ePanelsb, void, ePanels panel, bool withoutVisualEffect)
+    DECL_THISCALL_TAIL(SetBumperDamage, panel, withoutVisualEffect)
+    DECL_THISCALL_HEAD(SetPanelDamage, _ZN11CAutomobile14SetPanelDamageE7ePanelsb, void, ePanels panel, bool createWindowGlass)
+    DECL_THISCALL_TAIL(SetPanelDamage, panel, createWindowGlass)
+    DECL_THISCALL_HEAD(SetDoorDamage, _ZN11CAutomobile13SetDoorDamageE6eDoorsb, void, eDoors door, bool withoutVisualEffect)
+    DECL_THISCALL_TAIL(SetDoorDamage, door, withoutVisualEffect)
+    DECL_THISCALL_HEAD(SetRandomDamage, _ZN11CAutomobile15SetRandomDamageEb, void, bool arg0)
+    DECL_THISCALL_TAIL(SetRandomDamage, arg0)
+    DECL_THISCALL_HEAD(SetTotalDamage, _ZN11CAutomobile14SetTotalDamageEb, void, bool arg0)
+    DECL_THISCALL_TAIL(SetTotalDamage, arg0)
+    DECL_THISCALL_HEAD(FixTyre, _ZN11CAutomobile7FixTyreE7eWheels, void, eWheels wheel)
+    DECL_THISCALL_TAIL(FixTyre, wheel)
+    DECL_THISCALL_HEAD(FixDoor, _ZN11CAutomobile7FixDoorEi6eDoors, void, i32 nodeIndex, eDoors door)
+    DECL_THISCALL_TAIL(FixDoor, nodeIndex, door)
+    DECL_THISCALL_HEAD(PopDoor, _ZN11CAutomobile7PopDoorEi6eDoorsb, void, i32 nodeIndex, eDoors door, bool showVisualEffect)
+    DECL_THISCALL_TAIL(PopDoor, nodeIndex, door, showVisualEffect)
+    DECL_THISCALL_HEAD(FixPanel, _ZN11CAutomobile8FixPanelEi7ePanels, void, i32 nodeIndex, ePanels panel)
+    DECL_THISCALL_TAIL(FixPanel, nodeIndex, panel)
+    DECL_THISCALL_HEAD(PopPanel, _ZN11CAutomobile8PopPanelEi7ePanelsb, void, i32 nodeIndex, ePanels panel, bool showVisualEffect)
+    DECL_THISCALL_TAIL(PopPanel, nodeIndex, panel, showVisualEffect)
+    DECL_THISCALL_HEAD(ProcessSwingingDoor, _ZN11CAutomobile19ProcessSwingingDoorEi6eDoors, void, i32 nodeIndex, eDoors door)
+    DECL_THISCALL_TAIL(ProcessSwingingDoor, nodeIndex, door)
+    DECL_THISCALL_HEAD(SpawnFlyingComponent, _ZN11CAutomobile20SpawnFlyingComponentEij, CPhysical*, i32 nodeIndex, u32 collisionType)
+    DECL_THISCALL_TAIL(SpawnFlyingComponent, nodeIndex, collisionType)
+    DECL_THISCALL_SIMPLE(RemoveBonnetInPedCollision, _ZN11CAutomobile26RemoveBonnetInPedCollisionEv, CPhysical*);
+    DECL_THISCALL_HEAD(SetTaxiLight, _ZN11CAutomobile12SetTaxiLightEb, void, bool enable)
+    DECL_THISCALL_TAIL(SetTaxiLight, enable)
+    DECL_THISCALL_SIMPLE(HasCarStoppedBecauseOfLight, _ZNK11CAutomobile27HasCarStoppedBecauseOfLightEv, bool);
+    DECL_THISCALL_SIMPLE(ScanForCrimes, _ZN11CAutomobile13ScanForCrimesEv, void);
+    DECL_THISCALL_HEAD(FireTruckControl, _ZN11CAutomobile16FireTruckControlEP5CFire, void, CFire* arg0)
+    DECL_THISCALL_TAIL(FireTruckControl, arg0)
+    DECL_THISCALL_SIMPLE(TankControl, _ZN11CAutomobile11TankControlEv, void);
+    DECL_THISCALL_SIMPLE(BlowUpCarsInPath, _ZN11CAutomobile16BlowUpCarsInPathEv, void);
+    DECL_THISCALL_SIMPLE(BoostJumpControl, _ZN11CAutomobile16BoostJumpControlEv, void);
+    DECL_THISCALL_HEAD(NitrousControl, _ZN11CAutomobile14NitrousControlEa, void, i8 boost)
+    DECL_THISCALL_TAIL(NitrousControl, boost)
+    DECL_THISCALL_SIMPLE(StopNitroEffect, _ZN11CAutomobile15StopNitroEffectEv, void);
+    DECL_THISCALL_HEAD(DoNitroEffect, _ZN11CAutomobile13DoNitroEffectEf, void, float state)
+    DECL_THISCALL_TAIL(DoNitroEffect, state)
+    DECL_THISCALL_SIMPLE(TowTruckControl, _ZN11CAutomobile15TowTruckControlEv, void);
+    DECL_THISCALL_HEAD(SetBusDoorTimer, _ZN11CAutomobile15SetBusDoorTimerEjh, void, u32 time, u8 arg1)
+    DECL_THISCALL_TAIL(SetBusDoorTimer, time, arg1)
+    DECL_THISCALL_SIMPLE(ProcessAutoBusDoors, _ZN11CAutomobile19ProcessAutoBusDoorsEv, void);
+    DECL_THISCALL_SIMPLE(PlaceOnRoadProperly, _ZN11CAutomobile19PlaceOnRoadProperlyEv, void);
+    DECL_THISCALL_HEAD(ProcessCarOnFireAndExplode, _ZN11CAutomobile26ProcessCarOnFireAndExplodeEh, void, u8 arg0)
+    DECL_THISCALL_TAIL(ProcessCarOnFireAndExplode, arg0)
+    DECL_THISCALL_HEAD(TellHeliToGoToCoors, _ZN11CAutomobile19TellHeliToGoToCoorsEfffff, void, float x, float y, float z, float altitudeMin, float altitudeMax)
+    DECL_THISCALL_TAIL(TellHeliToGoToCoors, x, y, z, altitudeMin, altitudeMax)
+    DECL_THISCALL_HEAD(SetHeliOrientation, _ZN11CAutomobile18SetHeliOrientationEf, void, float angle)
+    DECL_THISCALL_TAIL(SetHeliOrientation, angle)
+    DECL_THISCALL_SIMPLE(ClearHeliOrientation, _ZN11CAutomobile20ClearHeliOrientationEv, void);
+    DECL_THISCALL_HEAD(TellPlaneToGoToCoors, _ZN11CAutomobile20TellPlaneToGoToCoorsEfffff, void, float x, float y, float z, float altitudeMin, float altitudeMax)
+    DECL_THISCALL_TAIL(TellPlaneToGoToCoors, x, y, z, altitudeMin, altitudeMax)
+    DECL_THISCALL_HEAD(KnockPedOutCar, _ZN11CAutomobile14KnockPedOutCarE11eWeaponTypetP4CPed, CPed*, eWeaponType arg0, u16 arg1, CPed* arg2)
+    DECL_THISCALL_TAIL(KnockPedOutCar, arg0, arg1, arg2)
+    DECL_THISCALL_SIMPLE(PopBoot, _ZN11CAutomobile7PopBootEv, void);
+    DECL_THISCALL_SIMPLE(PopBootUsingPhysics, _ZN11CAutomobile19PopBootUsingPhysicsEv, void);
+    DECL_THISCALL_SIMPLE(CloseBoot, _ZN11CAutomobile9CloseBootEv, void);
+    DECL_THISCALL_SIMPLE(CloseAllDoors, _ZN11CAutomobile13CloseAllDoorsEv, void);
+    DECL_THISCALL_HEAD(DoSoftGroundResistance, _ZN11CAutomobile22DoSoftGroundResistanceERj, void, u32& arg0)
+    DECL_THISCALL_TAIL(DoSoftGroundResistance, arg0)
+    DECL_THISCALL_HEAD(ProcessCarWheelPair, _ZN11CAutomobile19ProcessCarWheelPairEiifP7CVectorS1_fffb, void, i32 arg0, i32 arg1, float arg2, CVector* arg3, CVector* arg4, float arg5, float arg6, float arg7, bool arg8)
+    DECL_THISCALL_TAIL(ProcessCarWheelPair, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+    DECL_THISCALL_SIMPLE(GetCarRoll, _ZN11CAutomobile10GetCarRollEv, float);
+    DECL_THISCALL_SIMPLE(GetCarPitch, _ZN11CAutomobile11GetCarPitchEv, float);
+    DECL_THISCALL_SIMPLE(ProcessHarvester, _ZN11CAutomobile16ProcessHarvesterEv, void);
+    DECL_THISCALL_SIMPLE(SetupModelNodes, _ZN11CAutomobile15SetupModelNodesEv, void);
+    DECL_THISCALL_SIMPLE(DebugCode, _ZN11CAutomobile9DebugCodeEv, void);
+    DECL_THISCALL_HEAD(dmgDrawCarCollidingParticles, _ZN11CAutomobile28dmgDrawCarCollidingParticlesERK7CVectorf11eWeaponType, void, CVector const& DamagePosition, float fImpulse, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(dmgDrawCarCollidingParticles, DamagePosition, fImpulse, weaponType)
+    DECL_THISCALL_HEAD(DoHeliDustEffect, _ZN11CAutomobile16DoHeliDustEffectEff, void, float arg0, float arg1)
+    DECL_THISCALL_TAIL(DoHeliDustEffect, arg0, arg1)
+    DECL_THISCALL_HEAD(CustomCarPlate_BeforeRenderingStart, _ZN11CAutomobile35CustomCarPlate_BeforeRenderingStartEP17CVehicleModelInfo, void, CVehicleModelInfo* model)
+    DECL_THISCALL_TAIL(CustomCarPlate_BeforeRenderingStart, model)
+    DECL_THISCALL_HEAD(CustomCarPlate_AfterRenderingStop, _ZN11CAutomobile33CustomCarPlate_AfterRenderingStopEP17CVehicleModelInfo, void, CVehicleModelInfo* model)
+    DECL_THISCALL_TAIL(CustomCarPlate_AfterRenderingStop, model)
+    DECL_THISCALL_SIMPLE(IsInAir, _ZN11CAutomobile7IsInAirEv, u8);
+
     // Member values
     CDamageManager m_damageManager;
     CDoor m_doors[6];
@@ -283,6 +449,12 @@ DECL_CLASS_BASED(CMonsterTruck, CAutomobile)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CMonsterTruck, _ZN13CMonsterTruckD2Ev);
 
+    // STATIC values
+    DECL_VALUE_PLT_FLT(DUMPER_COL_ANGLEMULT, BYBIT(0x676FA8, 0x84BF88));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(ExtendSuspension, _ZN13CMonsterTruck16ExtendSuspensionEv, void);
+
     // Member values
     float m_fTyreCompression[4];
     float m_fWheelRadius;
@@ -323,6 +495,13 @@ DECL_CLASS_BASED(CTrailer, CAutomobile)
     DECL_CTORCALL_ARG_HEAD(CTrailer, _ZN8CTrailerC2Eih, int modelIdx, u8 createdBy)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CTrailer, _ZN8CTrailerD2Ev);
+
+    // STATIC values
+    DECL_VALUE_PLT_FLT(m_fTrailerSuspensionForce, BYBIT(0x677F00, 0x84DE20));
+    DECL_VALUE_PLT_FLT(m_fTrailerDampingForce, BYBIT(0x6799FC, 0x851410));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(ScanForTowLink, _ZN8CTrailer14ScanForTowLinkEv, void);
 
     // Member values
     CColPoint m_aSupportCols[2];
@@ -429,6 +608,30 @@ DECL_CLASS_BASED(CHeli, CAutomobile)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CHeli, _ZN5CHeliD2Ev);
 
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(InitHelis, _ZN5CHeli9InitHelisEv, void);
+    DECL_FASTCALL_SIMPLE(UpdateHelis, _ZN5CHeli11UpdateHelisEv, void);
+    DECL_FASTCALL_SIMPLE(AddHeliSearchLight, _ZN5CHeli18AddHeliSearchLightERK7CVectorS2_ffjhh, void, CVector const& origin, CVector const& target, float targetRadius, float power, u32 coronaIndex, u8 unknownFlag, u8 drawShadow);
+    DECL_FASTCALL_SIMPLE(SearchLightCone, _ZN5CHeli15SearchLightConeEi7CVectorS0_ffhhPS0_S1_S1_bffff, void, i32 UniqueID, CVector position, CVector targetPos, float radius, float brightness, u8 clipIfColliding, u8 doGroundLight, CVector* pVecEllipseCentre, CVector* pVecEllipseForward, CVector* pVecEllipseSide, bool bFromScript, float topRadius, float normalX, float normalY, float normalZ);
+    DECL_FASTCALL_SIMPLE(Pre_SearchLightCone, _ZN5CHeli19Pre_SearchLightConeEv, void);
+    DECL_FASTCALL_SIMPLE(Post_SearchLightCone, _ZN5CHeli20Post_SearchLightConeEv, void);
+    DECL_FASTCALL_SIMPLE(RenderAllHeliSearchLights, _ZN5CHeli25RenderAllHeliSearchLightsEv, void);
+    DECL_FASTCALL_SIMPLE(GenerateHeli, _ZN5CHeli12GenerateHeliEP4CPedb, CHeli*, CPed* target, bool newsHeli);
+    DECL_FASTCALL_SIMPLE(TestSniperCollision, _ZN5CHeli19TestSniperCollisionEP7CVectorS1_, bool, CVector* origin, CVector* target);
+    DECL_FASTCALL_SIMPLE(SwitchPoliceHelis, _ZN5CHeli17SwitchPoliceHelisEb, void, bool enable);
+
+    // STATIC values
+    DECL_OBJECT_ARRAY_PLT(CHeli*, pHelis, BYBIT(0x677D60, 0x84DAE0));
+    DECL_VALUE_PLT_U32(NumberOfSearchLights, BYBIT(0x678A88, 0x84F538));
+    DECL_VALUE_PLT_U32(TestForNewRandomHelisTimer, BYBIT(0x676A04, 0x84B450));
+    DECL_VALUE_PLT_BOOL(bPoliceHelisAllowed, BYBIT(0x6760B0, 0x84A1D0));
+    DECL_VALUE_PLT_BOOL(bHeliControlsCheat, BYBIT(0x6789B4, 0x84F388));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(SendDownSwat, _ZN5CHeli12SendDownSwatEv, bool);
+    DECL_THISCALL_HEAD(FindSwatPositionRelativeToHeli, _ZN5CHeli30FindSwatPositionRelativeToHeliEi, CVector, i32 swatNumber)
+    DECL_THISCALL_TAIL(FindSwatPositionRelativeToHeli, swatNumber)
+
     // Member values
     union
     {
@@ -507,6 +710,33 @@ DECL_CLASS_BASED(CPlane, CAutomobile)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CPlane, _ZN6CPlaneD2Ev);
 
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(FindPlaneCreationCoors, _ZN6CPlane22FindPlaneCreationCoorsEP7CVectorS1_PfS2_b, void, CVector* arg0, CVector* arg1, float* arg2, float* arg3, bool arg4);
+    DECL_FASTCALL_SIMPLE(CountPlanesAndHelis, _ZN6CPlane19CountPlanesAndHelisEv, i32);
+    DECL_FASTCALL_SIMPLE(AreWeInNoPlaneZone, _ZN6CPlane18AreWeInNoPlaneZoneEv, bool);
+    DECL_FASTCALL_SIMPLE(AreWeInNoBigPlaneZone, _ZN6CPlane21AreWeInNoBigPlaneZoneEv, bool);
+    DECL_FASTCALL_SIMPLE(DoPlaneGenerationAndRemoval, _ZN6CPlane27DoPlaneGenerationAndRemovalEv, void);
+    DECL_FASTCALL_SIMPLE(InitPlaneGenerationAndRemoval, _ZN6CPlane29InitPlaneGenerationAndRemovalEv, void);
+    DECL_FASTCALL_SIMPLE(SwitchAmbientPlanes, _ZN6CPlane19SwitchAmbientPlanesEb, void, bool enable);
+
+    // STATIC values
+    DECL_VALUE_PLT_I32(GenPlane_Status, BYBIT(0x678C30, 0x84F888));
+    DECL_VALUE_PLT_I32(GenPlane_ModelIndex, BYBIT(0x67771C, 0x84CE60));
+    DECL_VALUE_PLT_U32(GenPlane_LastTimeGenerated, BYBIT(0x6795B8, 0x850B80));
+    DECL_VALUE_PLT_BOOL(GenPlane_Active, BYBIT(0x676650, 0x84ACF8));
+    DECL_VALUE_PLT_FLT(ANDROM_COL_ANGLE_MULT, BYBIT(0x679730, 0x850E68));
+    DECL_VALUE_PLT_I16(HARRIER_NOZZLE_ROTATE_LIMIT, BYBIT(0x6785BC, 0x84EB90));
+    DECL_VALUE_PLT_I16(HARRIER_NOZZLE_SWITCH_LIMIT, BYBIT(0x677774, 0x84CF10));
+    DECL_VALUE_PLT_FLT(PLANE_MIN_PROP_SPEED, BYBIT(0x6797A8, 0x850F58));
+    DECL_VALUE_PLT_FLT(PLANE_STD_PROP_SPEED, BYBIT(0x677C1C, 0x84D858));
+    DECL_VALUE_PLT_FLT(PLANE_MAX_PROP_SPEED, BYBIT(0x677798, 0x84CF58));
+    DECL_VALUE_PLT_FLT(PLANE_ROC_PROP_SPEED, BYBIT(0x677B50, 0x84D6C0));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(IsAlreadyFlying, _ZN6CPlane15IsAlreadyFlyingEv, void);
+    DECL_THISCALL_SIMPLE(SetGearUp, _ZN6CPlane9SetGearUpEv, void);
+    DECL_THISCALL_SIMPLE(SetGearDown, _ZN6CPlane11SetGearDownEv, void);
+
     // Member values
     float           m_fYawControl;
     float           m_fPitchControl;
@@ -539,5 +769,37 @@ DECL_CLASS_BASED(CPlane, CAutomobile)
     unsigned char   m_bSmokeEjectorEnabled;
 DECL_CLASS_END()
 CHECKSIZE(CPlane, 0xA18, 0xC68);
+
+#define m_sAllTaxiLights m_sAllTaxiLights()
+#define vecHunterGunPos vecHunterGunPos()
+
+#define DUMPER_COL_ANGLEMULT DUMPER_COL_ANGLEMULT()
+
+#define m_fTrailerSuspensionForce m_fTrailerSuspensionForce()
+#define m_fTrailerDampingForce m_fTrailerDampingForce()
+
+#define pHelis pHelis()
+#define NumberOfSearchLights NumberOfSearchLights()
+#define TestForNewRandomHelisTimer TestForNewRandomHelisTimer()
+#define bPoliceHelisAllowed bPoliceHelisAllowed()
+#define bHeliControlsCheat bHeliControlsCheat()
+
+#define GenPlane_Status GenPlane_Status()
+#define GenPlane_ModelIndex GenPlane_ModelIndex()
+#define GenPlane_LastTimeGenerated GenPlane_LastTimeGenerated()
+#define GenPlane_Active GenPlane_Active()
+#define ANDROM_COL_ANGLE_MULT ANDROM_COL_ANGLE_MULT()
+#define HARRIER_NOZZLE_ROTATE_LIMIT HARRIER_NOZZLE_ROTATE_LIMIT()
+#define HARRIER_NOZZLE_SWITCH_LIMIT HARRIER_NOZZLE_SWITCH_LIMIT()
+#define PLANE_MIN_PROP_SPEED PLANE_MIN_PROP_SPEED()
+#define PLANE_STD_PROP_SPEED PLANE_STD_PROP_SPEED()
+#define PLANE_MAX_PROP_SPEED PLANE_MAX_PROP_SPEED()
+#define PLANE_ROC_PROP_SPEED PLANE_ROC_PROP_SPEED()
+
+#define BOUNCE_SPRING_DAMP_MULT BOUNCE_SPRING_DAMP_MULT()
+#define BOUNCE_SPRING_RETURN_MULT BOUNCE_SPRING_RETURN_MULT()
+#define BOUNCE_VEL_CHANGE_LIMIT BOUNCE_VEL_CHANGE_LIMIT()
+#define BOUNCE_HANGING_DAMP_MULT BOUNCE_HANGING_DAMP_MULT()
+#define BOUNCE_HANGING_RETURN_MULT BOUNCE_HANGING_RETURN_MULT()
 
 #endif // __AML_PSDK_SAAUTOMOBILE_H

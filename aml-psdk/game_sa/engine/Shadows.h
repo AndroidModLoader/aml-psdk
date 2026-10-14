@@ -150,6 +150,7 @@ CHECKSIZE(CStaticShadow, 0x40, 0x50);
 
 DECL_CLASS(CShadows)
     // STATIC functions
+    DECL_FASTCALL_SIMPLE(CastShadowEntityXYZ, _ZN8CShadows19CastShadowEntityXYZEP7CEntityP7CVectorffffshhhffPP10CPolyBunchP15CRealTimeShadowPh, void, CEntity* pEntity, CVector* pShadowPos, float ForwardX, float ForwardY, float SideX, float SideY, i16 Brightness, u8 Red, u8 Green, u8 Blue, float ShadowDepth, float TextureScale, CPolyBunch** ppBunch, CRealTimeShadow* pRealTimeShadow, u8* lightingMult);
     DECL_FASTCALL_SIMPLE(Init, _ZN8CShadows4InitEv, void);
     DECL_FASTCALL_SIMPLE(Shutdown, _ZN8CShadows8ShutdownEv, void);
     DECL_FASTCALL_SIMPLE(AddPermanentShadow, _ZN8CShadows18AddPermanentShadowEhP9RwTextureP7CVectorffffshhhfjf, void,
@@ -172,7 +173,7 @@ DECL_CLASS(CShadows)
         CPhysical *pPhysical, float ShadowDisplacementX, float ShadowDisplacementY, float ShadowFrontX, float ShadowFrontY, float ShadowSideX, float ShadowSideY);
     DECL_FASTCALL_SIMPLE(CalcPedShadowValues, _ZN8CShadows19CalcPedShadowValuesE7CVectorPfS1_S1_S1_S1_S1_, void,
         CVector UnitVecToLight, float *pShadowFrontX, float *pShadowFrontY, float *pShadowSideX, float *pShadowSideY, float *pShadowDisplacementX, float *pShadowDisplacementY);
-    DECL_FASTCALL_SIMPLE(StoreShadowForTree, _ZN8CShadows18StoreShadowForTreeEP7CEntity, void); // NOP
+    DECL_FASTCALL_SIMPLE(StoreShadowForTree, _ZN8CShadows18StoreShadowForTreeEP7CEntity, void, CEntity *pEntity); // NOP
     DECL_FASTCALL_SIMPLE(StoreShadowForPole, _ZN8CShadows18StoreShadowForPoleEP7CEntityfffffj, void,
         CEntity *pPole, float OffsetX, float OffsetY, float ShiftUp, float Length, float Width, u32 Number);
     DECL_FASTCALL_SIMPLE(SetRenderModeForShadowType, _ZN8CShadows26SetRenderModeForShadowTypeEh, void, u8 ShadowType);
@@ -196,14 +197,19 @@ DECL_CLASS(CShadows)
     DECL_FASTCALL_SIMPLE(UpdatePermanentShadows, _ZN8CShadows22UpdatePermanentShadowsEv, void);
     DECL_FASTCALL_SIMPLE(RemoveOilInArea, _ZN8CShadows15RemoveOilInAreaEffff, void, float MinX, float MaxX, float MinY, float MaxY);
     DECL_FASTCALL_SIMPLE(GunShotSetsOilOnFire, _ZN8CShadows20GunShotSetsOilOnFireEPK7CVectorS2_, void, CVector const *pShotStart, CVector const *pShotEnd);
-    DECL_FASTCALL_SIMPLE(PrintDebugPoly, _ZN8CShadows14PrintDebugPolyEP7CVectorS1_S1_, void); // NOP
+    DECL_FASTCALL_SIMPLE(PrintDebugPoly, _ZN8CShadows14PrintDebugPolyEP7CVectorS1_S1_, void, CVector *p1, CVector *p2, CVector *p3); // NOP
     DECL_FASTCALL_SIMPLE(RenderExtraPlayerShadows, _ZN8CShadows24RenderExtraPlayerShadowsEv, void);
     DECL_FASTCALL_SIMPLE(TidyUpShadows, _ZN8CShadows13TidyUpShadowsEv, void);
     DECL_FASTCALL_SIMPLE(RenderIndicatorShadow, BYBIT(_ZN8CShadows21RenderIndicatorShadowEjhP9RwTextureP7CVectorffffs, _ZN8CShadows21RenderIndicatorShadowEyhP9RwTextureP7CVectorffffs), void,
         uintptr_t ID, u8 Type, RwTexture *pTexture, CVector *pCoors, float ForwardX, float ForwardY, float SideX, float SideY, i16 Brightness);
-    DECL_FASTCALL_SIMPLE_PLT(CastShadowEntityXYZ, BYBIT(0x5BE010 + 1, 0x6E26E4), void,
-        CEntity *pEntity, CVector *pShadowPos, float ForwardX, float ForwardY, float SideX, float SideY, i16 Brightness,
-        u8 Red, u8 Green, u8 Blue, float ShadowDepth, float TextureScale, CPolyBunch **ppBunch, CRealTimeShadow *pRealTimeShadow, u8 *lightingMult);
+
+    // STATIC members
+    DECL_VALUE_PLT_U16(ShadowsStoredToBeRendered, BYBIT(0x679918, 0x851250));
+    DECL_OBJECT_ARRAY_PLT(CRegisteredShadow, asShadowsStored, BYBIT(0x677BEC, 0x84D7F8));
+    DECL_OBJECT_ARRAY_PLT(CPolyBunch, aPolyBunches, BYBIT(0x678F8C, 0x84FF40));
+    DECL_OBJECT_ARRAY_PLT(CStaticShadow, aStaticShadows, BYBIT(0x6798EC, 0x8511F8));
+    DECL_OBJECT_PLT(CPolyBunch*, pEmptyBunchList, BYBIT(0x676F44, 0x84BEC8));
+    DECL_OBJECT_ARRAY_PLT(CPermanentShadow, aPermanentShadows, BYBIT(0x679FE4, 0x851FD8));
 
     // Helper functions
     static inline void StoreShadowToBeRendered(u8 Type, CVector *pCoors, float ForwardX, float ForwardY, float SideX, float SideY, i16 Brightness, u8 Red, u8 Green, u8 Blue)
@@ -215,14 +221,6 @@ DECL_CLASS(CShadows)
     {
         StoreShadowToBeRendered2(Type, pTexture, pCoors, ForwardX, ForwardY, SideX, SideY, Brightness, Red, Green, Blue, ShadowDepth, OnWater, TextureScale, pRealTimeShadow, bIsPlayer);
     }
-
-    // STATIC members
-    DECL_VALUE_PLT_U16(ShadowsStoredToBeRendered, BYBIT(0x679918, 0x851250));
-    DECL_OBJECT_ARRAY_PLT(CRegisteredShadow, asShadowsStored, BYBIT(0x677BEC, 0x84D7F8));
-    DECL_OBJECT_ARRAY_PLT(CPolyBunch, aPolyBunches, BYBIT(0x678F8C, 0x84FF40));
-    DECL_OBJECT_ARRAY_PLT(CStaticShadow, aStaticShadows, BYBIT(0x6798EC, 0x8511F8));
-    DECL_OBJECT_PLT(CPolyBunch*, pEmptyBunchList, BYBIT(0x676F44, 0x84BEC8));
-    DECL_OBJECT_ARRAY_PLT(CPermanentShadow, aPermanentShadows, BYBIT(0x679FE4, 0x851FD8));
 DECL_CLASS_END()
 
 #define ShadowsStoredToBeRendered ShadowsStoredToBeRendered()

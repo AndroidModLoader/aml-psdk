@@ -16,6 +16,14 @@ enum eVehicleType
     VEHICLE_TRAILER
 };
 
+enum tWheelState
+{
+    WHEEL_STATE_NORMAL = 0,
+    WHEEL_STATE_SPINNING = 1,
+    WHEEL_STATE_SKIDDING = 2,
+    WHEEL_STATE_FIXED = 3
+};
+
 enum VehicleUpgradePosn
 {
     UPGRADE_BONNET,
@@ -34,4 +42,37 @@ enum VehicleUpgradePosn
     UPGRADE_LIGHTS_DAM,
     UPGRADE_ROOF,
     UPGRADE_NITRO,
+};
+
+
+enum eFlightModel
+{
+    FLIGHTMODEL_DODO = 0,
+    FLIGHTMODEL_RCPLANE = 1,
+    FLIGHTMODEL_RCHELI = 2,
+    FLIGHTMODEL_PLANE = 3,
+    FLIGHTMODEL_PLANE_LOWPOWER = 4,
+    FLIGHTMODEL_PLANE_GLIDER = 5,
+    FLIGHTMODEL_HELI = 6,
+    FLIGHTMODEL_HELI2 = 7,
+    FLIGHTMODEL_AUTOGYRO = 8
+};
+
+
+enum eOrdnanceType
+{
+    ORDNANCE_TYPE_NONE = 0,
+    ORDNANCE_TYPE_PRIMARY = 1,
+    ORDNANCE_TYPE_SECONDARY = 2
+};
+
+
+enum eBikeWheelSpecial
+{
+    BIKE_WHEEL_F_STD = 0,
+    BIKE_WHEEL_R_STD = 1,
+    BIKE_WHEEL_F_SLIP = 2,
+    BIKE_WHEEL_R_SLIP = 3,
+    BIKE_WHEEL_R_HBRAKE = 4,
+    BIKE_WHEEL_R_SLIPBRAKE = 5
 };

@@ -4,8 +4,41 @@
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/renderware/RwMatrix.h>
 
+struct CQuaternion;
+
+struct CMatrixSerialize
+{
+    float xx, yx, zx, wx;
+    float xy, yy, zy, wy;
+    float xz, yz, zz, wz;
+    float tx, ty, tz, tw;
+    u32 m_pRwMat;
+    bool m_owner;
+};
+CHECKSIZE(CMatrixSerialize, 0x48, 0x48);
+
 DECL_CLASS(CMatrix)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CMatrix, _ZN7CMatrixC2EP11RwMatrixTagb, RwMatrix* matrix, bool temporary)
+    DECL_CTORCALL_ARG_TAIL(matrix, temporary)
+    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCMatrix1, _ZN7CMatrixC2ERK16CMatrixSerialize, void, CMatrix* self, CMatrixSerialize const& matrix);
+    CMatrix(CMatrixSerialize const& matrix) { FuncProxy_ctorCMatrix1(this, matrix); }
+    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCMatrix2, _ZN7CMatrixC2ERKS_, void, CMatrix* self, CMatrix const& matrix);
+    CMatrix(CMatrix const& matrix) { FuncProxy_ctorCMatrix2(this, matrix); }
+    DECL_DTORCALL(CMatrix, _ZN7CMatrixD2Ev);
+
     // Member functions
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN7CMatrixaSERKS_, CMatrix&, const CMatrix &matrix)
+    DECL_THISCALL_TAIL(Assign, matrix)
+
+    DECL_THISCALL_NAMED_HEAD(Assign1, operator=, _ZN7CMatrixaSERK16CMatrixSerialize, CMatrix&, const CMatrixSerialize &matrix)
+    DECL_THISCALL_TAIL(Assign1, matrix)
+
+    DECL_THISCALL_NAMED_HEAD(Add, operator+=, _ZN7CMatrixpLERKS_, CMatrix&, const CMatrix &matrix)
+    DECL_THISCALL_TAIL(Add, matrix)
+
+    DECL_THISCALL_NAMED_HEAD(SetRotate1, SetRotate, _ZN7CMatrix9SetRotateERK11CQuaternion, void, CQuaternion const& quat)
+    DECL_THISCALL_TAIL(SetRotate1, quat)
     DECL_THISCALL_SIMPLE(Update, _ZN7CMatrix6UpdateEv, void);
     DECL_THISCALL_SIMPLE(UpdateRW, _ZNK7CMatrix8UpdateRWEv, void);
     DECL_THISCALL_SIMPLE(Detach, _ZN7CMatrix6DetachEv, void);
@@ -14,7 +47,7 @@ DECL_CLASS(CMatrix)
     DECL_THISCALL_SIMPLE(Reorthogonalise, _ZN7CMatrix15ReorthogonaliseEv, void);
     DECL_THISCALL_SIMPLE(CheckIntegrity, _ZN7CMatrix14CheckIntegrityEv, void);
 
-    DECL_THISCALL_HEAD(ConvertToEulerAngles, _ZN7CMatrix20ConvertToEulerAnglesERfS0_S0_i, void, float *x, float *y, float *z, i32 order)
+    DECL_THISCALL_HEAD(ConvertToEulerAngles, _ZN7CMatrix20ConvertToEulerAnglesERfS0_S0_i, void, float &x, float &y, float &z, i32 order)
     DECL_THISCALL_TAIL(ConvertToEulerAngles, x, y, z, order)
 
     DECL_THISCALL_HEAD(ConvertFromEulerAngles, _ZN7CMatrix22ConvertFromEulerAnglesEfffi, void, float x, float y, float z, i32 order)

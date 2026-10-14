@@ -6,6 +6,15 @@
 #define DIRNAMELENGTH 128
 
 DECL_CLASS(CFileMgr)
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(InitCdSystem, _ZN8CFileMgr12InitCdSystemEv, void);
+    DECL_FASTCALL_SIMPLE(InitCd, _ZN8CFileMgr6InitCdEv, void);
+    DECL_FASTCALL_SIMPLE(GetCdError, _ZN8CFileMgr10GetCdErrorEv, i32);
+    DECL_FASTCALL_SIMPLE(GetCdErrorString, _ZN8CFileMgr16GetCdErrorStringEi, char const*, i32 arg1);
+    DECL_FASTCALL_SIMPLE(GetCdFile, _ZN8CFileMgr9GetCdFileEPKcRjS2_, bool, char const* pchar1, u32& arg2, u32& arg3);
+    DECL_FASTCALL_SIMPLE(ReadCd, _ZN8CFileMgr6ReadCdEjPcj, i32, u32 arg1, char* pchar2, u32 arg3);
+    DECL_FASTCALL_SIMPLE(SyncCd, _ZN8CFileMgr6SyncCdEv, bool);
+
     // Functions
     DECL_FASTCALL_SIMPLE(Initialise, _ZN8CFileMgr10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(ChangeDir, _ZN8CFileMgr9ChangeDirEPKc, void, const char *pDirName);

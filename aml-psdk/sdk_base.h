@@ -42,7 +42,7 @@ inline Type GetMainLibrarySymbol(const char* sym)
 }
 
 template<typename Ret = void, typename... Args>
-inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
+inline Ret CallFnVariadic(uintptr_t address, Args... args)
 {
     using FuncPtr = Ret(*)(Args...);
     FuncPtr func = (FuncPtr)(address);
@@ -92,18 +92,14 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
         const _type& operator/=(const C& v) { return Set( Get() / (const _type)v ); } \
         template<class C> \
         const _type& operator*=(const C& v) { return Set( Get() * (const _type)v ); } \
-        template<class C> \
-        const _type& operator++(const C& v) { return Set( Get() + (const _type)1 ); } \
-        template<class C> \
-        const _type& operator--(const C& v) { return Set( Get() - (const _type)1 ); } \
-        const bool operator!() { return (Get() != (const _type)0); } \
-        template<class C> \
+        const _type& operator++() { return Set( Get() + (const _type)1 ); } \
+        const _type& operator--() { return Set( Get() - (const _type)1 ); } \
+        const bool operator!() { return (Get() == (const _type)0); } \
         _type operator++(int unusedVar) { \
             _type tVal = Get(); \
             Set( Get() + (const _type)1 ); \
             return tVal; \
         } \
-        template<class C> \
         _type operator--(int unusedVar) { \
             _type tVal = Get(); \
             Set( Get() - (const _type)1 ); \
@@ -275,7 +271,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
 
 #define DECL_VALUE_PLT_CHAR(_name, _addr) \
     DECL_VALUE_HEAD(char*, _name) \
-        DECL_VALUE_PLT_BASE(char*, _name, _addr) \
+        DECL_VALUE_PLTPTR_BASE(char*, _name, _addr) \
         DECL_VALUE_RETURN_BASE(char*) \
         DECL_VALUE_RETURN_BASE(const char*) \
         DECL_VALUE_RETURN_BASE(uintptr_t) \
@@ -283,7 +279,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args&&... args)
 
 #define DECL_VALUE_PLT_CHAR_GLOBAL(_name, _addr) \
     DECL_VALUE_HEAD(char*, _name) \
-        DECL_VALUE_PLT_BASE(char*, _name, _addr) \
+        DECL_VALUE_PLTPTR_BASE(char*, _name, _addr) \
         DECL_VALUE_RETURN_BASE(char*) \
         DECL_VALUE_RETURN_BASE(const char*) \
         DECL_VALUE_RETURN_BASE(uintptr_t) \

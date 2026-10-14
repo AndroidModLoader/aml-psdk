@@ -4,6 +4,7 @@
 #include "Vehicle.h"
 
 struct tBikeHandlingData;
+struct CAnimBlendAssociation;
 
 enum eBikeNodes
 {
@@ -45,6 +46,34 @@ DECL_CLASS_BASED(CBike, CVehicle)
     // Virtual functions
     virtual bool ProcessAI(unsigned int &);
     
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(ProcessRiderAnims, _ZN5CBike17ProcessRiderAnimsEP4CPedP8CVehicleP13CRideAnimDataP17tBikeHandlingDatas, void, CPed* pPed, CVehicle* pVehicle, CRideAnimData* pRideData, tBikeHandlingData* pBikeHandData, i16 nFlags);
+    DECL_FASTCALL_SIMPLE(DamageKnockOffRider, _ZN5CBike19DamageKnockOffRiderEP8CVehicleftP7CEntityR7CVectorS5_, bool, CVehicle* arg0, float arg1, u16 arg2, CEntity* arg3, CVector& arg4, CVector& arg5);
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(GetAllWheelsOffGround, _ZN5CBike21GetAllWheelsOffGroundEv, u8);
+    DECL_THISCALL_SIMPLE(ReduceHornCounter, _ZN5CBike17ReduceHornCounterEv, void);
+    DECL_THISCALL_SIMPLE(PlayHornIfNecessary, _ZN5CBike19PlayHornIfNecessaryEv, void);
+    DECL_THISCALL_SIMPLE(ProcessBuoyancy, _ZN5CBike15ProcessBuoyancyEv, void);
+    DECL_THISCALL_SIMPLE(ResetSuspension, _ZN5CBike15ResetSuspensionEv, void);
+    DECL_THISCALL_HEAD(DoSoftGroundResistance, _ZN5CBike22DoSoftGroundResistanceERj, void, u32& arg0)
+    DECL_THISCALL_TAIL(DoSoftGroundResistance, arg0)
+    DECL_THISCALL_HEAD(FixHandsToBars, _ZN5CBike14FixHandsToBarsEP4CPed, void, CPed* rider)
+    DECL_THISCALL_TAIL(FixHandsToBars, rider)
+    DECL_THISCALL_SIMPLE(CalculateLeanMatrix, _ZN5CBike19CalculateLeanMatrixEv, void);
+    DECL_THISCALL_HEAD(KnockOffRider, _ZN5CBike13KnockOffRiderE11eWeaponTypehP4CPedb, CPed*, eWeaponType arg0, u8 arg1, CPed* arg2, bool arg3)
+    DECL_THISCALL_TAIL(KnockOffRider, arg0, arg1, arg2, arg3)
+    DECL_THISCALL_HEAD(SetRemoveAnimFlags, _ZN5CBike18SetRemoveAnimFlagsEP4CPed, void, CPed* ped)
+    DECL_THISCALL_TAIL(SetRemoveAnimFlags, ped)
+    DECL_THISCALL_SIMPLE(PlaceOnRoadProperly, _ZN5CBike19PlaceOnRoadProperlyEv, void);
+    DECL_THISCALL_HEAD(GetCorrectedWorldDoorPosition, _ZN5CBike29GetCorrectedWorldDoorPositionER7CVectorS0_S0_, void, CVector& out, CVector arg1, CVector arg2)
+    DECL_THISCALL_TAIL(GetCorrectedWorldDoorPosition, out, arg1, arg2)
+    DECL_THISCALL_SIMPLE(SetupModelNodes, _ZN5CBike15SetupModelNodesEv, void);
+    DECL_THISCALL_SIMPLE(DebugCode, _ZN5CBike9DebugCodeEv, void);
+    DECL_THISCALL_HEAD(dmgDrawCarCollidingParticles, _ZN5CBike28dmgDrawCarCollidingParticlesERK7CVectorf11eWeaponType, void, CVector const& position, float power, eWeaponType weaponType)
+    DECL_THISCALL_TAIL(dmgDrawCarCollidingParticles, position, power, weaponType)
+
     // Member values
     RwFrame       *m_aBikeNodes[BIKE_NUM_NODES];
     bool           m_bLeanMatrixCalculated;
@@ -115,6 +144,15 @@ DECL_CLASS_BASED(CBmx, CBike)
     DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
     DECL_DTORCALL(CBmx, _ZN4CBmxD2Ev);
     
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(LaunchBunnyHopCB, _ZN4CBmx16LaunchBunnyHopCBEP21CAnimBlendAssociationPv, void, CAnimBlendAssociation* blendAssoc, void* data);
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(ProcessBunnyHop, _ZN4CBmx15ProcessBunnyHopEv, void);
+    DECL_THISCALL_HEAD(GetFrameOffset, _ZN4CBmx14GetFrameOffsetERfS0_, void, float& arg0, float& arg1)
+    DECL_THISCALL_TAIL(GetFrameOffset, arg0, arg1)
+
     // Member values
     float m_fBunnyHopCharge;
     float m_fPedallingCharge;

@@ -8,6 +8,10 @@
 struct CPlayerPed;
 struct CVehicle;
 struct RwTexture;
+struct CObject;
+struct CPtrList;
+struct CEntity;
+struct CPed;
 
 enum ePlayerState
 {
@@ -19,7 +23,30 @@ enum ePlayerState
 };
 
 DECL_CLASS(CPlayerInfo)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CPlayerInfo, _ZN11CPlayerInfoC2Ev);
+
     // Member functions
+    DECL_THISCALL_HEAD(FindClosestCarSectorList, _ZN11CPlayerInfo24FindClosestCarSectorListER8CPtrListP4CPedffffPfPP8CVehicle, void, CPtrList& arg1, CPed* pCPed2, float arg3, float arg4, float arg5, float arg6, float* pfloat7, CVehicle** pCVehicle8)
+    DECL_THISCALL_TAIL(FindClosestCarSectorList, arg1, pCPed2, arg3, arg4, arg5, arg6, pfloat7, pCVehicle8)
+    DECL_THISCALL_HEAD(EvaluateCarPosition, _ZN11CPlayerInfo19EvaluateCarPositionEP7CEntityP4CPedfPfPP8CVehicle, void, CEntity* pCEntity1, CPed* pCPed2, float arg3, float* pfloat4, CVehicle** pCVehicle5)
+    DECL_THISCALL_TAIL(EvaluateCarPosition, pCEntity1, pCPed2, arg3, pfloat4, pCVehicle5)
+    DECL_THISCALL_HEAD(FindObjectToSteal, _ZN11CPlayerInfo17FindObjectToStealEP4CPed, CObject*, CPed* pCPed1)
+    DECL_THISCALL_TAIL(FindObjectToSteal, pCPed1)
+    DECL_THISCALL_HEAD(CancelPlayerEnteringCars, _ZN11CPlayerInfo24CancelPlayerEnteringCarsEP8CVehicle, void, CVehicle* pCVehicle1)
+    DECL_THISCALL_TAIL(CancelPlayerEnteringCars, pCVehicle1)
+    DECL_THISCALL_HEAD(MakePlayerSafe, _ZN11CPlayerInfo14MakePlayerSafeEbf, void, bool safe, float radius)
+    DECL_THISCALL_TAIL(MakePlayerSafe, safe, radius)
+    DECL_THISCALL_HEAD(BlowUpRCBuggy, _ZN11CPlayerInfo13BlowUpRCBuggyEb, void, bool arg1)
+    DECL_THISCALL_TAIL(BlowUpRCBuggy, arg1)
+    DECL_THISCALL_HEAD(SetPlayerSkin, _ZN11CPlayerInfo13SetPlayerSkinEPKc, void, char const* pchar1)
+    DECL_THISCALL_TAIL(SetPlayerSkin, pchar1)
+    DECL_THISCALL_HEAD(AddHealth, _ZN11CPlayerInfo9AddHealthEi, void, i32 arg1)
+    DECL_THISCALL_TAIL(AddHealth, arg1)
+    DECL_THISCALL_HEAD(SetLastTargetVehicle, _ZN11CPlayerInfo20SetLastTargetVehicleEP8CVehicle, void, CVehicle* pCVehicle1)
+    DECL_THISCALL_TAIL(SetLastTargetVehicle, pCVehicle1)
+    DECL_THISCALL_HEAD(StreamParachuteWeapon, _ZN11CPlayerInfo21StreamParachuteWeaponEb, void, bool arg1)
+    DECL_THISCALL_TAIL(StreamParachuteWeapon, arg1)
     DECL_THISCALL_SIMPLE(Clear, _ZN11CPlayerInfo5ClearEv, void);
     DECL_THISCALL_SIMPLE(WorkOutEnergyFromHunger, _ZN11CPlayerInfo23WorkOutEnergyFromHungerEv, void);
     DECL_THISCALL_SIMPLE(GivePlayerParachute, _ZN11CPlayerInfo19GivePlayerParachuteEv, void);

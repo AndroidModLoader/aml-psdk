@@ -31,6 +31,10 @@ enum eFxSystemPlayStatus : u8
 typedef void (*particleCB)(Particle_c *, int, void **);
 
 DECL_CLASS_BASED(FxSystem_c, ListItem_c)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(FxSystem_c, _ZN10FxSystem_cC2Ev);
+    DECL_DTORCALL(FxSystem_c, _ZN10FxSystem_cD2Ev);
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(UpdateBoundingBoxCB, _ZN10FxSystem_c19UpdateBoundingBoxCBEP10Particle_ciPPv, void, Particle_c *prtPtr, i32 type, void **userPtr);
 
@@ -97,7 +101,7 @@ DECL_CLASS_BASED(FxSystem_c, ListItem_c)
     DECL_THISCALL_HEAD(SetLocalParticles, _ZN10FxSystem_c17SetLocalParticlesEh, void, u8 on)
     DECL_THISCALL_TAIL(SetLocalParticles, on)
     
-    DECL_THISCALL_HEAD(ForAllParticles, _ZN10FxSystem_c15ForAllParticlesEPFvP10Particle_ciPPvES2_, void, particleCB cback, void *userPtr)
+    DECL_THISCALL_HEAD(ForAllParticles, _ZN10FxSystem_c15ForAllParticlesEPFvP10Particle_ciPPvES2_, i32, particleCB cback, void *userPtr)
     DECL_THISCALL_TAIL(ForAllParticles, cback, userPtr)
     
     DECL_THISCALL_HEAD(GetBoundingBox, _ZN10FxSystem_c14GetBoundingBoxEP7FxBox_c, void, FxBox_c *bBox)
@@ -109,7 +113,7 @@ DECL_CLASS_BASED(FxSystem_c, ListItem_c)
     DECL_THISCALL_HEAD(SetBoundingSphere, _ZN10FxSystem_c17SetBoundingSphereEP10FxSphere_c, void, FxSphere_c *bSphere)
     DECL_THISCALL_TAIL(SetBoundingSphere, bSphere)
     
-    DECL_THISCALL_HEAD(SetZTestEnable, _ZN10FxSystem_c14SetZTestEnableEh, u8, u8 on)
+    DECL_THISCALL_HEAD(SetZTestEnable, _ZN10FxSystem_c14SetZTestEnableEh, void, u8 on)
     DECL_THISCALL_TAIL(SetZTestEnable, on)
     
     DECL_THISCALL_HEAD(SetMustCreatePrts, _ZN10FxSystem_c17SetMustCreatePrtsEh, void, u8 on)

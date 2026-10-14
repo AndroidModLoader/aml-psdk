@@ -1,21 +1,21 @@
 #ifndef __AML_PSDK_BASETYPES_H
 #define __AML_PSDK_BASETYPES_H
 
-#define SQ(_v) (_v * _v)
+#define SQ(_v) ((_v) * (_v))
 #define CLASS_OFFSET(_cls, _var) (intptr_t)(&(((_cls*)(NULL))->_var))
 #define VA_ARGS(...) , ##__VA_ARGS__
 
 template<typename A1>
 A1 std_min(A1 val, A1 minval)
 {
-    if(val < minval) return minval;
+    if(val > minval) return minval;
     return val;
 }
 
 template<typename A1>
 A1 std_max(A1 val, A1 maxval)
 {
-    if(val > maxval) return maxval;
+    if(val < maxval) return maxval;
     return val;
 }
 
