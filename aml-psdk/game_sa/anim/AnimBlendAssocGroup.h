@@ -2,6 +2,8 @@
 #define __AML_PSDK_SAANIMBLENDASSOCGROUP_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include "AnimBlock.h"
+#include "AnimBlendAssociation.h"
 
 struct CAnimBlock;
 struct CAnimBlendStaticAssociation;

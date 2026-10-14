@@ -35,6 +35,10 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/entity/Object.h>
 #include <aml-psdk/game_sa/other/Widgets.h>
 #include <aml-psdk/game_sa/engine/RunningScript.h>
+#include <aml-psdk/game_sa/engine/StreamedScripts.h>
+#include <aml-psdk/game_sa/engine/ScriptResourceManager.h>
+#include <aml-psdk/game_sa/engine/MissionCleanup.h>
+#include <aml-psdk/game_sa/engine/TheScripts.h>
 #include <aml-psdk/game_sa/audio/AudioEngine.h>
 #include <aml-psdk/game_sa/engine/Draw.h>
 #include <aml-psdk/game_sa/engine/FileMgr.h>
@@ -140,6 +144,12 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/enum/AnimGroup.h>
 
 #include <aml-psdk/game_sa/anim/AnimBlendAssocGroup.h>
+#include <aml-psdk/game_sa/anim/AnimBlock.h>
+#include <aml-psdk/game_sa/anim/AnimBlendSequence.h>
+#include <aml-psdk/game_sa/anim/AnimBlendHierarchy.h>
+#include <aml-psdk/game_sa/anim/AnimBlendNode.h>
+#include <aml-psdk/game_sa/anim/AnimBlendStaticAssociation.h>
+#include <aml-psdk/game_sa/anim/AnimBlendAssociation.h>
 #include <aml-psdk/game_sa/anim/AnimBlendClumpData.h>
 #include <aml-psdk/game_sa/base/References.h>
 #include <aml-psdk/game_sa/other/BulletInfo.h>
