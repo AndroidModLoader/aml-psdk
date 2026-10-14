@@ -8,6 +8,35 @@
 struct CObject;
 struct CEntity;
 struct CDirectory;
+struct FxSystem_c;
+
+struct CutsceneRemove
+{
+    float m_fX;
+    float m_fY;
+    float m_fZ;
+    char m_cObjectName[32];
+};
+CHECKSIZE(CutsceneRemove, 0x2C, 0x2C);
+
+struct CutscenePEffect
+{
+    char m_cEffectName[32];
+    FxSystem_c *mp_fxSystem;
+    i32 m_iStartTime;
+    i32 m_iDuration;
+    i32 m_iObjectAttach;
+    char m_cItemAttach[32];
+    float m_fPosX;
+    float m_fPosY;
+    float m_fPosZ;
+    float m_fDirX;
+    float m_fDirY;
+    float m_fDirZ;
+    bool m_bPlaying;
+    bool m_bPlayed;
+};
+CHECKSIZE(CutscenePEffect, 0x6C, 0x70);
 
 DECL_CLASS(CCutsceneMgr)
     // STATIC functions
@@ -82,8 +111,8 @@ DECL_CLASS(CCutsceneMgr)
     DECL_VALUE_PLT_I32(ms_numAttachObjectToBones, BYBIT(0x677F0C, 0x84DE38));
     DECL_OBJECT_ARRAY_PLT(CEntity*, ms_pHiddenEntities, BYBIT(0x6763C4, 0x84A7E0));
     DECL_VALUE_PLT_I32(ms_iNumHiddenEntities, BYBIT(0x6782C0, 0x84E598));
-    //DECL_OBJECT_ARRAY_PLT(CutsceneRemove, ms_crToHideItems, BYBIT(0x, 0x));
-    //DECL_OBJECT_ARRAY_PLT(CutscenePEffect, ms_pParticleEffects, BYBIT(0x, 0x));
+    DECL_OBJECT_ARRAY_PLT(CutsceneRemove, ms_crToHideItems, BYBIT(0x678C64, 0x84F8F0));
+    DECL_OBJECT_ARRAY_PLT(CutscenePEffect, ms_pParticleEffects, BYBIT(0x676190, 0x84A380));
     DECL_VALUE_PLT_I32(ms_iNumParticleEffects, BYBIT(0x677940, 0x84D2A8));
     DECL_VALUE_PLT_I32(m_PrevExtraColour, BYBIT(0x6774AC, 0x84C990));
     DECL_VALUE_PLT_BOOL(m_PrevExtraColourOn, BYBIT(0x678988, 0x84F330));

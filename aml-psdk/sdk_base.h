@@ -139,6 +139,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
         _type* operator->() { return &Get(); }
 
 #define DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
+        _type* operator->() { return Get(); } \
         _type& operator[](int i) { return Get()[i]; }
 
 // Values
@@ -295,7 +296,6 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 #define DECL_OBJECT_ARRAY_PLT(_type, _name, _addr) \
     DECL_VALUE_HEAD(_type*, _name) \
         DECL_VALUE_PLTPTR_BASE(_type*, _name, _addr) \
-        DECL_VALUE_OBJECT_BASE(_type*) \
         DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type*&) \
     DECL_VALUE_TAIL(_type*, _name)
@@ -303,7 +303,6 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 #define DECL_OBJECT_ARRAY_PLT_GLOBAL(_type, _name, _addr) \
     DECL_VALUE_HEAD(_type*, _name) \
         DECL_VALUE_PLTPTR_BASE(_type*, _name, _addr) \
-        DECL_VALUE_OBJECT_BASE(_type*) \
         DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type*&) \
     DECL_VALUE_TAIL_GLOBAL(_type*, _name)
@@ -410,7 +409,6 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 #define DECL_OBJECT_ARRAY_SYM(_type, _name, _sym) \
     DECL_VALUE_HEAD(_type, _name) \
         DECL_VALUE_ARRAY_SYM_BASE(_type, _name, _sym) \
-        DECL_VALUE_OBJECT_BASE(_type*) \
         DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type*&) \
     DECL_VALUE_TAIL(_type*, _name)
@@ -418,7 +416,6 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 #define DECL_OBJECT_ARRAY_SYM_GLOBAL(_type, _name, _sym) \
     DECL_VALUE_HEAD(_type, _name) \
         DECL_VALUE_ARRAY_SYM_BASE(_type, _name, _sym) \
-        DECL_VALUE_OBJECT_BASE(_type*) \
         DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type*&) \
     DECL_VALUE_TAIL_GLOBAL(_type*, _name)
@@ -430,7 +427,6 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
             if(!m_Pointer) m_Pointer = (_type*)(GetMainLibraryAddress() + _addr); \
             return m_Pointer; \
         } \
-        DECL_VALUE_OBJECT_BASE(_type*) \
         DECL_VALUE_OBJECT_ARRAY_BASE(_type) \
         DECL_VALUE_RETURN_BASE(_type*&) \
     DECL_VALUE_TAIL_GLOBAL(_type*, _name)

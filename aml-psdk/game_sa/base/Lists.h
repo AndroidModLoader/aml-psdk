@@ -2,6 +2,8 @@
 #define __AML_PSDK_GTALISTS_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include <aml-psdk/gta_base/Vector.h>
+#include <aml-psdk/game_sa/anim/AnimBlock.h>
 
 struct CPtrNode
 {
@@ -9,14 +11,23 @@ struct CPtrNode
     CPtrNode *m_pNext;
 };
 
-struct CPtrNodeSingleLink : CPtrNode
-{
-};
+DECL_CLASS_BASED(CPtrNodeSingleLink, CPtrNode)
+    // Construct/Deconstruct functions
+    CPtrNodeSingleLink(){}
+    explicit CPtrNodeSingleLink(void* item) { m_pVoid = item; }
+    DECL_NEWCALL(CPtrNodeSingleLink, BYBIT(_ZN18CPtrNodeSingleLinknwEj, _ZN18CPtrNodeSingleLinknwEm));
+    DECL_DLCALL(CPtrNodeSingleLink, _ZN18CPtrNodeSingleLinkdlEPv);
+DECL_CLASS_END()
 
-struct CPtrNodeDoubleLink : CPtrNode
-{
+DECL_CLASS_BASED(CPtrNodeDoubleLink, CPtrNode)
+    // Construct/Deconstruct functions
+    CPtrNodeDoubleLink(){}
+    explicit CPtrNodeDoubleLink(void* item) { m_pVoid = item; }
+    DECL_NEWCALL(CPtrNodeDoubleLink, BYBIT(_ZN18CPtrNodeDoubleLinknwEj, _ZN18CPtrNodeDoubleLinknwEm));
+    DECL_DLCALL(CPtrNodeDoubleLink, _ZN18CPtrNodeDoubleLinkdlEPv);
+
     CPtrNodeDoubleLink *m_pPrevious;
-};
+DECL_CLASS_END()
 
 DECL_CLASS(CPtrList)
     // Member functions
@@ -58,8 +69,11 @@ template <class T, int N> struct CStore
     T m_objects[N];
 };
 
-struct CEntryInfoNode
-{
+DECL_CLASS(CEntryInfoNode)
+    // Construct/Deconstruct functions
+    DECL_NEWCALL(CEntryInfoNode, BYBIT(_ZN14CEntryInfoNodenwEj, _ZN14CEntryInfoNodenwEm));
+    DECL_DLCALL(CEntryInfoNode, _ZN14CEntryInfoNodedlEPv);
+
     CPtrListDoubleLink *m_pList;
     CPtrNodeDoubleLink *m_pNode;
     union
@@ -69,7 +83,7 @@ struct CEntryInfoNode
     };
     CEntryInfoNode *m_pPrevious;
     CEntryInfoNode *m_pNext;
-};
+DECL_CLASS_END()
 
 DECL_CLASS(CEntryInfoList)
     // Member functions
@@ -120,11 +134,43 @@ struct CCarPathLinkAddress
     short m_nAreaId : 6;
 };
 
-struct CNodeRoute
-{
+DECL_CLASS(CNodeRoute)
+    // Construct/Deconstruct functions
+    CNodeRoute() : m_iRouteSize(0) {}
+    DECL_NEWCALL(CNodeRoute, BYBIT(_ZN10CNodeRoutenwEj, _ZN10CNodeRoutenwEm));
+    DECL_DLCALL(CNodeRoute, _ZN10CNodeRoutedlEPv);
+
     int m_iRouteSize;
     CNodeAddress m_routePoints[8];
-};
+DECL_CLASS_END()
+
+DECL_CLASS(CPointRoute)
+    // Construct/Deconstruct functions
+    CPointRoute() : m_iRouteSize(0) {}
+    DECL_NEWCALL(CPointRoute, BYBIT(_ZN11CPointRoutenwEj, _ZN11CPointRoutenwEm));
+    DECL_DLCALL(CPointRoute, _ZN11CPointRoutedlEPv);
+
+    int m_iRouteSize;
+    CVector m_routePoints[8];
+DECL_CLASS_END()
+CHECKSIZE(CPointRoute, 0x64, 0x64);
+
+DECL_CLASS(CPatrolRoute)
+    // Construct/Deconstruct functions
+    CPatrolRoute() : m_iRouteSize(0) {}
+    DECL_DTORCALL(CPatrolRoute, _ZN12CPatrolRouteD2Ev);
+    DECL_NEWCALL(CPatrolRoute, BYBIT(_ZN12CPatrolRoutenwEj, _ZN12CPatrolRoutenwEm));
+    DECL_DLCALL(CPatrolRoute, _ZN12CPatrolRoutedlEPv);
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(Reverse, _ZN12CPatrolRoute7ReverseEv, void);
+
+    // Member values
+    int m_iRouteSize;
+    CAnimNameDescriptor m_anims[8];
+    CVector m_routePoints[8];
+DECL_CLASS_END()
+CHECKSIZE(CPatrolRoute, 0x1A4, 0x1A4);
 
 // Doubly-linked list node. The game preallocates a fixed pool of these and
 // moves them between the used list and the free list, which is why the list

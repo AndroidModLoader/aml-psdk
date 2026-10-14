@@ -150,7 +150,7 @@ struct CPool
 
         m_byteMap[m_nFirstFree].bEmpty = false;
         ++m_byteMap[m_nFirstFree].nId;
-        return &m_pObjects[m_nFirstFree];
+        return reinterpret_cast<A*>(&m_pObjects[m_nFirstFree]);
     }
 
     inline void CreateAtRef(int nRef)
@@ -169,7 +169,7 @@ struct CPool
     inline A *New(int nRef)
     {
         if(nRef < 0 || (nRef >> 8) >= m_nSize || !m_pObjects || !m_byteMap) return NULL;
-        A *result = &m_pObjects[nRef >> 8];
+        A *result = reinterpret_cast<A*>(&m_pObjects[nRef >> 8]);
         CreateAtRef(nRef);
         return result;
     }
@@ -243,6 +243,8 @@ typedef CPool<CPtrNodeDoubleLink> CPtrNodeDoubleLinkPool;
 typedef CPool<CEntryInfoNode> CEntryInfoNodePool;
 typedef CPool<CEvent, char[BYBIT(68, 88)]> CEventPool;
 typedef CPool<CNodeRoute> CNodeRoutePool;
+typedef CPool<CPointRoute> CPointRoutePool;
+typedef CPool<CPatrolRoute> CPatrolRoutePool;
 
 DECL_CLASS(CPools)
     // STATIC functions
@@ -272,6 +274,8 @@ DECL_CLASS(CPools)
     DECL_OBJECT_PLT(CEntryInfoNodePool*, ms_pEntryInfoNodePool, BYBIT(0x679C1C, 0x851850));
     DECL_OBJECT_PLT(CEventPool*, ms_pEventPool, BYBIT(0x6761CC, 0x84A3F8));
     DECL_OBJECT_PLT(CNodeRoutePool*, ms_pNodeRoutePool, BYBIT(0x676CC0, 0x84B9C8));
+    DECL_OBJECT_PLT(CPointRoutePool*, ms_pPointRoutePool, BYBIT(0x676EB0, 0x84BDA0));
+    DECL_OBJECT_PLT(CPatrolRoutePool*, ms_pPatrolRoutePool, BYBIT(0x679628, 0x850C60));
 
  // union
 
@@ -302,5 +306,7 @@ DECL_CLASS_END()
 #define ms_pEntryInfoNodePool ms_pEntryInfoNodePool()
 #define ms_pEventPool ms_pEventPool()
 #define ms_pNodeRoutePool ms_pNodeRoutePool()
+#define ms_pPointRoutePool ms_pPointRoutePool()
+#define ms_pPatrolRoutePool ms_pPatrolRoutePool()
 
 #endif // __AML_PSDK_SAPOOLS_H

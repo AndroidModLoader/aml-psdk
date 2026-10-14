@@ -22,4 +22,11 @@ struct CAnimBlock
 };
 CHECKSIZE(CAnimBlock, 0x20, 0x20);
 
+struct CAnimNameDescriptor
+{
+    char m_animName[24];
+    char m_animGroupName[16];
+};
+CHECKSIZE(CAnimNameDescriptor, 0x28, 0x28);
+
 #endif // __AML_PSDK_SAANIMBLOCK_H

@@ -63,6 +63,7 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     DECL_FASTCALL_SIMPLE(FindTextureCB, _ZN17CVehicleModelInfo13FindTextureCBEPKc, RwTexture*, char const* name);
 
     // STATIC values
+    DECL_OBJECT_ARRAY_PLT(CRGBA, ms_vehicleColourTable, BYBIT(0x677654, 0x84CCD8));
     DECL_OBJECT_PLT(RwTexture*, ms_pLightsTexture, BYBIT(0x679D00, 0x851A18));
     DECL_OBJECT_PLT(RwTexture*, ms_pLightsOnTexture, BYBIT(0x678214, 0x84E440));
     DECL_OBJECT_ARRAY_PLT(i16, ms_numWheelUpgrades, BYBIT(0x676E48, 0x84BCD0));
@@ -179,6 +180,7 @@ CHECKSIZE(CVehicleModelInfo, 0x3A8, 0x6B0);
 #define ms_pLightsTexture ms_pLightsTexture()
 #define ms_pLightsOnTexture ms_pLightsOnTexture()
 #define ms_numWheelUpgrades ms_numWheelUpgrades()
+#define ms_vehicleColourTable ms_vehicleColourTable()
 #define ms_upgradeWheels ms_upgradeWheels()
 #define ms_currentCol ms_currentCol()
 #define ms_pRemapTexture ms_pRemapTexture()

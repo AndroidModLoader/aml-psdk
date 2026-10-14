@@ -16,6 +16,7 @@ struct tFontData
     unsigned char m_spaceValue;
     unsigned char m_unpropValue;
 };
+CHECKSIZE(tFontData, 0xD2, 0xD2);
 
 enum eFontAlignment : unsigned char
 {
@@ -152,7 +153,7 @@ DECL_CLASS(CFont)
     DECL_OBJECT_PLT(CFontRenderState, RenderState, BYBIT(0x6792E8, 0x8505E8) );
     //DECL_VALUE_PLT_U8(Sprite, BYBIT(0x, 0x));
     //DECL_VALUE_PLT_U8(PS2Sprite, BYBIT(0x, 0x));
-    //DECL_VALUE_PLT_U8(Size, BYBIT(0x, 0x));
+    DECL_OBJECT_ARRAY_PLT(tFontData, Size, BYBIT(0x678234, 0x84E480));
     DECL_VALUE_PLT_U8(UsingJapaneseLanguage, BYBIT(0x677838, 0x84D098));
     DECL_VALUE_PLT_U8(UsingRussianLanguage, BYBIT(0x678730, 0x84EE88));
     DECL_VALUE_PLT_U8(UsingKoreanLanguage, BYBIT(0x679158, 0x8502D8));

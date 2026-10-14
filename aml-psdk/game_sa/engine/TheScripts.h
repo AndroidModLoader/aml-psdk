@@ -13,6 +13,93 @@ struct CEntity;
 struct CObject;
 struct CBuilding;
 struct FxSystem_c;
+struct CCheckpoint;
+
+struct tScriptSphere
+{
+    u8 bUsed;
+    u16 wUniqueID;
+    u32 nSphereID;
+    CVector vCoords;
+    float fRadius;
+};
+CHECKSIZE(tScriptSphere, 0x18, 0x18);
+
+struct tScriptCheckpoint
+{
+    u8 bUsed;
+    u16 wUniqueID;
+    CCheckpoint *m_pCheckpoint;
+};
+CHECKSIZE(tScriptCheckpoint, 0x08, 0x10);
+
+struct tScriptEffectSystem
+{
+    u8 bUsed;
+    u16 wUniqueID;
+    FxSystem_c *m_pFxSystem;
+};
+CHECKSIZE(tScriptEffectSystem, 0x08, 0x10);
+
+struct tScriptSearchlight
+{
+    u8 bUsed;
+    u8 bClipIfColliding;
+    u8 bRenderGroundLight;
+    u8 nSearchLightState;
+    u16 wUniqueID;
+    CVector position;
+    CVector target;
+    float targetRadius;
+    float baseRadius;
+    CVector pathCoord1;
+    CVector pathCoord2;
+    float pathSpeed;
+    CEntity *attachedEntity;
+    CEntity *followingEntity;
+    CObject *tower;
+    CObject *housing;
+    CObject *bulb;
+    CVector targetSpot;
+    CVector ellipseForward;
+    CVector ellipseSide;
+};
+CHECKSIZE(tScriptSearchlight, 0x7C, 0x98);
+
+struct tBuildingSwap
+{
+    CBuilding *m_pCBuilding;
+    i32 m_nNewModelIndex;
+    i32 m_nOldModelIndex;
+};
+CHECKSIZE(tBuildingSwap, 0x0C, 0x10);
+
+struct tInvisibilitySetting
+{
+    CEntity *m_pEntity;
+};
+CHECKSIZE(tInvisibilitySetting, 0x04, 0x08);
+
+struct tEntityWaitingForScriptBrain
+{
+    CEntity *m_pEntity;
+    i16 m_nScriptBrainIndex;
+};
+CHECKSIZE(tEntityWaitingForScriptBrain, 0x08, 0x10);
+
+struct tScriptConnectedLodObjects
+{
+    i32 m_nObject1ID;
+    i32 m_nObject2ID;
+};
+CHECKSIZE(tScriptConnectedLodObjects, 0x08, 0x08);
+
+struct tScriptAttachedAnimGroup
+{
+    i32 m_nModelID;
+    char m_IfpName[16];
+};
+CHECKSIZE(tScriptAttachedAnimGroup, 0x14, 0x14);
 
 DECL_CLASS(CTheScripts)
     // STATIC functions
@@ -100,6 +187,15 @@ DECL_CLASS(CTheScripts)
     DECL_FASTCALL_SIMPLE(GetActualScriptThingIndex, _ZN11CTheScripts25GetActualScriptThingIndexEih, i32, i32 index, u8 type);
 
     // STATIC values
+    DECL_OBJECT_ARRAY_PLT(tScriptSphere, ScriptSphereArray, BYBIT(0x6796E0, 0x850DD0));
+    DECL_OBJECT_ARRAY_PLT(tScriptCheckpoint, ScriptCheckpointArray, BYBIT(0x678750, 0x84EEC8));
+    DECL_OBJECT_ARRAY_PLT(tScriptEffectSystem, ScriptEffectSystemArray, BYBIT(0x679834, 0x851078));
+    DECL_OBJECT_ARRAY_PLT(tScriptSearchlight, ScriptSearchLightArray, BYBIT(0x6797B4, 0x850F70));
+    DECL_OBJECT_ARRAY_PLT(tBuildingSwap, BuildingSwapArray, BYBIT(0x678770, 0x84EF08));
+    DECL_OBJECT_ARRAY_PLT(tInvisibilitySetting, InvisibilitySettingArray, BYBIT(0x6796F8, 0x850E00));
+    DECL_OBJECT_ARRAY_PLT(tEntityWaitingForScriptBrain, EntitiesWaitingForScriptBrain, BYBIT(0x676C28, 0x84B898));
+    DECL_OBJECT_ARRAY_PLT(tScriptConnectedLodObjects, ScriptConnectLodsObjects, BYBIT(0x676F08, 0x84BE50));
+    DECL_OBJECT_ARRAY_PLT(tScriptAttachedAnimGroup, ScriptAttachedAnimGroups, BYBIT(0x679AD4, 0x8515C8));
     DECL_VALUE_PLT_U32(OnAMissionFlag, BYBIT(0x678D00, 0x84FA28));
     DECL_VALUE_PLT_U32(LastMissionPassedTime, BYBIT(0x677540, 0x84CAB8));
     DECL_VALUE_PLT_I32(LastRandomPedId, BYBIT(0x677EFC, 0x84DE18));
@@ -166,6 +262,15 @@ DECL_CLASS(CTheScripts)
 DECL_CLASS_END()
 
 #define ScriptsArray ScriptsArray()
+#define ScriptSphereArray ScriptSphereArray()
+#define ScriptCheckpointArray ScriptCheckpointArray()
+#define ScriptEffectSystemArray ScriptEffectSystemArray()
+#define ScriptSearchLightArray ScriptSearchLightArray()
+#define BuildingSwapArray BuildingSwapArray()
+#define InvisibilitySettingArray InvisibilitySettingArray()
+#define EntitiesWaitingForScriptBrain EntitiesWaitingForScriptBrain()
+#define ScriptConnectLodsObjects ScriptConnectLodsObjects()
+#define ScriptAttachedAnimGroups ScriptAttachedAnimGroups()
 #define pActiveScripts pActiveScripts()
 #define pIdleScripts pIdleScripts()
 #define ScriptSpace ScriptSpace()
