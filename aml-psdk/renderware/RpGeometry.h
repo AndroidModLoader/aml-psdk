@@ -54,6 +54,19 @@ enum RpGeometryLockMode : RwInt32
     rpGEOMETRYLOCKALL = 0xFFF,
 };
 
+enum RwTextureCoordinateIndex : RwInt32
+{
+    rwNARWTEXTURECOORDINATEINDEX = 0x0,
+    rwTEXTURECOORDINATEINDEX0 = 0x1,
+    rwTEXTURECOORDINATEINDEX1 = 0x2,
+    rwTEXTURECOORDINATEINDEX2 = 0x3,
+    rwTEXTURECOORDINATEINDEX3 = 0x4,
+    rwTEXTURECOORDINATEINDEX4 = 0x5,
+    rwTEXTURECOORDINATEINDEX5 = 0x6,
+    rwTEXTURECOORDINATEINDEX6 = 0x7,
+    rwTEXTURECOORDINATEINDEX7 = 0x8,
+};
+
 struct RpTriangle
 {
     RwUInt16            vertIndex[3];
@@ -168,5 +181,89 @@ DECL_FASTCALL_SIMPLE_GLO_PLT(RpGeometry2dEffectStreamRead, BYBIT(0x59CA3D, 0x6C0
 DECL_FASTCALL_SIMPLE_GLO_PLT(RpGeometry2dEffectStreamWrite, BYBIT(0x59CE91, 0x6C1348), RwStream*, RwStream* pStream, RwInt32 len, const void* pData, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO_PLT(RpGeometry2dEffectStreamGetSize, BYBIT(0x59CE93, 0x6C134C), RwInt32, const void* pData, RwInt32 offset, RwInt32 size);
 DECL_FASTCALL_SIMPLE_GLO(RpGeometryReplaceOldMaterialWithNewMaterial, _Z43RpGeometryReplaceOldMaterialWithNewMaterialP10RpGeometryP10RpMaterialS2_, u8, RpGeometry* pGeometry, RpMaterial* pOldMaterial, RpMaterial* pNewMaterial);
+
+DECL_FASTCALL_SIMPLE_GLO(RpMorphTargetCalcBoundingSphere, _Z31RpMorphTargetCalcBoundingSpherePK13RpMorphTargetP8RwSphere, RpMorphTarget const*, RpMorphTarget const* morphTarget, RwSphere* boundingSphere);
+
+inline RwInt32 RpGeometryGetNumMorphTargets(const RpGeometry* geometry)
+{
+    return geometry->numMorphTargets;
+}
+
+inline RwRGBA* RpGeometryGetPreLightColors(const RpGeometry* geometry)
+{
+    return geometry->preLitLum;
+}
+
+inline RwInt32 RpGeometryGetNumTexCoordSets(const RpGeometry* geometry)
+{
+    return geometry->numTexCoordSets;
+}
+
+inline RwInt32 RpGeometryGetNumVertices(const RpGeometry* geometry)
+{
+    return geometry->numVertices;
+}
+
+inline RpTriangle* RpGeometryGetTriangles(const RpGeometry* geometry)
+{
+    return geometry->triangles;
+}
+
+inline RwInt32 RpGeometryGetNumTriangles(const RpGeometry* geometry)
+{
+    return geometry->numTriangles;
+}
+
+inline RwInt32 RpGeometryGetNumMaterials(const RpGeometry* geometry)
+{
+    return geometry->matList.numMaterials;
+}
+
+inline RwUInt32 RpGeometryGetFlags(const RpGeometry* geometry)
+{
+    return geometry->flags;
+}
+
+inline RpMorphTarget* RpGeometryGetMorphTarget(const RpGeometry* geometry, RwInt32 index)
+{
+    return &geometry->morphTarget[index];
+}
+
+inline RwTexCoords* RpGeometryGetVertexTexCoords(const RpGeometry* geometry, RwTextureCoordinateIndex uvIndex)
+{
+    return geometry->texCoords[uvIndex - 1];
+}
+
+inline RpMaterial* RpGeometryGetMaterial(const RpGeometry* geometry, RwInt32 index)
+{
+    return geometry->matList.materials[index];
+}
+
+inline RpGeometry* RpGeometrySetFlags(RpGeometry* geometry, RwUInt32 flags)
+{
+    geometry->flags = flags;
+    return geometry;
+}
+
+inline RwV3d* RpMorphTargetGetVertices(const RpMorphTarget* morphTarget)
+{
+    return morphTarget->verts;
+}
+
+inline RwV3d* RpMorphTargetGetVertexNormals(const RpMorphTarget* morphTarget)
+{
+    return morphTarget->normals;
+}
+
+inline RwSphere* RpMorphTargetGetBoundingSphere(RpMorphTarget* morphTarget)
+{
+    return &morphTarget->boundingSphere;
+}
+
+inline RpMorphTarget* RpMorphTargetSetBoundingSphere(RpMorphTarget* morphTarget, const RwSphere* sphere)
+{
+    morphTarget->boundingSphere = *sphere;
+    return morphTarget;
+}
 
 #endif // __AML_PSDK_RPGEOMETRY_H

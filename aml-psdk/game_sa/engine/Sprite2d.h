@@ -13,6 +13,7 @@ struct RwIm2DVertex;
 
 DECL_CLASS(CSprite2d)
     // Construct/Deconstruct functions
+    DECL_CTORCALL_PROXY(CSprite2d, _ZN9CSprite2dC2Ev);
     CSprite2d() { m_pTexture = NULL; }
     DECL_DTORCALL(CSprite2d, _ZN9CSprite2dD2Ev);
 

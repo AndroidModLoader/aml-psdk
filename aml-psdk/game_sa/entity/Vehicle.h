@@ -242,9 +242,8 @@ DECL_CLASS_END()
 DECL_CLASS_BASED(CVehicle, CPhysical)
     // Construct/Deconstruct functions
     CVehicle(){}
-    DECL_CTORCALL_ARG_HEAD(CVehicle, _ZN8CVehicleC2Eh, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(createdBy)
-    DECL_DTORCALL(CVehicle, _ZN8CVehicleD2Ev);
+    DECL_CTORCALL_PROXY(CVehicle, _ZN8CVehicleC2Eh, u8 createdBy);
+    DECL_DTORCALL_PROXY(CVehicle, _ZN8CVehicleD2Ev);
     DECL_NEWCALL(CVehicle, BYBIT(_ZN8CVehiclenwEj, _ZN8CVehiclenwEm) );
     DECL_DLCALL(CVehicle, _ZN8CVehicledlEPv);
 

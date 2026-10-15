@@ -3,6 +3,17 @@
 
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
+#include <aml-psdk/renderware/RwMatrix.h>
+#include <aml-psdk/renderware/RwObject.h>
+
+struct RwCamera;
+struct RwRaster;
+struct CPed;
+struct RpLight;
+struct RpAtomic;
+struct RpClump;
+struct RwRGBA;
+struct RwRGBAReal;
 
 struct RwTexture;
 struct CRealTimeShadow;
@@ -10,6 +21,83 @@ struct CVehicle;
 struct CPhysical;
 struct CEntity;
 struct CPtrList;
+
+DECL_CLASS(CShadowCamera)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(CShadowCamera, _ZN13CShadowCameraD2Ev);
+    DECL_CTORCALL(CShadowCamera, _ZN13CShadowCameraC2Ev);
+    // Member functions
+    DECL_THISCALL_HEAD(Create, _ZN13CShadowCamera6CreateEi, RwCamera*, RwInt32 res)
+    DECL_THISCALL_TAIL(Create, res)
+    DECL_THISCALL_SIMPLE(Destroy, _ZN13CShadowCamera7DestroyEv, void);
+    DECL_THISCALL_SIMPLE(ReInitRasters, _ZN13CShadowCamera13ReInitRastersEv, void);
+    DECL_THISCALL_HEAD(SetFrustum, _ZN13CShadowCamera10SetFrustumEf, RwCamera*, RwReal objectRadius)
+    DECL_THISCALL_TAIL(SetFrustum, objectRadius)
+    DECL_THISCALL_HEAD(SetLight, _ZN13CShadowCamera8SetLightEP7RpLight, RwCamera*, RpLight* light)
+    DECL_THISCALL_TAIL(SetLight, light)
+    DECL_THISCALL_HEAD(SetCenter, _ZN13CShadowCamera9SetCenterEP5RwV3d, RwCamera*, RwV3d* center)
+    DECL_THISCALL_TAIL(SetCenter, center)
+    DECL_THISCALL_NAMED_HEAD(Update1, Update, _ZN13CShadowCamera6UpdateEP7RpClumpbP4CPed, RwCamera*, RpClump* arg1, bool arg2, CPed* arg3)
+    DECL_THISCALL_TAIL(Update1, arg1, arg2, arg3)
+    DECL_THISCALL_NAMED_HEAD(Update2, Update, _ZN13CShadowCamera6UpdateEP8RpAtomic, RwCamera*, RpAtomic* pAtomic)
+    DECL_THISCALL_TAIL(Update2, pAtomic)
+    DECL_THISCALL_HEAD(ShadowRasterRender, _ZN13CShadowCamera18ShadowRasterRenderEP5RwV2d, RwRaster*, RwV2d* _vx)
+    DECL_THISCALL_TAIL(ShadowRasterRender, _vx)
+    DECL_THISCALL_SIMPLE(GetRwRenderRaster, _ZN13CShadowCamera17GetRwRenderRasterEv, RwRaster*);
+    DECL_THISCALL_SIMPLE(GetRwRenderTexture, _ZN13CShadowCamera18GetRwRenderTextureEv, RwTexture*);
+    DECL_THISCALL_HEAD(RasterResample, _ZN13CShadowCamera14RasterResampleEP8RwRaster, RwRaster*, RwRaster* pSourceRaster)
+    DECL_THISCALL_TAIL(RasterResample, pSourceRaster)
+    DECL_THISCALL_HEAD(RasterBlur, _ZN13CShadowCamera10RasterBlurEP8RwRasteri, RwRaster*, RwRaster* pSourceRaster, int numPass)
+    DECL_THISCALL_TAIL(RasterBlur, pSourceRaster, numPass)
+    DECL_THISCALL_HEAD(RasterGradient, _ZN13CShadowCamera14RasterGradientEP8RwRaster, RwRaster*, RwRaster* pSourceRaster)
+    DECL_THISCALL_TAIL(RasterGradient, pSourceRaster)
+    DECL_THISCALL_SIMPLE(MakeGradientRaster, _ZN13CShadowCamera18MakeGradientRasterEv, RwRaster*);
+    DECL_THISCALL_HEAD(DrawOutlineBorder, _ZN13CShadowCamera17DrawOutlineBorderERK6RwRGBA, RwRaster*, RwRGBA const& color)
+    DECL_THISCALL_TAIL(DrawOutlineBorder, color)
+    DECL_THISCALL_SIMPLE(InvertRaster, _ZN13CShadowCamera12InvertRasterEv, void);
+    DECL_THISCALL_SIMPLE(ApplyAlphaMapToRaster, _ZN13CShadowCamera21ApplyAlphaMapToRasterEv, void);
+
+    // Member values
+    RwCamera* m_pShadowCamera;
+    RwTexture* m_pShadowTexture;
+DECL_CLASS_END()
+CHECKSIZE(CShadowCamera, 0x8, 0x10);
+
+DECL_CLASS(CRealTimeShadow)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CRealTimeShadow, _ZN15CRealTimeShadowC2Ev);
+    DECL_DTORCALL(CRealTimeShadow, _ZN15CRealTimeShadowD2Ev);
+
+    // Member functions
+    DECL_THISCALL_HEAD(Create, _ZN15CRealTimeShadow6CreateEibib, bool, int type, bool bResampleRaster, int NumBlurPass, bool bGradientDistDisappear)
+    DECL_THISCALL_TAIL(Create, type, bResampleRaster, NumBlurPass, bGradientDistDisappear)
+    DECL_THISCALL_HEAD(SetShadowedObject, _ZN15CRealTimeShadow17SetShadowedObjectEP9CPhysical, bool, CPhysical* pPhysical)
+    DECL_THISCALL_TAIL(SetShadowedObject, pPhysical)
+    DECL_THISCALL_SIMPLE(Destroy, _ZN15CRealTimeShadow7DestroyEv, void);
+    DECL_THISCALL_SIMPLE(Update, _ZN15CRealTimeShadow6UpdateEv, RwTexture*);
+    DECL_THISCALL_SIMPLE(GetShadowRwTexture, _ZN15CRealTimeShadow18GetShadowRwTextureEv, RwTexture*);
+    DECL_THISCALL_HEAD(Render, _ZN15CRealTimeShadow6RenderEif, void, i32 shadowNum, float ShadowStrength)
+    DECL_THISCALL_TAIL(Render, shadowNum, ShadowStrength)
+    DECL_THISCALL_HEAD(SetLightProperties, _ZN15CRealTimeShadow18SetLightPropertiesEffb, RwFrame*, float Azimuth, float Elevation, bool bUpdateCamera)
+    DECL_THISCALL_TAIL(SetLightProperties, Azimuth, Elevation, bUpdateCamera)
+    DECL_THISCALL_HEAD(DrawBorderAroundTexture, _ZN15CRealTimeShadow23DrawBorderAroundTextureERK6RwRGBA, void, RwRGBA const& borderColor)
+    DECL_THISCALL_TAIL(DrawBorderAroundTexture, borderColor)
+    DECL_THISCALL_SIMPLE(GetShadowCamera, _ZN15CRealTimeShadow15GetShadowCameraEv, CShadowCamera*);
+
+    // Member values
+    CPhysical* m_pPhysical;
+    u8 m_usedThisFrame;
+    i8 m_fadeVal;
+    CShadowCamera* m_ShadowCamera;
+    bool m_bAAResample;
+    unsigned int m_nNumBlurPass;
+    bool m_bGradientDistDisappear;
+    RwUInt32 m_rpObjectType;
+    RpLight* m_pDirectionalLight;
+    RwSphere m_ClumpBoundingSphere;
+    RwSphere m_ClumpWorldBoundingSphere;
+DECL_CLASS_END()
+CHECKSIZE(CRealTimeShadow, 0x40, 0x50);
 
 enum eShadowType
 {

@@ -105,8 +105,8 @@ enum eEventType
 
 DECL_CLASS_VTABLE(CEvent)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CEvent, _ZN6CEventC2Ev);
-    DECL_DTORCALL(CEvent, _ZN6CEventD2Ev);
+    DECL_CTORCALL_PROXY(CEvent, _ZN6CEventC2Ev);
+    DECL_DTORCALL_PROXY(CEvent, _ZN6CEventD2Ev);
     DECL_NEWCALL(CEvent, BYBIT(_ZN6CEventnwEj, _ZN6CEventnwEm) );
     DECL_DLCALL(CEvent, _ZN6CEventdlEPv);
 

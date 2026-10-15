@@ -4,6 +4,15 @@
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/game_sa/enum/WeaponType.h>
+#include <aml-psdk/game_sa/enum/Vehicles.h>
+#include <aml-psdk/game_sa/enum/CrimeType.h>
+
+struct tScannerSlot
+{
+    i16 BankID;
+    i16 SoundID;
+};
+CHECKSIZE(tScannerSlot, 0x4, 0x4);
 
 struct CEntity;
 struct CPhysical;
@@ -42,11 +51,65 @@ enum eAudioPedType
     PED_TYPE_SPC = 5
 };
 
+struct CAEPedSpeechAudioEntity;
+struct CAESound;
+
+struct tDummyEngineSlot
+{
+    i16 BankId;
+    i16 NumberOfUsers;
+};
+CHECKSIZE(tDummyEngineSlot, 0x4, 0x4);
+
+struct CAEPedSpeechSlot
+{
+    i16 m_InUse;
+    CAEPedSpeechAudioEntity* m_pAudioEntity;
+    CAESound* m_pSound;
+    i16 m_SoundID;
+    i16 m_BankID;
+    u32 m_StartPlaybackTime;
+    i16 m_GlobalSpeechContext;
+    i16 m_PedType;
+    u8 m_bForceAudible;
+    u8 m_ReservedForPedConversation;
+    u8 m_ReservedForPlayerConversation;
+};
+CHECKSIZE(CAEPedSpeechSlot, 0x1C, 0x28);
+
+struct cVehicleParams
+{
+    i32 nSpecificVehicleType;
+    i32 nBaseVehicleType;
+    u8 bDistanceCalculated;
+    float fDistSqr;
+    CVehicle* pVehicle;
+    cTransmission* pTransmission;
+    u32 nModelIndexMinusOffset;
+    float fSpeed;
+    i16 ThisAccel;
+    i16 ThisBrake;
+    float fAbsSpeed;
+    float fZOverSpeed;
+    float fSpeedRatio;
+    float* p_fGasPedalAudioRevs;
+    float fPrevSpeed;
+    u8 RealGear;
+    u8 bHandbrakeOn;
+    float fRealRevsRatio;
+    float fWheelSpin;
+    i16 NumGears;
+    u8 NumDriveWheelsOnGround;
+    u8 NumDriveWheelsOnGroundLastFrame;
+    tWheelState* pWheelState;
+};
+CHECKSIZE(cVehicleParams, 0x4C, 0x60);
+
 DECL_CLASS(CAESound)
     // Construct/Deconstruct functions
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCAESound1, _ZN8CAESoundC2ERS_, void, CAESound* self, CAESound& sound);
+    DECL_CTORCALL_PROXY(CAESound1, _ZN8CAESoundC2ERS_, CAESound& sound);
     CAESound(CAESound& sound) { FuncProxy_ctorCAESound1(this, sound); }
-    CAESound(){}
+    CAESound() : m_pPhysicalEntity(NULL) {}
     DECL_CTORCALL_ARG_HEAD(CAESound, _ZN8CAESoundC2EssP14CAEAudioEntity7CVectorffffhtf, i16 BankSlotID, i16 SoundID, CAEAudioEntity *pAudioEntity,
                                                                                         CVector Position, float Volume, float RollOffFactor, float RelativeFrequency,
                                                                                         float Doppler, u8 FrameDelay, u16 Environment, float FrequencyVariance)
@@ -159,7 +222,8 @@ CHECKSIZE(CAESound, 0x74, 0x80);
 
 DECL_CLASS(CAEAudioEntity)
     // Construct/Deconstruct functions
-    DECL_DTORCALL(CAEAudioEntity, _ZN14CAEAudioEntityD2Ev);
+    CAEAudioEntity() : m_pEntity(NULL) {}
+    DECL_DTORCALL_PROXY(CAEAudioEntity, _ZN14CAEAudioEntityD2Ev);
 
     CEntity *m_pEntity;
     CAESound m_tempSound;
@@ -174,10 +238,9 @@ CHECKSIZE(CAEAudioEntity, 0x7C, 0x90);
 
 DECL_CLASS_BASED(CAETwinLoopSoundEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    CAETwinLoopSoundEntity(){}
-    DECL_CTORCALL_ARG_HEAD(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityC2EsssP14CAEAudioEntityttss, i16 BankSlotID, i16 FirstSoundID, i16 SecondSoundID, CAEAudioEntity* pAudioEntity, u16 MinSwapTime, u16 MaxSwapTime, i16 StartPercentFirst, i16 StartPercentSecond)
-    DECL_CTORCALL_ARG_TAIL(BankSlotID, FirstSoundID, SecondSoundID, pAudioEntity, MinSwapTime, MaxSwapTime, StartPercentFirst, StartPercentSecond)
-    DECL_DTORCALL(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityD2Ev);
+    CAETwinLoopSoundEntity() : m_bIsInitialised(0) {}
+    DECL_CTORCALL_PROXY(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityC2EsssP14CAEAudioEntityttss, i16 BankSlotID, i16 FirstSoundID, i16 SecondSoundID, CAEAudioEntity* pAudioEntity, u16 MinSwapTime, u16 MaxSwapTime, i16 StartPercentFirst, i16 StartPercentSecond);
+    DECL_DTORCALL_PROXY(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityD2Ev);
 
     short           m_nBankSlotId;
     short           m_nSoundType[2];
@@ -272,7 +335,7 @@ CHECKSIZE(CAEPedAudioEntity, 0x15C, 0x1A8);
 
 DECL_CLASS_BASED(CAEPedSpeechAudioEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CAEPedSpeechAudioEntity, _ZN23CAEPedSpeechAudioEntityC2Ev);
+    DECL_CTORCALL_PROXY(CAEPedSpeechAudioEntity, _ZN23CAEPedSpeechAudioEntityC2Ev);
 
     // Virtual functions
     virtual void AddScriptSayEvent(i32 audioEvent, i32 pedContext, u8 overrideSilence, u8 forceAudible, u8 frontEnd);
@@ -407,6 +470,7 @@ DECL_CLASS_BASED(CAEPedSpeechAudioEntity, CAEAudioEntity)
     float m_fVoiceVolume;
     short m_nCurrentPhraseId;
     unsigned int m_NextTimeCanSayPain[19];
+    DECL_OBJECT_ARRAY_PLT(CAEPedSpeechSlot, s_PedSpeechSlots, BYBIT(0x677944, 0x84D2B0));
 DECL_CLASS_END()
 CHECKSIZE(CAEPedSpeechAudioEntity, 0x100, 0x130);
 
@@ -545,7 +609,7 @@ struct tVehicleSound
 
 DECL_CLASS_BASED(CAEVehicleAudioEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CAEVehicleAudioEntity, _ZN21CAEVehicleAudioEntityC2Ev);
+    DECL_CTORCALL_PROXY(CAEVehicleAudioEntity, _ZN21CAEVehicleAudioEntityC2Ev);
 
     short                   m_nStallCounter;
     tVehicleAudioSettings   m_settings;
@@ -810,6 +874,7 @@ DECL_CLASS_BASED(CAEVehicleAudioEntity, CAEAudioEntity)
     DECL_THISCALL_TAIL(UpdateGenericVehicleSound, SoundType, SlotID, BankID, SoundID, fFrequency, fVolume, fRollOff)
     DECL_THISCALL_HEAD(ProcessMovingParts, _ZN21CAEVehicleAudioEntity18ProcessMovingPartsER14cVehicleParams, void, cVehicleParams& vp)
     DECL_THISCALL_TAIL(ProcessMovingParts, vp)
+    DECL_OBJECT_ARRAY_PLT(tDummyEngineSlot, s_DummyEngineSlots, BYBIT(0x6785FC, 0x84EC10));
 DECL_CLASS_END()
 CHECKSIZE(CAEVehicleAudioEntity, 0x24C, 0x310);
 
@@ -900,5 +965,47 @@ DECL_CLASS_END()
 #define m_sRainSoundR m_sRainSoundR()
 
 #define m_snLastFireFrequencyIndex m_snLastFireFrequencyIndex()
+
+DECL_CLASS_BASED(CAEPoliceScannerAudioEntity, CAEAudioEntity)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL_PROXY(CAEPoliceScannerAudioEntity, _ZN27CAEPoliceScannerAudioEntityD2Ev);
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN27CAEPoliceScannerAudioEntity16StaticInitialiseEv, void);
+    DECL_FASTCALL_SIMPLE(Service, _ZN27CAEPoliceScannerAudioEntity7ServiceEv, void);
+    DECL_FASTCALL_SIMPLE(Reset, _ZN27CAEPoliceScannerAudioEntity5ResetEv, void);
+    DECL_FASTCALL_SIMPLE(DisableScanner, _ZN27CAEPoliceScannerAudioEntity14DisableScannerEhh, void, u8 bCurtail, u8 bInstantCurtail);
+    DECL_FASTCALL_SIMPLE(EnableScanner, _ZN27CAEPoliceScannerAudioEntity13EnableScannerEv, void);
+    DECL_FASTCALL_SIMPLE(StopScanner, _ZN27CAEPoliceScannerAudioEntity11StopScannerEh, void, u8 bInstantStop);
+    DECL_FASTCALL_SIMPLE(PopulateScannerDialogueLists, _ZN27CAEPoliceScannerAudioEntity28PopulateScannerDialogueListsEP12tScannerSlotS1_, void, tScannerSlot* pScannerSlotFirst, tScannerSlot* pScannerSlotSecond);
+    DECL_FASTCALL_SIMPLE(CanWePlayNewScannerDialogue, _ZN27CAEPoliceScannerAudioEntity27CanWePlayNewScannerDialogueEv, u8);
+    DECL_FASTCALL_SIMPLE(LoadSlots, _ZN27CAEPoliceScannerAudioEntity9LoadSlotsEv, void);
+    DECL_FASTCALL_SIMPLE(FinishedPlayingScannerDialogue, _ZN27CAEPoliceScannerAudioEntity30FinishedPlayingScannerDialogueEv, void);
+
+    // STATIC values
+    DECL_VALUE_PLT_U32(s_NextNewScannerDialogueTime, BYBIT(0x676C3C, 0x84B8C0));
+    DECL_OBJECT_PLT(u8, s_bScannerDisabled, BYBIT(0x676D04, 0x84BA50));
+    DECL_OBJECT_PLT(i16, s_nScannerPlaybackState, BYBIT(0x6792D8, 0x8505C8));
+    DECL_OBJECT_PLT(CAEPoliceScannerAudioEntity*, s_pPSControlling, BYBIT(0x67748C, 0x84C950));
+    DECL_OBJECT_ARRAY_PLT(tScannerSlot, s_ScannerSlotFirst, BYBIT(0x679830, 0x851070));
+    DECL_OBJECT_ARRAY_PLT(tScannerSlot, s_ScannerSlotSecond, BYBIT(0x67603C, 0x84A0E8));
+    DECL_OBJECT_ARRAY_PLT(i16, s_SlotState, BYBIT(0x67666C, 0x84AD30));
+    DECL_OBJECT_PLT(tScannerSlot*, s_pCurrentSlots, BYBIT(0x6777D8, 0x84CFD8));
+    DECL_VALUE_PLT_U32(s_nPlaybackStartTime, BYBIT(0x6762BC, 0x84A5D8));
+    DECL_VALUE_PLT_U32(s_nAbortPlaybackTime, BYBIT(0x679904, 0x851228));
+    DECL_OBJECT_PLT(u8, s_bStoppingScanner, BYBIT(0x678568, 0x84EAE8));
+    DECL_OBJECT_PLT(i16, s_nSectionPlaying, BYBIT(0x676AE0, 0x84B608));
+    DECL_OBJECT_PLT(CAESound*, s_pSound, BYBIT(0x679920, 0x851260));
+    DECL_VALUE_PLT_FLT(s_fVolumeOffset, BYBIT(0x678588, 0x84EB28));
+
+    // Member functions
+    DECL_THISCALL_HEAD(AddAudioEvent, _ZN27CAEPoliceScannerAudioEntity13AddAudioEventEi10eCrimeTypeRK7CVector, void, i32 AudioEvent, eCrimeType CrimeType, CVector const& vPosition)
+    DECL_THISCALL_TAIL(AddAudioEvent, AudioEvent, CrimeType, vPosition)
+    DECL_THISCALL_HEAD(PlayPoliceScannerDialogue, _ZN27CAEPoliceScannerAudioEntity25PlayPoliceScannerDialogueEP12tScannerSlotS1_, void, tScannerSlot* pCrimeSlots, tScannerSlot* pLastSeenSlots)
+    DECL_THISCALL_TAIL(PlayPoliceScannerDialogue, pCrimeSlots, pLastSeenSlots)
+    DECL_THISCALL_SIMPLE(PlayLoadedDialogue, _ZN27CAEPoliceScannerAudioEntity18PlayLoadedDialogueEv, void);
+    DECL_THISCALL_SIMPLE(PrepSlots, _ZN27CAEPoliceScannerAudioEntity9PrepSlotsEv, void);
+DECL_CLASS_END()
+CHECKSIZE(CAEPoliceScannerAudioEntity, 0x7C, 0x90);
 
 #endif // __AML_PSDK_SAAEAUDIOENTITY_H

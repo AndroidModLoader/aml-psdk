@@ -18,6 +18,7 @@ struct CTaskTimer
         m_nStartTime = start;
         m_nInterval = interval;
         m_bStarted = true;
+        m_bStopped = false;
     }
 };
 

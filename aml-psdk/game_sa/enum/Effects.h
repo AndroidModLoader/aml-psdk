@@ -1,0 +1,29 @@
+#ifndef __AML_PSDK_SAEFFECTS_H
+#define __AML_PSDK_SAEFFECTS_H
+
+enum eFlashiness
+{
+    FL_CONSTANT = 0,
+    FL_RANDOM = 1,
+    FL_RANDOM_OVERRIDE_IF_WET = 2,
+    FL_ONCE_SECOND = 3,
+    FL_TWICE_SECOND = 4,
+    FL_FIVE_SECOND = 5,
+    FL_RANDOM_FLASHINESS = 6,
+    FL_OFF = 7,
+    FL_RED_LIGHTS_FOR_BRIDGE = 8,
+    FL_ALARM = 9,
+    FL_ON_WHEN_RAINING = 10,
+    FL_CYCLE_1 = 11,
+    FL_CYCLE_2 = 12,
+    FL_CYCLE_3 = 13,
+};
+
+enum tWaterLevel
+{
+    HIGH_N_DRY = 0,
+    IN_WATER = 1,
+    SUBMERGED = 2,
+};
+
+#endif // __AML_PSDK_SAEFFECTS_H

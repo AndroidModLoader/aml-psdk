@@ -10,9 +10,8 @@ struct CEvent;
 DECL_CLASS_VTABLE(CEventGroup)
     // Construct/Deconstruct functions
     CEventGroup(){}
-    DECL_CTORCALL_ARG_HEAD(CEventGroup, _ZN11CEventGroupC2EP4CPed, CPed* pPed)
-    DECL_CTORCALL_ARG_TAIL(pPed)
-    DECL_DTORCALL(CEventGroup, _ZN11CEventGroupD2Ev);
+    DECL_CTORCALL_PROXY(CEventGroup, _ZN11CEventGroupC2EP4CPed, CPed* pPed);
+    DECL_DTORCALL_PROXY(CEventGroup, _ZN11CEventGroupD2Ev);
 
     CPed         *m_pPed;
     int           m_dwCount;

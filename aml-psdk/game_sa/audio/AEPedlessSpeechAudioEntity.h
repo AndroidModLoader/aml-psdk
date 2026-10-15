@@ -7,7 +7,7 @@ struct CEntity;
 
 DECL_CLASS(CAEPedlessSpeechAudioEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CAEPedlessSpeechAudioEntity, _ZN27CAEPedlessSpeechAudioEntityC2Ev);
+    DECL_CTORCALL_PROXY(CAEPedlessSpeechAudioEntity, _ZN27CAEPedlessSpeechAudioEntityC2Ev);
 
     CAEPedSpeechAudioEntity pedSpeech;
     CAESound *SoundPtrs[5];

@@ -13,6 +13,8 @@ struct RpClump;
 struct RpAtomic;
 struct RpWorld;
 
+typedef RpAtomic* (*LoadAtomicCallback)(RpAtomic* atomic);
+
 struct RpClumpChunkInfo
 {
     RwInt32 numAtomics;
@@ -70,5 +72,34 @@ DECL_FASTCALL_SIMPLE_GLO(RpClumpRegisterPluginStream, _Z27RpClumpRegisterPluginS
 DECL_FASTCALL_SIMPLE_GLO(RpClumpSetStreamAlwaysCallBack, _Z30RpClumpSetStreamAlwaysCallBackjPFiPviiE, RwInt32, RwUInt32 pluginID, RwPluginDataChunkAlwaysCallBack alwaysCB);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpValidatePlugins, _Z22RpClumpValidatePluginsPK7RpClump, RwBool, const RpClump* clump);
 DECL_FASTCALL_SIMPLE_GLO(RpClumpGetWorld, _Z15RpClumpGetWorldPK7RpClump, RpWorld*, const RpClump* clump);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGetPluginOffset, _Z22RpClumpGetPluginOffsetj, RwInt32, RwUInt32 pluginID);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGtaStreamRead, _Z20RpClumpGtaStreamReadP8RwStream, RpClump*, RwStream* pStream);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGtaCancelStream, _Z22RpClumpGtaCancelStreamv, void);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGtaStreamRead1, _Z21RpClumpGtaStreamRead1P8RwStream, bool, RwStream* pStream);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGtaStreamRead2, _Z21RpClumpGtaStreamRead2P8RwStream, RpClump*, RwStream* pStream);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpStreamReadAtomics, _Z24RpClumpStreamReadAtomicsP8RwStreamPFP8RpAtomicS2_E, bool, RwStream* pStream, LoadAtomicCallback atomCB);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpGetBoundingSphere, _Z24RpClumpGetBoundingSphereP7RpClumpP8RwSphereb, RpClump*, RpClump* pClump, RwSphere* pSphere, bool bUseLTM);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpConvertGeometryToTL, _Z26RpClumpConvertGeometryToTLP7RpClump, u8, RpClump* pClump);
+
+DECL_FASTCALL_SIMPLE_GLO(RpClumpConvertGeometryToTS, _Z26RpClumpConvertGeometryToTSP7RpClump, u8, RpClump* pClump);
+
+inline RwFrame* RpClumpGetFrame(const RpClump* clump)
+{
+    return clump->object.frame;
+}
+
+inline RpClump* RpClumpSetFrame(RpClump* clump, RwFrame* frame)
+{
+    clump->object.frame = frame;
+    return clump;
+}
 
 #endif // __AML_PSDK_RPCLUMP_H

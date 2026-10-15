@@ -18,7 +18,7 @@ struct UpgradePosnDesc
 
 DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CVehicleModelInfo, _ZN17CVehicleModelInfoC2Ev);
+    DECL_CTORCALL_PROXY(CVehicleModelInfo, _ZN17CVehicleModelInfoC2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(SetupCommonData, _ZN17CVehicleModelInfo15SetupCommonDataEv, void);
@@ -141,6 +141,9 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
 
     struct CVehicleStructure
     {
+        typedef CVehicleStructure ThisClass;
+        DECL_CTORCALL(CVehicleStructure, _ZN17CVehicleModelInfo17CVehicleStructureC2Ev);
+
         CVector         m_avDummyPos[15];
         UpgradePosnDesc m_aUpgrades[18];
         RpAtomic       *m_apExtras[6];
@@ -174,6 +177,7 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
         uintptr_t m_nAnimFileIndex;
         uintptr_t       m_pAnimBlock;
     };
+    DECL_OBJECT_ARRAY_PLT(VehicleDesc, ms_vehicleDescs, BYBIT(0x6770E8, 0x84C208));
 DECL_CLASS_END()
 CHECKSIZE(CVehicleModelInfo, 0x3A8, 0x6B0);
 

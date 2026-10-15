@@ -3,7 +3,17 @@
 
 #include "Vehicle.h"
 
-struct CTrainNode;
+struct CTrainNode
+{
+    i16 CoorX;
+    i16 CoorY;
+    i16 CoorZ;
+    u16 LengthFromStart;
+    u8 lighting;
+    bool bLightingHasBeenCalculated;
+};
+CHECKSIZE(CTrainNode, 0xA, 0xA);
+
 
 enum eTrainNodes
 {
@@ -38,9 +48,8 @@ enum eTrainPassengersGenerationState
 
 DECL_CLASS_BASED(CTrain, CVehicle)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_ARG_HEAD(CTrain, _ZN6CTrainC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CTrain, _ZN6CTrainD2Ev);
+    DECL_CTORCALL_PROXY(CTrain, _ZN6CTrainC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CTrain, _ZN6CTrainD2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(ReadAndInterpretTrackFile, _ZN6CTrain25ReadAndInterpretTrackFileEPcPP10CTrainNodePiPfi, void, char* filename, CTrainNode** nodes, i32* lineCount, float* totalDist, i32 skipStations);

@@ -2,6 +2,7 @@
 #define __AML_PSDK_SALOADINGSCREEN_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include "Text.h"
 #include <aml-psdk/game_sa/engine/Sprite2d.h>
 
 struct CSprite2d;

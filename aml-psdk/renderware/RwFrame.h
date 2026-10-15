@@ -61,4 +61,18 @@ DECL_FASTCALL_SIMPLE_GLO(RwFrameRegisterPlugin, _Z21RwFrameRegisterPluginijPFPvS
 DECL_FASTCALL_SIMPLE_GLO(RwFrameGetPluginOffset, _Z22RwFrameGetPluginOffsetj, RwInt32, RwUInt32 pluginID);
 DECL_FASTCALL_SIMPLE_GLO(RwFrameValidatePlugins, _Z22RwFrameValidatePluginsPK7RwFrame, RwBool, const RwFrame* frame);
 
+DECL_FASTCALL_SIMPLE_GLO(RwFrameRegisterPluginStream, _Z27RwFrameRegisterPluginStreamjPFP8RwStreamS0_iPviiEPFS0_S0_iPKviiEPFiS5_iiE, RwInt32, RwUInt32 pluginID, RwPluginDataChunkReadCallBack readCB, RwPluginDataChunkWriteCallBack writeCB, RwPluginDataChunkGetSizeCallBack getSizeCB);
+
+DECL_FASTCALL_SIMPLE_GLO(RwFrameSetStreamAlwaysCallBack, _Z30RwFrameSetStreamAlwaysCallBackjPFiPviiE, RwInt32, RwUInt32 pluginID, RwPluginDataChunkAlwaysCallBack alwaysCB);
+
+inline RwFrame* RwFrameGetParent(const RwFrame* frame)
+{
+    return frame->object.frame;
+}
+
+inline RwMatrix* RwFrameGetMatrix(RwFrame* frame)
+{
+    return &frame->modelling;
+}
+
 #endif // __AML_PSDK_RWFRAME_H

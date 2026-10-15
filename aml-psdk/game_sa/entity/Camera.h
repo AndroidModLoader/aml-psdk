@@ -27,8 +27,8 @@ struct CCamPathSplines
 
 DECL_CLASS_BASED(CCamera, CPlaceable)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CCamera, _ZN7CCameraC2Ev)
-    DECL_DTORCALL(CCamera, _ZN7CCameraD2Ev);
+    DECL_CTORCALL_PROXY(CCamera, _ZN7CCameraC2Ev);
+    DECL_DTORCALL_PROXY(CCamera, _ZN7CCameraD2Ev);
 
     // STATIC values
     DECL_VALUE_PLT_FLT(m_fMouseAccelHorzntl, BYBIT(0x676858, 0x84B108));

@@ -14,6 +14,26 @@
 #include "AnimBlendClumpData.h"
 struct CAnimBlendAssociation;
 typedef void(*AnimBlendCallback)(CAnimBlendAssociation*, void*);
+enum eAnimationFlags
+{
+    ANIMATION_STARTED = 0x1,
+    ANIMATION_LOOPED = 0x2,
+    ANIMATION_FREEZE_LAST_FRAME = 0x4,
+    ANIMATION_UNLOCK_LAST_FRAME = 0x8,
+    ANIMATION_PARTIAL = 0x10,
+    ANIMATION_MOVEMENT = 0x20,
+    ANIMATION_TRANLSATE_X = 0x40,
+    ANIMATION_TRANLSATE_Y = 0x80,
+    ANIMATION_UNUSED_1 = 0x100,
+    ANIMATION_UNUSED_2 = 0x200,
+    ANIMATION_ADD_TO_BLEND = 0x400,
+    ANIMATION_UNUSED_3 = 0x800,
+    ANIMATION_UNUSED_4 = 0x1000,
+    ANIMATION_FREEZE_TRANSLATION = 0x2000,
+    ANIMATION_BLOCK_REFERENCED = 0x4000,
+    ANIMATION_INDESTRUCTIBLE = 0x8000
+};
+
 enum AnimBlendCallbackType
 {
     ABCB_NONE = 0,
@@ -25,11 +45,11 @@ DECL_CLASS(CAnimBlendAssociation)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CAnimBlendAssociation, _ZN21CAnimBlendAssociationC2Ev);
     DECL_DTORCALL(CAnimBlendAssociation, _ZN21CAnimBlendAssociationD2Ev);
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCAnimBlendAssociation1, _ZN21CAnimBlendAssociationC2EP7RpClumpP19CAnimBlendHierarchy, void, CAnimBlendAssociation* object, RpClump* clump, CAnimBlendHierarchy* hierarchy);
+    DECL_CTORCALL_PROXY(CAnimBlendAssociation1, _ZN21CAnimBlendAssociationC2EP7RpClumpP19CAnimBlendHierarchy, RpClump* clump, CAnimBlendHierarchy* hierarchy);
     CAnimBlendAssociation(RpClump* clump, CAnimBlendHierarchy* hierarchy) { FuncProxy_ctorCAnimBlendAssociation1(this, clump, hierarchy); }
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCAnimBlendAssociation2, _ZN21CAnimBlendAssociationC2ERS_, void, CAnimBlendAssociation* object, CAnimBlendAssociation& source);
+    DECL_CTORCALL_PROXY(CAnimBlendAssociation2, _ZN21CAnimBlendAssociationC2ERS_, CAnimBlendAssociation& source);
     CAnimBlendAssociation(CAnimBlendAssociation& source) { FuncProxy_ctorCAnimBlendAssociation2(this, source); }
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCAnimBlendAssociation3, _ZN21CAnimBlendAssociationC2ER27CAnimBlendStaticAssociation, void, CAnimBlendAssociation* object, CAnimBlendStaticAssociation& source);
+    DECL_CTORCALL_PROXY(CAnimBlendAssociation3, _ZN21CAnimBlendAssociationC2ER27CAnimBlendStaticAssociation, CAnimBlendStaticAssociation& source);
     CAnimBlendAssociation(CAnimBlendStaticAssociation& source) { FuncProxy_ctorCAnimBlendAssociation3(this, source); }
 
     // Member functions

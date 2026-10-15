@@ -58,6 +58,40 @@ struct TextureUtils
         return texture;
     }
 
+    // Call on the render thread. Destroy the returned image with RwImageDestroy.
+    static inline RwImage* CreateImage(RwRaster* raster)
+    {
+        if(!raster || raster->width <= 0 || raster->height <= 0) return NULL;
+        RwImage* image = RwImageCreate(raster->width, raster->height, 32);
+        if(!image) return NULL;
+        if(!RwImageAllocatePixels(image) || !RwImageSetFromRaster(image, raster))
+        {
+            RwImageDestroy(image);
+            return NULL;
+        }
+        return image;
+    }
+
+    static inline RwImage* CreateImage(RwTexture* texture)
+    {
+        return texture ? CreateImage(texture->raster) : NULL;
+    }
+
+    static inline bool SavePNG(RwRaster* raster, const char* filename)
+    {
+        if(!filename || !*filename) return false;
+        RwImage* image = CreateImage(raster);
+        if(!image) return false;
+        bool saved = RtPNGImageWrite(image, filename) != NULL;
+        RwImageDestroy(image);
+        return saved;
+    }
+
+    static inline bool SavePNG(RwTexture* texture, const char* filename)
+    {
+        return texture && SavePNG(texture->raster, filename);
+    }
+
     // Dictionary lookups return borrowed textures.
     static inline RwTexture* FindTexture(RwTexDictionary* dict, const char* name)
     {

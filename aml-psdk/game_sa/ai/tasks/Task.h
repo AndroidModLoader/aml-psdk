@@ -16,8 +16,8 @@ enum eAbortPriority
 
 DECL_CLASS_VTABLE(CTask)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CTask, _ZN5CTaskC2Ev);
-    DECL_DTORCALL(CTask, _ZN5CTaskD2Ev);
+    DECL_CTORCALL_PROXY(CTask, _ZN5CTaskC2Ev);
+    DECL_DTORCALL_PROXY(CTask, _ZN5CTaskD2Ev);
     DECL_NEWCALL(CTask, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm) );
     DECL_DLCALL(CTask, _ZN5CTaskdlEPv);
 
@@ -41,11 +41,28 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CTaskSimple, CTask)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CTaskSimple, _ZN11CTaskSimpleC2Ev);
-    DECL_DTORCALL(CTaskSimple, _ZN11CTaskSimpleD2Ev);
+    DECL_CTORCALL_PROXY(CTaskSimple, _ZN11CTaskSimpleC2Ev);
+    DECL_DTORCALL_PROXY(CTaskSimple, _ZN11CTaskSimpleD2Ev);
 
     virtual bool ProcessPed(CPed *);
     virtual bool SetPedPosition(CPed *);
 DECL_CLASS_END()
+
+DECL_CLASS_BASED(CTaskComplex, CTask)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_PROXY(CTaskComplex, _ZN12CTaskComplexC2Ev);
+    DECL_DTORCALL_PROXY(CTaskComplex, _ZN12CTaskComplexD2Ev);
+    DECL_NEWCALL(CTaskComplex, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
+
+    // Virtual functions
+    virtual void SetSubTask(CTask* arg1);
+    virtual CTask* CreateNextSubTask(CPed* arg1);
+    virtual CTask* CreateFirstSubTask(CPed* arg1);
+    virtual CTask* ControlSubTask(CPed* arg1);
+
+    // Member values
+    CTask* m_pSubTask;
+DECL_CLASS_END()
+CHECKSIZE(CTaskComplex, 0xC, 0x18);
 
 #endif // __AML_PSDK_SATASK_H

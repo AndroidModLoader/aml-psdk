@@ -121,4 +121,78 @@ DECL_FASTCALL_SIMPLE_GLO(RwCameraStreamRead, _Z18RwCameraStreamReadP8RwStream, R
 DECL_FASTCALL_SIMPLE_GLO(RwCameraStreamWrite, _Z19RwCameraStreamWritePK8RwCameraP8RwStream, const RwCamera*, const RwCamera* camera, RwStream* stream);
 DECL_FASTCALL_SIMPLE_GLO(RwCameraValidatePlugins, _Z23RwCameraValidatePluginsPK8RwCamera, RwBool, const RwCamera* camera);
 
+inline RwRaster* RwCameraGetRaster(const RwCamera* camera)
+{
+    return camera->frameBuffer;
+}
+
+inline RwCamera* RwCameraSetRaster(RwCamera* camera, RwRaster* raster)
+{
+    camera->frameBuffer = raster;
+    return camera;
+}
+
+inline RwRaster* RwCameraGetZRaster(const RwCamera* camera)
+{
+    return camera->zBuffer;
+}
+
+inline RwCamera* RwCameraSetZRaster(RwCamera* camera, RwRaster* raster)
+{
+    camera->zBuffer = raster;
+    return camera;
+}
+
+inline RwReal RwCameraGetNearClipPlane(const RwCamera* camera)
+{
+    return camera->nearPlane;
+}
+
+inline RwReal RwCameraGetFarClipPlane(const RwCamera* camera)
+{
+    return camera->farPlane;
+}
+
+inline RwReal RwCameraGetFogDistance(const RwCamera* camera)
+{
+    return camera->fogPlane;
+}
+
+inline RwCameraProjection RwCameraGetProjection(const RwCamera* camera)
+{
+    return camera->projectionType;
+}
+
+inline const RwV2d* RwCameraGetViewOffset(const RwCamera* camera)
+{
+    return &camera->viewOffset;
+}
+
+inline const RwV2d* RwCameraGetViewWindow(const RwCamera* camera)
+{
+    return &camera->viewWindow;
+}
+
+inline RwFrame* RwCameraGetFrame(const RwCamera* camera)
+{
+    return camera->object.object.frame;
+}
+
+inline RwMatrix* RwCameraGetViewMatrix(RwCamera* camera)
+{
+    return &camera->viewMatrix;
+}
+
+inline RwCamera* RwCameraSetFogDistance(RwCamera* camera, RwReal distance)
+{
+    camera->fogPlane = distance;
+    return camera;
+}
+
+inline RwCamera* RwCameraSetFrame(RwCamera* camera, RwFrame* frame)
+{
+    _rwObjectHasFrameSetFrame(camera, frame);
+    return camera;
+}
+
 #endif // __AML_PSDK_RWCAMERA_H

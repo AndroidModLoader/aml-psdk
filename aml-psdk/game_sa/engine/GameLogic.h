@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SAGAMELOGIC_H
 #define __AML_PSDK_SAGAMELOGIC_H
 
+#include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/renderware/RwMatrix.h>
 #include <aml-psdk/game_sa/entity/Weapon.h>
 

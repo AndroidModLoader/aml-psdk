@@ -12,8 +12,8 @@ struct CSprite2d;
 
 enum eBlipAppearance
 {
-    BLIP_FLAG_FRIEND = 0, // It selects BLIP_COLOUR_BLUE. If unset toghether with BLIP_FLAG_THREAT, any color.
-    BLIP_FLAG_THREAT  // It selects BLIP_COLOUR_RED. If unset toghether with BLIP_FLAG_FRIEND, any color.
+    BLIP_FLAG_FRIEND = 1,
+    BLIP_FLAG_THREAT = 2
 };
 
 enum eBlipType
@@ -46,7 +46,7 @@ enum eBlipColour
     BLIP_COLOUR_YELLOW,     // 4
     BLIP_COLOUR_REDCOPY,    // 5 - What? It was BLIP_COLOUR_PURPLE.
     BLIP_COLOUR_BLUECOPY,   // 6 - Why? It was BLIP_COLOUR_CYAN.
-    BLIP_COLOUR_THREAT,     // 7 - If BLIP_FLAG_FRIENDLY is not set (by default) it is BLIP_COLOUR_RED, else BLIP_COLOUR_BLUE.
+    BLIP_COLOUR_THREAT,     // 7
     BLIP_COLOUR_DESTINATION // 8 - Default color.
 };
 

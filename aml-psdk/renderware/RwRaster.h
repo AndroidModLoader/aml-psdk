@@ -96,4 +96,39 @@ DECL_FASTCALL_SIMPLE_GLO(RwRasterCreate, _Z14RwRasterCreateiiii, RwRaster*, RwIn
 DECL_FASTCALL_SIMPLE_GLO(RwRasterLock, _Z12RwRasterLockP8RwRasterhi, RwUInt8*, RwRaster *raster, RwUInt8 level, RwInt32 lockMode);
 DECL_FASTCALL_SIMPLE_GLO(RwRasterSetFreeListCreateParams, _Z31RwRasterSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 
+inline RwInt32 RwRasterGetWidth(const RwRaster* raster)
+{
+    return raster->width;
+}
+
+inline RwInt32 RwRasterGetHeight(const RwRaster* raster)
+{
+    return raster->height;
+}
+
+inline RwInt32 RwRasterGetDepth(const RwRaster* raster)
+{
+    return raster->depth;
+}
+
+inline RwInt32 RwRasterGetStride(const RwRaster* raster)
+{
+    return raster->stride;
+}
+
+inline RwInt32 RwRasterGetFormat(const RwRaster* raster)
+{
+    return (raster->cFormat & (rwRASTERFORMATMASK >> 8)) << 8;
+}
+
+inline RwInt32 RwRasterGetType(const RwRaster* raster)
+{
+    return raster->cType & rwRASTERTYPEMASK;
+}
+
+inline RwRaster* RwRasterGetParent(const RwRaster* raster)
+{
+    return raster->parent;
+}
+
 #endif // __AML_PSDK_RWRASTER_H

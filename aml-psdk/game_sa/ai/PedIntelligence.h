@@ -29,6 +29,13 @@ struct CVehicle;
 
 DECL_CLASS(CEventHandlerHistory)
     // Construct/Deconstruct functions
+    CEventHandlerHistory()
+    {
+        m_pAbortedTask = NULL;
+        m_pCurrentEventActive = NULL;
+        m_pCurrentEventPassive = NULL;
+        m_pStoredEventActive = NULL;
+    }
     DECL_DTORCALL(CEventHandlerHistory, _ZN20CEventHandlerHistoryD2Ev);
 
     CTask *m_pAbortedTask;
@@ -58,13 +65,16 @@ DECL_CLASS_END()
 
 DECL_CLASS(CEventHandler)
     // Construct/Deconstruct functions
-    CEventHandler(){}
+    CEventHandler() : CEventHandler(NULL) {}
     DECL_CTORCALL_ARG_HEAD(CEventHandler, _ZN13CEventHandlerC2EP4CPed, CPed* pCPed1)
     DECL_CTORCALL_ARG_TAIL(pCPed1)
     DECL_DTORCALL(CEventHandler, _ZN13CEventHandlerD2Ev);
 
     CPed *m_pPed;
-    CEventHandlerHistory m_history;
+    union
+    {
+        CEventHandlerHistory m_history;
+    };
     CTask *m_pTaskPhysResponse;
     CTask *m_pTaskEventResponse;
     CTaskSimple *m_pTaskSecondaryAim;
@@ -246,7 +256,6 @@ DECL_CLASS_END()
 
 DECL_CLASS(CPedIntelligence)
     // Construct/Deconstruct functions
-    CPedIntelligence(){}
     DECL_CTORCALL_ARG_HEAD(CPedIntelligence, _ZN16CPedIntelligenceC2EP4CPed, CPed *pPed)
     DECL_CTORCALL_ARG_TAIL(pPed)
     DECL_DTORCALL(CPedIntelligence, _ZN16CPedIntelligenceD2Ev);
@@ -351,9 +360,18 @@ DECL_CLASS(CPedIntelligence)
 
     // Member values
     CPed*              m_pPed;
-    CTaskManager       m_TaskMgr;
-    CEventHandler      m_eventHandler;
-    CEventGroup        m_eventGroup;
+    union
+    {
+        CTaskManager m_TaskMgr;
+    };
+    union
+    {
+        CEventHandler m_eventHandler;
+    };
+    union
+    {
+        CEventGroup m_eventGroup;
+    };
     eDecisionMakerType m_nDecisionMakerType;
     eDecisionMakerType m_nDecisionMakerTypeInGroup;
     float              m_fHearingRange;
@@ -364,12 +382,24 @@ DECL_CLASS(CPedIntelligence)
     signed char        m_NextEventResponseSequence;
     unsigned char      m_nEventId;
     unsigned char      m_nEventPriority;
-    CEntityScanner     m_vehicleScanner;
-    CEntityScanner     m_pedScanner;
+    union
+    {
+        CEntityScanner m_vehicleScanner;
+    };
+    union
+    {
+        CEntityScanner m_pedScanner;
+    };
     CMentalState       m_mentalState;
-    CEventScanner      m_eventScanner;
+    union
+    {
+        CEventScanner m_eventScanner;
+    };
     CCollisionEventScanner m_collisionScanner;
-    CPedStuckChecker   m_pedStuckChecker;
+    union
+    {
+        CPedStuckChecker m_pedStuckChecker;
+    };
     int                m_AnotherStaticCounter;
     unsigned int       m_StaticCounter;
     CVector            m_vecLastPedPosDuringDamageEntity;

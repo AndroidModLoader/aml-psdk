@@ -15,8 +15,8 @@ struct CPed;
 
 DECL_CLASS(CEntityScanner)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CEntityScanner, _ZN14CEntityScannerC2Ev);
-    DECL_DTORCALL(CEntityScanner, _ZN14CEntityScannerD2Ev);
+    DECL_CTORCALL_PROXY(CEntityScanner, _ZN14CEntityScannerC2Ev);
+    DECL_DTORCALL_PROXY(CEntityScanner, _ZN14CEntityScannerD2Ev);
 
     // Virtual functions
     virtual void ScanForEntitiesInRange(const int iScanType, const CPed &ped);

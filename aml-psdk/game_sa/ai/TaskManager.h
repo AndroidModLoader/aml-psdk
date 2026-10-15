@@ -30,7 +30,7 @@ enum eSecondaryTasks //array indexes
 
 DECL_CLASS(CTaskManager)
     // Construct/Deconstruct functions
-    CTaskManager(){}
+    CTaskManager() : CTaskManager(NULL) {}
     DECL_CTORCALL_ARG_HEAD(CTaskManager, _ZN12CTaskManagerC2EP4CPed, CPed *pPed)
     DECL_CTORCALL_ARG_TAIL(pPed)
     DECL_DTORCALL(CTaskManager, _ZN12CTaskManagerD2Ev);

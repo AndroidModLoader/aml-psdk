@@ -9,6 +9,52 @@
 */
 
 #include "../plugin.h"
+#include <aml-psdk/gta_base/Vector.h>
+
+struct QuaternionData
+{
+    float v[4];
+};
+CHECKSIZE(QuaternionData, 0x10, 0x10);
+
+struct CompressedQuat
+{
+    i16 x;
+    i16 y;
+    i16 z;
+    i16 w;
+};
+CHECKSIZE(CompressedQuat, 0x8, 0x8);
+
+struct CAnimBlendKeyFrameNoTrans
+{
+    QuaternionData m_quatRotation;
+    float m_fDeltaTime;
+};
+CHECKSIZE(CAnimBlendKeyFrameNoTrans, 0x14, 0x14);
+
+struct CAnimBlendKeyFrame
+{
+    QuaternionData m_quatRotation;
+    float m_fDeltaTime;
+    CVector m_vecTranslation;
+};
+CHECKSIZE(CAnimBlendKeyFrame, 0x20, 0x20);
+
+struct CCompressedAnimBlendKeyFrameNoTrans
+{
+    CompressedQuat m_quatRotation;
+    i16 m_fDeltaTime;
+};
+CHECKSIZE(CCompressedAnimBlendKeyFrameNoTrans, 0xA, 0xA);
+
+struct CCompressedAnimBlendKeyFrame
+{
+    CompressedQuat m_quatRotation;
+    i16 m_fDeltaTime;
+    CompressedVector m_vecTranslation;
+};
+CHECKSIZE(CCompressedAnimBlendKeyFrame, 0x10, 0x10);
 
 DECL_CLASS(CAnimBlendSequence)
     // Construct/Deconstruct functions
@@ -45,5 +91,29 @@ DECL_CLASS(CAnimBlendSequence)
     u8 *m_pFrames;
 DECL_CLASS_END()
 CHECKSIZE(CAnimBlendSequence, 0xC, 0x10);
+
+DECL_FASTCALL_SIMPLE_GLO(SwapEndianness1, _Z14SwapEndiannessI25CAnimBlendKeyFrameNoTransEvPT_, void, CAnimBlendKeyFrameNoTrans* frame);
+inline void SwapEndianness(CAnimBlendKeyFrameNoTrans* frame)
+{
+    return SwapEndianness1(frame);
+}
+
+DECL_FASTCALL_SIMPLE_GLO(SwapEndianness2, _Z14SwapEndiannessI18CAnimBlendKeyFrameEvPT_, void, CAnimBlendKeyFrame* frame);
+inline void SwapEndianness(CAnimBlendKeyFrame* frame)
+{
+    return SwapEndianness2(frame);
+}
+
+DECL_FASTCALL_SIMPLE_GLO(SwapEndianness3, _Z14SwapEndiannessI35CCompressedAnimBlendKeyFrameNoTransEvPT_, void, CCompressedAnimBlendKeyFrameNoTrans* frame);
+inline void SwapEndianness(CCompressedAnimBlendKeyFrameNoTrans* frame)
+{
+    return SwapEndianness3(frame);
+}
+
+DECL_FASTCALL_SIMPLE_GLO(SwapEndianness4, _Z14SwapEndiannessI28CCompressedAnimBlendKeyFrameEvPT_, void, CCompressedAnimBlendKeyFrame* frame);
+inline void SwapEndianness(CCompressedAnimBlendKeyFrame* frame)
+{
+    return SwapEndianness4(frame);
+}
 
 #endif // __AML_PSDK_SAANIMBLENDSEQUENCE_H

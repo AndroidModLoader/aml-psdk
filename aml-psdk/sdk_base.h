@@ -433,8 +433,14 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 
 // Class functions
 
+#define DECL_CTORCALL_PROXY(_clsName, _sym, ...) \
+    static inline auto FuncProxy_ctor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym))
+
+#define DECL_DTORCALL_PROXY(_clsName, _sym) \
+    static inline auto FuncProxy_dtor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass*)>(PSDK_STRINGIFY(_sym))
+
 #define DECL_CTORCALL_ARG_HEAD(_clsName, _sym, ...) \
-    static inline auto FuncProxy_ctor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \
+    DECL_CTORCALL_PROXY(_clsName, _sym, __VA_ARGS__); \
     _clsName(__VA_ARGS__) { FuncProxy_ctor##_clsName(
 
 #define DECL_CTORCALL_ARG_TAIL(...) \
@@ -445,7 +451,7 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
     DECL_CTORCALL_ARG_TAIL()
 
 #define DECL_DTORCALL(_clsName, _sym) \
-    static inline auto FuncProxy_dtor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass*)>(PSDK_STRINGIFY(_sym)); \
+    DECL_DTORCALL_PROXY(_clsName, _sym); \
     ~_clsName() { FuncProxy_dtor##_clsName(this); }
 
 #define DECL_DTORCALL_PLT(_clsName, _addr) \

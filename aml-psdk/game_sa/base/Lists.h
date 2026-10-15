@@ -272,6 +272,7 @@ template <class T> struct OSArray
 
 DECL_CLASS(ListItem_c)
     // Construct/Deconstruct functions
+    DECL_CTORCALL_PROXY(ListItem_c, _ZN10ListItem_cC2Ev);
     DECL_DTORCALL(ListItem_c, _ZN10ListItem_cD2Ev);
 
     ListItem_c() { next = NULL; prev = NULL; }
@@ -281,6 +282,7 @@ DECL_CLASS_END()
 
 DECL_CLASS(List_c)
     // Construct/Deconstruct functions
+    DECL_CTORCALL_PROXY(List_c, _ZN6List_cC2Ev);
     DECL_DTORCALL(List_c, _ZN6List_cD2Ev);
 
     List_c() { last = NULL; first = NULL; count = 0; }

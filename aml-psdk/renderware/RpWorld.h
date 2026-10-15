@@ -210,4 +210,91 @@ DECL_FASTCALL_SIMPLE_GLO(RpWorldStreamWrite, _Z18RpWorldStreamWritePK7RpWorldP8R
 DECL_FASTCALL_SIMPLE_GLO(RpWorldUnlock, _Z13RpWorldUnlockP7RpWorld, RpWorld*, RpWorld* world);
 DECL_FASTCALL_SIMPLE_GLO(RpWorldValidatePlugins, _Z22RpWorldValidatePluginsP7RpWorld, RwBool, RpWorld* world);
 
+inline const RwBBox* RpWorldGetBBox(const RpWorld* world)
+{
+    return &world->boundingBox;
+}
+
+inline RwInt32 RpWorldGetNumMaterials(const RpWorld* world)
+{
+    return world->matList.numMaterials;
+}
+
+inline RwInt32 RpWorldGetNumClumps(const RpWorld* world)
+{
+    return world->numClumpsInWorld;
+}
+
+inline RpWorldRenderOrder RpWorldGetRenderOrder(const RpWorld* world)
+{
+    return world->renderOrder;
+}
+
+inline RwUInt32 RpWorldGetFlags(const RpWorld* world)
+{
+    return world->flags;
+}
+
+inline RpMaterial* RpWorldGetMaterial(const RpWorld* world, RwInt32 index)
+{
+    return world->matList.materials[index];
+}
+
+inline RpWorld* RpWorldSetRenderOrder(RpWorld* world, RpWorldRenderOrder value)
+{
+    world->renderOrder = value;
+    return world;
+}
+
+inline RpWorld* RpWorldSetFlags(RpWorld* world, RwUInt32 value)
+{
+    world->flags = value;
+    return world;
+}
+
+inline RpWorld* RpWorldSetSectorPipeline(RpWorld* world, RxPipeline* value)
+{
+    world->pipeline = value;
+    return world;
+}
+
+inline RpWorld* RpWorldGetSectorPipeline(RpWorld* world, RxPipeline** pipeline)
+{
+    *pipeline = world->pipeline;
+    return world;
+}
+
+inline const RwBBox* RpWorldSectorGetBBox(const RpWorldSector* sector)
+{
+    return &sector->boundingBox;
+}
+
+inline const RwBBox* RpWorldSectorGetTightBBox(const RpWorldSector* sector)
+{
+    return &sector->tightBoundingBox;
+}
+
+
+inline RwInt32 RpWorldSectorGetNumTriangles(const RpWorldSector* sector)
+{
+    return sector->numPolygons;
+}
+
+inline const RwV3d* RpWorldSectorGetVertices(const RpWorldSector* sector)
+{
+    return sector->vertices;
+}
+
+inline RpWorldSector* RpWorldSectorSetPipeline(RpWorldSector* sector, RxPipeline* pipeline)
+{
+    sector->pipeline = pipeline;
+    return sector;
+}
+
+inline RpWorldSector* RpWorldSectorGetPipeline(RpWorldSector* sector, RxPipeline** pipeline)
+{
+    *pipeline = sector->pipeline;
+    return sector;
+}
+
 #endif // __AML_PSDK_RPWORLD_H

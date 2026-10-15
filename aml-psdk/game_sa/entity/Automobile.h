@@ -16,6 +16,7 @@ enum eDamageState
 
 enum tComponent
 {
+    COMPONENT_ENGINE = 0,
     COMPONENT_WHEEL_LF = 1,
     COMPONENT_WHEEL_RF = 2,
     COMPONENT_WHEEL_LR = 3,
@@ -32,18 +33,22 @@ enum tComponent
     COMPONENT_WING_RR = 14,
     COMPONENT_WINDSCREEN = 15,
     COMPONENT_BUMP_FRONT = 16,
-    COMPONENT_BUMP_REAR = 17
+    COMPONENT_BUMP_REAR = 17,
+    COMPONENT_MAX = 18
 };
 
 enum tComponentGroup
 {
-    COMPGROUP_PANEL = 0,
+    COMPGROUP_BUMPER = 0,
     COMPGROUP_WHEEL = 1,
     COMPGROUP_DOOR = 2,
     COMPGROUP_BONNET = 3,
     COMPGROUP_BOOT = 4,
+    COMPGROUP_PANEL = 5,
     COMPGROUP_LIGHT = 5,
-    COMPGROUP_NA = 6
+    COMPGROUP_ENGINE = 6,
+    COMPGROUP_NA = 6,
+    COMPGROUP_MAX = 7
 };
 
 enum eWheels
@@ -69,8 +74,8 @@ enum eLights
 {
     LIGHT_FRONT_LEFT = 0,
     LIGHT_FRONT_RIGHT = 1,
-    LIGHT_REAR_RIGHT = 2,
-    LIGHT_REAR_LEFT = 3
+    LIGHT_REAR_LEFT = 2,
+    LIGHT_REAR_RIGHT = 3
 };
 
 enum eCarNodes
@@ -137,10 +142,10 @@ DECL_CLASS(CDamageManager)
         unsigned char m_anWheelsStatus[4];
         struct
         {
-            unsigned char m_nRightRearWheelsStatus;
-            unsigned char m_nRightFrontWheelsStatus;
-            unsigned char m_nLeftRearWheelsStatus;
             unsigned char m_nLeftFrontWheelsStatus;
+            unsigned char m_nLeftRearWheelsStatus;
+            unsigned char m_nRightFrontWheelsStatus;
+            unsigned char m_nRightRearWheelsStatus;
         };
     };
     union
@@ -163,8 +168,8 @@ DECL_CLASS(CDamageManager)
         {
             unsigned int m_nLeftFrontLightStatus : 2;
             unsigned int m_nRightFrontLightStatus : 2;
-            unsigned int m_nRightRearLightStatus : 2;
             unsigned int m_nLeftRearLightStatus : 2;
+            unsigned int m_nRightRearLightStatus : 2;
         };
     };
     unsigned int m_nPanelsStatus;
@@ -218,12 +223,23 @@ DECL_CLASS_END()
 
 
 
+struct tHydraulicData
+{
+    float fStdUpper;
+    float fStdLower;
+    float fJackedUpper;
+    float fJackedLower;
+    float fStoppedUpper;
+    float fStoppedLower;
+    float aScriptControl[4];
+};
+CHECKSIZE(tHydraulicData, 0x28, 0x28);
+
 DECL_CLASS_BASED(CAutomobile, CVehicle)
     // Construct/Deconstruct functions
     CAutomobile(){}
-    DECL_CTORCALL_ARG_HEAD(CAutomobile, _ZN11CAutomobileC2Eihh, int modelIdx, u8 createdBy, u8 suspensionLines)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy, suspensionLines)
-    DECL_DTORCALL(CAutomobile, _ZN11CAutomobileD2Ev);
+    DECL_CTORCALL_PROXY(CAutomobile, _ZN11CAutomobileC2Eihh, int modelIdx, u8 createdBy, u8 suspensionLines);
+    DECL_DTORCALL_PROXY(CAutomobile, _ZN11CAutomobileD2Ev);
 
     // Virtual functions
     virtual bool ProcessAI(unsigned int &);
@@ -445,9 +461,8 @@ enum eMonsterTruckNodes
 DECL_CLASS_BASED(CMonsterTruck, CAutomobile)
     // Construct/Deconstruct functions
     CMonsterTruck(){}
-    DECL_CTORCALL_ARG_HEAD(CMonsterTruck, _ZN13CMonsterTruckC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CMonsterTruck, _ZN13CMonsterTruckD2Ev);
+    DECL_CTORCALL_PROXY(CMonsterTruck, _ZN13CMonsterTruckC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CMonsterTruck, _ZN13CMonsterTruckD2Ev);
 
     // STATIC values
     DECL_VALUE_PLT_FLT(DUMPER_COL_ANGLEMULT, BYBIT(0x676FA8, 0x84BF88));
@@ -492,9 +507,8 @@ enum eTrailerNodes
 DECL_CLASS_BASED(CTrailer, CAutomobile)
     // Construct/Deconstruct functions
     CTrailer(){}
-    DECL_CTORCALL_ARG_HEAD(CTrailer, _ZN8CTrailerC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CTrailer, _ZN8CTrailerD2Ev);
+    DECL_CTORCALL_PROXY(CTrailer, _ZN8CTrailerC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CTrailer, _ZN8CTrailerD2Ev);
 
     // STATIC values
     DECL_VALUE_PLT_FLT(m_fTrailerSuspensionForce, BYBIT(0x677F00, 0x84DE20));
@@ -540,9 +554,8 @@ enum eQuadBikeNodes
 DECL_CLASS_BASED(CQuadBike, CAutomobile)
     // Construct/Deconstruct functions
     CQuadBike(){}
-    DECL_CTORCALL_ARG_HEAD(CQuadBike, _ZN9CQuadBikeC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CQuadBike, _ZN9CQuadBikeD2Ev);
+    DECL_CTORCALL_PROXY(CQuadBike, _ZN9CQuadBikeC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CQuadBike, _ZN9CQuadBikeD2Ev);
 
     // Member values
     void          *m_pHandling;
@@ -601,12 +614,26 @@ struct tHeliLight
     CVector m_vecEllipseSide;
 };
 
+struct HeliSearchLight
+{
+    CVector vecSourcePosition;
+    CVector vecTargetPosition;
+    float radius;
+    float brightness;
+    u32 UniqueID;
+    u8 ClipIfColliding;
+    u8 bRenderGroundLight;
+    CVector vecEllipseCentre;
+    CVector vecEllipseForward;
+    CVector vecEllipseSide;
+};
+CHECKSIZE(HeliSearchLight, 0x4C, 0x4C);
+
 DECL_CLASS_BASED(CHeli, CAutomobile)
     // Construct/Deconstruct functions
     CHeli(){}
-    DECL_CTORCALL_ARG_HEAD(CHeli, _ZN5CHeliC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CHeli, _ZN5CHeliD2Ev);
+    DECL_CTORCALL_PROXY(CHeli, _ZN5CHeliC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CHeli, _ZN5CHeliD2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(InitHelis, _ZN5CHeli9InitHelisEv, void);
@@ -668,6 +695,7 @@ DECL_CLASS_BASED(CHeli, CAutomobile)
     unsigned char                m_nFiringMultiplier;
     unsigned char       m_bSearchLightEnabled;
     float               m_fCrashAndBurnTurnSpeed;
+    DECL_OBJECT_ARRAY_PLT(HeliSearchLight, HeliSearchLights, BYBIT(0x677BF4, 0x84D808));
 DECL_CLASS_END()
 CHECKSIZE(CHeli, 0xA2C, 0xC60);
 
@@ -706,9 +734,8 @@ enum ePlaneNodes
 DECL_CLASS_BASED(CPlane, CAutomobile)
     // Construct/Deconstruct functions
     CPlane(){}
-    DECL_CTORCALL_ARG_HEAD(CPlane, _ZN6CPlaneC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CPlane, _ZN6CPlaneD2Ev);
+    DECL_CTORCALL_PROXY(CPlane, _ZN6CPlaneC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CPlane, _ZN6CPlaneD2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(FindPlaneCreationCoors, _ZN6CPlane22FindPlaneCreationCoorsEP7CVectorS1_PfS2_b, void, CVector* arg0, CVector* arg1, float* arg2, float* arg3, bool arg4);

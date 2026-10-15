@@ -1,0 +1,19 @@
+#ifndef __AML_PSDK_SAINTERIORENUM_H
+#define __AML_PSDK_SAINTERIORENUM_H
+
+enum eInteriorType
+{
+    IT_SHOP = 0,
+    IT_OFFICE = 1,
+    IT_LOUNGE = 2,
+    IT_BEDROOM = 3,
+    IT_KITCHEN = 4,
+    IT_BATHROOM = 5,
+    IT_OFFLICENSE = 6,
+    IT_HOTELROOM = 7,
+    IT_MISC = 8,
+    MAX_NUM_INTERIOR_TYPES = 9,
+    IT_TESTROOM = 99,
+};
+
+#endif // __AML_PSDK_SAINTERIORENUM_H

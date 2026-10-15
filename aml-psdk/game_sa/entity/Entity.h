@@ -47,8 +47,8 @@ enum eEntityStatus : u8
 
 DECL_CLASS_BASED(CEntity, CPlaceable)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CEntity, _ZN7CEntityC2Ev);
-    DECL_DTORCALL(CEntity, _ZN7CEntityD2Ev);
+    DECL_CTORCALL_PROXY(CEntity, _ZN7CEntityC2Ev);
+    DECL_DTORCALL_PROXY(CEntity, _ZN7CEntityD2Ev);
 
     // Virtual functions
     virtual void Add();
@@ -232,8 +232,8 @@ CHECKSIZE(CEntity, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummy, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CDummy, _ZN6CDummyC2Ev);
-    DECL_DTORCALL(CDummy, _ZN6CDummyD2Ev);
+    DECL_CTORCALL_PROXY(CDummy, _ZN6CDummyC2Ev);
+    DECL_DTORCALL_PROXY(CDummy, _ZN6CDummyD2Ev);
     DECL_NEWCALL(CDummy, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
     DECL_DLCALL(CDummy, _ZN6CDummydlEPv);
 DECL_CLASS_END()
@@ -241,10 +241,9 @@ CHECKSIZE(CDummy, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummyObject, CDummy)
     // Construct/Deconstruct functions
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCDummyObject1, _ZN12CDummyObjectC2EP7CObject, void, CDummyObject* self, CObject* pObject);
-    CDummyObject(CObject* pObject) { FuncProxy_ctorCDummyObject1(this, pObject); }
-    DECL_CTORCALL(CDummyObject, _ZN12CDummyObjectC2Ev);
-    DECL_DTORCALL(CDummyObject, _ZN12CDummyObjectD2Ev);
+    DECL_CTORCALL_PROXY(CDummyObject1, _ZN12CDummyObjectC2EP7CObject, CObject* pObject);
+    DECL_CTORCALL_PROXY(CDummyObject, _ZN12CDummyObjectC2Ev);
+    DECL_DTORCALL_PROXY(CDummyObject, _ZN12CDummyObjectD2Ev);
     DECL_NEWCALL(CDummyObject, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
     DECL_DLCALL(CDummyObject, _ZN6CDummydlEPv);
     
@@ -259,7 +258,7 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CBuilding, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CBuilding, _ZN9CBuildingC2Ev);
+    DECL_CTORCALL_PROXY(CBuilding, _ZN9CBuildingC2Ev);
     DECL_NEWCALL(CBuilding, BYBIT(_ZN9CBuildingnwEj, _ZN9CBuildingnwEm) );
     DECL_DLCALL(CBuilding, _ZN9CBuildingdlEPv);
     

@@ -102,7 +102,7 @@ CHECKSIZE(TextureListingContainer, 0x11, 0x15);
 
 DECL_CLASS_VTABLE(TextureDatabase)
     // Construct/Deconstruct functions
-    DECL_DTORCALL(TextureDatabase, _ZN15TextureDatabaseD2Ev);
+    DECL_DTORCALL_PROXY(TextureDatabase, _ZN15TextureDatabaseD2Ev);
 
     // Member functions
     DECL_THISCALL_HEAD(LoadEntry, _ZN15TextureDatabase9LoadEntryEPcb, void, char *line, bool hashName)
@@ -136,7 +136,7 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(TextureDatabaseRuntime, TextureDatabase)
     // Construct/Deconstruct functions
-    DECL_DTORCALL(TextureDatabaseRuntime, _ZN22TextureDatabaseRuntimeD2Ev);
+    DECL_DTORCALL_PROXY(TextureDatabaseRuntime, _ZN22TextureDatabaseRuntimeD2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(UpdateStreaming, _ZN22TextureDatabaseRuntime15UpdateStreamingEfb, void, float deltaTime, bool flush);

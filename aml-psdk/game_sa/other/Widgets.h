@@ -53,9 +53,8 @@ CHECKSIZE(CHoldEffect, 0x568, 0x578);
 DECL_CLASS_BASED(CWidget, SimpleVTable)
     // Construct/Deconstruct functions
     CWidget(){}
-    DECL_CTORCALL_ARG_HEAD(CWidget, _ZN7CWidgetC2EPKcRK14WidgetPositionj10HIDMapping, char const* pszSprite, WidgetPosition const& WidgetPos, u32 nFlags, HIDMapping Mapping)
-    DECL_CTORCALL_ARG_TAIL(pszSprite, WidgetPos, nFlags, Mapping)
-    DECL_DTORCALL(CWidget, _ZN7CWidgetD2Ev);
+    DECL_CTORCALL_PROXY(CWidget, _ZN7CWidgetC2EPKcRK14WidgetPositionj10HIDMapping, char const* pszSprite, WidgetPosition const& WidgetPos, u32 nFlags, HIDMapping Mapping);
+    DECL_DTORCALL_PROXY(CWidget, _ZN7CWidgetD2Ev);
 
     // Virtual functions
     virtual const char* GetName(void);

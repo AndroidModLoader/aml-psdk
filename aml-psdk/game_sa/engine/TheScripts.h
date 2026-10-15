@@ -14,6 +14,224 @@ struct CObject;
 struct CBuilding;
 struct FxSystem_c;
 struct CCheckpoint;
+struct CPedGenerator;
+
+enum EScriptWindowType
+{
+    WINDOW_NONE = 0,
+    WINDOW_HEADER_AND_TEXT = 1,
+    WINDOW_HEADER_NO_TEXT = 2,
+    WINDOW_SOLID_COLOUR = 3,
+    WINDOW_SPRITE_NO_ROTATION = 4,
+    WINDOW_SPRITE_WITH_ROTATION = 5,
+};
+
+struct tUsedObject
+{
+    char Name[24];
+    i32 Index;
+};
+CHECKSIZE(tUsedObject, 0x1C, 0x1C);
+
+struct tScriptText
+{
+    float ScriptTextXScale;
+    float ScriptTextYScale;
+    CRGBA ScriptTextColor;
+    u8 ScriptTextJustify;
+    u8 ScriptTextCentre;
+    u8 ScriptTextBackgrnd;
+    u8 ScriptTextBackgrndOnlyText;
+    float ScriptTextWrapX;
+    float ScriptTextCentreSize;
+    CRGBA ScriptTextBackgrndColor;
+    u8 ScriptTextProportional;
+    CRGBA ScriptTextDropShadowColour;
+    i8 ScriptTextDropShadow;
+    i8 ScriptTextEdge;
+    u8 ScriptTextBeforeFade;
+    u8 ScriptTextRightJustify;
+    i32 ScriptTextFontStyle;
+    float ScriptTextAtX;
+    float ScriptTextAtY;
+    char ScriptTextLabel[8];
+    i32 NumberToInsert1;
+    i32 NumberToInsert2;
+};
+CHECKSIZE(tScriptText, 0x44, 0x44);
+
+struct tScriptRectangle
+{
+    EScriptWindowType eWindowType;
+    u8 ScriptRectBeforeFade;
+    i16 ScriptSpriteIndex;
+    float ScriptRectMinX;
+    float ScriptRectMinY;
+    float ScriptRectMaxX;
+    float ScriptRectMaxY;
+    float ScriptRectRotation;
+    CRGBA ScriptRectColour;
+    char pTitle[10];
+    char pMessage[10];
+    i32 nAlignment;
+    i32 nSwirl;
+};
+CHECKSIZE(tScriptRectangle, 0x3C, 0x3C);
+
+struct tScriptUniqueThing
+{
+    u8 bUsed;
+    u16 ReferenceIndex;
+};
+CHECKSIZE(tScriptUniqueThing, 0x4, 0x4);
+
+struct tMultiScript
+{
+    i32 StartOfScriptIndex;
+};
+CHECKSIZE(tMultiScript, 0x4, 0x4);
+
+struct tScriptBrain
+{
+    i16 StreamedScriptIndex;
+    i8 TypeOfBrain;
+    i8 ObjectGroupingID;
+    u8 bBrainActive;
+    float ObjectBrainActivationRange;
+    union
+    {
+        struct
+        {
+            i16 PedModelOrPedGeneratorIndex;
+            u16 PercentageChance;
+        } RandomPedData;
+        char ScriptName[8];
+    };
+};
+CHECKSIZE(tScriptBrain, 0x14, 0x14);
+
+struct tScriptSwitchCase
+{
+    i32 Value;
+    i32 Address;
+};
+CHECKSIZE(tScriptSwitchCase, 0x8, 0x8);
+
+struct tUpsideDownCar
+{
+    i32 CarID;
+    u32 UpsideDownTimer;
+};
+CHECKSIZE(tUpsideDownCar, 0x8, 0x8);
+
+struct tStuckCar
+{
+    i32 CarID;
+    CVector LastPos;
+    i32 LastChecked;
+    float StuckRadius;
+    i32 CheckTime;
+    u8 bStuck;
+    u8 bWarpCar;
+    u8 bWarpIfStuckFlag;
+    u8 bWarpIfUpsideDownFlag;
+    u8 bWarpIfInWaterFlag;
+    i8 NumberOfNodesToCheck;
+};
+CHECKSIZE(tStuckCar, 0x24, 0x24);
+
+DECL_CLASS(CUpsideDownCarCheck)
+    // Member functions
+    DECL_THISCALL_NAMED_HEAD(IsCarUpsideDown1, IsCarUpsideDown, _ZN19CUpsideDownCarCheck15IsCarUpsideDownEi, u8, i32 CarToCheckID)
+    DECL_THISCALL_TAIL(IsCarUpsideDown1, CarToCheckID)
+    DECL_THISCALL_NAMED_HEAD(IsCarUpsideDown2, IsCarUpsideDown, _ZN19CUpsideDownCarCheck15IsCarUpsideDownEPK8CVehicle, u8, CVehicle const* arg1)
+    DECL_THISCALL_TAIL(IsCarUpsideDown2, arg1)
+    DECL_THISCALL_SIMPLE(Init, _ZN19CUpsideDownCarCheck4InitEv, void);
+    DECL_THISCALL_SIMPLE(UpdateTimers, _ZN19CUpsideDownCarCheck12UpdateTimersEv, void);
+    DECL_THISCALL_SIMPLE(AreAnyCarsUpsideDown, _ZN19CUpsideDownCarCheck20AreAnyCarsUpsideDownEv, u8);
+    DECL_THISCALL_HEAD(AddCarToCheck, _ZN19CUpsideDownCarCheck13AddCarToCheckEi, void, i32 NewCarID)
+    DECL_THISCALL_TAIL(AddCarToCheck, NewCarID)
+    DECL_THISCALL_HEAD(RemoveCarFromCheck, _ZN19CUpsideDownCarCheck18RemoveCarFromCheckEi, void, i32 RemoveCarID)
+    DECL_THISCALL_TAIL(RemoveCarFromCheck, RemoveCarID)
+    DECL_THISCALL_HEAD(HasCarBeenUpsideDownForAWhile, _ZN19CUpsideDownCarCheck29HasCarBeenUpsideDownForAWhileEi, u8, i32 CheckCarID)
+    DECL_THISCALL_TAIL(HasCarBeenUpsideDownForAWhile, CheckCarID)
+
+    // Member values
+    tUpsideDownCar Cars[6];
+DECL_CLASS_END()
+CHECKSIZE(CUpsideDownCarCheck, 0x30, 0x30);
+
+DECL_CLASS(CStuckCarCheck)
+    // Member functions
+    DECL_THISCALL_HEAD(ResetArrayElement, _ZN14CStuckCarCheck17ResetArrayElementEt, void, u16 Index)
+    DECL_THISCALL_TAIL(ResetArrayElement, Index)
+    DECL_THISCALL_HEAD(AttemptToWarpVehicle, _ZN14CStuckCarCheck20AttemptToWarpVehicleEP8CVehicleR7CVectorf, bool, CVehicle* pVehicle, CVector& NewCoords, float NewHeading)
+    DECL_THISCALL_TAIL(AttemptToWarpVehicle, pVehicle, NewCoords, NewHeading)
+    DECL_THISCALL_SIMPLE(Init, _ZN14CStuckCarCheck4InitEv, void);
+    DECL_THISCALL_SIMPLE(Process, _ZN14CStuckCarCheck7ProcessEv, void);
+    DECL_THISCALL_HEAD(AddCarToCheck, _ZN14CStuckCarCheck13AddCarToCheckEifjhhhha, void, i32 NewCarID, float StuckRad, u32 CheckEvery, u8 bWarpCar, u8 bStuckFlag, u8 bUpsideDownFlag, u8 bInWaterFlag, i8 NumberOfNodesToCheck)
+    DECL_THISCALL_TAIL(AddCarToCheck, NewCarID, StuckRad, CheckEvery, bWarpCar, bStuckFlag, bUpsideDownFlag, bInWaterFlag, NumberOfNodesToCheck)
+    DECL_THISCALL_HEAD(RemoveCarFromCheck, _ZN14CStuckCarCheck18RemoveCarFromCheckEi, void, i32 RemoveCarID)
+    DECL_THISCALL_TAIL(RemoveCarFromCheck, RemoveCarID)
+    DECL_THISCALL_HEAD(HasCarBeenStuckForAWhile, _ZN14CStuckCarCheck24HasCarBeenStuckForAWhileEi, u8, i32 CheckCarID)
+    DECL_THISCALL_TAIL(HasCarBeenStuckForAWhile, CheckCarID)
+    DECL_THISCALL_HEAD(ClearStuckFlagForCar, _ZN14CStuckCarCheck20ClearStuckFlagForCarEi, void, i32 CheckCarID)
+    DECL_THISCALL_TAIL(ClearStuckFlagForCar, CheckCarID)
+    DECL_THISCALL_HEAD(IsCarInStuckCarArray, _ZN14CStuckCarCheck20IsCarInStuckCarArrayEi, u8, i32 CheckCarID)
+    DECL_THISCALL_TAIL(IsCarInStuckCarArray, CheckCarID)
+
+    // Member values
+    tStuckCar Cars[16];
+DECL_CLASS_END()
+CHECKSIZE(CStuckCarCheck, 0x240, 0x240);
+
+DECL_CLASS(CScriptsForBrains)
+    enum
+    {
+        PED_STREAMED = 0,
+        OBJECT_STREAMED = 1,
+        PED_GENERATOR_STREAMED = 2,
+        CODE_PED = 3,
+        CODE_OBJECT = 4,
+        CODE_ATTRACTOR_PED = 5,
+    };
+
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CScriptsForBrains, _ZN17CScriptsForBrainsC2Ev);
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(Init, _ZN17CScriptsForBrains4InitEv, void);
+    DECL_THISCALL_HEAD(SwitchAllObjectBrainsWithThisID, _ZN17CScriptsForBrains31SwitchAllObjectBrainsWithThisIDEab, void, i8 object_grouping_id, bool bBrainOn)
+    DECL_THISCALL_TAIL(SwitchAllObjectBrainsWithThisID, object_grouping_id, bBrainOn)
+    DECL_THISCALL_HEAD(AddNewScriptBrain, _ZN17CScriptsForBrains17AddNewScriptBrainEsstaaf, void, i16 StreamedScriptIndex, i16 PedModelOrPedGeneratorIndex, u16 Percentage, i8 BrainType, i8 object_grouping_id, float ObjectActivationRange)
+    DECL_THISCALL_TAIL(AddNewScriptBrain, StreamedScriptIndex, PedModelOrPedGeneratorIndex, Percentage, BrainType, object_grouping_id, ObjectActivationRange)
+    DECL_THISCALL_HEAD(AddNewStreamedScriptBrainForCodeUse, _ZN17CScriptsForBrains35AddNewStreamedScriptBrainForCodeUseEsPca, void, i16 StreamedScriptIndex, char* pScriptName, i8 BrainType)
+    DECL_THISCALL_TAIL(AddNewStreamedScriptBrainForCodeUse, StreamedScriptIndex, pScriptName, BrainType)
+    DECL_THISCALL_HEAD(StartOrRequestNewStreamedScriptBrain, _ZN17CScriptsForBrains36StartOrRequestNewStreamedScriptBrainEhP7CEntityah, void, u8 ScriptBrainIndex, CEntity* pEntity, i8 BrainType, u8 bFirstTime)
+    DECL_THISCALL_TAIL(StartOrRequestNewStreamedScriptBrain, ScriptBrainIndex, pEntity, BrainType, bFirstTime)
+    DECL_THISCALL_HEAD(StartNewStreamedScriptBrain, _ZN17CScriptsForBrains27StartNewStreamedScriptBrainEhP7CEntityh, void, u8 ScriptBrainIndex, CEntity* pEntity, u8 bPedCreatedAtAttractor)
+    DECL_THISCALL_TAIL(StartNewStreamedScriptBrain, ScriptBrainIndex, pEntity, bPedCreatedAtAttractor)
+    DECL_THISCALL_HEAD(CheckIfNewEntityNeedsScript, _ZN17CScriptsForBrains27CheckIfNewEntityNeedsScriptEP7CEntityaP13CPedGenerator, void, CEntity* pNewEntity, i8 BrainType, CPedGenerator* pPedGen)
+    DECL_THISCALL_TAIL(CheckIfNewEntityNeedsScript, pNewEntity, BrainType, pPedGen)
+    DECL_THISCALL_HEAD(GetIndexOfScriptBrainWithThisName, _ZN17CScriptsForBrains33GetIndexOfScriptBrainWithThisNameEPKca, i16, char const* pScriptName, i8 const BrainType)
+    DECL_THISCALL_TAIL(GetIndexOfScriptBrainWithThisName, pScriptName, BrainType)
+    DECL_THISCALL_HEAD(StartOrRequestNewStreamedScriptBrainWithThisName, _ZN17CScriptsForBrains48StartOrRequestNewStreamedScriptBrainWithThisNameEPKcP7CEntitya, void, char const* pScriptName, CEntity* pEntity, i8 BrainType)
+    DECL_THISCALL_TAIL(StartOrRequestNewStreamedScriptBrainWithThisName, pScriptName, pEntity, BrainType)
+    DECL_THISCALL_HEAD(RequestAttractorScriptBrainWithThisName, _ZN17CScriptsForBrains39RequestAttractorScriptBrainWithThisNameEPKc, void, char const* pScriptName)
+    DECL_THISCALL_TAIL(RequestAttractorScriptBrainWithThisName, pScriptName)
+    DECL_THISCALL_HEAD(MarkAttractorScriptBrainWithThisNameAsNoLongerNeeded, _ZN17CScriptsForBrains52MarkAttractorScriptBrainWithThisNameAsNoLongerNeededEPKc, void, char const* pScriptName)
+    DECL_THISCALL_TAIL(MarkAttractorScriptBrainWithThisNameAsNoLongerNeeded, pScriptName)
+    DECL_THISCALL_HEAD(HasAttractorScriptBrainWithThisNameLoaded, _ZN17CScriptsForBrains41HasAttractorScriptBrainWithThisNameLoadedEPKc, u8, char const* pScriptName)
+    DECL_THISCALL_TAIL(HasAttractorScriptBrainWithThisNameLoaded, pScriptName)
+    DECL_THISCALL_HEAD(StartAttractorScriptBrainWithThisName, _ZN17CScriptsForBrains37StartAttractorScriptBrainWithThisNameEPKcP7CEntityh, void, char const* pScriptName, CEntity* pEntity, u8 bPedCreatedAtAttractor)
+    DECL_THISCALL_TAIL(StartAttractorScriptBrainWithThisName, pScriptName, pEntity, bPedCreatedAtAttractor)
+    DECL_THISCALL_HEAD(IsObjectWithinBrainActivationRange, _ZN17CScriptsForBrains34IsObjectWithinBrainActivationRangeEP7CObjectRK7CVector, u8, CObject* pObject, CVector const& vecCentrePoint)
+    DECL_THISCALL_TAIL(IsObjectWithinBrainActivationRange, pObject, vecCentrePoint)
+
+    // Member values
+    tScriptBrain ScriptBrainArray[70];
+DECL_CLASS_END()
+CHECKSIZE(CScriptsForBrains, 0x578, 0x578);
 
 struct tScriptSphere
 {
@@ -259,6 +477,15 @@ DECL_CLASS(CTheScripts)
     DECL_OBJECT_PLT(CMissionCleanup, MissionCleanUp, BYBIT(0x677318, 0x84C668));
     DECL_OBJECT_PLT(CScriptResourceManager, ScriptResourceManager, BYBIT(0x677EB0, 0x84DD80));
     DECL_OBJECT_PLT(CStreamedScripts, StreamedScripts, BYBIT(0x6761B8, 0x84A3D0));
+    DECL_OBJECT_PLT(CUpsideDownCarCheck, UpsideDownCars, BYBIT(0x677538, 0x84CAA8));
+    DECL_OBJECT_PLT(CStuckCarCheck, StuckCars, BYBIT(0x678FA0, 0x84FF68));
+    DECL_OBJECT_PLT(CScriptsForBrains, ScriptsForBrains, BYBIT(0x67763C, 0x84CCA8));
+    DECL_OBJECT_ARRAY_PLT(tUsedObject, UsedObjectArray, BYBIT(0x679FBC, 0x851F88));
+    DECL_OBJECT_ARRAY_PLT(tScriptText, IntroTextLines, BYBIT(0x676C78, 0x84B938));
+    DECL_OBJECT_ARRAY_PLT(tScriptRectangle, IntroRectangles, BYBIT(0x67915C, 0x8502E0));
+    DECL_OBJECT_ARRAY_PLT(tMultiScript, MultiScriptArray, BYBIT(0x677E6C, 0x84DCF8));
+    DECL_OBJECT_ARRAY_PLT(tScriptUniqueThing, ScriptSequenceTaskArray, BYBIT(0x6792F0, 0x8505F8));
+    DECL_OBJECT_ARRAY_PLT(tScriptSwitchCase, SwitchJumpTable, BYBIT(0x676660, 0x84AD18));
 DECL_CLASS_END()
 
 #define ScriptsArray ScriptsArray()

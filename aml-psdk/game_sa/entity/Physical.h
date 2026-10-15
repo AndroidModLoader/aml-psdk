@@ -11,8 +11,8 @@ struct RtQuat;
 
 DECL_CLASS_BASED(CPhysical, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CPhysical, _ZN9CPhysicalC2Ev);
-    DECL_DTORCALL(CPhysical, _ZN9CPhysicalD2Ev);
+    DECL_CTORCALL_PROXY(CPhysical, _ZN9CPhysicalC2Ev);
+    DECL_DTORCALL_PROXY(CPhysical, _ZN9CPhysicalD2Ev);
 
     // Static functions
     DECL_FASTCALL_SIMPLE(PlacePhysicalRelativeToOtherPhysical, _ZN9CPhysical36PlacePhysicalRelativeToOtherPhysicalEPS_S0_7CVector, void, CPhysical* physical1, CPhysical* physical2, CVector offset);

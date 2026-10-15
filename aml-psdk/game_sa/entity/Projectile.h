@@ -12,9 +12,8 @@
 
 DECL_CLASS_BASED(CProjectile, CObject)
     // Construct/Deconstruct functions
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCProjectile, _ZN11CProjectileC2Ei, void, CProjectile* object, i32 modelId);
-    CProjectile(i32 modelId) { FuncProxy_ctorCProjectile(this, modelId); }
-    DECL_DTORCALL(CProjectile, _ZN11CProjectileD2Ev);
+    DECL_CTORCALL_PROXY(CProjectile, _ZN11CProjectileC2Ei, i32 modelId);
+    DECL_DTORCALL_PROXY(CProjectile, _ZN11CProjectileD2Ev);
     DECL_THISCALL_SIMPLE(Delete, _ZN11CProjectileD0Ev, void);
 DECL_CLASS_END()
 CHECKSIZE(CProjectile, 0x184, 0x1F8);

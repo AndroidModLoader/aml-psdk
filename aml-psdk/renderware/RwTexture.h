@@ -4,6 +4,7 @@
 #include <aml-psdk/sdk_base.h>
 #include "RwBase.h"
 #include "RwLinks.h"
+#include "RwRender.h"
 
 #define rwTEXTUREBASENAMELENGTH 32
 
@@ -93,5 +94,92 @@ DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamRead, _Z25RwTexDictionaryStreamRea
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamWrite, _Z26RwTexDictionaryStreamWritePK15RwTexDictionaryP8RwStream, const RwTexDictionary*, const RwTexDictionary* dict, RwStream* stream);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryStreamGetSize, _Z28RwTexDictionaryStreamGetSizePK15RwTexDictionary, RwUInt32, const RwTexDictionary* dict);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGtaStreamRead, _Z28RwTexDictionaryGtaStreamReadP8RwStream, RwTexDictionary*, RwStream* stream);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryRegisterPluginStream, _Z35RwTexDictionaryRegisterPluginStreamjPFP8RwStreamS0_iPviiEPFS0_S0_iPKviiEPFiS5_iiE, RwInt32, RwUInt32 pluginID, RwPluginDataChunkReadCallBack readCB, RwPluginDataChunkWriteCallBack writeCB, RwPluginDataChunkGetSizeCallBack getSizeCB);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionarySetStreamAlwaysCallBack, _Z38RwTexDictionarySetStreamAlwaysCallBackjPFiPviiE, RwInt32, RwUInt32 pluginID, RwPluginDataChunkAlwaysCallBack alwaysCB);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetPluginOffset, _Z30RwTexDictionaryGetPluginOffsetj, RwInt32, RwUInt32 pluginID);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryRegisterPlugin, _Z29RwTexDictionaryRegisterPluginijPFPvS_iiES1_PFS_S_PKviiE, RwInt32, RwInt32 size, RwUInt32 pluginID, RwPluginObjectConstructor constructCB, RwPluginObjectDestructor destructCB, RwPluginObjectCopy copyCB);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionarySetFreeListCreateParams, _Z38RwTexDictionarySetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryValidatePlugins, _Z30RwTexDictionaryValidatePluginsPK15RwTexDictionary, RwBool, RwTexDictionary const* dict);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGtaStreamRead1, _Z29RwTexDictionaryGtaStreamRead1P8RwStream, RwTexDictionary*, RwStream* pStream);
+
+DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGtaStreamRead2, _Z29RwTexDictionaryGtaStreamRead2P8RwStreamP15RwTexDictionary, RwTexDictionary*, RwStream* pStream, RwTexDictionary* texDict);
+
+inline RwRaster* RwTextureGetRaster(const RwTexture* texture)
+{
+    return texture->raster;
+}
+
+inline RwChar* RwTextureGetName(RwTexture* texture)
+{
+    return texture->name;
+}
+
+inline RwChar* RwTextureGetMaskName(RwTexture* texture)
+{
+    return texture->mask;
+}
+
+inline RwTexDictionary* RwTextureGetDictionary(RwTexture* texture)
+{
+    return texture->dict;
+}
+
+inline RwTexture* RwTextureAddRef(RwTexture* texture)
+{
+    ++texture->refCount;
+    return texture;
+}
+
+inline RwTexture* RwTextureSetFilterMode(RwTexture* texture, RwTextureFilterMode filter)
+{
+    texture->filterAddressing = (texture->filterAddressing & ~0xFFU) | ((RwUInt32)filter & 0xFFU);
+    return texture;
+}
+
+inline RwTextureFilterMode RwTextureGetFilterMode(const RwTexture* texture)
+{
+    return (RwTextureFilterMode)(texture->filterAddressing & 0xFFU);
+}
+
+inline RwTexture* RwTextureSetAddressingU(RwTexture* texture, RwTextureAddressMode address)
+{
+    texture->filterAddressing = (texture->filterAddressing & ~0xF00U) | (((RwUInt32)address << 8) & 0xF00U);
+    return texture;
+}
+
+inline RwTextureAddressMode RwTextureGetAddressingU(const RwTexture* texture)
+{
+    return (RwTextureAddressMode)((texture->filterAddressing >> 8) & 0xFU);
+}
+
+inline RwTexture* RwTextureSetAddressingV(RwTexture* texture, RwTextureAddressMode address)
+{
+    texture->filterAddressing = (texture->filterAddressing & ~0xF000U) | (((RwUInt32)address << 12) & 0xF000U);
+    return texture;
+}
+
+inline RwTextureAddressMode RwTextureGetAddressingV(const RwTexture* texture)
+{
+    return (RwTextureAddressMode)((texture->filterAddressing >> 12) & 0xFU);
+}
+
+inline RwTexture* RwTextureSetAddressing(RwTexture* texture, RwTextureAddressMode address)
+{
+    texture->filterAddressing = (texture->filterAddressing & ~0xFF00U) | (((RwUInt32)address << 8) & 0xF00U) | (((RwUInt32)address << 12) & 0xF000U);
+    return texture;
+}
+
+inline RwTextureAddressMode RwTextureGetAddressing(const RwTexture* texture)
+{
+    RwTextureAddressMode addressU = RwTextureGetAddressingU(texture);
+    return addressU == RwTextureGetAddressingV(texture) ? addressU : rwTEXTUREADDRESSNATEXTUREADDRESS;
+}
 
 #endif // __AML_PSDK_RWTEXTURE_H

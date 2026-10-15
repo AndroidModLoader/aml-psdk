@@ -25,8 +25,8 @@ CHECKSIZE(CSimpleTransform, 0x10, 0x10);
 
 DECL_CLASS_VTABLE(CPlaceable)
     // Construct/Deconstruct functions
-    DECL_DTORCALL(CPlaceable, _ZN10CPlaceableD2Ev);
-    DECL_CTORCALL(CPlaceable, _ZN10CPlaceableC2Ev);
+    DECL_DTORCALL_PROXY(CPlaceable, _ZN10CPlaceableD2Ev);
+    DECL_CTORCALL_PROXY(CPlaceable, _ZN10CPlaceableC2Ev);
     //DECL_DTORCALL(CPlaceable, _ZN10CPlaceableD0Ev);
 
     // STATIC functions

@@ -21,9 +21,9 @@ DECL_CLASS(CMatrix)
     // Construct/Deconstruct functions
     DECL_CTORCALL_ARG_HEAD(CMatrix, _ZN7CMatrixC2EP11RwMatrixTagb, RwMatrix* matrix, bool temporary)
     DECL_CTORCALL_ARG_TAIL(matrix, temporary)
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCMatrix1, _ZN7CMatrixC2ERK16CMatrixSerialize, void, CMatrix* self, CMatrixSerialize const& matrix);
+    DECL_CTORCALL_PROXY(CMatrix1, _ZN7CMatrixC2ERK16CMatrixSerialize, CMatrixSerialize const& matrix);
     CMatrix(CMatrixSerialize const& matrix) { FuncProxy_ctorCMatrix1(this, matrix); }
-    DECL_FASTCALL_SIMPLE(FuncProxy_ctorCMatrix2, _ZN7CMatrixC2ERKS_, void, CMatrix* self, CMatrix const& matrix);
+    DECL_CTORCALL_PROXY(CMatrix2, _ZN7CMatrixC2ERKS_, CMatrix const& matrix);
     CMatrix(CMatrix const& matrix) { FuncProxy_ctorCMatrix2(this, matrix); }
     DECL_DTORCALL(CMatrix, _ZN7CMatrixD2Ev);
 

@@ -89,4 +89,41 @@ DECL_FASTCALL_SIMPLE_GLO(RpLightStreamWrite, _Z18RpLightStreamWritePK7RpLightP8R
 DECL_FASTCALL_SIMPLE_GLO(RpLightTieSetFreeListCreateParams, _Z33RpLightTieSetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 DECL_FASTCALL_SIMPLE_GLO(RpLightValidatePlugins, _Z22RpLightValidatePluginsPK7RpLight, RwBool, const RpLight* light);
 
+inline RwReal RpLightGetRadius(const RpLight* light)
+{
+    return light->radius;
+}
+
+inline const RwRGBAReal* RpLightGetColor(const RpLight* light)
+{
+    return &light->color;
+}
+
+inline RwFrame* RpLightGetFrame(const RpLight* light)
+{
+    return light->object.object.frame;
+}
+
+inline RpLightType RpLightGetType(const RpLight* light)
+{
+    return (RpLightType)light->object.object.subType;
+}
+
+inline RwUInt32 RpLightGetFlags(const RpLight* light)
+{
+    return light->object.object.flags;
+}
+
+inline RpLight* RpLightSetFrame(RpLight* light, RwFrame* frame)
+{
+    _rwObjectHasFrameSetFrame(light, frame);
+    return light;
+}
+
+inline RpLight* RpLightSetFlags(RpLight* light, RwUInt32 flags)
+{
+    light->object.object.flags = (RwUInt8)flags;
+    return light;
+}
+
 #endif // __AML_PSDK_RPLIGHT_H

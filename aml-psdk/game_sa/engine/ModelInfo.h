@@ -15,6 +15,7 @@ struct RwObject;
 struct RpClump;
 struct RpAtomic;
 struct CModelInfoAccelerator;
+struct CBaseModelInfo;
 struct CAtomicModelInfo;
 struct CDamageAtomicModelInfo;
 struct CLodAtomicModelInfo;
@@ -56,9 +57,50 @@ struct RwObjectNameIdAssocation
     unsigned int m_dwFlags;
 };
 
+DECL_CLASS(CModelInfoAccelerator)
+    // Construct/Deconstruct functions
+    DECL_DTORCALL(CModelInfoAccelerator, _ZN21CModelInfoAcceleratorD2Ev);
+    DECL_CTORCALL(CModelInfoAccelerator, _ZN21CModelInfoAcceleratorC2Ev);
+    // Member functions
+    DECL_THISCALL_SIMPLE(AllocModelInfoIds, _ZN21CModelInfoAccelerator17AllocModelInfoIdsEv, void);
+    DECL_THISCALL_SIMPLE(FreeModelInfoIds, _ZN21CModelInfoAccelerator16FreeModelInfoIdsEv, void);
+    DECL_THISCALL_SIMPLE(GetModelInfoIdFile, _ZN21CModelInfoAccelerator18GetModelInfoIdFileEv, bool);
+    DECL_THISCALL_SIMPLE(EndOfLoadPhase, _ZN21CModelInfoAccelerator14EndOfLoadPhaseEv, void);
+    DECL_THISCALL_HEAD(AddModelInfoId, _ZN21CModelInfoAccelerator14AddModelInfoIdEt, void, u16 id)
+    DECL_THISCALL_TAIL(AddModelInfoId, id)
+    DECL_THISCALL_SIMPLE(Init, _ZN21CModelInfoAccelerator4InitEv, void);
+    DECL_THISCALL_HEAD(Begin, _ZN21CModelInfoAccelerator5BeginEPc, void, char* pFileName)
+    DECL_THISCALL_TAIL(Begin, pFileName)
+    DECL_THISCALL_HEAD(End, _ZN21CModelInfoAccelerator3EndEPc, void, char* pFileName)
+    DECL_THISCALL_TAIL(End, pFileName)
+    DECL_THISCALL_SIMPLE(GetNextModelInfoId, _ZN21CModelInfoAccelerator18GetNextModelInfoIdEv, u16);
+    DECL_THISCALL_HEAD(GetEntry, _ZN21CModelInfoAccelerator8GetEntryEPP14CBaseModelInfoPiPc, void, CBaseModelInfo** ppModelInfo, i32* pIndex, char* pName)
+    DECL_THISCALL_TAIL(GetEntry, ppModelInfo, pIndex, pName)
+
+    // Member values
+    u16* m_pArrayModelInfoIds;
+    u16 m_nModelInfosAdded;
+    char m_FileName[20];
+    bool m_bHasRun;
+    bool m_bFileFound;
+DECL_CLASS_END()
+CHECKSIZE(CModelInfoAccelerator, 0x1C, 0x20);
+
+struct colModelNodeInfo
+{
+    char* pName;
+    u32 boneId;
+    i32 nPieceType;
+    float xOffset;
+    float yOffset;
+    float zOffset;
+    float fRadius;
+};
+CHECKSIZE(colModelNodeInfo, 0x1C, 0x20);
+
 DECL_CLASS_VTABLE(CBaseModelInfo)
     // Construct/Deconstruct functions
-    DECL_CTORCALL(CBaseModelInfo, _ZN14CBaseModelInfoC2Ev);
+    DECL_CTORCALL_PROXY(CBaseModelInfo, _ZN14CBaseModelInfoC2Ev);
     ~CBaseModelInfo(){}
 
     // Virtual functions
@@ -176,6 +218,25 @@ DECL_CLASS_END()
 
 
 
+DECL_CLASS_BASED(CLodAtomicModelInfo, CAtomicModelInfo)
+    // Construct/Deconstruct functions
+    DECL_THISCALL_SIMPLE(Delete, _ZN19CLodAtomicModelInfoD0Ev, void);
+
+    // Member values
+    i16 numChildren;
+    i16 numChildrenRendered;
+DECL_CLASS_END()
+CHECKSIZE(CLodAtomicModelInfo, 0x3C, 0x50);
+
+DECL_CLASS_BASED(CLodTimeModelInfo, CLodAtomicModelInfo)
+    // Construct/Deconstruct functions
+    DECL_THISCALL_SIMPLE(Delete, _ZN17CLodTimeModelInfoD0Ev, void);
+
+    // Member values
+    tTimeInfo m_time;
+DECL_CLASS_END()
+CHECKSIZE(CLodTimeModelInfo, 0x40, 0x50);
+
 DECL_CLASS_BASED(CClumpModelInfo, CBaseModelInfo)
     // Virtual functions
     virtual CBoundingBox &GetBoundingBox();
@@ -214,7 +275,7 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CPedModelInfo, CClumpModelInfo)
     // Construct/Deconstruct functions
-    DECL_DTORCALL(CPedModelInfo, _ZN13CPedModelInfoD2Ev);
+    DECL_DTORCALL_PROXY(CPedModelInfo, _ZN13CPedModelInfoD2Ev);
 
     // STATIC values
     DECL_OBJECT_ARRAY_PLT(RwObjectNameIdAssocation, m_pPedIds, BYBIT(0x67796C, 0x84D300));
@@ -328,5 +389,11 @@ DECL_CLASS_END()
 #define m_pPedIds m_pPedIds()
 
 #define ms_lastPositionSearched ms_lastPositionSearched()
+
+struct VehicleDesc
+{
+    RwObjectNameIdAssocation* pAssocArray;
+};
+CHECKSIZE(VehicleDesc, 0x4, 0x8);
 
 #endif // __AML_PSDK_SAMODELINFO_H

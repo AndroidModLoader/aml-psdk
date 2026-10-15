@@ -24,9 +24,8 @@ enum eBoatNodes
 
 DECL_CLASS_BASED(CBoat, CVehicle)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_ARG_HEAD(CBoat, _ZN5CBoatC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CBoat, _ZN5CBoatD2Ev);
+    DECL_CTORCALL_PROXY(CBoat, _ZN5CBoatC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CBoat, _ZN5CBoatD2Ev);
     
 
     // STATIC functions

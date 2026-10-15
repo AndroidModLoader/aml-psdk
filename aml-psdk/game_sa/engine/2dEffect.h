@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SA2DEFFECT_H
 #define __AML_PSDK_SA2DEFFECT_H
 
+#include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/renderware/RwVector.h>
 #include <aml-psdk/renderware/RwRGBA.h>
 

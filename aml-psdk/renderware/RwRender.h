@@ -5,6 +5,9 @@
 #include "RwMatrix.h"
 #include <aml-psdk/gta_base/DrawVertices.h>
 #include "RwVector.h"
+#include "RxPipeline.h"
+
+struct RwRaster;
 
 enum RwPrimitiveType : u32
 {
@@ -280,8 +283,67 @@ DECL_FASTCALL_SIMPLE_GLO(RwIm2DRenderTriangle, _Z20RwIm2DRenderTriangleP14RwOpen
 DECL_FASTCALL_SIMPLE_GLO(RwIm2DRenderPrimitive, _Z21RwIm2DRenderPrimitive15RwPrimitiveTypeP14RwOpenGLVertexi, RwBool, i32 primtype, RwIm2DVertex *verts, i32 vertsNum);
 DECL_FASTCALL_SIMPLE_GLO(RwIm2DRenderIndexedPrimitive, _Z28RwIm2DRenderIndexedPrimitive15RwPrimitiveTypeP14RwOpenGLVertexiPti, RwBool, i32 primtype, RwIm2DVertex *verts, i32 vertsNum, RwImVertexIndex* indices, i32 indicesNum);
 
-DECL_FASTCALL_SIMPLE_GLO(RwIm3DTransform, _Z15RwIm3DTransformP18RxObjSpace3DVertexjP11RwMatrixTagj, void*, RwIm2DVertex* verts, i32 vertsNum, RwMatrix* ltm, u32 flags);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DTransform, _Z15RwIm3DTransformP18RxObjSpace3DVertexjP11RwMatrixTagj, void*, RwIm3DVertex* verts, RwUInt32 vertsNum, RwMatrix* ltm, RwUInt32 flags);
 DECL_FASTCALL_SIMPLE_GLO(RwIm3DEnd, _Z9RwIm3DEndv, RwBool);
 
+enum RwIm3DTransformFlags : RwInt32
+{
+    rwIM3D_VERTEXUV = 1,
+    rwIM3D_ALLOPAQUE = 2,
+    rwIM3D_NOCLIP = 4,
+    rwIM3D_VERTEXXYZ = 8,
+    rwIM3D_VERTEXRGBA = 16,
+    rwIM3DTRANSFORMFLAGSFORCEENUMSIZEINT = 2147483647,
+};
+
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DGetTransformPipeline, _Z26RwIm3DGetTransformPipelinev, RxPipeline*);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DGetRenderPipeline, _Z23RwIm3DGetRenderPipeline15RwPrimitiveType, RxPipeline*, RwPrimitiveType primType);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DRenderTriangle, _Z20RwIm3DRenderTriangleiii, RwBool, RwInt32 vert1, RwInt32 vert2, RwInt32 vert3);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DRenderPrimitive, _Z21RwIm3DRenderPrimitive15RwPrimitiveType, RwBool, RwPrimitiveType primType);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DRenderIndexedPrimitive, _Z28RwIm3DRenderIndexedPrimitive15RwPrimitiveTypePti, RwBool, RwPrimitiveType primType, RwImVertexIndex* indices, RwInt32 numIndices);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DSetTransformPipeline, _Z26RwIm3DSetTransformPipelineP10RxPipeline, RxPipeline*, RxPipeline* pipeline);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DSetRenderPipeline, _Z23RwIm3DSetRenderPipelineP10RxPipeline15RwPrimitiveType, RxPipeline*, RxPipeline* pipeline, RwPrimitiveType primType);
+DECL_FASTCALL_SIMPLE_GLO(RwIm3DRenderLine, _Z16RwIm3DRenderLineii, RwBool, RwInt32 vert1, RwInt32 vert2);
+
+enum RxRenderStateFlag : RwInt32
+{
+    rxRENDERSTATEFLAG_TEXTUREPERSPECTIVE = 1,
+    rxRENDERSTATEFLAG_ZTESTENABLE = 2,
+    rxRENDERSTATEFLAG_ZWRITEENABLE = 4,
+    rxRENDERSTATEFLAG_VERTEXALPHAENABLE = 8,
+    rxRENDERSTATEFLAG_FOGENABLE = 16,
+    rxRENDERSTATEFLAGFORCEENUMSIZEINT = 2147483647,
+};
+
+enum RwFogType : RwInt32
+{
+    rwFOGTYPENAFOGTYPE = 0,
+    rwFOGTYPELINEAR = 1,
+    rwFOGTYPEEXPONENTIAL = 2,
+    rwFOGTYPEEXPONENTIAL2 = 3,
+    rwFOGTYPEFORCEENUMSIZEINT = 2147483647,
+};
+
+struct RxRenderStateVector
+{
+    RwUInt32 Flags;
+    RwShadeMode ShadeMode;
+    RwBlendFunction SrcBlend;
+    RwBlendFunction DestBlend;
+    RwRaster* TextureRaster;
+    RwTextureAddressMode AddressModeU;
+    RwTextureAddressMode AddressModeV;
+    RwTextureFilterMode FilterMode;
+    RwRGBA BorderColor;
+    RwFogType FogType;
+    RwRGBA FogColor;
+};
+CHECKSIZE(RxRenderStateVector, 0x2C, 0x30);
+
+DECL_FASTCALL_SIMPLE_GLO(RxRenderStateVectorCreate, _Z25RxRenderStateVectorCreatei, RxRenderStateVector*, RwBool current);
+DECL_FASTCALL_SIMPLE_GLO(RxRenderStateVectorSetDefaultRenderStateVector, _Z46RxRenderStateVectorSetDefaultRenderStateVectorP19RxRenderStateVector, RxRenderStateVector*, RxRenderStateVector* rsvp);
+DECL_FASTCALL_SIMPLE_GLO(RxRenderStateVectorGetDefaultRenderStateVector, _Z46RxRenderStateVectorGetDefaultRenderStateVectorv, RxRenderStateVector const*);
+DECL_FASTCALL_SIMPLE_GLO(RxRenderStateVectorDestroy, _Z26RxRenderStateVectorDestroyP19RxRenderStateVector, void, RxRenderStateVector* rsvp);
+DECL_FASTCALL_SIMPLE_GLO(RxRenderStateVectorLoadDriverState, _Z34RxRenderStateVectorLoadDriverStateP19RxRenderStateVector, RxRenderStateVector*, RxRenderStateVector* rsvp);
 
 #endif // __AML_PSDK_RWIM2D_H

@@ -12,7 +12,7 @@
 #define RwBool i32
 #define RwReal float
 #define RwChar char
-#define RwFixed i64
+#define RwFixed long
 
 struct RwRect
 {

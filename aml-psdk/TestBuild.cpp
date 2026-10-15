@@ -159,6 +159,61 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/utils/TextureUtils.h>
 #include <aml-psdk/game_sa/utils/RenderWareUtils.h>
 
+#include <aml-psdk/renderware/RpUVAnim.h>
+#include <aml-psdk/renderware/RpSkin.h>
+#include <aml-psdk/game_sa/anim/AnimManager.h>
+#include <aml-psdk/game_sa/ai/tasks/TaskTypes.h>
+#include <aml-psdk/game_sa/events/EventTypes.h>
+#include <aml-psdk/game_sa/ai/PedGroup.h>
+#include <aml-psdk/game_sa/ai/DecisionMaker.h>
+#include <aml-psdk/game_sa/other/Wanted.h>
+
+#include <aml-psdk/game_sa/engine/Collision.h>
+#include <aml-psdk/game_sa/engine/Escalators.h>
+#include <aml-psdk/game_sa/engine/Furniture.h>
+#include <aml-psdk/game_sa/engine/Interior.h>
+#include <aml-psdk/game_sa/engine/PedAttractor.h>
+#include <aml-psdk/game_sa/engine/Ropes.h>
+#include <aml-psdk/game_sa/engine/StuntJump.h>
+#include <aml-psdk/game_sa/engine/SurfaceInfos.h>
+#include <aml-psdk/game_sa/engine/VehicleAnimGroup.h>
+#include <aml-psdk/game_sa/enum/Audio.h>
+#include <aml-psdk/game_sa/enum/AudioBanks.h>
+#include <aml-psdk/game_sa/enum/AudioEvents.h>
+#include <aml-psdk/game_sa/enum/Collision.h>
+#include <aml-psdk/game_sa/enum/Effects.h>
+#include <aml-psdk/game_sa/enum/EventPriority.h>
+#include <aml-psdk/game_sa/enum/Interior.h>
+#include <aml-psdk/game_sa/enum/SpeechContexts.h>
+#include <aml-psdk/game_sa/enum/TaskEnums.h>
+#include <aml-psdk/game_sa/other/BulletTraces.h>
+#include <aml-psdk/game_sa/other/Glass.h>
+#include <aml-psdk/game_sa/other/Occlusion.h>
+#include <aml-psdk/game_sa/other/RealTimeShadowManager.h>
+#include <aml-psdk/game_sa/other/Skidmarks.h>
+#include <aml-psdk/game_sa/other/SpecialFX.h>
+#include <aml-psdk/game_sa/utils/WorldUtils.h>
+#include <aml-psdk/renderware/RpMatFX.h>
+
+#include <aml-psdk/game_sa/ai/IKChain.h>
+#include <aml-psdk/game_sa/ai/PedGroups.h>
+#include <aml-psdk/game_sa/ai/PedStats.h>
+#include <aml-psdk/game_sa/ai/PedType.h>
+#include <aml-psdk/game_sa/audio/AEAudioChannel.h>
+#include <aml-psdk/game_sa/audio/AEAudioHardware.h>
+#include <aml-psdk/game_sa/audio/AEAudioUtility.h>
+#include <aml-psdk/game_sa/audio/AEDataStream.h>
+#include <aml-psdk/game_sa/audio/AESoundManager.h>
+#include <aml-psdk/game_sa/audio/AEStreamThread.h>
+#include <aml-psdk/game_sa/engine/FileLoader.h>
+#include <aml-psdk/game_sa/engine/GenericGameStorage.h>
+#include <aml-psdk/game_sa/engine/Markers.h>
+#include <aml-psdk/game_sa/engine/PostEffects.h>
+#include <aml-psdk/game_sa/engine/WaterCannons.h>
+#include <aml-psdk/game_sa/other/CustomCarPlate.h>
+#include <aml-psdk/game_sa/other/CustomRoadsign.h>
+#include <aml-psdk/game_sa/other/Shopping.h>
+
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {
     CCamera__Process(self);

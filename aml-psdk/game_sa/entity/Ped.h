@@ -22,6 +22,43 @@ struct CVehicle;
 struct CWanted;
 struct CTaskSimpleHoldEntity;
 
+DECL_CLASS(CAccident)
+    // Member functions
+    DECL_THISCALL_SIMPLE(IsFree, _ZNK9CAccident6IsFreeEv, bool);
+
+    // Member values
+    CPed* m_pInjuredPed;
+    bool m_bBeingDealtWith;
+    bool m_bHealed;
+DECL_CLASS_END()
+CHECKSIZE(CAccident, 0x8, 0x10);
+
+DECL_CLASS(CCoverPoint)
+    enum
+    {
+        COVUSE_LOWCOVER = 0,
+        COVUSE_WALLTOLEFT = 1,
+        COVUSE_WALLTORIGHT = 2,
+    };
+
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(CanAccomodateAnotherPed, _ZN11CCoverPoint23CanAccomodateAnotherPedEv, bool);
+    DECL_THISCALL_HEAD(ReserveCoverPointForPed, _ZN11CCoverPoint23ReserveCoverPointForPedEP4CPed, void, CPed* pPed)
+    DECL_THISCALL_TAIL(ReserveCoverPointForPed, pPed)
+    DECL_THISCALL_HEAD(ReleaseCoverPointForPed, _ZN11CCoverPoint23ReleaseCoverPointForPedEP4CPed, void, CPed* pPed)
+    DECL_THISCALL_TAIL(ReleaseCoverPointForPed, pPed)
+
+    // Member values
+    i8 m_Type;
+    i8 m_Usage;
+    u8 m_CoverDirection;
+    CVector m_Coors;
+    CEntity* m_pEntity;
+    CPed* m_pPedsUsingThisCover[2];
+DECL_CLASS_END()
+CHECKSIZE(CCoverPoint, 0x1C, 0x28);
+
 DECL_CLASS(CPedAcquaintance)
     // Member functions
     DECL_THISCALL_HEAD(SetAcquaintances, _ZN13CAcquaintance16SetAcquaintancesEij, void, i32 arg1, u32 arg2)
@@ -155,9 +192,8 @@ CHECKSIZE(CPedIK, 0x20, 0x28);
 DECL_CLASS_BASED(CPed, CPhysical)
     // Construct/Deconstruct functions
     CPed(){}
-    DECL_CTORCALL_ARG_HEAD(CPed, _ZN4CPedC2Ej, u32 pedType)
-    DECL_CTORCALL_ARG_TAIL(pedType)
-    DECL_DTORCALL(CPed, _ZN4CPedD2Ev);
+    DECL_CTORCALL_PROXY(CPed, _ZN4CPedC2Ej, u32 pedType);
+    DECL_DTORCALL_PROXY(CPed, _ZN4CPedD2Ev);
     DECL_NEWCALL(CPed, BYBIT(_ZN4CPednwEj, _ZN4CPednwEm) );
     DECL_DLCALL(CPed, _ZN4CPeddlEPv);
 
@@ -682,9 +718,8 @@ CHECKSIZE(CPed, 0x7A4, 0x988);
 DECL_CLASS_BASED(CCopPed, CPed)
     // Construct/Deconstruct functions
     CCopPed(){}
-    DECL_CTORCALL_ARG_HEAD(CCopPed, _ZN7CCopPedC2E8eCopType, eCopType CopType)
-    DECL_CTORCALL_ARG_TAIL(CopType)
-    DECL_DTORCALL(CCopPed, _ZN7CCopPedD2Ev)
+    DECL_CTORCALL_PROXY(CCopPed, _ZN7CCopPedC2E8eCopType, eCopType CopType);
+    DECL_DTORCALL_PROXY(CCopPed, _ZN7CCopPedD2Ev);
 
     // Member functions
     DECL_THISCALL_SIMPLE(ClearCriminalsToKill, _ZN7CCopPed20ClearCriminalsToKillEv, void);

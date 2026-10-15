@@ -39,9 +39,8 @@ enum eBmxNodes
 DECL_CLASS_BASED(CBike, CVehicle)
     // Construct/Deconstruct functions
     CBike(){}
-    DECL_CTORCALL_ARG_HEAD(CBike, _ZN5CBikeC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CBike, _ZN5CBikeD2Ev);
+    DECL_CTORCALL_PROXY(CBike, _ZN5CBikeC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CBike, _ZN5CBikeD2Ev);
 
     // Virtual functions
     virtual bool ProcessAI(unsigned int &);
@@ -140,9 +139,8 @@ CHECKSIZE(CBike, 0x828, 0xA18);
 
 DECL_CLASS_BASED(CBmx, CBike)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_ARG_HEAD(CBmx, _ZN4CBmxC2Eih, int modelIdx, u8 createdBy)
-    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
-    DECL_DTORCALL(CBmx, _ZN4CBmxD2Ev);
+    DECL_CTORCALL_PROXY(CBmx, _ZN4CBmxC2Eih, int modelIdx, u8 createdBy);
+    DECL_DTORCALL_PROXY(CBmx, _ZN4CBmxD2Ev);
     
 
     // STATIC functions
