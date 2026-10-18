@@ -4,6 +4,8 @@
 #include "AEAudioEntity.h"
 
 DECL_CLASS(CAEFrontendAudioEntity)
+    CAEFrontendAudioEntity() = delete;
+
     // Member functions
     DECL_THISCALL_SIMPLE(Initialise, _ZN22CAEFrontendAudioEntity10InitialiseEv, void);
     DECL_THISCALL_SIMPLE(Terminate, _ZN22CAEFrontendAudioEntity9TerminateEv, void);

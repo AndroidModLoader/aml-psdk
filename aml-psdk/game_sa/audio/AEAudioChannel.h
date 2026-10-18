@@ -10,18 +10,20 @@ struct CAEStreamingDecoder;
 
 DECL_CLASS_VTABLE(CAEAudioChannel)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAEAudioChannel, _ZN15CAEAudioChannelC2Etjt, u16 channelID, u32 nSamplesPerSec, u16 wBitsPerSample);
-    DECL_DTORCALL_PROXY(CAEAudioChannel, _ZN15CAEAudioChannelD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CAEAudioChannel, _ZN15CAEAudioChannelC2Etjt, u16 channelID, u32 nSamplesPerSec, u16 wBitsPerSample)
+    DECL_CTORCALL_ARG_TAIL(channelID, nSamplesPerSec, wBitsPerSample)
+    DECL_DTORCALL_VIRTUAL(CAEAudioChannel, _ZN15CAEAudioChannelD2Ev, _ZN15CAEAudioChannel, _ZTV15CAEAudioChannel);
 
     // Virtual functions
-    virtual void Service();
-    virtual u8 IsSoundPlaying();
-    virtual long int GetPlayTime();
-    virtual long int GetLength();
-    virtual void Play(i16 StartOffsetMs, i8 SoundFlags, float fScalingFactor);
-    virtual void SynchPlayback();
-    virtual void Stop();
-    virtual void SetFrequencyScalingFactor(float fScalingFactor);
+    virtual void Service() = 0;
+    virtual u8 IsSoundPlaying() = 0;
+    virtual long int GetPlayTime() = 0;
+    virtual long int GetLength() = 0;
+    virtual void Play(i16 StartOffsetMs, i8 SoundFlags, float fScalingFactor) = 0;
+    virtual void SynchPlayback() = 0;
+    virtual void Stop() = 0;
+    DECL_VIRTUALCALL_HEAD(CAEAudioChannel, SetFrequencyScalingFactor, _ZTV15CAEAudioChannel, 9, void, float fScalingFactor)
+    DECL_VIRTUALCALL_TAIL(fScalingFactor)
 
     // Member functions
     DECL_THISCALL_SIMPLE(IsBufferPlaying, _ZN15CAEAudioChannel15IsBufferPlayingEv, u8);
@@ -59,9 +61,25 @@ DECL_CLASS_END()
 CHECKSIZE(CAEAudioChannel, 0x2C, 0x38);
 
 DECL_CLASS_BASED(CAEStaticChannel, CAEAudioChannel)
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, Service, _ZTV16CAEStaticChannel, 2, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, IsSoundPlaying, _ZTV16CAEStaticChannel, 3, u8)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, GetPlayTime, _ZTV16CAEStaticChannel, 4, long int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, GetLength, _ZTV16CAEStaticChannel, 5, long int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, Play, _ZTV16CAEStaticChannel, 6, void, i16 StartOffsetMs, i8 SoundFlags, float fScalingFactor)
+    DECL_VIRTUALCALL_TAIL(StartOffsetMs, SoundFlags, fScalingFactor)
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, SynchPlayback, _ZTV16CAEStaticChannel, 7, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStaticChannel, Stop, _ZTV16CAEStaticChannel, 8, void)
+    DECL_VIRTUALCALL_TAIL()
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAEStaticChannel, _ZN16CAEStaticChannelC2Etjt, u16 channelID, u32 nSamplesPerSec, u16 wBitsPerSample);
-    DECL_DTORCALL_PROXY(CAEStaticChannel, _ZN16CAEStaticChannelD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CAEStaticChannel, _ZN16CAEStaticChannelC2Etjt, u16 channelID, u32 nSamplesPerSec, u16 wBitsPerSample)
+    DECL_CTORCALL_ARG_TAIL(channelID, nSamplesPerSec, wBitsPerSample)
+    DECL_DTORCALL_VIRTUAL(CAEStaticChannel, _ZN16CAEStaticChannelD2Ev, _ZN16CAEStaticChannel, _ZTV16CAEStaticChannel);
 
     // Member functions
     DECL_THISCALL_HEAD(SetAudioData, _ZN16CAEStaticChannel12SetAudioDataEPvjtsst, u8, void* buffer, u32 numBytes, u16 SoundID, i16 BankSlotID, i16 loopStartOffset, u16 SampleRate)
@@ -89,9 +107,23 @@ DECL_CLASS_END()
 CHECKSIZE(CAEStaticChannel, 0x5C, 0x68);
 
 DECL_CLASS_BASED(CAEStreamingChannel, CAEAudioChannel)
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, Service, _ZTV19CAEStreamingChannel, 2, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, IsSoundPlaying, _ZTV19CAEStreamingChannel, 3, u8)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, GetPlayTime, _ZTV19CAEStreamingChannel, 4, long int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, GetLength, _ZTV19CAEStreamingChannel, 5, long int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, Play, _ZTV19CAEStreamingChannel, 6, void, i16 StartOffsetMs, i8 SoundFlags, float fScalingFactor)
+    DECL_VIRTUALCALL_TAIL(StartOffsetMs, SoundFlags, fScalingFactor)
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, SynchPlayback, _ZTV19CAEStreamingChannel, 7, void)
+    DECL_VIRTUALCALL_TAIL()
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAEStreamingChannel, _ZN19CAEStreamingChannelC2Et, u16 channelID);
-    DECL_DTORCALL_PROXY(CAEStreamingChannel, _ZN19CAEStreamingChannelD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CAEStreamingChannel, _ZN19CAEStreamingChannelC2Et, u16 channelID)
+    DECL_CTORCALL_ARG_TAIL(channelID)
+    DECL_DTORCALL_VIRTUAL(CAEStreamingChannel, _ZN19CAEStreamingChannelD2Ev, _ZN19CAEStreamingChannel, _ZTV19CAEStreamingChannel);
 
     // Member functions
     DECL_THISCALL_SIMPLE(UpdatePlayTime, _ZN19CAEStreamingChannel14UpdatePlayTimeEv, long int);
@@ -110,7 +142,8 @@ DECL_CLASS_BASED(CAEStreamingChannel, CAEAudioChannel)
     DECL_THISCALL_TAIL(FillBuffer, pBuf, dwSize)
     DECL_THISCALL_SIMPLE(InitialiseSilence, _ZN19CAEStreamingChannel17InitialiseSilenceEv, void);
 
-    virtual void Stop();
+    DECL_VIRTUALCALL_HEAD(CAEStreamingChannel, Stop, _ZTV19CAEStreamingChannel, 8, void)
+    DECL_VIRTUALCALL_TAIL()
     DECL_THISCALL_NAMED_HEAD(Stop1, Stop, _ZN19CAEStreamingChannel4StopEb, void, bool arg1)
     DECL_THISCALL_TAIL(Stop1, arg1)
 

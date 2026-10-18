@@ -15,11 +15,12 @@ struct CPed;
 
 DECL_CLASS(CEntityScanner)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CEntityScanner, _ZN14CEntityScannerC2Ev);
-    DECL_DTORCALL_PROXY(CEntityScanner, _ZN14CEntityScannerD2Ev);
+    DECL_CTORCALL(CEntityScanner, _ZN14CEntityScannerC2Ev);
+    DECL_DTORCALL(CEntityScanner, _ZN14CEntityScannerD2Ev);
 
     // Virtual functions
-    virtual void ScanForEntitiesInRange(const int iScanType, const CPed &ped);
+    DECL_VIRTUALCALL_HEAD(CEntityScanner, ScanForEntitiesInRange, _ZTV14CEntityScanner, 0, void, const int iScanType, const CPed &ped)
+    DECL_VIRTUALCALL_TAIL(iScanType, ped)
 
     // Member functions
     DECL_THISCALL_SIMPLE(Clear, _ZN14CEntityScanner5ClearEv, void);
@@ -32,6 +33,7 @@ DECL_CLASS(CEntityScanner)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CPedScanner, CEntityScanner)
+    CPedScanner() = delete;
     // Member functions
     DECL_THISCALL_HEAD(ScanForPedsInRange, _ZN11CPedScanner18ScanForPedsInRangeERK4CPed, void, CPed const& ped)
     DECL_THISCALL_TAIL(ScanForPedsInRange, ped)
@@ -39,6 +41,7 @@ DECL_CLASS_BASED(CPedScanner, CEntityScanner)
 
 DECL_CLASS_END()
 DECL_CLASS_BASED(CVehicleScanner, CEntityScanner)
+    CVehicleScanner() = delete;
     // Member functions
     DECL_THISCALL_HEAD(ScanForVehiclesInRange, _ZN15CVehicleScanner22ScanForVehiclesInRangeERK4CPed, void, CPed const& ped)
     DECL_THISCALL_TAIL(ScanForVehiclesInRange, ped)

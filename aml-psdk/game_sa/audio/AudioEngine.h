@@ -25,8 +25,10 @@ struct tBeatInfo
 };
 
 DECL_CLASS(CAudioEngine)
+    CAudioEngine() = delete;
+
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CAudioEngine, _ZN12CAudioEngineD2Ev);
+    DECL_DTORCALL(CAudioEngine, _ZN12CAudioEngineD2Ev);
 
     // Member functions
     DECL_THISCALL_SIMPLE(Initialise, _ZN12CAudioEngine10InitialiseEv, u8);

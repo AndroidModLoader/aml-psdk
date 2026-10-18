@@ -100,24 +100,33 @@ CHECKSIZE(colModelNodeInfo, 0x1C, 0x20);
 
 DECL_CLASS_VTABLE(CBaseModelInfo)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CBaseModelInfo, _ZN14CBaseModelInfoC2Ev);
-    ~CBaseModelInfo(){}
+    DECL_CTORCALL(CBaseModelInfo, _ZN14CBaseModelInfoC2Ev);
+    DECL_DTORCALL_VIRTUAL(CBaseModelInfo, _ZN14CBaseModelInfoD2Ev, _ZN14CBaseModelInfo, _ZTV14CBaseModelInfo);
 
     // Virtual functions
-    virtual CAtomicModelInfo* AsAtomicModelInfoPtr();
-    virtual CDamageAtomicModelInfo* AsDamageAtomicModelInfoPtr();
-    virtual CLodAtomicModelInfo* AsLodAtomicModelInfoPtr();
-    virtual ModelInfoType GetModelType();
-    virtual tTimeInfo* GetTimeInfo();
-    virtual void Init();
-    virtual void Shutdown();
-    virtual void DeleteRwObject();
-    virtual i32 GetRwModelType();
-    virtual RwObject* CreateInstance();
-    virtual RwObject* CreateInstance(RwMatrix* matrix);
-    virtual void SetAnimFile(const char* filename);
-    virtual void ConvertAnimFileIndex();
-    virtual uintptr_t GetAnimFileIndex();
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, AsAtomicModelInfoPtr, _ZTV14CBaseModelInfo, 2, CAtomicModelInfo*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, AsDamageAtomicModelInfoPtr, _ZTV14CBaseModelInfo, 3, CDamageAtomicModelInfo*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, AsLodAtomicModelInfoPtr, _ZTV14CBaseModelInfo, 4, CLodAtomicModelInfo*)
+    DECL_VIRTUALCALL_TAIL()
+    virtual ModelInfoType GetModelType() = 0;
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, GetTimeInfo, _ZTV14CBaseModelInfo, 6, tTimeInfo*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, Init, _ZTV14CBaseModelInfo, 7, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, Shutdown, _ZTV14CBaseModelInfo, 8, void)
+    DECL_VIRTUALCALL_TAIL()
+    virtual void DeleteRwObject() = 0;
+    virtual i32 GetRwModelType() = 0;
+    virtual RwObject* CreateInstance() = 0;
+    virtual RwObject* CreateInstance(RwMatrix* matrix) = 0;
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, SetAnimFile, _ZTV14CBaseModelInfo, 13, void, const char* filename)
+    DECL_VIRTUALCALL_TAIL(filename)
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, ConvertAnimFileIndex, _ZTV14CBaseModelInfo, 14, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CBaseModelInfo, GetAnimFileIndex, _ZTV14CBaseModelInfo, 15, uintptr_t)
+    DECL_VIRTUALCALL_TAIL()
 
     // Member functions
     DECL_THISCALL_SIMPLE(DeleteCollisionModel, _ZN14CBaseModelInfo20DeleteCollisionModelEv, void);
@@ -205,8 +214,21 @@ CHECKSIZE(CBaseModelInfo, 0x38, 0x48);
 
 
 DECL_CLASS_BASED(CAtomicModelInfo, CBaseModelInfo)
+    CAtomicModelInfo() = delete;
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, GetModelType, _ZTV16CAtomicModelInfo, 5, ModelInfoType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, DeleteRwObject, _ZTV16CAtomicModelInfo, 9, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, GetRwModelType, _ZTV16CAtomicModelInfo, 10, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, CreateInstance, _ZTV16CAtomicModelInfo, 11, RwObject*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, CreateInstance, _ZTV16CAtomicModelInfo, 12, RwObject*, RwMatrix* matrix)
+    DECL_VIRTUALCALL_TAIL(matrix)
+
     // Virtual functions
-    virtual void SetAtomic(RpAtomic *pAtomic);
+    DECL_VIRTUALCALL_HEAD(CAtomicModelInfo, SetAtomic, _ZTV16CAtomicModelInfo, 16, void, RpAtomic *pAtomic)
+    DECL_VIRTUALCALL_TAIL(pAtomic)
 
     // Member functions
     DECL_THISCALL_HEAD(SetupVehicleUpgradeFlags, _ZN16CAtomicModelInfo24SetupVehicleUpgradeFlagsEPKc, void, const char *pName)
@@ -219,6 +241,7 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CLodAtomicModelInfo, CAtomicModelInfo)
+    CLodAtomicModelInfo() = delete;
     // Construct/Deconstruct functions
     DECL_THISCALL_SIMPLE(Delete, _ZN19CLodAtomicModelInfoD0Ev, void);
 
@@ -229,6 +252,7 @@ DECL_CLASS_END()
 CHECKSIZE(CLodAtomicModelInfo, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CLodTimeModelInfo, CLodAtomicModelInfo)
+    CLodTimeModelInfo() = delete;
     // Construct/Deconstruct functions
     DECL_THISCALL_SIMPLE(Delete, _ZN17CLodTimeModelInfoD0Ev, void);
 
@@ -238,9 +262,23 @@ DECL_CLASS_END()
 CHECKSIZE(CLodTimeModelInfo, 0x40, 0x50);
 
 DECL_CLASS_BASED(CClumpModelInfo, CBaseModelInfo)
+    CClumpModelInfo() = delete;
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, GetModelType, _ZTV15CClumpModelInfo, 5, ModelInfoType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, DeleteRwObject, _ZTV15CClumpModelInfo, 9, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, GetRwModelType, _ZTV15CClumpModelInfo, 10, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, CreateInstance, _ZTV15CClumpModelInfo, 11, RwObject*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, CreateInstance, _ZTV15CClumpModelInfo, 12, RwObject*, RwMatrix* matrix)
+    DECL_VIRTUALCALL_TAIL(matrix)
+
     // Virtual functions
-    virtual CBoundingBox &GetBoundingBox();
-    virtual void SetClump(RpClump *clump);
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, GetBoundingBox, _ZTV15CClumpModelInfo, 16, CBoundingBox &)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CClumpModelInfo, SetClump, _ZTV15CClumpModelInfo, 17, void, RpClump *clump)
+    DECL_VIRTUALCALL_TAIL(clump)
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(SetAtomicRendererCB, _ZN15CClumpModelInfo19SetAtomicRendererCBEP8RpAtomicPv, RpAtomic*, RpAtomic *pAtomic, void *pData);
@@ -267,6 +305,7 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CWeaponModelInfo, CClumpModelInfo)
+    CWeaponModelInfo() = delete;
     // Member values
     eWeaponType m_weaponInfo;
 DECL_CLASS_END()
@@ -274,8 +313,9 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CPedModelInfo, CClumpModelInfo)
+    CPedModelInfo() = delete;
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CPedModelInfo, _ZN13CPedModelInfoD2Ev);
+    DECL_DTORCALL_VIRTUAL(CPedModelInfo, _ZN13CPedModelInfoD2Ev, _ZN13CPedModelInfo, _ZTV13CPedModelInfo);
 
     // STATIC values
     DECL_OBJECT_ARRAY_PLT(RwObjectNameIdAssocation, m_pPedIds, BYBIT(0x67796C, 0x84D300));
@@ -312,6 +352,7 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CDamageAtomicModelInfo, CAtomicModelInfo)
+    CDamageAtomicModelInfo() = delete;
     // STATIC values
     DECL_VALUE_PLT_BOOL(m_bCreateDamagedVersion, BYBIT(0x677244, 0x84C4C0));
 
@@ -326,6 +367,7 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CTimeModelInfo, CAtomicModelInfo)
+    CTimeModelInfo() = delete;
     // Member values
     tTimeInfo m_timeInfo;
 DECL_CLASS_END()

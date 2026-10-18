@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SACOLMODEL_H
 #define __AML_PSDK_SACOLMODEL_H
 
+#include "../plugin.h"
 #include <aml-psdk/gta_base/Vector.h>
 #include "../enum/SurfaceType.h"
 #include "Lists.h"
@@ -9,6 +10,7 @@ struct CColSphere;
 struct CColDisk;
 struct CColLine;
 struct CColBox;
+struct CColModelSection;
 
 typedef CVector CollisionVector;
 typedef float CollisionFloat;
@@ -20,13 +22,34 @@ struct __attribute__((aligned(4))) CColTriangle
 	int32_t        m_nVertC; // vertex index in vertices array
 	unsigned char  m_nMaterial;
 	unsigned char  m_nLight;
+
+    inline void Set(i32 vertA, i32 vertB, i32 vertC, u8 material, u8 lighting)
+    {
+        m_nVertA = vertA;
+        m_nVertB = vertB;
+        m_nVertC = vertC;
+        m_nMaterial = material;
+        m_nLight = lighting;
+    }
 };
-struct __attribute__((aligned(4))) CColTrianglePlane
-{
+CHECKSIZE(CColTriangle, 0x10, 0x10);
+
+DECL_CLASS(CColTrianglePlane)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN17CColTrianglePlane3SetEPK7CVectorR12CColTriangle, void, CollisionVector const* vertices, CColTriangle& triangle)
+    DECL_THISCALL_TAIL(Set, vertices, triangle)
+
+    inline void GetNormal(CVector& normal) const { normal = m_normal; }
+    inline float GetNormalX() const { return m_normal.x; }
+    inline float GetNormalY() const { return m_normal.y; }
+    inline float GetNormalZ() const { return m_normal.z; }
+    inline float GetNormalOffset() const { return m_nDistance; }
+
     CollisionVector m_normal;
     CollisionFloat  m_nDistance;
     u8              m_nOrientation;
-};
+DECL_CLASS_END()
+CHECKSIZE(CColTrianglePlane, 0x14, 0x14);
 
 DECL_CLASS(CCollisionData)
     // Construct/Deconstruct functions
@@ -77,7 +100,19 @@ DECL_CLASS(CCollisionData)
     DECL_THISCALL_SIMPLE(GetLinkPtr, _ZN14CCollisionData10GetLinkPtrEv, CLink<CCollisionData *>*);
     DECL_THISCALL_SIMPLE(GetNoVectors, _ZNK14CCollisionData12GetNoVectorsEv, i32);
     DECL_THISCALL_SIMPLE(GetNoShadVectors, _ZNK14CCollisionData16GetNoShadVectorsEv, i32);
+
+    inline i32 GetNoOfLines() { return m_nNumLines; }
+    inline i32 GetNoOfDisks() { return m_nNumDisks; }
+    inline i32 GetNoOfSpheres() { return m_nNumSpheres; }
+    inline CColDisk& GetDisk(i32 index);
+    inline CColSphere& GetSphere(i32 index);
+    inline i32 GetNoOfColModelSections()
+    {
+        return m_nFlags.bUsesColModelSections ? *m_modelSec : 0;
+    }
+    inline CColModelSection const& GetColModelSection(i32 index);
 DECL_CLASS_END()
+CHECKSIZE(CCollisionData, 0x34, 0x58);
 
 struct ColData
 {
@@ -85,6 +120,7 @@ struct ColData
     u8 m_nPieceType;
     u8 m_lighting;
 };
+CHECKSIZE(ColData, 0x3, 0x3);
 
 DECL_CLASS(CBox)
     // Member functions
@@ -100,6 +136,20 @@ DECL_CLASS(CBox)
         m_vecMax = CVector(-1, -1, -1);
     }
 DECL_CLASS_END()
+CHECKSIZE(CBox, 0x18, 0x18);
+
+struct CColModelSection
+{
+    CBox bb;
+    i16 startIndex;
+    i16 endIndex;
+};
+CHECKSIZE(CColModelSection, 0x1C, 0x1C);
+
+inline CColModelSection const& CCollisionData::GetColModelSection(i32 index)
+{
+    return *(reinterpret_cast<CColModelSection const*>(m_modelSec) - index - 1);
+}
 
 DECL_CLASS_BASED(CColBox, CBox)
     DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN7CColBoxaSERKS_, CColBox&, const CColBox &box)
@@ -111,6 +161,7 @@ DECL_CLASS_BASED(CColBox, CBox)
 
     ColData m_data;
 DECL_CLASS_END()
+CHECKSIZE(CColBox, 0x1C, 0x1C);
 
 struct CSphere
 {
@@ -127,6 +178,7 @@ struct CSphere
         return (pos - m_vecCentre).MagnitudeSqr() <= (SQ(m_fRadius));
     }
 };
+CHECKSIZE(CSphere, 0x10, 0x10);
 
 DECL_CLASS_BASED(CColSphere, CSphere)
     // Member functions
@@ -143,6 +195,7 @@ DECL_CLASS_BASED(CColSphere, CSphere)
 
     ColData m_data;
 DECL_CLASS_END()
+CHECKSIZE(CColSphere, 0x14, 0x14);
 
 struct CColDisk : CColSphere
 {
@@ -160,6 +213,17 @@ struct CColDisk : CColSphere
         m_data.m_lighting = lighting;
     }
 };
+CHECKSIZE(CColDisk, 0x24, 0x24);
+
+inline CColDisk& CCollisionData::GetDisk(i32 index)
+{
+    return m_pDisks[index];
+}
+
+inline CColSphere& CCollisionData::GetSphere(i32 index)
+{
+    return m_pSpheres[index];
+}
 
 struct CBoundingBox : CBox
 {
@@ -220,6 +284,49 @@ DECL_CLASS(CColPoint)
     DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN9CColPointaSERKS_, CColPoint&, const CColPoint &point)
     DECL_THISCALL_TAIL(Assign, point)
 
+    inline void SetPosition(float x, float y, float z) { m_vecPoint = CVector(x, y, z); }
+    inline void SetPosition(CVector const& position) { m_vecPoint = position; }
+    inline CVector& GetPosition() { return m_vecPoint; }
+    inline void SetNormal(float x, float y, float z) { m_vecNormal = CVector(x, y, z); }
+    inline void SetNormal(CVector const& normal) { m_vecNormal = normal; }
+    inline CVector& GetNormal() { return m_vecNormal; }
+    inline void SetDataA(ColData const& data)
+    {
+        m_nSurfaceTypeA = data.m_nSurfaceType;
+        m_nPieceTypeA = data.m_nPieceType;
+        SetLightingA(data.m_lighting);
+    }
+    inline ColData GetDataA() { return {m_nSurfaceTypeA, m_nPieceTypeA, GetLightingA()}; }
+    inline void SetSurfaceTypeA(u8 surfaceType) { m_nSurfaceTypeA = surfaceType; }
+    inline u8 GetSurfaceTypeA() { return m_nSurfaceTypeA; }
+    inline void SetPieceTypeA(u8 pieceType) { m_nPieceTypeA = pieceType; }
+    inline u8 GetPieceTypeA() { return m_nPieceTypeA; }
+    inline void SetLightingA(u8 lighting)
+    {
+        m_nLightingA.day = lighting;
+        m_nLightingA.night = lighting >> 4;
+    }
+    inline u8 GetLightingA() { return m_nLightingA.day | (m_nLightingA.night << 4); }
+    inline void SetDataB(ColData const& data)
+    {
+        m_nSurfaceTypeB = data.m_nSurfaceType;
+        m_nPieceTypeB = data.m_nPieceType;
+        SetLightingB(data.m_lighting);
+    }
+    inline ColData GetDataB() { return {m_nSurfaceTypeB, m_nPieceTypeB, GetLightingB()}; }
+    inline void SetSurfaceTypeB(u8 surfaceType) { m_nSurfaceTypeB = surfaceType; }
+    inline u8 GetSurfaceTypeB() { return m_nSurfaceTypeB; }
+    inline void SetPieceTypeB(u8 pieceType) { m_nPieceTypeB = pieceType; }
+    inline u8 GetPieceTypeB() { return m_nPieceTypeB; }
+    inline void SetLightingB(u8 lighting)
+    {
+        m_nLightingB.day = lighting;
+        m_nLightingB.night = lighting >> 4;
+    }
+    inline u8 GetLightingB() { return m_nLightingB.day | (m_nLightingB.night << 4); }
+    inline void SetDepth(float depth) { m_fDepth = depth; }
+    inline float GetDepth() { return m_fDepth; }
+
     // Member values
     CVector m_vecPoint;
     float field_C;
@@ -241,5 +348,6 @@ struct CStoredCollPoly
     bool         m_bIsActual;
     unsigned int m_nLighting;
 };
+CHECKSIZE(CStoredCollPoly, 0x2C, 0x2C);
 
 #endif // __AML_PSDK_SACOLMODEL_H

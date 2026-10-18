@@ -13,7 +13,8 @@ CHECKSIZE(tWaterCannonSound, 0x4, 0x8);
 
 DECL_CLASS_BASED(CAEWaterCannonAudioEntity, CAEAudioEntity)
     // Virtual functions
-    virtual void UpdateParameters(CAESound* pSound, i16 PlayTime) override;
+    DECL_VIRTUALCALL_HEAD(CAEWaterCannonAudioEntity, UpdateParameters, _ZTV25CAEWaterCannonAudioEntity, 0, void, CAESound* pSound, i16 PlayTime)
+    DECL_VIRTUALCALL_TAIL(pSound, PlayTime)
 
     // Member functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN25CAEWaterCannonAudioEntity16StaticInitialiseEv, void);

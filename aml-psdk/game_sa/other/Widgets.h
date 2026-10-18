@@ -17,7 +17,6 @@ struct WidgetPosition
 
 DECL_CLASS(CHoldEffect)
     // Construct/Deconstruct functions
-    CHoldEffect(){}
     DECL_CTORCALL_ARG_HEAD(CHoldEffect, _ZN11CHoldEffectC2EPKcb5CRGBAb, char const* pchar1, bool arg2, CRGBA arg3, bool arg4)
     DECL_CTORCALL_ARG_TAIL(pchar1, arg2, arg3, arg4)
     DECL_DTORCALL(CHoldEffect, _ZN11CHoldEffectD2Ev);
@@ -52,44 +51,76 @@ CHECKSIZE(CHoldEffect, 0x568, 0x578);
 
 DECL_CLASS_BASED(CWidget, SimpleVTable)
     // Construct/Deconstruct functions
-    CWidget(){}
-    DECL_CTORCALL_PROXY(CWidget, _ZN7CWidgetC2EPKcRK14WidgetPositionj10HIDMapping, char const* pszSprite, WidgetPosition const& WidgetPos, u32 nFlags, HIDMapping Mapping);
-    DECL_DTORCALL_PROXY(CWidget, _ZN7CWidgetD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CWidget, _ZN7CWidgetC2EPKcRK14WidgetPositionj10HIDMapping, char const* pszSprite, WidgetPosition const& WidgetPos, u32 nFlags, HIDMapping Mapping)
+    DECL_CTORCALL_ARG_TAIL(pszSprite, WidgetPos, nFlags, Mapping)
+    DECL_DTORCALL_VIRTUAL(CWidget, _ZN7CWidgetD2Ev, _ZN7CWidget, _ZTV7CWidget);
 
     // Virtual functions
-    virtual const char* GetName(void);
-    virtual bool CoordsAreInsideWidget(CVector2D const&,bool);
-    virtual void DrawHelpIcon(char const*,float,float,float,int);
-    virtual void Draw(void);
-    virtual float GetPinchDistance(void);
-    virtual float GetWidgetValue(void);
-    virtual void GetWidgetValue2(float *,float *);
-    virtual bool IsButton(void);
-    virtual bool IsDoubleTapped(void);
-    virtual bool IsHeldDown(void);
-    virtual bool IsPinchZooming(CVector2D *);
-    virtual bool IsReleased(CVector2D *);
-    virtual bool IsRegion(void);
-    virtual bool IsSwiped(void);
-    virtual bool IsSwipedDown(void);
-    virtual bool IsSwipedLeft(void);
-    virtual bool IsSwipedRight(void);
-    virtual bool IsSwipedUp(void);
-    virtual bool IsTouched(CVector2D *);
-    virtual void OnInitialTouch(void);
-    virtual void OnPinchZoomStart(void);
-    virtual void OnReleasedTouch(void);
-    virtual void OnSwipeTouch(void);
-    virtual void Pulsate(void);
-    virtual void SetEquippedItem(int);
-    virtual void SetSliderRange(float,float);
-    virtual void SetWidgetValue(float);
-    virtual void SetWidgetValue2(float,float);
-    virtual void SetWidgetValue3(float,float,float);
-    virtual void SetWidgetInfo(char *,float,bool,bool,bool,bool,int);
-    virtual void SetWidgetInfo2(int,int,int,int,char *,char *);
-    virtual void Update(void);
-    virtual void Visualize(void);
+    virtual const char* GetName() = 0;
+    DECL_VIRTUALCALL_HEAD(CWidget, CoordsAreInsideWidget, _ZTV7CWidget, 3, bool, CVector2D const& arg1, bool arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CWidget, DrawHelpIcon, _ZTV7CWidget, 4, void, char const* arg1, float arg2, float arg3, float arg4, int arg5)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5)
+    DECL_VIRTUALCALL_HEAD(CWidget, Draw, _ZTV7CWidget, 5, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, GetPinchDistance, _ZTV7CWidget, 6, float)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, GetWidgetValue, _ZTV7CWidget, 7, float)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, GetWidgetValue2, _ZTV7CWidget, 8, void, float * arg1, float * arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CWidget, IsButton, _ZTV7CWidget, 9, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsDoubleTapped, _ZTV7CWidget, 10, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsHeldDown, _ZTV7CWidget, 11, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsPinchZooming, _ZTV7CWidget, 12, bool, CVector2D * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CWidget, IsReleased, _ZTV7CWidget, 13, bool, CVector2D * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CWidget, IsRegion, _ZTV7CWidget, 14, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsSwiped, _ZTV7CWidget, 15, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsSwipedDown, _ZTV7CWidget, 16, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsSwipedLeft, _ZTV7CWidget, 17, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsSwipedRight, _ZTV7CWidget, 18, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsSwipedUp, _ZTV7CWidget, 19, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, IsTouched, _ZTV7CWidget, 20, bool, CVector2D * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CWidget, OnInitialTouch, _ZTV7CWidget, 21, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, OnPinchZoomStart, _ZTV7CWidget, 22, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, OnReleasedTouch, _ZTV7CWidget, 23, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, OnSwipeTouch, _ZTV7CWidget, 24, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, Pulsate, _ZTV7CWidget, 25, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, SetEquippedItem, _ZTV7CWidget, 26, void, int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetSliderRange, _ZTV7CWidget, 27, void, float arg1, float arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetWidgetValue, _ZTV7CWidget, 28, void, float arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetWidgetValue2, _ZTV7CWidget, 29, void, float arg1, float arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetWidgetValue3, _ZTV7CWidget, 30, void, float arg1, float arg2, float arg3)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetWidgetInfo, _ZTV7CWidget, 31, void, char * arg1, float arg2, bool arg3, bool arg4, bool arg5, bool arg6, int arg7)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+    DECL_VIRTUALCALL_HEAD(CWidget, SetWidgetInfo2, _ZTV7CWidget, 32, void, int arg1, int arg2, int arg3, int arg4, char * arg5, char * arg6)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5, arg6)
+    DECL_VIRTUALCALL_HEAD(CWidget, Update, _ZTV7CWidget, 33, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CWidget, Visualize, _ZTV7CWidget, 34, void)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(SetScissor, _ZN7CWidget10SetScissorER5CRect, void, CRect& rectScissor);

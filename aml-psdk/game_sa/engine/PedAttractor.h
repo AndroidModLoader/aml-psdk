@@ -11,17 +11,22 @@ struct CMatrix;
 
 DECL_CLASS(CPedAttractor)
     // Virtual functions
-    virtual int GetType() const;
-    virtual void BaseDestructor();
-    virtual void BaseDeletingDestructor();
-    virtual bool IsAtHeadOfQueue(CPed* pPed) const;
-    virtual void ComputeAttractPos(int const slot, CVector& pos) const;
-    virtual void ComputeAttractHeading(int const slot, float& heading) const;
-    virtual bool BroadcastDeparture(CPed* pPed);
+    virtual int GetType() const = 0;
+    DECL_DTORCALL_VIRTUAL_SLOT(CPedAttractor, _ZN13CPedAttractorD2Ev, _ZN13CPedAttractor, _ZTV13CPedAttractor, 1);
+    inline void BaseDestructor() { ((void(*)(CPedAttractor*))(*(uptr**)this)[1])(this); }
+    inline void BaseDeletingDestructor() { ((void(*)(CPedAttractor*))(*(uptr**)this)[2])(this); }
+    DECL_VIRTUALCALL_CONST_HEAD(CPedAttractor, IsAtHeadOfQueue, _ZTV13CPedAttractor, 3, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedAttractor, ComputeAttractPos, _ZTV13CPedAttractor, 4, void, int const slot, CVector& pos)
+    DECL_VIRTUALCALL_TAIL(slot, pos)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedAttractor, ComputeAttractHeading, _ZTV13CPedAttractor, 5, void, int const slot, float& heading)
+    DECL_VIRTUALCALL_TAIL(slot, heading)
+    DECL_VIRTUALCALL_HEAD(CPedAttractor, BroadcastDeparture, _ZTV13CPedAttractor, 6, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
 
     // Member functions
-    DECL_CTORCALL_PROXY(CPedAttractor, _ZN13CPedAttractorC2EP9C2dEffectP7CEntityiifffffff, C2dEffect* pEffect, CEntity* pEntity, int const iMoveState, int const iMaxNoOfPeds, float const fSpacing, float const fAchieveQueueTime, float const fAchieveQueueShuffleTime, float const fArriveRange, float const fHeadingRange, float const fDeltaPos, float const fDeltaHeading);
-    DECL_DTORCALL_PROXY(CPedAttractor, _ZN13CPedAttractorD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CPedAttractor, _ZN13CPedAttractorC2EP9C2dEffectP7CEntityiifffffff, C2dEffect* pEffect, CEntity* pEntity, int const iMoveState, int const iMaxNoOfPeds, float const fSpacing, float const fAchieveQueueTime, float const fAchieveQueueShuffleTime, float const fArriveRange, float const fHeadingRange, float const fDeltaPos, float const fDeltaHeading)
+    DECL_CTORCALL_ARG_TAIL(pEffect, pEntity, iMoveState, iMaxNoOfPeds, fSpacing, fAchieveQueueTime, fAchieveQueueShuffleTime, fArriveRange, fHeadingRange, fDeltaPos, fDeltaHeading)
     DECL_NEWCALL(CPedAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
     DECL_DLCALL(CPedAttractor, _ZN13CPedAttractordlEPv);
     DECL_THISCALL_HEAD(GetTaskForPed, _ZNK13CPedAttractor13GetTaskForPedEP4CPed, CTask*, CPed* pPed)
@@ -154,8 +159,10 @@ DECL_CLASS_BASED(CPedPizzaAttractor, CPedAttractor)
     DECL_NEWCALL(CPedPizzaAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
 
     // Virtual functions
-    virtual int GetType() const;
-    virtual float GetHeadOfQueueWaitTime();
+    DECL_VIRTUALCALL_CONST_HEAD(CPedPizzaAttractor, GetType, _ZTV18CPedPizzaAttractor, 0, int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CPedPizzaAttractor, GetHeadOfQueueWaitTime, _ZTV18CPedPizzaAttractor, 7, float)
+    DECL_VIRTUALCALL_TAIL()
 
     // Member functions
     DECL_THISCALL_SIMPLE(Delete, _ZN18CPedPizzaAttractorD0Ev, void);
@@ -166,11 +173,16 @@ DECL_CLASS_BASED(CPedShelterAttractor, CPedAttractor)
     DECL_NEWCALL(CPedShelterAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
 
     // Virtual functions
-    virtual int GetType() const;
-    virtual bool IsAtHeadOfQueue(CPed* pPed) const;
-    virtual void ComputeAttractPos(int const slot, CVector& pos) const;
-    virtual void ComputeAttractHeading(int const slot, float& heading) const;
-    virtual bool BroadcastDeparture(CPed* pPed);
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, GetType, _ZTV20CPedShelterAttractor, 0, int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, IsAtHeadOfQueue, _ZTV20CPedShelterAttractor, 3, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, ComputeAttractPos, _ZTV20CPedShelterAttractor, 4, void, int const slot, CVector& pos)
+    DECL_VIRTUALCALL_TAIL(slot, pos)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, ComputeAttractHeading, _ZTV20CPedShelterAttractor, 5, void, int const slot, float& heading)
+    DECL_VIRTUALCALL_TAIL(slot, heading)
+    DECL_VIRTUALCALL_HEAD(CPedShelterAttractor, BroadcastDeparture, _ZTV20CPedShelterAttractor, 6, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
 
     // Member functions
     DECL_THISCALL_SIMPLE(Delete, _ZN20CPedShelterAttractorD0Ev, void);

@@ -16,8 +16,8 @@ DECL_CLASS(CAnimBlendStaticAssociation)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CAnimBlendStaticAssociation, _ZN27CAnimBlendStaticAssociationC2Ev);
     DECL_DTORCALL(CAnimBlendStaticAssociation, _ZN27CAnimBlendStaticAssociationD2Ev);
-    DECL_CTORCALL_PROXY(CAnimBlendStaticAssociation1, _ZN27CAnimBlendStaticAssociationC2EP7RpClumpP19CAnimBlendHierarchy, RpClump* clump, CAnimBlendHierarchy* hierarchy);
-    CAnimBlendStaticAssociation(RpClump* clump, CAnimBlendHierarchy* hierarchy) { FuncProxy_ctorCAnimBlendStaticAssociation1(this, clump, hierarchy); }
+    DECL_CTORCALL_NAMED_ARG_HEAD(CAnimBlendStaticAssociation1, CAnimBlendStaticAssociation, _ZN27CAnimBlendStaticAssociationC2EP7RpClumpP19CAnimBlendHierarchy, RpClump* clump, CAnimBlendHierarchy* hierarchy)
+    DECL_CTORCALL_ARG_TAIL(clump, hierarchy)
 
     // Member functions
     DECL_THISCALL_SIMPLE(Delete, _ZN27CAnimBlendStaticAssociationD0Ev, void);

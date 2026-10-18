@@ -101,8 +101,9 @@ CHECKSIZE(TextureListingContainer, 0x11, 0x15);
 #pragma pack(pop)
 
 DECL_CLASS_VTABLE(TextureDatabase)
+    TextureDatabase() = delete;
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(TextureDatabase, _ZN15TextureDatabaseD2Ev);
+    DECL_DTORCALL_VIRTUAL(TextureDatabase, _ZN15TextureDatabaseD2Ev, _ZN15TextureDatabase, _ZTV15TextureDatabase);
 
     // Member functions
     DECL_THISCALL_HEAD(LoadEntry, _ZN15TextureDatabase9LoadEntryEPcb, void, char *line, bool hashName)
@@ -135,8 +136,9 @@ DECL_CLASS_VTABLE(TextureDatabase)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(TextureDatabaseRuntime, TextureDatabase)
+    TextureDatabaseRuntime() = delete;
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(TextureDatabaseRuntime, _ZN22TextureDatabaseRuntimeD2Ev);
+    DECL_DTORCALL_VIRTUAL(TextureDatabaseRuntime, _ZN22TextureDatabaseRuntimeD2Ev, _ZN22TextureDatabaseRuntime, _ZTV22TextureDatabaseRuntime);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(UpdateStreaming, _ZN22TextureDatabaseRuntime15UpdateStreamingEfb, void, float deltaTime, bool flush);

@@ -237,16 +237,21 @@ CHECKSIZE(tHydraulicData, 0x28, 0x28);
 
 DECL_CLASS_BASED(CAutomobile, CVehicle)
     // Construct/Deconstruct functions
-    CAutomobile(){}
-    DECL_CTORCALL_PROXY(CAutomobile, _ZN11CAutomobileC2Eihh, int modelIdx, u8 createdBy, u8 suspensionLines);
-    DECL_DTORCALL_PROXY(CAutomobile, _ZN11CAutomobileD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CAutomobile, _ZN11CAutomobileC2Eihh, int modelIdx, u8 createdBy, u8 suspensionLines)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy, suspensionLines)
+    DECL_DTORCALL_VIRTUAL(CAutomobile, _ZN11CAutomobileD2Ev, _ZN11CAutomobile, _ZTV11CAutomobile);
 
     // Virtual functions
-    virtual bool ProcessAI(unsigned int &);
-    virtual void ResetSuspension(void);
-    virtual void ProcessFlyingCarStuff(void);
-    virtual void DoHoverSuspensionRatios(void);
-    virtual void ProcessSuspension(void);
+    DECL_VIRTUALCALL_HEAD(CAutomobile, ProcessAI, _ZTV11CAutomobile, 67, bool, unsigned int & arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CAutomobile, ResetSuspension, _ZTV11CAutomobile, 68, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAutomobile, ProcessFlyingCarStuff, _ZTV11CAutomobile, 69, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAutomobile, DoHoverSuspensionRatios, _ZTV11CAutomobile, 70, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAutomobile, ProcessSuspension, _ZTV11CAutomobile, 71, void)
+    DECL_VIRTUALCALL_TAIL()
     
 
     // STATIC functions
@@ -460,9 +465,9 @@ enum eMonsterTruckNodes
 };
 DECL_CLASS_BASED(CMonsterTruck, CAutomobile)
     // Construct/Deconstruct functions
-    CMonsterTruck(){}
-    DECL_CTORCALL_PROXY(CMonsterTruck, _ZN13CMonsterTruckC2Eih, int modelIdx, u8 createdBy);
-    DECL_DTORCALL_PROXY(CMonsterTruck, _ZN13CMonsterTruckD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CMonsterTruck, _ZN13CMonsterTruckC2Eih, int modelIdx, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
+    DECL_DTORCALL_VIRTUAL(CMonsterTruck, _ZN13CMonsterTruckD2Ev, _ZN13CMonsterTruck, _ZTV13CMonsterTruck);
 
     // STATIC values
     DECL_VALUE_PLT_FLT(DUMPER_COL_ANGLEMULT, BYBIT(0x676FA8, 0x84BF88));
@@ -506,9 +511,9 @@ enum eTrailerNodes
 };
 DECL_CLASS_BASED(CTrailer, CAutomobile)
     // Construct/Deconstruct functions
-    CTrailer(){}
-    DECL_CTORCALL_PROXY(CTrailer, _ZN8CTrailerC2Eih, int modelIdx, u8 createdBy);
-    DECL_DTORCALL_PROXY(CTrailer, _ZN8CTrailerD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTrailer, _ZN8CTrailerC2Eih, int modelIdx, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
+    DECL_DTORCALL_VIRTUAL(CTrailer, _ZN8CTrailerD2Ev, _ZN8CTrailer, _ZTV8CTrailer);
 
     // STATIC values
     DECL_VALUE_PLT_FLT(m_fTrailerSuspensionForce, BYBIT(0x677F00, 0x84DE20));
@@ -553,9 +558,9 @@ enum eQuadBikeNodes
 };
 DECL_CLASS_BASED(CQuadBike, CAutomobile)
     // Construct/Deconstruct functions
-    CQuadBike(){}
-    DECL_CTORCALL_PROXY(CQuadBike, _ZN9CQuadBikeC2Eih, int modelIdx, u8 createdBy);
-    DECL_DTORCALL_PROXY(CQuadBike, _ZN9CQuadBikeD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CQuadBike, _ZN9CQuadBikeC2Eih, int modelIdx, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
+    DECL_DTORCALL_VIRTUAL(CQuadBike, _ZN9CQuadBikeD2Ev, _ZN9CQuadBike, _ZTV9CQuadBike);
 
     // Member values
     void          *m_pHandling;
@@ -631,9 +636,9 @@ CHECKSIZE(HeliSearchLight, 0x4C, 0x4C);
 
 DECL_CLASS_BASED(CHeli, CAutomobile)
     // Construct/Deconstruct functions
-    CHeli(){}
-    DECL_CTORCALL_PROXY(CHeli, _ZN5CHeliC2Eih, int modelIdx, u8 createdBy);
-    DECL_DTORCALL_PROXY(CHeli, _ZN5CHeliD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CHeli, _ZN5CHeliC2Eih, int modelIdx, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
+    DECL_DTORCALL_VIRTUAL(CHeli, _ZN5CHeliD2Ev, _ZN5CHeli, _ZTV5CHeli);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(InitHelis, _ZN5CHeli9InitHelisEv, void);
@@ -733,9 +738,9 @@ enum ePlaneNodes
 
 DECL_CLASS_BASED(CPlane, CAutomobile)
     // Construct/Deconstruct functions
-    CPlane(){}
-    DECL_CTORCALL_PROXY(CPlane, _ZN6CPlaneC2Eih, int modelIdx, u8 createdBy);
-    DECL_DTORCALL_PROXY(CPlane, _ZN6CPlaneD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CPlane, _ZN6CPlaneC2Eih, int modelIdx, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(modelIdx, createdBy)
+    DECL_DTORCALL_VIRTUAL(CPlane, _ZN6CPlaneD2Ev, _ZN6CPlane, _ZTV6CPlane);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(FindPlaneCreationCoors, _ZN6CPlane22FindPlaneCreationCoorsEP7CVectorS1_PfS2_b, void, CVector* arg0, CVector* arg1, float* arg2, float* arg3, bool arg4);

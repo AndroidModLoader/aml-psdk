@@ -17,6 +17,8 @@ struct CAudioLink
 };
 
 DECL_CLASS_BASED(CAEExplosionAudioEntity, CAEAudioEntity)
+    CAEExplosionAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN23CAEExplosionAudioEntity16StaticInitialiseEv, void);
 
@@ -28,6 +30,8 @@ DECL_CLASS_BASED(CAEExplosionAudioEntity, CAEAudioEntity)
 DECL_CLASS_END()
 
 DECL_CLASS(CAEScriptAudioEntity)
+    CAEScriptAudioEntity() = delete;
+
     // Member functions
     DECL_THISCALL_SIMPLE(Initialise, _ZN20CAEScriptAudioEntity10InitialiseEv, void);
     DECL_THISCALL_SIMPLE(Reset, _ZN20CAEScriptAudioEntity5ResetEv, void);

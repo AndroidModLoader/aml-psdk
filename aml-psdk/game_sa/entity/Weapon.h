@@ -16,7 +16,6 @@ struct CVehicle;
 
 DECL_CLASS(CWeapon)
     // Construct/Deconstruct functions
-    CWeapon(){}
     DECL_CTORCALL_ARG_HEAD(CWeapon, _ZN7CWeaponC2E11eWeaponTypei, eWeaponType weaponType, i32 ammo)
     DECL_CTORCALL_ARG_TAIL(weaponType, ammo)
 

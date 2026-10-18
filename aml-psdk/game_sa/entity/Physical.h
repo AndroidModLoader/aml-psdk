@@ -11,8 +11,8 @@ struct RtQuat;
 
 DECL_CLASS_BASED(CPhysical, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CPhysical, _ZN9CPhysicalC2Ev);
-    DECL_DTORCALL_PROXY(CPhysical, _ZN9CPhysicalD2Ev);
+    DECL_CTORCALL(CPhysical, _ZN9CPhysicalC2Ev);
+    DECL_DTORCALL_VIRTUAL(CPhysical, _ZN9CPhysicalD2Ev, _ZN9CPhysical, _ZTV9CPhysical);
 
     // Static functions
     DECL_FASTCALL_SIMPLE(PlacePhysicalRelativeToOtherPhysical, _ZN9CPhysical36PlacePhysicalRelativeToOtherPhysicalEPS_S0_7CVector, void, CPhysical* physical1, CPhysical* physical2, CVector offset);
@@ -133,7 +133,8 @@ DECL_CLASS_BASED(CPhysical, CEntity)
     DECL_THISCALL_TAIL(CanPhysicalBeDamaged, WeaponUsed, pBeingShotAt)
 
     // Virtual functions
-    virtual int ProcessEntityCollision(CEntity* entity, CColPoint* colPoint);
+    DECL_VIRTUALCALL_HEAD(CPhysical, ProcessEntityCollision, _ZTV9CPhysical, 23, int, CEntity* entity, CColPoint* colPoint)
+    DECL_VIRTUALCALL_TAIL(entity, colPoint)
 
     // Helper functions
     inline float GetSpeedUnits() { return m_vecMoveSpeed.Magnitude(); }

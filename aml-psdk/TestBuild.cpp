@@ -123,6 +123,7 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/IplStore.h>
 #include <aml-psdk/game_sa/engine/QuadTree.h>
 #include <aml-psdk/game_sa/engine/ColStore.h>
+#include <aml-psdk/game_sa/engine/ColAccel.h>
 #include <aml-psdk/game_sa/engine/CarAI.h>
 #include <aml-psdk/game_sa/engine/Renderer.h>
 #include <aml-psdk/game_sa/other/LoadedCarGroup.h>

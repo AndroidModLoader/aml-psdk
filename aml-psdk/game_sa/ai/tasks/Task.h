@@ -16,19 +16,21 @@ enum eAbortPriority
 
 DECL_CLASS_VTABLE(CTask)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTask, _ZN5CTaskC2Ev);
-    DECL_DTORCALL_PROXY(CTask, _ZN5CTaskD2Ev);
+    DECL_CTORCALL(CTask, _ZN5CTaskC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTask, _ZN5CTaskD2Ev, _ZN5CTask, _ZTV5CTask);
     DECL_NEWCALL(CTask, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm) );
     DECL_DLCALL(CTask, _ZN5CTaskdlEPv);
 
     // Virtual functions
-    virtual CTask* Clone() const;
-    virtual CTask* GetSubTask() const;
-    virtual bool IsSimple() const;
-    virtual eTaskType GetTaskType() const;
-    virtual void StopTimer(const CEvent* event);
-    virtual bool MakeAbortable(CPed* ped, eAbortPriority priority, const CEvent* event);
-    virtual void Serialize();
+    virtual CTask* Clone() const = 0;
+    virtual CTask* GetSubTask() const = 0;
+    virtual bool IsSimple() const = 0;
+    virtual eTaskType GetTaskType() const = 0;
+    DECL_VIRTUALCALL_HEAD(CTask, StopTimer, _ZTV5CTask, 6, void, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(event)
+    virtual bool MakeAbortable(CPed* ped, eAbortPriority priority, const CEvent* event) = 0;
+    DECL_VIRTUALCALL_HEAD(CTask, Serialize, _ZTV5CTask, 8, void)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(IsTaskPtr, _ZN5CTask9IsTaskPtrEPv, bool, void* pData);
@@ -40,25 +42,39 @@ DECL_CLASS_VTABLE(CTask)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CTaskSimple, CTask)
-    // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimple, _ZN11CTaskSimpleC2Ev);
-    DECL_DTORCALL_PROXY(CTaskSimple, _ZN11CTaskSimpleD2Ev);
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimple, GetSubTask, _ZTV11CTaskSimple, 3, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimple, IsSimple, _ZTV11CTaskSimple, 4, bool)
+    DECL_VIRTUALCALL_TAIL()
 
-    virtual bool ProcessPed(CPed *);
-    virtual bool SetPedPosition(CPed *);
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CTaskSimple, _ZN11CTaskSimpleC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskSimple, _ZN11CTaskSimpleD2Ev, _ZN11CTaskSimple, _ZTV11CTaskSimple);
+
+    virtual bool ProcessPed(CPed * arg1) = 0;
+    DECL_VIRTUALCALL_HEAD(CTaskSimple, SetPedPosition, _ZTV11CTaskSimple, 10, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
 DECL_CLASS_END()
 
 DECL_CLASS_BASED(CTaskComplex, CTask)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplex, GetSubTask, _ZTV12CTaskComplex, 3, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplex, IsSimple, _ZTV12CTaskComplex, 4, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplex, MakeAbortable, _ZTV12CTaskComplex, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplex, _ZN12CTaskComplexC2Ev);
-    DECL_DTORCALL_PROXY(CTaskComplex, _ZN12CTaskComplexD2Ev);
+    DECL_CTORCALL(CTaskComplex, _ZN12CTaskComplexC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskComplex, _ZN12CTaskComplexD2Ev, _ZN12CTaskComplex, _ZTV12CTaskComplex);
     DECL_NEWCALL(CTaskComplex, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Virtual functions
-    virtual void SetSubTask(CTask* arg1);
-    virtual CTask* CreateNextSubTask(CPed* arg1);
-    virtual CTask* CreateFirstSubTask(CPed* arg1);
-    virtual CTask* ControlSubTask(CPed* arg1);
+    DECL_VIRTUALCALL_HEAD(CTaskComplex, SetSubTask, _ZTV12CTaskComplex, 9, void, CTask* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    virtual CTask* CreateNextSubTask(CPed* arg1) = 0;
+    virtual CTask* CreateFirstSubTask(CPed* arg1) = 0;
+    virtual CTask* ControlSubTask(CPed* arg1) = 0;
 
     // Member values
     CTask* m_pSubTask;

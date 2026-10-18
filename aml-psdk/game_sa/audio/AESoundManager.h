@@ -14,7 +14,7 @@ CHECKSIZE(CAEPhysicallyPlayingSound, 0x2, 0x2);
 
 DECL_CLASS(CAESoundManager)
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CAESoundManager, _ZN15CAESoundManagerD2Ev);
+    DECL_DTORCALL(CAESoundManager, _ZN15CAESoundManagerD2Ev);
 
     // Member functions
     DECL_THISCALL_SIMPLE(Initialise, _ZN15CAESoundManager10InitialiseEv, u8);

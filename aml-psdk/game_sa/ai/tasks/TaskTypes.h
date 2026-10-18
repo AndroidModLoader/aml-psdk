@@ -61,9 +61,13 @@ struct tMeleeComboSet
 CHECKSIZE(tMeleeComboSet, 0x88, 0x88);
 
 DECL_CLASS_BASED(CTaskSimpleAnim, CTaskSimple)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleAnim, MakeAbortable, _ZTV15CTaskSimpleAnim, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleAnim, _ZN15CTaskSimpleAnimC2Eb, bool const bHoldLastFrame);
-    DECL_DTORCALL_PROXY(CTaskSimpleAnim, _ZN15CTaskSimpleAnimD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleAnim, _ZN15CTaskSimpleAnimC2Eb, bool const bHoldLastFrame)
+    DECL_CTORCALL_ARG_TAIL(bHoldLastFrame)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleAnim, _ZN15CTaskSimpleAnimD2Ev, _ZN15CTaskSimpleAnim, _ZTV15CTaskSimpleAnim);
     DECL_NEWCALL(CTaskSimpleAnim, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -82,9 +86,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleAnim, 0x10, 0x20);
 
 DECL_CLASS_BASED(CTaskSimpleRunAnim, CTaskSimpleAnim)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunAnim, Clone, _ZTV18CTaskSimpleRunAnim, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunAnim, GetTaskType, _ZTV18CTaskSimpleRunAnim, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleRunAnim, ProcessPed, _ZTV18CTaskSimpleRunAnim, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleRunAnim1, _ZN18CTaskSimpleRunAnimC2E12AssocGroupId11AnimationIdfb, AssocGroupId const arg2, AnimationId const arg3, float const arg4, bool const arg5);
-    DECL_CTORCALL_PROXY(CTaskSimpleRunAnim, _ZN18CTaskSimpleRunAnimC2E12AssocGroupId11AnimationIdfiPKcb, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, int const iTaskType, char const* pTaskName, bool const bHoldLastFrame);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimpleRunAnim, _ZN18CTaskSimpleRunAnim, _ZTV18CTaskSimpleRunAnim);
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleRunAnim1, CTaskSimpleRunAnim, _ZN18CTaskSimpleRunAnimC2E12AssocGroupId11AnimationIdfb, AssocGroupId const arg2, AnimationId const arg3, float const arg4, bool const arg5)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5)
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleRunAnim, _ZN18CTaskSimpleRunAnimC2E12AssocGroupId11AnimationIdfiPKcb, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, int const iTaskType, char const* pTaskName, bool const bHoldLastFrame)
+    DECL_CTORCALL_ARG_TAIL(animGroup, animID, fBlendDelta, iTaskType, pTaskName, bHoldLastFrame)
     DECL_THISCALL_SIMPLE(Delete, _ZN18CTaskSimpleRunAnimD0Ev, void);
     DECL_NEWCALL(CTaskSimpleRunAnim, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -101,9 +115,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleRunAnim, 0x20, 0x30);
 
 DECL_CLASS_BASED(CTaskSimpleStandStill, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleStandStill, Clone, _ZTV21CTaskSimpleStandStill, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleStandStill, GetTaskType, _ZTV21CTaskSimpleStandStill, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleStandStill, MakeAbortable, _ZTV21CTaskSimpleStandStill, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleStandStill, ProcessPed, _ZTV21CTaskSimpleStandStill, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleStandStill, _ZN21CTaskSimpleStandStillC2Eibbf, int const iDuration, bool const bForever, bool const bTillStopped, float fIdleBlendDelta);
-    DECL_DTORCALL_PROXY(CTaskSimpleStandStill, _ZN21CTaskSimpleStandStillD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleStandStill, _ZN21CTaskSimpleStandStillC2Eibbf, int const iDuration, bool const bForever, bool const bTillStopped, float fIdleBlendDelta)
+    DECL_CTORCALL_ARG_TAIL(iDuration, bForever, bTillStopped, fIdleBlendDelta)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleStandStill, _ZN21CTaskSimpleStandStillD2Ev, _ZN21CTaskSimpleStandStill, _ZTV21CTaskSimpleStandStill);
     DECL_NEWCALL(CTaskSimpleStandStill, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC values
@@ -119,7 +143,18 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleStandStill, 0x20, 0x28);
 
 DECL_CLASS_BASED(CTaskSimplePause, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimplePause, Clone, _ZTV16CTaskSimplePause, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimplePause, GetTaskType, _ZTV16CTaskSimplePause, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimplePause, MakeAbortable, _ZTV16CTaskSimplePause, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimplePause, ProcessPed, _ZTV16CTaskSimplePause, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
+    CTaskSimplePause() = delete;
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimplePause, _ZN16CTaskSimplePause, _ZTV16CTaskSimplePause);
     DECL_THISCALL_SIMPLE(Delete, _ZN16CTaskSimplePauseD0Ev, void);
     DECL_NEWCALL(CTaskSimplePause, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -130,8 +165,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimplePause, 0x18, 0x20);
 
 DECL_CLASS_BASED(CTaskSimpleUseGun, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleUseGun, Clone, _ZTV17CTaskSimpleUseGun, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleUseGun, GetTaskType, _ZTV17CTaskSimpleUseGun, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleUseGun, MakeAbortable, _ZTV17CTaskSimpleUseGun, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleUseGun, ProcessPed, _ZTV17CTaskSimpleUseGun, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleUseGun, _ZN17CTaskSimpleUseGunC2EP7CEntity7CVectorash, CEntity* pTargetEntity, CVector vecTarget, i8 nCommand, i16 nBurstLength, u8 bAimImmediate);
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleUseGun, _ZN17CTaskSimpleUseGunD2Ev, _ZN17CTaskSimpleUseGun, _ZTV17CTaskSimpleUseGun);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleUseGun, _ZN17CTaskSimpleUseGunC2EP7CEntity7CVectorash, CEntity* pTargetEntity, CVector vecTarget, i8 nCommand, i16 nBurstLength, u8 bAimImmediate)
+    DECL_CTORCALL_ARG_TAIL(pTargetEntity, vecTarget, nCommand, nBurstLength, bAimImmediate)
     DECL_NEWCALL(CTaskSimpleUseGun, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -192,9 +238,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleUseGun, 0x3C, 0x58);
 
 DECL_CLASS_BASED(CTaskSimpleDuck, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDuck, Clone, _ZTV15CTaskSimpleDuck, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDuck, GetTaskType, _ZTV15CTaskSimpleDuck, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDuck, MakeAbortable, _ZTV15CTaskSimpleDuck, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDuck, ProcessPed, _ZTV15CTaskSimpleDuck, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleDuck, _ZN15CTaskSimpleDuckC2Ehts, u8 nDuckControl, u16 nLengthOfDuck, i16 nUseShotsWhizzingEvents);
-    DECL_DTORCALL_PROXY(CTaskSimpleDuck, _ZN15CTaskSimpleDuckD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleDuck, _ZN15CTaskSimpleDuckC2Ehts, u8 nDuckControl, u16 nLengthOfDuck, i16 nUseShotsWhizzingEvents)
+    DECL_CTORCALL_ARG_TAIL(nDuckControl, nLengthOfDuck, nUseShotsWhizzingEvents)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleDuck, _ZN15CTaskSimpleDuckD2Ev, _ZN15CTaskSimpleDuck, _ZTV15CTaskSimpleDuck);
     DECL_NEWCALL(CTaskSimpleDuck, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -239,9 +295,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleDuck, 0x28, 0x38);
 
 DECL_CLASS_BASED(CTaskSimpleFight, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleFight, Clone, _ZTV16CTaskSimpleFight, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleFight, GetTaskType, _ZTV16CTaskSimpleFight, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleFight, MakeAbortable, _ZTV16CTaskSimpleFight, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleFight, ProcessPed, _ZTV16CTaskSimpleFight, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleFight, _ZN16CTaskSimpleFightC2EP7CEntityij, CEntity* pTargetEntity, int nCommand, u32 nIdlePeriod);
-    DECL_DTORCALL_PROXY(CTaskSimpleFight, _ZN16CTaskSimpleFightD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleFight, _ZN16CTaskSimpleFightC2EP7CEntityij, CEntity* pTargetEntity, int nCommand, u32 nIdlePeriod)
+    DECL_CTORCALL_ARG_TAIL(pTargetEntity, nCommand, nIdlePeriod)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleFight, _ZN16CTaskSimpleFightD2Ev, _ZN16CTaskSimpleFight, _ZTV16CTaskSimpleFight);
     DECL_NEWCALL(CTaskSimpleFight, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -309,11 +375,23 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleFight, 0x28, 0x40);
 
 DECL_CLASS_BASED(CTaskSimpleHoldEntity, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleHoldEntity, Clone, _ZTV21CTaskSimpleHoldEntity, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleHoldEntity, GetTaskType, _ZTV21CTaskSimpleHoldEntity, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleHoldEntity, MakeAbortable, _ZTV21CTaskSimpleHoldEntity, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleHoldEntity, ProcessPed, _ZTV21CTaskSimpleHoldEntity, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleHoldEntity2, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdb, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, bool arg8);
-    DECL_CTORCALL_PROXY(CTaskSimpleHoldEntity1, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhhPKcS6_i, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags);
-    DECL_DTORCALL_PROXY(CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityD2Ev);
-    DECL_CTORCALL_PROXY(CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyi, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8);
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleHoldEntity2, CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdb, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, bool arg8)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleHoldEntity1, CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhhPKcS6_i, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags)
+    DECL_CTORCALL_ARG_TAIL(pEntity, pVecOffset, nBone, nOrientateFlags, pAnimName, pAnimGroupName, nFlags)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityD2Ev, _ZN21CTaskSimpleHoldEntity, _ZTV21CTaskSimpleHoldEntity);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleHoldEntity, _ZN21CTaskSimpleHoldEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyi, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8)
     DECL_NEWCALL(CTaskSimpleHoldEntity, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -353,8 +431,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleHoldEntity, 0x3C, 0x58);
 
 DECL_CLASS_BASED(CTaskSimpleThrowProjectile, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleThrowProjectile, Clone, _ZTV26CTaskSimpleThrowProjectile, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleThrowProjectile, GetTaskType, _ZTV26CTaskSimpleThrowProjectile, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleThrowProjectile, MakeAbortable, _ZTV26CTaskSimpleThrowProjectile, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleThrowProjectile, ProcessPed, _ZTV26CTaskSimpleThrowProjectile, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleThrowProjectile, _ZN26CTaskSimpleThrowProjectileC2EP7CEntity7CVector, CEntity* pTargetEntity, CVector vecTargetPos);
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleThrowProjectile, _ZN26CTaskSimpleThrowProjectileD2Ev, _ZN26CTaskSimpleThrowProjectile, _ZTV26CTaskSimpleThrowProjectile);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleThrowProjectile, _ZN26CTaskSimpleThrowProjectileC2EP7CEntity7CVector, CEntity* pTargetEntity, CVector vecTargetPos)
+    DECL_CTORCALL_ARG_TAIL(pTargetEntity, vecTargetPos)
     DECL_NEWCALL(CTaskSimpleThrowProjectile, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -378,9 +467,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleThrowProjectile, 0x24, 0x38);
 
 DECL_CLASS_BASED(CTaskSimpleInAir, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleInAir, Clone, _ZTV16CTaskSimpleInAir, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleInAir, GetTaskType, _ZTV16CTaskSimpleInAir, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleInAir, MakeAbortable, _ZTV16CTaskSimpleInAir, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleInAir, ProcessPed, _ZTV16CTaskSimpleInAir, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleInAir, _ZN16CTaskSimpleInAirC2Ebbb, bool bJump, bool bFallingToDeath, bool bTumbleWhilstFalling);
-    DECL_DTORCALL_PROXY(CTaskSimpleInAir, _ZN16CTaskSimpleInAirD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleInAir, _ZN16CTaskSimpleInAirC2Ebbb, bool bJump, bool bFallingToDeath, bool bTumbleWhilstFalling)
+    DECL_CTORCALL_ARG_TAIL(bJump, bFallingToDeath, bTumbleWhilstFalling)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleInAir, _ZN16CTaskSimpleInAirD2Ev, _ZN16CTaskSimpleInAir, _ZTV16CTaskSimpleInAir);
     DECL_NEWCALL(CTaskSimpleInAir, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -411,9 +510,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleInAir, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CTaskSimpleClimb, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleClimb, Clone, _ZTV16CTaskSimpleClimb, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleClimb, GetTaskType, _ZTV16CTaskSimpleClimb, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleClimb, MakeAbortable, _ZTV16CTaskSimpleClimb, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleClimb, ProcessPed, _ZTV16CTaskSimpleClimb, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleClimb, _ZN16CTaskSimpleClimbC2EP7CEntityRK7CVectorfhab, CEntity* pClimbEnt, CVector const& vecTarget, float fHeading, u8 nSurfaceType, i8 nHeight, bool const bForceClimb);
-    DECL_DTORCALL_PROXY(CTaskSimpleClimb, _ZN16CTaskSimpleClimbD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleClimb, _ZN16CTaskSimpleClimbC2EP7CEntityRK7CVectorfhab, CEntity* pClimbEnt, CVector const& vecTarget, float fHeading, u8 nSurfaceType, i8 nHeight, bool const bForceClimb)
+    DECL_CTORCALL_ARG_TAIL(pClimbEnt, vecTarget, fHeading, nSurfaceType, nHeight, bForceClimb)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleClimb, _ZN16CTaskSimpleClimbD2Ev, _ZN16CTaskSimpleClimb, _ZTV16CTaskSimpleClimb);
     DECL_NEWCALL(CTaskSimpleClimb, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -473,8 +582,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleClimb, 0x30, 0x48);
 
 DECL_CLASS_BASED(CTaskSimpleJetPack, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleJetPack, Clone, _ZTV18CTaskSimpleJetPack, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleJetPack, GetTaskType, _ZTV18CTaskSimpleJetPack, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleJetPack, MakeAbortable, _ZTV18CTaskSimpleJetPack, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleJetPack, ProcessPed, _ZTV18CTaskSimpleJetPack, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleJetPack, _ZN18CTaskSimpleJetPackC2EPK7CVectorfiP7CEntity, CVector const* pVecTargetPos, float fCruiseHeight, i32 nHoverTime, CEntity* pTargetEnt);
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleJetPack, _ZN18CTaskSimpleJetPackD2Ev, _ZN18CTaskSimpleJetPack, _ZTV18CTaskSimpleJetPack);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleJetPack, _ZN18CTaskSimpleJetPackC2EPK7CVectorfiP7CEntity, CVector const* pVecTargetPos, float fCruiseHeight, i32 nHoverTime, CEntity* pTargetEnt)
+    DECL_CTORCALL_ARG_TAIL(pVecTargetPos, fCruiseHeight, nHoverTime, pTargetEnt)
     DECL_NEWCALL(CTaskSimpleJetPack, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -545,8 +665,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleJetPack, 0x70, 0x90);
 
 DECL_CLASS_BASED(CTaskSimpleSwim, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleSwim, Clone, _ZTV15CTaskSimpleSwim, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleSwim, GetTaskType, _ZTV15CTaskSimpleSwim, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleSwim, MakeAbortable, _ZTV15CTaskSimpleSwim, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleSwim, ProcessPed, _ZTV15CTaskSimpleSwim, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleSwim, _ZN15CTaskSimpleSwimC2EPK7CVectorP4CPed, CVector const* pTargetPos, CPed* pTargetPed);
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleSwim, _ZN15CTaskSimpleSwimD2Ev, _ZN15CTaskSimpleSwim, _ZTV15CTaskSimpleSwim);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleSwim, _ZN15CTaskSimpleSwimC2EPK7CVectorP4CPed, CVector const* pTargetPos, CPed* pTargetPed)
+    DECL_CTORCALL_ARG_TAIL(pTargetPos, pTargetPed)
     DECL_NEWCALL(CTaskSimpleSwim, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -600,8 +731,20 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleSwim, 0x68, 0x80);
 
 DECL_CLASS_BASED(CTaskComplexFollowPointRoute, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowPointRoute, Clone, _ZTV28CTaskComplexFollowPointRoute, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowPointRoute, GetTaskType, _ZTV28CTaskComplexFollowPointRoute, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPointRoute, CreateNextSubTask, _ZTV28CTaskComplexFollowPointRoute, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPointRoute, CreateFirstSubTask, _ZTV28CTaskComplexFollowPointRoute, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPointRoute, ControlSubTask, _ZTV28CTaskComplexFollowPointRoute, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFollowPointRoute, _ZN28CTaskComplexFollowPointRouteC2EiRK11CPointRouteiffbbb, int const iMoveState, CPointRoute const& route, int const iMode, float const fTargetRadius, float const fSlowDownDistance, bool const bMustOvershootTarget, bool const bUseBlending, bool const bStandStillAfterMove);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFollowPointRoute, _ZN28CTaskComplexFollowPointRouteC2EiRK11CPointRouteiffbbb, int const iMoveState, CPointRoute const& route, int const iMode, float const fTargetRadius, float const fSlowDownDistance, bool const bMustOvershootTarget, bool const bUseBlending, bool const bStandStillAfterMove)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, route, iMode, fTargetRadius, fSlowDownDistance, bMustOvershootTarget, bUseBlending, bStandStillAfterMove)
     enum
     {
         TICKET_SINGLE = 0,
@@ -610,7 +753,7 @@ DECL_CLASS_BASED(CTaskComplexFollowPointRoute, CTaskComplex)
         TICKET_LOOP = 3,
     };
 
-    DECL_DTORCALL_PROXY(CTaskComplexFollowPointRoute, _ZN28CTaskComplexFollowPointRouteD2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFollowPointRoute, _ZN28CTaskComplexFollowPointRouteD2Ev, _ZN28CTaskComplexFollowPointRoute, _ZTV28CTaskComplexFollowPointRoute);
     DECL_NEWCALL(CTaskComplexFollowPointRoute, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -659,6 +802,15 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexFollowPointRoute, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CTaskComplexWander, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexWander, GetTaskType, _ZTV18CTaskComplexWander, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexWander, CreateNextSubTask, _ZTV18CTaskComplexWander, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexWander, CreateFirstSubTask, _ZTV18CTaskComplexWander, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexWander, ControlSubTask, _ZTV18CTaskComplexWander, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     enum
     {
         WANDER_TYPE_STANDARD = 0,
@@ -672,14 +824,18 @@ DECL_CLASS_BASED(CTaskComplexWander, CTaskComplex)
     };
 
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexWander, _ZN18CTaskComplexWanderC2Eihbf, int const iMoveState, u8 const iDir, bool const bWanderSensibly, float targetRadius);
+    DECL_DTORCALL_VIRTUAL(CTaskComplexWander, _ZN18CTaskComplexWanderD2Ev, _ZN18CTaskComplexWander, _ZTV18CTaskComplexWander);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexWander, _ZN18CTaskComplexWanderC2Eihbf, int const iMoveState, u8 const iDir, bool const bWanderSensibly, float targetRadius)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, iDir, bWanderSensibly, targetRadius)
     DECL_NEWCALL(CTaskComplexWander, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Virtual functions
-    virtual int GetWanderType() const;
-    virtual void ScanForStuff(CPed* arg1);
-    virtual void UpdateDir(CPed const* arg1);
-    virtual void UpdatePathNodes(CPed const* arg1, u8 const arg2, CNodeAddress& arg3, CNodeAddress& arg4, u8& arg5);
+    virtual int GetWanderType() const = 0;
+    virtual void ScanForStuff(CPed* arg1) = 0;
+    DECL_VIRTUALCALL_HEAD(CTaskComplexWander, UpdateDir, _ZTV18CTaskComplexWander, 15, void, CPed const* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexWander, UpdatePathNodes, _ZTV18CTaskComplexWander, 16, void, CPed const* arg1, u8 const arg2, CNodeAddress& arg3, CNodeAddress& arg4, u8& arg5)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5)
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(GetWanderTaskByPedType1, _ZN18CTaskComplexWander22GetWanderTaskByPedTypeERK4CPed, CTaskComplexWander*, CPed const& arg1);
@@ -730,16 +886,32 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexWander, 0x28, 0x38);
 
 DECL_CLASS_BASED(CTaskComplexCarDrive, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexCarDrive, Clone, _ZTV20CTaskComplexCarDrive, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexCarDrive, GetTaskType, _ZTV20CTaskComplexCarDrive, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexCarDrive, CreateNextSubTask, _ZTV20CTaskComplexCarDrive, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexCarDrive, CreateFirstSubTask, _ZTV20CTaskComplexCarDrive, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexCarDrive, ControlSubTask, _ZTV20CTaskComplexCarDrive, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexCarDrive1, _ZN20CTaskComplexCarDriveC2EP8CVehiclefii, CVehicle* arg2, float const arg3, int const arg4, int const arg5);
-    DECL_CTORCALL_PROXY(CTaskComplexCarDrive, _ZN20CTaskComplexCarDriveC2EP8CVehicle, CVehicle* pVehicle);
-    DECL_DTORCALL_PROXY(CTaskComplexCarDrive, _ZN20CTaskComplexCarDriveD2Ev);
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskComplexCarDrive1, CTaskComplexCarDrive, _ZN20CTaskComplexCarDriveC2EP8CVehiclefii, CVehicle* arg2, float const arg3, int const arg4, int const arg5)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5)
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexCarDrive, _ZN20CTaskComplexCarDriveC2EP8CVehicle, CVehicle* pVehicle)
+    DECL_CTORCALL_ARG_TAIL(pVehicle)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexCarDrive, _ZN20CTaskComplexCarDriveD2Ev, _ZN20CTaskComplexCarDrive, _ZTV20CTaskComplexCarDrive);
     DECL_NEWCALL(CTaskComplexCarDrive, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Virtual functions
-    virtual void SetUpCar() const;
-    virtual CTask* CreateSubTaskCannotGetInCar(CPed* arg1) const;
-    virtual CTask* Drive(CPed* arg1);
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexCarDrive, SetUpCar, _ZTV20CTaskComplexCarDrive, 13, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexCarDrive, CreateSubTaskCannotGetInCar, _ZTV20CTaskComplexCarDrive, 14, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexCarDrive, Drive, _ZTV20CTaskComplexCarDrive, 15, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(CreateTask, _ZN20CTaskComplexCarDrive10CreateTaskEv, CTask*);
@@ -762,13 +934,22 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexCarDrive, 0x24, 0x38);
 
 DECL_CLASS_BASED(CTaskComplexEnterCar, CTaskComplex)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexEnterCar, CreateNextSubTask, _ZTV20CTaskComplexEnterCar, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexEnterCar, CreateFirstSubTask, _ZTV20CTaskComplexEnterCar, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexEnterCar, ControlSubTask, _ZTV20CTaskComplexEnterCar, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexEnterCar, _ZN20CTaskComplexEnterCarC2EP8CVehiclebbbb, CVehicle* pTargetVehicle, bool const bAsDriver, bool const bQuitAfterOpeningDoor, bool const bQuitAfterDraggingPedOut, bool const bCarryOnAfterFallingOff);
-    DECL_DTORCALL_PROXY(CTaskComplexEnterCar, _ZN20CTaskComplexEnterCarD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexEnterCar, _ZN20CTaskComplexEnterCarC2EP8CVehiclebbbb, CVehicle* pTargetVehicle, bool const bAsDriver, bool const bQuitAfterOpeningDoor, bool const bQuitAfterDraggingPedOut, bool const bCarryOnAfterFallingOff)
+    DECL_CTORCALL_ARG_TAIL(pTargetVehicle, bAsDriver, bQuitAfterOpeningDoor, bQuitAfterDraggingPedOut, bCarryOnAfterFallingOff)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexEnterCar, _ZN20CTaskComplexEnterCarD2Ev, _ZN20CTaskComplexEnterCar, _ZTV20CTaskComplexEnterCar);
     DECL_NEWCALL(CTaskComplexEnterCar, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Virtual functions
-    virtual CTask* CreateNextSubTask_AfterSimpleCarAlign(CPed* arg1);
+    DECL_VIRTUALCALL_HEAD(CTaskComplexEnterCar, CreateNextSubTask_AfterSimpleCarAlign, _ZTV20CTaskComplexEnterCar, 13, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
 
     // Member functions
     DECL_THISCALL_SIMPLE(GetTargetPos, _ZN20CTaskComplexEnterCar12GetTargetPosEv, CVector);
@@ -811,16 +992,35 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexEnterCar, 0x50, 0x70);
 
 DECL_CLASS_BASED(CTaskComplexEnterCarAsDriver, CTaskComplexEnterCar)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexEnterCarAsDriver, Clone, _ZTV28CTaskComplexEnterCarAsDriver, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexEnterCarAsDriver, GetTaskType, _ZTV28CTaskComplexEnterCarAsDriver, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexEnterCarAsDriver, _ZN28CTaskComplexEnterCarAsDriverC2EP8CVehicle, CVehicle* pTargetVehicle);
+    DECL_DTORCALL_VIRTUAL(CTaskComplexEnterCarAsDriver, _ZN28CTaskComplexEnterCarAsDriverD2Ev, _ZN28CTaskComplexEnterCarAsDriver, _ZTV28CTaskComplexEnterCarAsDriver);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexEnterCarAsDriver, _ZN28CTaskComplexEnterCarAsDriverC2EP8CVehicle, CVehicle* pTargetVehicle)
+    DECL_CTORCALL_ARG_TAIL(pTargetVehicle)
     DECL_NEWCALL(CTaskComplexEnterCarAsDriver, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 DECL_CLASS_END()
 CHECKSIZE(CTaskComplexEnterCarAsDriver, 0x50, 0x70);
 
 DECL_CLASS_BASED(CTaskComplexLeaveCar, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexLeaveCar, Clone, _ZTV20CTaskComplexLeaveCar, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexLeaveCar, GetTaskType, _ZTV20CTaskComplexLeaveCar, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexLeaveCar, CreateNextSubTask, _ZTV20CTaskComplexLeaveCar, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexLeaveCar, CreateFirstSubTask, _ZTV20CTaskComplexLeaveCar, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexLeaveCar, ControlSubTask, _ZTV20CTaskComplexLeaveCar, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexLeaveCar, _ZN20CTaskComplexLeaveCarC2EP8CVehicleiibb, CVehicle* pTargetVehicle, int const iTargetDoor, int const iDelayTime, bool const bSensibleLeaveCar, bool const bForceGetOut);
-    DECL_DTORCALL_PROXY(CTaskComplexLeaveCar, _ZN20CTaskComplexLeaveCarD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexLeaveCar, _ZN20CTaskComplexLeaveCarC2EP8CVehicleiibb, CVehicle* pTargetVehicle, int const iTargetDoor, int const iDelayTime, bool const bSensibleLeaveCar, bool const bForceGetOut)
+    DECL_CTORCALL_ARG_TAIL(pTargetVehicle, iTargetDoor, iDelayTime, bSensibleLeaveCar, bForceGetOut)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexLeaveCar, _ZN20CTaskComplexLeaveCarD2Ev, _ZN20CTaskComplexLeaveCar, _ZTV20CTaskComplexLeaveCar);
     DECL_NEWCALL(CTaskComplexLeaveCar, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -856,9 +1056,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexLeaveCar, 0x34, 0x50);
 
 DECL_CLASS_BASED(CTaskSimpleCarDrive, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleCarDrive, Clone, _ZTV19CTaskSimpleCarDrive, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleCarDrive, GetTaskType, _ZTV19CTaskSimpleCarDrive, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleCarDrive, MakeAbortable, _ZTV19CTaskSimpleCarDrive, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleCarDrive, ProcessPed, _ZTV19CTaskSimpleCarDrive, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleCarDrive, _ZN19CTaskSimpleCarDriveC2EP8CVehicleP28CTaskUtilityLineUpPedWithCarb, CVehicle* pTargetVehicle, CTaskUtilityLineUpPedWithCar* pUtility, bool const bDriveAnyCar);
-    DECL_DTORCALL_PROXY(CTaskSimpleCarDrive, _ZN19CTaskSimpleCarDriveD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleCarDrive, _ZN19CTaskSimpleCarDriveC2EP8CVehicleP28CTaskUtilityLineUpPedWithCarb, CVehicle* pTargetVehicle, CTaskUtilityLineUpPedWithCar* pUtility, bool const bDriveAnyCar)
+    DECL_CTORCALL_ARG_TAIL(pTargetVehicle, pUtility, bDriveAnyCar)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleCarDrive, _ZN19CTaskSimpleCarDriveD2Ev, _ZN19CTaskSimpleCarDrive, _ZTV19CTaskSimpleCarDrive);
     DECL_NEWCALL(CTaskSimpleCarDrive, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -918,8 +1128,9 @@ struct CTaskComplexSequence;
 
 DECL_CLASS_BASED(CTaskSimpleGoTo, CTaskSimple)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGoTo, _ZN15CTaskSimpleGoToC2EiRK7CVectorf, int const iMoveState, CVector const& vTarget, float const fTargetRadius);
-    DECL_DTORCALL_PROXY(CTaskSimpleGoTo, _ZN15CTaskSimpleGoToD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleGoTo, _ZN15CTaskSimpleGoToC2EiRK7CVectorf, int const iMoveState, CVector const& vTarget, float const fTargetRadius)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fTargetRadius)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGoTo, _ZN15CTaskSimpleGoToD2Ev, _ZN15CTaskSimpleGoTo, _ZTV15CTaskSimpleGoTo);
     DECL_NEWCALL(CTaskSimpleGoTo, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -944,9 +1155,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGoTo, 0x20, 0x28);
 
 DECL_CLASS_BASED(CTaskSimpleGoToPoint, CTaskSimpleGoTo)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGoToPoint, Clone, _ZTV20CTaskSimpleGoToPoint, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGoToPoint, GetTaskType, _ZTV20CTaskSimpleGoToPoint, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGoToPoint, MakeAbortable, _ZTV20CTaskSimpleGoToPoint, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGoToPoint, ProcessPed, _ZTV20CTaskSimpleGoToPoint, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGoToPoint, _ZN20CTaskSimpleGoToPointC2EiRK7CVectorfbb, int const iMoveState, CVector const& vTarget, float const fTargetRadius, bool const bSlowSmoothlyApproachTarget, bool const bMustOverShootTarget);
-    DECL_DTORCALL_PROXY(CTaskSimpleGoToPoint, _ZN20CTaskSimpleGoToPointD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleGoToPoint, _ZN20CTaskSimpleGoToPointC2EiRK7CVectorfbb, int const iMoveState, CVector const& vTarget, float const fTargetRadius, bool const bSlowSmoothlyApproachTarget, bool const bMustOverShootTarget)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fTargetRadius, bSlowSmoothlyApproachTarget, bMustOverShootTarget)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGoToPoint, _ZN20CTaskSimpleGoToPointD2Ev, _ZN20CTaskSimpleGoToPoint, _ZTV20CTaskSimpleGoToPoint);
     DECL_NEWCALL(CTaskSimpleGoToPoint, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member values
@@ -960,9 +1181,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGoToPoint, 0x2C, 0x38);
 
 DECL_CLASS_BASED(CTaskSimpleGoToPointFine, CTaskSimpleGoTo)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGoToPointFine, Clone, _ZTV24CTaskSimpleGoToPointFine, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGoToPointFine, GetTaskType, _ZTV24CTaskSimpleGoToPointFine, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGoToPointFine, MakeAbortable, _ZTV24CTaskSimpleGoToPointFine, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGoToPointFine, ProcessPed, _ZTV24CTaskSimpleGoToPointFine, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGoToPointFine, _ZN24CTaskSimpleGoToPointFineC2Ef7CVectorfP7CEntity, float moveBlendRatio, CVector targetPos, float targetRadius, CEntity* pEntityWhichMayObscureWaypoint);
-    DECL_DTORCALL_PROXY(CTaskSimpleGoToPointFine, _ZN24CTaskSimpleGoToPointFineD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleGoToPointFine, _ZN24CTaskSimpleGoToPointFineC2Ef7CVectorfP7CEntity, float moveBlendRatio, CVector targetPos, float targetRadius, CEntity* pEntityWhichMayObscureWaypoint)
+    DECL_CTORCALL_ARG_TAIL(moveBlendRatio, targetPos, targetRadius, pEntityWhichMayObscureWaypoint)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGoToPointFine, _ZN24CTaskSimpleGoToPointFineD2Ev, _ZN24CTaskSimpleGoToPointFine, _ZTV24CTaskSimpleGoToPointFine);
     DECL_NEWCALL(CTaskSimpleGoToPointFine, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -984,9 +1215,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGoToPointFine, 0x24, 0x30);
 
 DECL_CLASS_BASED(CTaskSimpleAchieveHeading, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleAchieveHeading, Clone, _ZTV25CTaskSimpleAchieveHeading, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleAchieveHeading, GetTaskType, _ZTV25CTaskSimpleAchieveHeading, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleAchieveHeading, MakeAbortable, _ZTV25CTaskSimpleAchieveHeading, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleAchieveHeading, ProcessPed, _ZTV25CTaskSimpleAchieveHeading, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleAchieveHeading, _ZN25CTaskSimpleAchieveHeadingC2Efff, float const fDesiredHeading, float const fHeadingChangeRateFrac, float const fHeadingTolerance);
-    DECL_DTORCALL_PROXY(CTaskSimpleAchieveHeading, _ZN25CTaskSimpleAchieveHeadingD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleAchieveHeading, _ZN25CTaskSimpleAchieveHeadingC2Efff, float const fDesiredHeading, float const fHeadingChangeRateFrac, float const fHeadingTolerance)
+    DECL_CTORCALL_ARG_TAIL(fDesiredHeading, fHeadingChangeRateFrac, fHeadingTolerance)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleAchieveHeading, _ZN25CTaskSimpleAchieveHeadingD2Ev, _ZN25CTaskSimpleAchieveHeading, _ZTV25CTaskSimpleAchieveHeading);
     DECL_NEWCALL(CTaskSimpleAchieveHeading, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1011,8 +1252,17 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleAchieveHeading, 0x18, 0x20);
 
 DECL_CLASS_BASED(CTaskSimpleRunNamedAnim, CTaskSimpleAnim)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunNamedAnim, Clone, _ZTV23CTaskSimpleRunNamedAnim, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunNamedAnim, GetTaskType, _ZTV23CTaskSimpleRunNamedAnim, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleRunNamedAnim, ProcessPed, _ZTV23CTaskSimpleRunNamedAnim, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleRunNamedAnim, _ZN23CTaskSimpleRunNamedAnimC2EPKcS1_ifibbbb, char const* pAnimName, char const* pAnimGroupName, i32 const flags, float const fBlendDelta, int const iTime, bool const bDontInterrupt, bool const bRunInSequence, bool const bOffsetPed, bool const bHoldLastFrame);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimpleRunNamedAnim, _ZN23CTaskSimpleRunNamedAnim, _ZTV23CTaskSimpleRunNamedAnim);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleRunNamedAnim, _ZN23CTaskSimpleRunNamedAnimC2EPKcS1_ifibbbb, char const* pAnimName, char const* pAnimGroupName, i32 const flags, float const fBlendDelta, int const iTime, bool const bDontInterrupt, bool const bRunInSequence, bool const bOffsetPed, bool const bHoldLastFrame)
+    DECL_CTORCALL_ARG_TAIL(pAnimName, pAnimGroupName, flags, fBlendDelta, iTime, bDontInterrupt, bRunInSequence, bOffsetPed, bHoldLastFrame)
     DECL_THISCALL_SIMPLE(Delete, _ZN23CTaskSimpleRunNamedAnimD0Ev, void);
     DECL_NEWCALL(CTaskSimpleRunNamedAnim, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1040,9 +1290,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleRunNamedAnim, 0x64, 0x78);
 
 DECL_CLASS_BASED(CTaskSimpleRunTimedAnim, CTaskSimpleAnim)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunTimedAnim, Clone, _ZTV23CTaskSimpleRunTimedAnim, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunTimedAnim, GetTaskType, _ZTV23CTaskSimpleRunTimedAnim, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleRunTimedAnim, ProcessPed, _ZTV23CTaskSimpleRunTimedAnim, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleRunTimedAnim, _ZN23CTaskSimpleRunTimedAnimC2E12AssocGroupId11AnimationIdffib, AssocGroupId const arg2, AnimationId const arg3, float const arg4, float const arg5, int const arg6, bool const arg7);
-    DECL_CTORCALL_PROXY(CTaskSimpleRunTimedAnim1, _ZN23CTaskSimpleRunTimedAnimC2E12AssocGroupId11AnimationIdffiiPKcb, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, float const fBlendOutDelta, int const iDuration, int const iTaskType, char const* pTaskName, bool const bHoldLastFrame);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimpleRunTimedAnim, _ZN23CTaskSimpleRunTimedAnim, _ZTV23CTaskSimpleRunTimedAnim);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleRunTimedAnim, _ZN23CTaskSimpleRunTimedAnimC2E12AssocGroupId11AnimationIdffib, AssocGroupId const arg2, AnimationId const arg3, float const arg4, float const arg5, int const arg6, bool const arg7)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleRunTimedAnim1, CTaskSimpleRunTimedAnim, _ZN23CTaskSimpleRunTimedAnimC2E12AssocGroupId11AnimationIdffiiPKcb, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, float const fBlendOutDelta, int const iDuration, int const iTaskType, char const* pTaskName, bool const bHoldLastFrame)
+    DECL_CTORCALL_ARG_TAIL(animGroup, animID, fBlendDelta, fBlendOutDelta, iDuration, iTaskType, pTaskName, bHoldLastFrame)
     DECL_THISCALL_SIMPLE(Delete, _ZN23CTaskSimpleRunTimedAnimD0Ev, void);
     DECL_NEWCALL(CTaskSimpleRunTimedAnim, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1062,9 +1322,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleRunTimedAnim, 0x34, 0x40);
 
 DECL_CLASS_BASED(CTaskSimpleRunAnimLoopedMiddle, CTaskSimpleAnim)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunAnimLoopedMiddle, Clone, _ZTV30CTaskSimpleRunAnimLoopedMiddle, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleRunAnimLoopedMiddle, GetTaskType, _ZTV30CTaskSimpleRunAnimLoopedMiddle, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleRunAnimLoopedMiddle, ProcessPed, _ZTV30CTaskSimpleRunAnimLoopedMiddle, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleRunAnimLoopedMiddle, _ZN30CTaskSimpleRunAnimLoopedMiddleC2E12AssocGroupId11AnimationIdfffib, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, float loopStartRatio, float loopEndRatio, i32 loopTime, bool const bHoldLastFrame);
-    DECL_CTORCALL_PROXY(CTaskSimpleRunAnimLoopedMiddle1, _ZN30CTaskSimpleRunAnimLoopedMiddleC2EPKcS1_ifffib, char const* arg2, char const* arg3, i32 const arg4, float const arg5, float arg6, float arg7, i32 arg8, bool const arg9);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimpleRunAnimLoopedMiddle, _ZN30CTaskSimpleRunAnimLoopedMiddle, _ZTV30CTaskSimpleRunAnimLoopedMiddle);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleRunAnimLoopedMiddle, _ZN30CTaskSimpleRunAnimLoopedMiddleC2E12AssocGroupId11AnimationIdfffib, AssocGroupId const animGroup, AnimationId const animID, float const fBlendDelta, float loopStartRatio, float loopEndRatio, i32 loopTime, bool const bHoldLastFrame)
+    DECL_CTORCALL_ARG_TAIL(animGroup, animID, fBlendDelta, loopStartRatio, loopEndRatio, loopTime, bHoldLastFrame)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleRunAnimLoopedMiddle1, CTaskSimpleRunAnimLoopedMiddle, _ZN30CTaskSimpleRunAnimLoopedMiddleC2EPKcS1_ifffib, char const* arg2, char const* arg3, i32 const arg4, float const arg5, float arg6, float arg7, i32 arg8, bool const arg9)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
     DECL_THISCALL_SIMPLE(Delete, _ZN30CTaskSimpleRunAnimLoopedMiddleD0Ev, void);
     DECL_NEWCALL(CTaskSimpleRunAnimLoopedMiddle, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1091,6 +1361,17 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleRunAnimLoopedMiddle, 0x70, 0x80);
 
 DECL_CLASS_BASED(CTaskComplexSequence, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSequence, Clone, _ZTV20CTaskComplexSequence, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSequence, GetTaskType, _ZTV20CTaskComplexSequence, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSequence, CreateNextSubTask, _ZTV20CTaskComplexSequence, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSequence, CreateFirstSubTask, _ZTV20CTaskComplexSequence, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSequence, ControlSubTask, _ZTV20CTaskComplexSequence, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     enum
     {
         REPEAT_NOT = 0,
@@ -1103,8 +1384,8 @@ DECL_CLASS_BASED(CTaskComplexSequence, CTaskComplex)
     };
 
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexSequence, _ZN20CTaskComplexSequenceC2Ev);
-    DECL_DTORCALL_PROXY(CTaskComplexSequence, _ZN20CTaskComplexSequenceD2Ev);
+    DECL_CTORCALL(CTaskComplexSequence, _ZN20CTaskComplexSequenceC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskComplexSequence, _ZN20CTaskComplexSequenceD2Ev, _ZN20CTaskComplexSequence, _ZTV20CTaskComplexSequence);
     DECL_NEWCALL(CTaskComplexSequence, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1127,9 +1408,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexSequence, 0x40, 0x70);
 
 DECL_CLASS_BASED(CTaskComplexUseSequence, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexUseSequence, Clone, _ZTV23CTaskComplexUseSequence, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexUseSequence, GetTaskType, _ZTV23CTaskComplexUseSequence, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexUseSequence, CreateNextSubTask, _ZTV23CTaskComplexUseSequence, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexUseSequence, CreateFirstSubTask, _ZTV23CTaskComplexUseSequence, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexUseSequence, ControlSubTask, _ZTV23CTaskComplexUseSequence, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexUseSequence, _ZN23CTaskComplexUseSequenceC2Ei, int const id);
-    DECL_DTORCALL_PROXY(CTaskComplexUseSequence, _ZN23CTaskComplexUseSequenceD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexUseSequence, _ZN23CTaskComplexUseSequenceC2Ei, int const id)
+    DECL_CTORCALL_ARG_TAIL(id)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexUseSequence, _ZN23CTaskComplexUseSequenceD2Ev, _ZN23CTaskComplexUseSequence, _ZTV23CTaskComplexUseSequence);
     DECL_NEWCALL(CTaskComplexUseSequence, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1144,9 +1437,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexUseSequence, 0x1C, 0x28);
 
 DECL_CLASS_BASED(CTaskComplexGoToPointAndStandStill, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexGoToPointAndStandStill, Clone, _ZTV34CTaskComplexGoToPointAndStandStill, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexGoToPointAndStandStill, GetTaskType, _ZTV34CTaskComplexGoToPointAndStandStill, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStill, CreateNextSubTask, _ZTV34CTaskComplexGoToPointAndStandStill, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStill, CreateFirstSubTask, _ZTV34CTaskComplexGoToPointAndStandStill, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStill, ControlSubTask, _ZTV34CTaskComplexGoToPointAndStandStill, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexGoToPointAndStandStill, _ZN34CTaskComplexGoToPointAndStandStillC2EiRK7CVectorffbb, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, bool const bMustOvershootTarget, bool const bStopExactly);
-    DECL_DTORCALL_PROXY(CTaskComplexGoToPointAndStandStill, _ZN34CTaskComplexGoToPointAndStandStillD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexGoToPointAndStandStill, _ZN34CTaskComplexGoToPointAndStandStillC2EiRK7CVectorffbb, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, bool const bMustOvershootTarget, bool const bStopExactly)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fTargetRadius, fSlowDownDistance, bMustOvershootTarget, bStopExactly)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexGoToPointAndStandStill, _ZN34CTaskComplexGoToPointAndStandStillD2Ev, _ZN34CTaskComplexGoToPointAndStandStill, _ZTV34CTaskComplexGoToPointAndStandStill);
     DECL_NEWCALL(CTaskComplexGoToPointAndStandStill, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1177,8 +1482,9 @@ CHECKSIZE(CTaskComplexGoToPointAndStandStill, 0x28, 0x38);
 
 DECL_CLASS_BASED(CTaskComplexGoToPointAndStandStillTimed, CTaskComplexGoToPointAndStandStill)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexGoToPointAndStandStillTimed, _ZN39CTaskComplexGoToPointAndStandStillTimedC2EiRK7CVectorffi, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, int const iTime);
-    DECL_DTORCALL_PROXY(CTaskComplexGoToPointAndStandStillTimed, _ZN39CTaskComplexGoToPointAndStandStillTimedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexGoToPointAndStandStillTimed, _ZN39CTaskComplexGoToPointAndStandStillTimedC2EiRK7CVectorffi, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, int const iTime)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fTargetRadius, fSlowDownDistance, iTime)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexGoToPointAndStandStillTimed, _ZN39CTaskComplexGoToPointAndStandStillTimedD2Ev, _ZN39CTaskComplexGoToPointAndStandStillTimed, _ZTV39CTaskComplexGoToPointAndStandStillTimed);
     DECL_NEWCALL(CTaskComplexGoToPointAndStandStillTimed, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC values
@@ -1191,9 +1497,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexGoToPointAndStandStillTimed, 0x38, 0x48);
 
 DECL_CLASS_BASED(CTaskComplexGoToPointAndStandStillAndAchieveHeading, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, Clone, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, GetTaskType, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, CreateNextSubTask, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, CreateFirstSubTask, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, ControlSubTask, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexGoToPointAndStandStillAndAchieveHeading, _ZN51CTaskComplexGoToPointAndStandStillAndAchieveHeadingC2EiRK7CVectorffff, int const iMoveState, CVector const& vTarget, float const fDesiredHeading, float const fTargetRadius, float const fHeadingChangeRateFrac, float const fHeadingTolerance);
-    DECL_DTORCALL_PROXY(CTaskComplexGoToPointAndStandStillAndAchieveHeading, _ZN51CTaskComplexGoToPointAndStandStillAndAchieveHeadingD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexGoToPointAndStandStillAndAchieveHeading, _ZN51CTaskComplexGoToPointAndStandStillAndAchieveHeadingC2EiRK7CVectorffff, int const iMoveState, CVector const& vTarget, float const fDesiredHeading, float const fTargetRadius, float const fHeadingChangeRateFrac, float const fHeadingTolerance)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fDesiredHeading, fTargetRadius, fHeadingChangeRateFrac, fHeadingTolerance)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexGoToPointAndStandStillAndAchieveHeading, _ZN51CTaskComplexGoToPointAndStandStillAndAchieveHeadingD2Ev, _ZN51CTaskComplexGoToPointAndStandStillAndAchieveHeading, _ZTV51CTaskComplexGoToPointAndStandStillAndAchieveHeading);
     DECL_NEWCALL(CTaskComplexGoToPointAndStandStillAndAchieveHeading, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1215,9 +1533,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexGoToPointAndStandStillAndAchieveHeading, 0x30, 0x40);
 
 DECL_CLASS_BASED(CTaskComplexFollowNodeRoute, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowNodeRoute, Clone, _ZTV27CTaskComplexFollowNodeRoute, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowNodeRoute, GetTaskType, _ZTV27CTaskComplexFollowNodeRoute, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowNodeRoute, CreateNextSubTask, _ZTV27CTaskComplexFollowNodeRoute, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowNodeRoute, CreateFirstSubTask, _ZTV27CTaskComplexFollowNodeRoute, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowNodeRoute, ControlSubTask, _ZTV27CTaskComplexFollowNodeRoute, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFollowNodeRoute, _ZN27CTaskComplexFollowNodeRouteC2EiRK7CVectorfffbib, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, float const fFollowNodeThresholdHeightChange, bool const bKeepNodesHeadingAwayFromTarget, int const iTime, bool const bUseBlending);
-    DECL_DTORCALL_PROXY(CTaskComplexFollowNodeRoute, _ZN27CTaskComplexFollowNodeRouteD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFollowNodeRoute, _ZN27CTaskComplexFollowNodeRouteC2EiRK7CVectorfffbib, int const iMoveState, CVector const& vTarget, float const fTargetRadius, float const fSlowDownDistance, float const fFollowNodeThresholdHeightChange, bool const bKeepNodesHeadingAwayFromTarget, int const iTime, bool const bUseBlending)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, vTarget, fTargetRadius, fSlowDownDistance, fFollowNodeThresholdHeightChange, bKeepNodesHeadingAwayFromTarget, iTime, bUseBlending)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFollowNodeRoute, _ZN27CTaskComplexFollowNodeRouteD2Ev, _ZN27CTaskComplexFollowNodeRoute, _ZTV27CTaskComplexFollowNodeRoute);
     DECL_NEWCALL(CTaskComplexFollowNodeRoute, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1278,9 +1608,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexFollowNodeRoute, 0x60, 0x78);
 
 DECL_CLASS_BASED(CTaskComplexFollowPatrolRoute, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowPatrolRoute, Clone, _ZTV29CTaskComplexFollowPatrolRoute, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFollowPatrolRoute, GetTaskType, _ZTV29CTaskComplexFollowPatrolRoute, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPatrolRoute, CreateNextSubTask, _ZTV29CTaskComplexFollowPatrolRoute, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPatrolRoute, CreateFirstSubTask, _ZTV29CTaskComplexFollowPatrolRoute, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFollowPatrolRoute, ControlSubTask, _ZTV29CTaskComplexFollowPatrolRoute, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFollowPatrolRoute, _ZN29CTaskComplexFollowPatrolRouteC2EiRK12CPatrolRouteiff, int const iMoveState, CPatrolRoute const& route, int const iMode, float const fTargetRadius, float const fSlowDownDistance);
-    DECL_DTORCALL_PROXY(CTaskComplexFollowPatrolRoute, _ZN29CTaskComplexFollowPatrolRouteD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFollowPatrolRoute, _ZN29CTaskComplexFollowPatrolRouteC2EiRK12CPatrolRouteiff, int const iMoveState, CPatrolRoute const& route, int const iMode, float const fTargetRadius, float const fSlowDownDistance)
+    DECL_CTORCALL_ARG_TAIL(iMoveState, route, iMode, fTargetRadius, fSlowDownDistance)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFollowPatrolRoute, _ZN29CTaskComplexFollowPatrolRouteD2Ev, _ZN29CTaskComplexFollowPatrolRoute, _ZTV29CTaskComplexFollowPatrolRoute);
     DECL_NEWCALL(CTaskComplexFollowPatrolRoute, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1314,8 +1656,9 @@ CHECKSIZE(CTaskComplexFollowPatrolRoute, 0x30, 0x40);
 
 DECL_CLASS_BASED(CTaskComplexDriveToPoint, CTaskComplexCarDrive)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexDriveToPoint, _ZN24CTaskComplexDriveToPointC2EP8CVehicleRK7CVectorfiifi, CVehicle* pVehicle, CVector const& vTarget, float const fCruiseSpeed, int const iMode, int const iDesiredCarModel, float const fTargetRadius, int const iDrivingStyle);
-    DECL_DTORCALL_PROXY(CTaskComplexDriveToPoint, _ZN24CTaskComplexDriveToPointD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexDriveToPoint, _ZN24CTaskComplexDriveToPointC2EP8CVehicleRK7CVectorfiifi, CVehicle* pVehicle, CVector const& vTarget, float const fCruiseSpeed, int const iMode, int const iDesiredCarModel, float const fTargetRadius, int const iDrivingStyle)
+    DECL_CTORCALL_ARG_TAIL(pVehicle, vTarget, fCruiseSpeed, iMode, iDesiredCarModel, fTargetRadius, iDrivingStyle)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexDriveToPoint, _ZN24CTaskComplexDriveToPointD2Ev, _ZN24CTaskComplexDriveToPoint, _ZTV24CTaskComplexDriveToPoint);
     DECL_NEWCALL(CTaskComplexDriveToPoint, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1336,9 +1679,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexDriveToPoint, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CTaskComplexDrivePointRoute, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexDrivePointRoute, Clone, _ZTV27CTaskComplexDrivePointRoute, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexDrivePointRoute, GetTaskType, _ZTV27CTaskComplexDrivePointRoute, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexDrivePointRoute, CreateNextSubTask, _ZTV27CTaskComplexDrivePointRoute, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexDrivePointRoute, CreateFirstSubTask, _ZTV27CTaskComplexDrivePointRoute, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexDrivePointRoute, ControlSubTask, _ZTV27CTaskComplexDrivePointRoute, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexDrivePointRoute, _ZN27CTaskComplexDrivePointRouteC2EP8CVehicleRK11CPointRoutefiifi, CVehicle* pVehicle, CPointRoute const& route, float const fCruiseSpeed, int const iMode, int const iDesiredCarModel, float const fTargetRadius, int const iDrivingStyle);
-    DECL_DTORCALL_PROXY(CTaskComplexDrivePointRoute, _ZN27CTaskComplexDrivePointRouteD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexDrivePointRoute, _ZN27CTaskComplexDrivePointRouteC2EP8CVehicleRK11CPointRoutefiifi, CVehicle* pVehicle, CPointRoute const& route, float const fCruiseSpeed, int const iMode, int const iDesiredCarModel, float const fTargetRadius, int const iDrivingStyle)
+    DECL_CTORCALL_ARG_TAIL(pVehicle, route, fCruiseSpeed, iMode, iDesiredCarModel, fTargetRadius, iDrivingStyle)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexDrivePointRoute, _ZN27CTaskComplexDrivePointRouteD2Ev, _ZN27CTaskComplexDrivePointRoute, _ZTV27CTaskComplexDrivePointRoute);
     DECL_NEWCALL(CTaskComplexDrivePointRoute, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1358,8 +1713,9 @@ CHECKSIZE(CTaskComplexDrivePointRoute, 0x2C, 0x40);
 
 DECL_CLASS_BASED(CTaskComplexCarDriveWander, CTaskComplexCarDrive)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexCarDriveWander, _ZN26CTaskComplexCarDriveWanderC2EP8CVehicleif, CVehicle* pVehicle, int const iDrivingStyle, float const fCruiseSpeed);
-    DECL_DTORCALL_PROXY(CTaskComplexCarDriveWander, _ZN26CTaskComplexCarDriveWanderD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexCarDriveWander, _ZN26CTaskComplexCarDriveWanderC2EP8CVehicleif, CVehicle* pVehicle, int const iDrivingStyle, float const fCruiseSpeed)
+    DECL_CTORCALL_ARG_TAIL(pVehicle, iDrivingStyle, fCruiseSpeed)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexCarDriveWander, _ZN26CTaskComplexCarDriveWanderD2Ev, _ZN26CTaskComplexCarDriveWander, _ZTV26CTaskComplexCarDriveWander);
     DECL_NEWCALL(CTaskComplexCarDriveWander, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1368,9 +1724,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexCarDriveWander, 0x24, 0x38);
 
 DECL_CLASS_BASED(CTaskComplexFleePoint, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFleePoint, Clone, _ZTV21CTaskComplexFleePoint, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFleePoint, GetTaskType, _ZTV21CTaskComplexFleePoint, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleePoint, CreateNextSubTask, _ZTV21CTaskComplexFleePoint, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleePoint, CreateFirstSubTask, _ZTV21CTaskComplexFleePoint, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleePoint, ControlSubTask, _ZTV21CTaskComplexFleePoint, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFleePoint, _ZN21CTaskComplexFleePointC2ERK7CVectorbfi, CVector const& vFleePos, bool const bScream, float const fSafeDistance, int const iFleeTime);
-    DECL_DTORCALL_PROXY(CTaskComplexFleePoint, _ZN21CTaskComplexFleePointD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFleePoint, _ZN21CTaskComplexFleePointC2ERK7CVectorbfi, CVector const& vFleePos, bool const bScream, float const fSafeDistance, int const iFleeTime)
+    DECL_CTORCALL_ARG_TAIL(vFleePos, bScream, fSafeDistance, iFleeTime)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFleePoint, _ZN21CTaskComplexFleePointD2Ev, _ZN21CTaskComplexFleePoint, _ZTV21CTaskComplexFleePoint);
     DECL_NEWCALL(CTaskComplexFleePoint, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1397,9 +1765,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexFleePoint, 0x3C, 0x48);
 
 DECL_CLASS_BASED(CTaskComplexFleeEntity, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFleeEntity, Clone, _ZTV22CTaskComplexFleeEntity, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFleeEntity, GetTaskType, _ZTV22CTaskComplexFleeEntity, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleeEntity, CreateNextSubTask, _ZTV22CTaskComplexFleeEntity, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleeEntity, CreateFirstSubTask, _ZTV22CTaskComplexFleeEntity, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFleeEntity, ControlSubTask, _ZTV22CTaskComplexFleeEntity, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFleeEntity, _ZN22CTaskComplexFleeEntityC2EP7CEntitybfiif, CEntity* pFleeEntity, bool const bScream, float const fSafeDistance, int const iFleeTime, int const iEntityPosCheckPeriod, float const fEntityPosChangeThreshold);
-    DECL_DTORCALL_PROXY(CTaskComplexFleeEntity, _ZN22CTaskComplexFleeEntityD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFleeEntity, _ZN22CTaskComplexFleeEntityC2EP7CEntitybfiif, CEntity* pFleeEntity, bool const bScream, float const fSafeDistance, int const iFleeTime, int const iEntityPosCheckPeriod, float const fEntityPosChangeThreshold)
+    DECL_CTORCALL_ARG_TAIL(pFleeEntity, bScream, fSafeDistance, iFleeTime, iEntityPosCheckPeriod, fEntityPosChangeThreshold)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFleeEntity, _ZN22CTaskComplexFleeEntityD2Ev, _ZN22CTaskComplexFleeEntity, _ZTV22CTaskComplexFleeEntity);
     DECL_NEWCALL(CTaskComplexFleeEntity, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1425,9 +1805,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexFleeEntity, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CTaskComplexSmartFleePoint, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSmartFleePoint, Clone, _ZTV26CTaskComplexSmartFleePoint, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSmartFleePoint, GetTaskType, _ZTV26CTaskComplexSmartFleePoint, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleePoint, CreateNextSubTask, _ZTV26CTaskComplexSmartFleePoint, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleePoint, CreateFirstSubTask, _ZTV26CTaskComplexSmartFleePoint, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleePoint, ControlSubTask, _ZTV26CTaskComplexSmartFleePoint, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexSmartFleePoint, _ZN26CTaskComplexSmartFleePointC2ERK7CVectorbfi, CVector const& vFleePos, bool const bScream, float const fSafeDistance, int const iFleeTime);
-    DECL_DTORCALL_PROXY(CTaskComplexSmartFleePoint, _ZN26CTaskComplexSmartFleePointD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexSmartFleePoint, _ZN26CTaskComplexSmartFleePointC2ERK7CVectorbfi, CVector const& vFleePos, bool const bScream, float const fSafeDistance, int const iFleeTime)
+    DECL_CTORCALL_ARG_TAIL(vFleePos, bScream, fSafeDistance, iFleeTime)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexSmartFleePoint, _ZN26CTaskComplexSmartFleePointD2Ev, _ZN26CTaskComplexSmartFleePoint, _ZTV26CTaskComplexSmartFleePoint);
     DECL_NEWCALL(CTaskComplexSmartFleePoint, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1458,9 +1850,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexSmartFleePoint, 0x44, 0x50);
 
 DECL_CLASS_BASED(CTaskComplexSmartFleeEntity, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSmartFleeEntity, Clone, _ZTV27CTaskComplexSmartFleeEntity, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexSmartFleeEntity, GetTaskType, _ZTV27CTaskComplexSmartFleeEntity, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleeEntity, CreateNextSubTask, _ZTV27CTaskComplexSmartFleeEntity, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleeEntity, CreateFirstSubTask, _ZTV27CTaskComplexSmartFleeEntity, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexSmartFleeEntity, ControlSubTask, _ZTV27CTaskComplexSmartFleeEntity, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexSmartFleeEntity, _ZN27CTaskComplexSmartFleeEntityC2EP7CEntitybfiif, CEntity* pFleeEntity, bool const bScream, float const fSafeDistance, int const iFleeTime, int const iEntityPosCheckPeriod, float const fEntityPosChangeThreshold);
-    DECL_DTORCALL_PROXY(CTaskComplexSmartFleeEntity, _ZN27CTaskComplexSmartFleeEntityD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexSmartFleeEntity, _ZN27CTaskComplexSmartFleeEntityC2EP7CEntitybfiif, CEntity* pFleeEntity, bool const bScream, float const fSafeDistance, int const iFleeTime, int const iEntityPosCheckPeriod, float const fEntityPosChangeThreshold)
+    DECL_CTORCALL_ARG_TAIL(pFleeEntity, bScream, fSafeDistance, iFleeTime, iEntityPosCheckPeriod, fEntityPosChangeThreshold)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexSmartFleeEntity, _ZN27CTaskComplexSmartFleeEntityD2Ev, _ZN27CTaskComplexSmartFleeEntity, _ZTV27CTaskComplexSmartFleeEntity);
     DECL_NEWCALL(CTaskComplexSmartFleeEntity, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1490,10 +1894,23 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexSmartFleeEntity, 0x40, 0x50);
 
 DECL_CLASS_BASED(CTaskComplexTurnToFaceEntityOrCoord, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexTurnToFaceEntityOrCoord, Clone, _ZTV35CTaskComplexTurnToFaceEntityOrCoord, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexTurnToFaceEntityOrCoord, GetTaskType, _ZTV35CTaskComplexTurnToFaceEntityOrCoord, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexTurnToFaceEntityOrCoord, CreateNextSubTask, _ZTV35CTaskComplexTurnToFaceEntityOrCoord, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexTurnToFaceEntityOrCoord, CreateFirstSubTask, _ZTV35CTaskComplexTurnToFaceEntityOrCoord, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexTurnToFaceEntityOrCoord, ControlSubTask, _ZTV35CTaskComplexTurnToFaceEntityOrCoord, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexTurnToFaceEntityOrCoord, _ZN35CTaskComplexTurnToFaceEntityOrCoordC2EP7CEntityff, CEntity* arg2, float const arg3, float const arg4);
-    DECL_CTORCALL_PROXY(CTaskComplexTurnToFaceEntityOrCoord1, _ZN35CTaskComplexTurnToFaceEntityOrCoordC2ERK7CVectorff, CVector const& vTarget, float const fHeadingChangeRateFrac, float const fHeadingTolerance);
-    DECL_DTORCALL_PROXY(CTaskComplexTurnToFaceEntityOrCoord, _ZN35CTaskComplexTurnToFaceEntityOrCoordD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexTurnToFaceEntityOrCoord, _ZN35CTaskComplexTurnToFaceEntityOrCoordC2EP7CEntityff, CEntity* arg2, float const arg3, float const arg4)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskComplexTurnToFaceEntityOrCoord1, CTaskComplexTurnToFaceEntityOrCoord, _ZN35CTaskComplexTurnToFaceEntityOrCoordC2ERK7CVectorff, CVector const& vTarget, float const fHeadingChangeRateFrac, float const fHeadingTolerance)
+    DECL_CTORCALL_ARG_TAIL(vTarget, fHeadingChangeRateFrac, fHeadingTolerance)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexTurnToFaceEntityOrCoord, _ZN35CTaskComplexTurnToFaceEntityOrCoordD2Ev, _ZN35CTaskComplexTurnToFaceEntityOrCoord, _ZTV35CTaskComplexTurnToFaceEntityOrCoord);
     DECL_NEWCALL(CTaskComplexTurnToFaceEntityOrCoord, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1513,9 +1930,18 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexTurnToFaceEntityOrCoord, 0x28, 0x38);
 
 DECL_CLASS_BASED(CTaskSimplePlayerOnFoot, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimplePlayerOnFoot, Clone, _ZTV23CTaskSimplePlayerOnFoot, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimplePlayerOnFoot, GetTaskType, _ZTV23CTaskSimplePlayerOnFoot, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimplePlayerOnFoot, MakeAbortable, _ZTV23CTaskSimplePlayerOnFoot, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimplePlayerOnFoot, ProcessPed, _ZTV23CTaskSimplePlayerOnFoot, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimplePlayerOnFoot, _ZN23CTaskSimplePlayerOnFootC2Ev);
-    DECL_DTORCALL_PROXY(CTaskSimplePlayerOnFoot, _ZN23CTaskSimplePlayerOnFootD2Ev);
+    DECL_CTORCALL(CTaskSimplePlayerOnFoot, _ZN23CTaskSimplePlayerOnFootC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskSimplePlayerOnFoot, _ZN23CTaskSimplePlayerOnFootD2Ev, _ZN23CTaskSimplePlayerOnFoot, _ZTV23CTaskSimplePlayerOnFoot);
     DECL_NEWCALL(CTaskSimplePlayerOnFoot, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1546,9 +1972,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimplePlayerOnFoot, 0x34, 0x48);
 
 DECL_CLASS_BASED(CTaskSimpleStealthKill, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleStealthKill, Clone, _ZTV22CTaskSimpleStealthKill, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleStealthKill, GetTaskType, _ZTV22CTaskSimpleStealthKill, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleStealthKill, MakeAbortable, _ZTV22CTaskSimpleStealthKill, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleStealthKill, ProcessPed, _ZTV22CTaskSimpleStealthKill, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleStealthKill, _ZN22CTaskSimpleStealthKillC2EbP4CPed12AssocGroupId, bool bAttacker, CPed* pPed, AssocGroupId nAnimGroup);
-    DECL_DTORCALL_PROXY(CTaskSimpleStealthKill, _ZN22CTaskSimpleStealthKillD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleStealthKill, _ZN22CTaskSimpleStealthKillC2EbP4CPed12AssocGroupId, bool bAttacker, CPed* pPed, AssocGroupId nAnimGroup)
+    DECL_CTORCALL_ARG_TAIL(bAttacker, pPed, nAnimGroup)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleStealthKill, _ZN22CTaskSimpleStealthKillD2Ev, _ZN22CTaskSimpleStealthKill, _ZTV22CTaskSimpleStealthKill);
     DECL_NEWCALL(CTaskSimpleStealthKill, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1570,9 +2006,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleStealthKill, 0x20, 0x38);
 
 DECL_CLASS_BASED(CTaskSimpleGangDriveBy, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGangDriveBy, Clone, _ZTV22CTaskSimpleGangDriveBy, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGangDriveBy, GetTaskType, _ZTV22CTaskSimpleGangDriveBy, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGangDriveBy, MakeAbortable, _ZTV22CTaskSimpleGangDriveBy, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGangDriveBy, ProcessPed, _ZTV22CTaskSimpleGangDriveBy, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGangDriveBy, _ZN22CTaskSimpleGangDriveByC2EP7CEntityPK7CVectorfaab, CEntity* pTargetEntity, CVector const* pVecTarget, float fAbortRange, i8 FrequencyPercentage, i8 nDrivebyStyle, bool bSeatRHS);
-    DECL_DTORCALL_PROXY(CTaskSimpleGangDriveBy, _ZN22CTaskSimpleGangDriveByD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleGangDriveBy, _ZN22CTaskSimpleGangDriveByC2EP7CEntityPK7CVectorfaab, CEntity* pTargetEntity, CVector const* pVecTarget, float fAbortRange, i8 FrequencyPercentage, i8 nDrivebyStyle, bool bSeatRHS)
+    DECL_CTORCALL_ARG_TAIL(pTargetEntity, pVecTarget, fAbortRange, FrequencyPercentage, nDrivebyStyle, bSeatRHS)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGangDriveBy, _ZN22CTaskSimpleGangDriveByD2Ev, _ZN22CTaskSimpleGangDriveBy, _ZTV22CTaskSimpleGangDriveBy);
     DECL_NEWCALL(CTaskSimpleGangDriveBy, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1626,9 +2072,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGangDriveBy, 0x44, 0x60);
 
 DECL_CLASS_BASED(CTaskSimpleGunControl, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGunControl, Clone, _ZTV21CTaskSimpleGunControl, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGunControl, GetTaskType, _ZTV21CTaskSimpleGunControl, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGunControl, MakeAbortable, _ZTV21CTaskSimpleGunControl, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGunControl, ProcessPed, _ZTV21CTaskSimpleGunControl, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGunControl, _ZN21CTaskSimpleGunControlC2EP7CEntityPK7CVectorS4_asi, CEntity* pTargetEntity, CVector const* pTargetPos, CVector const* pMoveTarget, i8 nFiringTask, i16 nBurstLength, i32 nMaxDuration);
-    DECL_DTORCALL_PROXY(CTaskSimpleGunControl, _ZN21CTaskSimpleGunControlD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleGunControl, _ZN21CTaskSimpleGunControlC2EP7CEntityPK7CVectorS4_asi, CEntity* pTargetEntity, CVector const* pTargetPos, CVector const* pMoveTarget, i8 nFiringTask, i16 nBurstLength, i32 nMaxDuration)
+    DECL_CTORCALL_ARG_TAIL(pTargetEntity, pTargetPos, pMoveTarget, nFiringTask, nBurstLength, nMaxDuration)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGunControl, _ZN21CTaskSimpleGunControlD2Ev, _ZN21CTaskSimpleGunControl, _ZTV21CTaskSimpleGunControl);
     DECL_NEWCALL(CTaskSimpleGunControl, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1658,9 +2114,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGunControl, 0x3C, 0x50);
 
 DECL_CLASS_BASED(CTaskSimpleDead, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDead, Clone, _ZTV15CTaskSimpleDead, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDead, GetTaskType, _ZTV15CTaskSimpleDead, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDead, MakeAbortable, _ZTV15CTaskSimpleDead, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDead, ProcessPed, _ZTV15CTaskSimpleDead, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleDead, _ZN15CTaskSimpleDeadC2Eib, int const iTimeOfDeath, bool const bHasDrowned);
-    DECL_DTORCALL_PROXY(CTaskSimpleDead, _ZN15CTaskSimpleDeadD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleDead, _ZN15CTaskSimpleDeadC2Eib, int const iTimeOfDeath, bool const bHasDrowned)
+    DECL_CTORCALL_ARG_TAIL(iTimeOfDeath, bHasDrowned)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleDead, _ZN15CTaskSimpleDeadD2Ev, _ZN15CTaskSimpleDead, _ZTV15CTaskSimpleDead);
     DECL_NEWCALL(CTaskSimpleDead, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1675,11 +2141,23 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleDead, 0x10, 0x18);
 
 DECL_CLASS_BASED(CTaskSimpleDie, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDie, Clone, _ZTV14CTaskSimpleDie, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleDie, GetTaskType, _ZTV14CTaskSimpleDie, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDie, MakeAbortable, _ZTV14CTaskSimpleDie, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleDie, ProcessPed, _ZTV14CTaskSimpleDie, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleDie, _ZN14CTaskSimpleDieC2EPKcS1_iff, char const* pAnimName, char const* pAnimGroupName, i32 const flags, float const fBlendDelta, float const fAnimSpeed);
-    DECL_CTORCALL_PROXY(CTaskSimpleDie1, _ZN14CTaskSimpleDieC2E12AssocGroupId11AnimationIdff, AssocGroupId const arg2, AnimationId const arg3, float const arg4, float const arg5);
-    DECL_CTORCALL_PROXY(CTaskSimpleDie2, _ZN14CTaskSimpleDieC2EP19CAnimBlendHierarchyiff, CAnimBlendHierarchy* arg2, i32 const arg3, float const arg4, float const arg5);
-    DECL_DTORCALL_PROXY(CTaskSimpleDie, _ZN14CTaskSimpleDieD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleDie, _ZN14CTaskSimpleDieC2EPKcS1_iff, char const* pAnimName, char const* pAnimGroupName, i32 const flags, float const fBlendDelta, float const fAnimSpeed)
+    DECL_CTORCALL_ARG_TAIL(pAnimName, pAnimGroupName, flags, fBlendDelta, fAnimSpeed)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleDie1, CTaskSimpleDie, _ZN14CTaskSimpleDieC2E12AssocGroupId11AnimationIdff, AssocGroupId const arg2, AnimationId const arg3, float const arg4, float const arg5)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimpleDie2, CTaskSimpleDie, _ZN14CTaskSimpleDieC2EP19CAnimBlendHierarchyiff, CAnimBlendHierarchy* arg2, i32 const arg3, float const arg4, float const arg5)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleDie, _ZN14CTaskSimpleDieD2Ev, _ZN14CTaskSimpleDie, _ZTV14CTaskSimpleDie);
     DECL_NEWCALL(CTaskSimpleDie, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1703,9 +2181,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleDie, 0x28, 0x38);
 
 DECL_CLASS_BASED(CTaskSimpleFall, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleFall, Clone, _ZTV15CTaskSimpleFall, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleFall, GetTaskType, _ZTV15CTaskSimpleFall, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleFall, MakeAbortable, _ZTV15CTaskSimpleFall, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleFall, ProcessPed, _ZTV15CTaskSimpleFall, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleFall, _ZN15CTaskSimpleFallC2E11AnimationId12AssocGroupIdj, AnimationId const animID, AssocGroupId const animGroup, u32 nPauseTime);
-    DECL_DTORCALL_PROXY(CTaskSimpleFall, _ZN15CTaskSimpleFallD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleFall, _ZN15CTaskSimpleFallC2E11AnimationId12AssocGroupIdj, AnimationId const animID, AssocGroupId const animGroup, u32 nPauseTime)
+    DECL_CTORCALL_ARG_TAIL(animID, animGroup, nPauseTime)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleFall, _ZN15CTaskSimpleFallD2Ev, _ZN15CTaskSimpleFall, _ZTV15CTaskSimpleFall);
     DECL_NEWCALL(CTaskSimpleFall, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1728,9 +2216,18 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleFall, 0x20, 0x30);
 
 DECL_CLASS_BASED(CTaskSimpleGetUp, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGetUp, Clone, _ZTV16CTaskSimpleGetUp, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleGetUp, GetTaskType, _ZTV16CTaskSimpleGetUp, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGetUp, MakeAbortable, _ZTV16CTaskSimpleGetUp, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleGetUp, ProcessPed, _ZTV16CTaskSimpleGetUp, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleGetUp, _ZN16CTaskSimpleGetUpC2Ev);
-    DECL_DTORCALL_PROXY(CTaskSimpleGetUp, _ZN16CTaskSimpleGetUpD2Ev);
+    DECL_CTORCALL(CTaskSimpleGetUp, _ZN16CTaskSimpleGetUpC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleGetUp, _ZN16CTaskSimpleGetUpD2Ev, _ZN16CTaskSimpleGetUp, _ZTV16CTaskSimpleGetUp);
     DECL_NEWCALL(CTaskSimpleGetUp, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1748,9 +2245,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleGetUp, 0x10, 0x20);
 
 DECL_CLASS_BASED(CTaskSimpleLand, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleLand, Clone, _ZTV15CTaskSimpleLand, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleLand, GetTaskType, _ZTV15CTaskSimpleLand, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleLand, MakeAbortable, _ZTV15CTaskSimpleLand, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleLand, ProcessPed, _ZTV15CTaskSimpleLand, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleLand, _ZN15CTaskSimpleLandC2E11AnimationId, AnimationId const anim);
-    DECL_DTORCALL_PROXY(CTaskSimpleLand, _ZN15CTaskSimpleLandD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleLand, _ZN15CTaskSimpleLandC2E11AnimationId, AnimationId const anim)
+    DECL_CTORCALL_ARG_TAIL(anim)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleLand, _ZN15CTaskSimpleLandD2Ev, _ZN15CTaskSimpleLand, _ZTV15CTaskSimpleLand);
     DECL_NEWCALL(CTaskSimpleLand, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1770,9 +2277,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleLand, 0x14, 0x20);
 
 DECL_CLASS_BASED(CTaskSimpleJump, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleJump, Clone, _ZTV15CTaskSimpleJump, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleJump, GetTaskType, _ZTV15CTaskSimpleJump, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleJump, MakeAbortable, _ZTV15CTaskSimpleJump, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleJump, ProcessPed, _ZTV15CTaskSimpleJump, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleJump, _ZN15CTaskSimpleJumpC2Eb, bool const bForceEdgeSearch);
-    DECL_DTORCALL_PROXY(CTaskSimpleJump, _ZN15CTaskSimpleJumpD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleJump, _ZN15CTaskSimpleJumpC2Eb, bool const bForceEdgeSearch)
+    DECL_CTORCALL_ARG_TAIL(bForceEdgeSearch)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleJump, _ZN15CTaskSimpleJumpD2Ev, _ZN15CTaskSimpleJump, _ZTV15CTaskSimpleJump);
     DECL_NEWCALL(CTaskSimpleJump, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1802,6 +2319,17 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleJump, 0x2C, 0x40);
 
 DECL_CLASS_BASED(CTaskComplexJump, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexJump, Clone, _ZTV16CTaskComplexJump, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexJump, GetTaskType, _ZTV16CTaskComplexJump, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexJump, CreateNextSubTask, _ZTV16CTaskComplexJump, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexJump, CreateFirstSubTask, _ZTV16CTaskComplexJump, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexJump, ControlSubTask, _ZTV16CTaskComplexJump, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     enum
     {
         CLIMB_DISABLE = -1,
@@ -1810,8 +2338,9 @@ DECL_CLASS_BASED(CTaskComplexJump, CTaskComplex)
     };
 
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexJump, _ZN16CTaskComplexJumpC2Ei, i32 nForceClimb);
-    DECL_DTORCALL_PROXY(CTaskComplexJump, _ZN16CTaskComplexJumpD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexJump, _ZN16CTaskComplexJumpC2Ei, i32 nForceClimb)
+    DECL_CTORCALL_ARG_TAIL(nForceClimb)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexJump, _ZN16CTaskComplexJumpD2Ev, _ZN16CTaskComplexJump, _ZTV16CTaskComplexJump);
     DECL_NEWCALL(CTaskComplexJump, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1825,10 +2354,23 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexJump, 0x14, 0x20);
 
 DECL_CLASS_BASED(CTaskComplexFallAndGetUp, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFallAndGetUp, Clone, _ZTV24CTaskComplexFallAndGetUp, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexFallAndGetUp, GetTaskType, _ZTV24CTaskComplexFallAndGetUp, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFallAndGetUp, CreateNextSubTask, _ZTV24CTaskComplexFallAndGetUp, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFallAndGetUp, CreateFirstSubTask, _ZTV24CTaskComplexFallAndGetUp, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexFallAndGetUp, ControlSubTask, _ZTV24CTaskComplexFallAndGetUp, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexFallAndGetUp, _ZN24CTaskComplexFallAndGetUpC2E11AnimationId12AssocGroupIdi, AnimationId const arg2, AssocGroupId const arg3, int const arg4);
-    DECL_CTORCALL_PROXY(CTaskComplexFallAndGetUp1, _ZN24CTaskComplexFallAndGetUpC2Eii, int const iDir, int const iDownTime);
-    DECL_DTORCALL_PROXY(CTaskComplexFallAndGetUp, _ZN24CTaskComplexFallAndGetUpD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexFallAndGetUp, _ZN24CTaskComplexFallAndGetUpC2E11AnimationId12AssocGroupIdi, AnimationId const arg2, AssocGroupId const arg3, int const arg4)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskComplexFallAndGetUp1, CTaskComplexFallAndGetUp, _ZN24CTaskComplexFallAndGetUpC2Eii, int const iDir, int const iDownTime)
+    DECL_CTORCALL_ARG_TAIL(iDir, iDownTime)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexFallAndGetUp, _ZN24CTaskComplexFallAndGetUpD2Ev, _ZN24CTaskComplexFallAndGetUp, _ZTV24CTaskComplexFallAndGetUp);
     DECL_NEWCALL(CTaskComplexFallAndGetUp, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1850,9 +2392,13 @@ CHECKSIZE(CTaskComplexFallAndGetUp, 0x18, 0x28);
 
 DECL_CLASS_BASED(CTaskSimplePickUpEntity, CTaskSimpleHoldEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimplePickUpEntity, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdf, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, float arg8);
-    DECL_CTORCALL_PROXY(CTaskSimplePickUpEntity1, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhhPKcS6_if, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags, float fTimeToAttach);
-    DECL_CTORCALL_PROXY(CTaskSimplePickUpEntity2, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyif, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8, float arg9);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimplePickUpEntity, _ZN23CTaskSimplePickUpEntity, _ZTV23CTaskSimplePickUpEntity);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimplePickUpEntity, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdf, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, float arg8)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimplePickUpEntity1, CTaskSimplePickUpEntity, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhhPKcS6_if, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags, float fTimeToAttach)
+    DECL_CTORCALL_ARG_TAIL(pEntity, pVecOffset, nBone, nOrientateFlags, pAnimName, pAnimGroupName, nFlags, fTimeToAttach)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimplePickUpEntity2, CTaskSimplePickUpEntity, _ZN23CTaskSimplePickUpEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyif, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8, float arg9)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
     DECL_THISCALL_SIMPLE(Delete, _ZN23CTaskSimplePickUpEntityD0Ev, void);
     DECL_NEWCALL(CTaskSimplePickUpEntity, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1864,10 +2410,15 @@ CHECKSIZE(CTaskSimplePickUpEntity, 0x4C, 0x68);
 
 DECL_CLASS_BASED(CTaskSimplePutDownEntity, CTaskSimpleHoldEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdf, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, float arg8);
-    DECL_CTORCALL_PROXY(CTaskSimplePutDownEntity1, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhhPKcS6_if, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags, float fTimeToDrop);
-    DECL_CTORCALL_PROXY(CTaskSimplePutDownEntity2, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyif, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8, float arg9);
-    DECL_CTORCALL_PROXY(CTaskSimplePutDownEntity3, _ZN24CTaskSimplePutDownEntityC2Ev);
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntity, _ZTV24CTaskSimplePutDownEntity);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhh11AnimationId12AssocGroupIdf, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, AnimationId arg6, AssocGroupId arg7, float arg8)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimplePutDownEntity1, CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhhPKcS6_if, CEntity* pEntity, CVector const* pVecOffset, u8 nBone, u8 nOrientateFlags, char const* pAnimName, char const* pAnimGroupName, i32 nFlags, float fTimeToDrop)
+    DECL_CTORCALL_ARG_TAIL(pEntity, pVecOffset, nBone, nOrientateFlags, pAnimName, pAnimGroupName, nFlags, fTimeToDrop)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimplePutDownEntity2, CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntityC2EP7CEntityPK7CVectorhhP10CAnimBlockP19CAnimBlendHierarchyif, CEntity* arg2, CVector const* arg3, u8 arg4, u8 arg5, CAnimBlock* arg6, CAnimBlendHierarchy* arg7, i32 arg8, float arg9)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CTaskSimplePutDownEntity3, CTaskSimplePutDownEntity, _ZN24CTaskSimplePutDownEntityC2Ev)
+    DECL_CTORCALL_ARG_TAIL()
     DECL_THISCALL_SIMPLE(Delete, _ZN24CTaskSimplePutDownEntityD0Ev, void);
     DECL_NEWCALL(CTaskSimplePutDownEntity, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1877,9 +2428,19 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimplePutDownEntity, 0x40, 0x60);
 
 DECL_CLASS_BASED(CTaskSimpleArrestPed, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleArrestPed, Clone, _ZTV20CTaskSimpleArrestPed, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleArrestPed, GetTaskType, _ZTV20CTaskSimpleArrestPed, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleArrestPed, MakeAbortable, _ZTV20CTaskSimpleArrestPed, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleArrestPed, ProcessPed, _ZTV20CTaskSimpleArrestPed, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleArrestPed, _ZN20CTaskSimpleArrestPedC2EP4CPed, CPed* pArrestedPed);
-    DECL_DTORCALL_PROXY(CTaskSimpleArrestPed, _ZN20CTaskSimpleArrestPedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleArrestPed, _ZN20CTaskSimpleArrestPedC2EP4CPed, CPed* pArrestedPed)
+    DECL_CTORCALL_ARG_TAIL(pArrestedPed)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleArrestPed, _ZN20CTaskSimpleArrestPedD2Ev, _ZN20CTaskSimpleArrestPed, _ZTV20CTaskSimpleArrestPed);
     DECL_NEWCALL(CTaskSimpleArrestPed, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // STATIC functions
@@ -1897,9 +2458,21 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleArrestPed, 0x14, 0x28);
 
 DECL_CLASS_BASED(CTaskComplexArrestPed, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexArrestPed, Clone, _ZTV21CTaskComplexArrestPed, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexArrestPed, GetTaskType, _ZTV21CTaskComplexArrestPed, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexArrestPed, CreateNextSubTask, _ZTV21CTaskComplexArrestPed, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexArrestPed, CreateFirstSubTask, _ZTV21CTaskComplexArrestPed, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexArrestPed, ControlSubTask, _ZTV21CTaskComplexArrestPed, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexArrestPed, _ZN21CTaskComplexArrestPedC2EP4CPed, CPed* pTargetPed);
-    DECL_DTORCALL_PROXY(CTaskComplexArrestPed, _ZN21CTaskComplexArrestPedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskComplexArrestPed, _ZN21CTaskComplexArrestPedC2EP4CPed, CPed* pTargetPed)
+    DECL_CTORCALL_ARG_TAIL(pTargetPed)
+    DECL_DTORCALL_VIRTUAL(CTaskComplexArrestPed, _ZN21CTaskComplexArrestPedD2Ev, _ZN21CTaskComplexArrestPed, _ZTV21CTaskComplexArrestPed);
     DECL_NEWCALL(CTaskComplexArrestPed, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1917,9 +2490,20 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexArrestPed, 0x24, 0x40);
 
 DECL_CLASS_BASED(CTaskComplexPolicePursuit, CTaskComplex)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexPolicePursuit, Clone, _ZTV25CTaskComplexPolicePursuit, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskComplexPolicePursuit, GetTaskType, _ZTV25CTaskComplexPolicePursuit, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskComplexPolicePursuit, CreateNextSubTask, _ZTV25CTaskComplexPolicePursuit, 10, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexPolicePursuit, CreateFirstSubTask, _ZTV25CTaskComplexPolicePursuit, 11, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CTaskComplexPolicePursuit, ControlSubTask, _ZTV25CTaskComplexPolicePursuit, 12, CTask*, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskComplexPolicePursuit, _ZN25CTaskComplexPolicePursuitC2Ev);
-    DECL_DTORCALL_PROXY(CTaskComplexPolicePursuit, _ZN25CTaskComplexPolicePursuitD2Ev);
+    DECL_CTORCALL(CTaskComplexPolicePursuit, _ZN25CTaskComplexPolicePursuitC2Ev);
+    DECL_DTORCALL_VIRTUAL(CTaskComplexPolicePursuit, _ZN25CTaskComplexPolicePursuitD2Ev, _ZN25CTaskComplexPolicePursuit, _ZTV25CTaskComplexPolicePursuit);
     DECL_NEWCALL(CTaskComplexPolicePursuit, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -1944,8 +2528,18 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskComplexPolicePursuit, 0x18, 0x30);
 
 DECL_CLASS_BASED(CTaskSimpleTriggerEvent, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleTriggerEvent, Clone, _ZTV23CTaskSimpleTriggerEvent, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleTriggerEvent, GetTaskType, _ZTV23CTaskSimpleTriggerEvent, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleTriggerEvent, MakeAbortable, _ZTV23CTaskSimpleTriggerEvent, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleTriggerEvent, ProcessPed, _ZTV23CTaskSimpleTriggerEvent, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CTaskSimpleTriggerEvent, _ZN23CTaskSimpleTriggerEventD2Ev);
+    CTaskSimpleTriggerEvent() = delete;
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleTriggerEvent, _ZN23CTaskSimpleTriggerEventD2Ev, _ZN23CTaskSimpleTriggerEvent, _ZTV23CTaskSimpleTriggerEvent);
     DECL_NEWCALL(CTaskSimpleTriggerEvent, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member values
@@ -1954,7 +2548,18 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleTriggerEvent, 0xC, 0x18);
 
 DECL_CLASS_BASED(CTaskSimpleSetCharDecisionMaker, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleSetCharDecisionMaker, Clone, _ZTV31CTaskSimpleSetCharDecisionMaker, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleSetCharDecisionMaker, GetTaskType, _ZTV31CTaskSimpleSetCharDecisionMaker, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleSetCharDecisionMaker, MakeAbortable, _ZTV31CTaskSimpleSetCharDecisionMaker, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleSetCharDecisionMaker, ProcessPed, _ZTV31CTaskSimpleSetCharDecisionMaker, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
+    CTaskSimpleSetCharDecisionMaker() = delete;
+    DECL_DTORCALL_VIRTUAL_VTABLE(CTaskSimpleSetCharDecisionMaker, _ZN31CTaskSimpleSetCharDecisionMaker, _ZTV31CTaskSimpleSetCharDecisionMaker);
     DECL_THISCALL_SIMPLE(Delete, _ZN31CTaskSimpleSetCharDecisionMakerD0Ev, void);
     DECL_NEWCALL(CTaskSimpleSetCharDecisionMaker, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
@@ -1964,13 +2569,24 @@ DECL_CLASS_END()
 CHECKSIZE(CTaskSimpleSetCharDecisionMaker, 0xC, 0x18);
 
 DECL_CLASS_BASED(CTaskSimpleIKChain, CTaskSimple)
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleIKChain, Clone, _ZTV18CTaskSimpleIKChain, 2, CTask*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CTaskSimpleIKChain, GetTaskType, _ZTV18CTaskSimpleIKChain, 5, eTaskType)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleIKChain, MakeAbortable, _ZTV18CTaskSimpleIKChain, 7, bool, CPed* ped, eAbortPriority priority, const CEvent* event)
+    DECL_VIRTUALCALL_TAIL(ped, priority, event)
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleIKChain, ProcessPed, _ZTV18CTaskSimpleIKChain, 9, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleIKChain, _ZN18CTaskSimpleIKChainC2EPci5RwV3diP7CEntityiS1_fii, char* arg2, i32 arg3, RwV3d arg4, i32 arg5, CEntity* arg6, i32 arg7, RwV3d arg8, float arg9, i32 arg10, i32 arg11);
-    DECL_DTORCALL_PROXY(CTaskSimpleIKChain, _ZN18CTaskSimpleIKChainD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleIKChain, _ZN18CTaskSimpleIKChainC2EPci5RwV3diP7CEntityiS1_fii, char* arg2, i32 arg3, RwV3d arg4, i32 arg5, CEntity* arg6, i32 arg7, RwV3d arg8, float arg9, i32 arg10, i32 arg11)
+    DECL_CTORCALL_ARG_TAIL(arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleIKChain, _ZN18CTaskSimpleIKChainD2Ev, _ZN18CTaskSimpleIKChain, _ZTV18CTaskSimpleIKChain);
     DECL_NEWCALL(CTaskSimpleIKChain, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Virtual functions
-    virtual u8 CreateIKChain(CPed* arg1);
+    DECL_VIRTUALCALL_HEAD(CTaskSimpleIKChain, CreateIKChain, _ZTV18CTaskSimpleIKChain, 11, u8, CPed* arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
 
     // Member functions
     DECL_THISCALL_HEAD(BlendOut, _ZN18CTaskSimpleIKChain8BlendOutEi, void, i32 blendOutTime)
@@ -2000,8 +2616,9 @@ CHECKSIZE(CTaskSimpleIKChain, 0x58, 0x70);
 
 DECL_CLASS_BASED(CTaskSimpleIKLookAt, CTaskSimpleIKChain)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleIKLookAt, _ZN19CTaskSimpleIKLookAtC2EPcP7CEntityii5RwV3dhfii, char* idString, CEntity* pEntity, i32 time, i32 offsetBoneTag, RwV3d offsetPos, u8 useTorso, float speed, i32 blendTime, i32 priority);
-    DECL_DTORCALL_PROXY(CTaskSimpleIKLookAt, _ZN19CTaskSimpleIKLookAtD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleIKLookAt, _ZN19CTaskSimpleIKLookAtC2EPcP7CEntityii5RwV3dhfii, char* idString, CEntity* pEntity, i32 time, i32 offsetBoneTag, RwV3d offsetPos, u8 useTorso, float speed, i32 blendTime, i32 priority)
+    DECL_CTORCALL_ARG_TAIL(idString, pEntity, time, offsetBoneTag, offsetPos, useTorso, speed, blendTime, priority)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleIKLookAt, _ZN19CTaskSimpleIKLookAtD2Ev, _ZN19CTaskSimpleIKLookAt, _ZTV19CTaskSimpleIKLookAt);
     DECL_NEWCALL(CTaskSimpleIKLookAt, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions
@@ -2018,8 +2635,9 @@ CHECKSIZE(CTaskSimpleIKLookAt, 0x5C, 0x70);
 
 DECL_CLASS_BASED(CTaskSimpleIKPointArm, CTaskSimpleIKChain)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CTaskSimpleIKPointArm, _ZN21CTaskSimpleIKPointArmC2EPciP7CEntityi5RwV3dfi, char* idString, i32 armId, CEntity* pEntity, i32 offsetBoneTag, RwV3d offsetPos, float speed, i32 blendTime);
-    DECL_DTORCALL_PROXY(CTaskSimpleIKPointArm, _ZN21CTaskSimpleIKPointArmD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CTaskSimpleIKPointArm, _ZN21CTaskSimpleIKPointArmC2EPciP7CEntityi5RwV3dfi, char* idString, i32 armId, CEntity* pEntity, i32 offsetBoneTag, RwV3d offsetPos, float speed, i32 blendTime)
+    DECL_CTORCALL_ARG_TAIL(idString, armId, pEntity, offsetBoneTag, offsetPos, speed, blendTime)
+    DECL_DTORCALL_VIRTUAL(CTaskSimpleIKPointArm, _ZN21CTaskSimpleIKPointArmD2Ev, _ZN21CTaskSimpleIKPointArm, _ZTV21CTaskSimpleIKPointArm);
     DECL_NEWCALL(CTaskSimpleIKPointArm, BYBIT(_ZN5CTasknwEj, _ZN5CTasknwEm));
 
     // Member functions

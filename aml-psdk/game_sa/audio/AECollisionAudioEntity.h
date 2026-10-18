@@ -17,6 +17,8 @@ struct tCollisionAudioEntry
 };
 
 DECL_CLASS(CAECollisionAudioEntity)
+    CAECollisionAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(GetSurfaceHardnessVolumeOffset, _ZN23CAECollisionAudioEntity30GetSurfaceHardnessVolumeOffsetEh, float, u8 Surface);
 

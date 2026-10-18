@@ -47,31 +47,52 @@ enum eEntityStatus : u8
 
 DECL_CLASS_BASED(CEntity, CPlaceable)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CEntity, _ZN7CEntityC2Ev);
-    DECL_DTORCALL_PROXY(CEntity, _ZN7CEntityD2Ev);
+    DECL_CTORCALL(CEntity, _ZN7CEntityC2Ev);
+    DECL_DTORCALL_VIRTUAL(CEntity, _ZN7CEntityD2Ev, _ZN7CEntity, _ZTV7CEntity);
 
     // Virtual functions
-    virtual void Add();
-    virtual void Add(const CRect&);
-    virtual void Remove();
-    virtual void SetIsStatic(bool isStatic);
-    virtual void SetModelIndex(u32 modelIdx);
-    virtual void SetModelIndexNoCreate(u32 modelIdx);
-    virtual void CreateRwObject();
-    virtual void DeleteRwObject();
-    virtual CRect GetBoundRect() const;
-    virtual void ProcessControl();
-    virtual void ProcessCollision();
-    virtual void ProcessShift();
-    virtual bool TestCollision(bool applySpeed);
-    virtual void Teleport(CVector destination, u8 resetRotation = false);
-    virtual void SpecialEntityPreCollisionStuff(CPhysical *pPhysical,bool bDoingShift,bool &bSkipTestEntirely,bool &bSkipCol,bool &bForceBuildingCol,bool &bForceSoftCol);
-    virtual uint8_t SpecialEntityCalcCollisionSteps(bool& bProcessCollisionBeforeSettingTimeStep, bool& bDoPreCheckAtHalfSpeed);
-    virtual void PreRender();                                                                                     
-    virtual void Render();                                                                                            
-    virtual bool SetupLighting();                                                                                
-    virtual void RemoveLighting(bool bRemove);                                                               
-    virtual void FlagToDestroyWhenNextProcessed();
+    DECL_VIRTUALCALL_HEAD(CEntity, Add, _ZTV7CEntity, 2, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, Add, _ZTV7CEntity, 3, void, const CRect& arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CEntity, Remove, _ZTV7CEntity, 4, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, SetIsStatic, _ZTV7CEntity, 5, void, bool isStatic)
+    DECL_VIRTUALCALL_TAIL(isStatic)
+    DECL_VIRTUALCALL_HEAD(CEntity, SetModelIndex, _ZTV7CEntity, 6, void, u32 modelIdx)
+    DECL_VIRTUALCALL_TAIL(modelIdx)
+    DECL_VIRTUALCALL_HEAD(CEntity, SetModelIndexNoCreate, _ZTV7CEntity, 7, void, u32 modelIdx)
+    DECL_VIRTUALCALL_TAIL(modelIdx)
+    DECL_VIRTUALCALL_HEAD(CEntity, CreateRwObject, _ZTV7CEntity, 8, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, DeleteRwObject, _ZTV7CEntity, 9, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CEntity, GetBoundRect, _ZTV7CEntity, 10, CRect)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, ProcessControl, _ZTV7CEntity, 11, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, ProcessCollision, _ZTV7CEntity, 12, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, ProcessShift, _ZTV7CEntity, 13, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, TestCollision, _ZTV7CEntity, 14, bool, bool applySpeed)
+    DECL_VIRTUALCALL_TAIL(applySpeed)
+    DECL_VIRTUALCALL_HEAD(CEntity, Teleport, _ZTV7CEntity, 15, void, CVector destination, u8 resetRotation = false)
+    DECL_VIRTUALCALL_TAIL(destination, resetRotation)
+    DECL_VIRTUALCALL_HEAD(CEntity, SpecialEntityPreCollisionStuff, _ZTV7CEntity, 16, void, CPhysical *pPhysical, bool bDoingShift, bool &bSkipTestEntirely, bool &bSkipCol, bool &bForceBuildingCol, bool &bForceSoftCol)
+    DECL_VIRTUALCALL_TAIL(pPhysical, bDoingShift, bSkipTestEntirely, bSkipCol, bForceBuildingCol, bForceSoftCol)
+    DECL_VIRTUALCALL_HEAD(CEntity, SpecialEntityCalcCollisionSteps, _ZTV7CEntity, 17, uint8_t, bool& bProcessCollisionBeforeSettingTimeStep, bool& bDoPreCheckAtHalfSpeed)
+    DECL_VIRTUALCALL_TAIL(bProcessCollisionBeforeSettingTimeStep, bDoPreCheckAtHalfSpeed)
+    DECL_VIRTUALCALL_HEAD(CEntity, PreRender, _ZTV7CEntity, 18, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, Render, _ZTV7CEntity, 19, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, SetupLighting, _ZTV7CEntity, 20, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CEntity, RemoveLighting, _ZTV7CEntity, 21, void, bool bRemove)
+    DECL_VIRTUALCALL_TAIL(bRemove)
+    DECL_VIRTUALCALL_HEAD(CEntity, FlagToDestroyWhenNextProcessed, _ZTV7CEntity, 22, void)
+    DECL_VIRTUALCALL_TAIL()
 
     // Member functions
     DECL_THISCALL_SIMPLE(HasPreRenderEffects, _ZN7CEntity19HasPreRenderEffectsEv, bool);
@@ -232,8 +253,8 @@ CHECKSIZE(CEntity, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummy, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CDummy, _ZN6CDummyC2Ev);
-    DECL_DTORCALL_PROXY(CDummy, _ZN6CDummyD2Ev);
+    DECL_CTORCALL(CDummy, _ZN6CDummyC2Ev);
+    DECL_DTORCALL_VIRTUAL(CDummy, _ZN6CDummyD2Ev, _ZN6CDummy, _ZTV6CDummy);
     DECL_NEWCALL(CDummy, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
     DECL_DLCALL(CDummy, _ZN6CDummydlEPv);
 DECL_CLASS_END()
@@ -241,9 +262,10 @@ CHECKSIZE(CDummy, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CDummyObject, CDummy)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CDummyObject1, _ZN12CDummyObjectC2EP7CObject, CObject* pObject);
-    DECL_CTORCALL_PROXY(CDummyObject, _ZN12CDummyObjectC2Ev);
-    DECL_DTORCALL_PROXY(CDummyObject, _ZN12CDummyObjectD2Ev);
+    DECL_CTORCALL_NAMED_ARG_HEAD(CDummyObject1, CDummyObject, _ZN12CDummyObjectC2EP7CObject, CObject* pObject)
+    DECL_CTORCALL_ARG_TAIL(pObject)
+    DECL_CTORCALL(CDummyObject, _ZN12CDummyObjectC2Ev);
+    DECL_DTORCALL_VIRTUAL(CDummyObject, _ZN12CDummyObjectD2Ev, _ZN12CDummyObject, _ZTV12CDummyObject);
     DECL_NEWCALL(CDummyObject, BYBIT(_ZN6CDummynwEj, _ZN6CDummynwEm) );
     DECL_DLCALL(CDummyObject, _ZN6CDummydlEPv);
     
@@ -258,7 +280,8 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CBuilding, CEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CBuilding, _ZN9CBuildingC2Ev);
+    DECL_CTORCALL(CBuilding, _ZN9CBuildingC2Ev);
+    DECL_DTORCALL_VIRTUAL(CBuilding, _ZN7CEntityD2Ev, _ZN9CBuilding, _ZTV9CBuilding);
     DECL_NEWCALL(CBuilding, BYBIT(_ZN9CBuildingnwEj, _ZN9CBuildingnwEm) );
     DECL_DLCALL(CBuilding, _ZN9CBuildingdlEPv);
     
@@ -270,6 +293,8 @@ DECL_CLASS_END()
 CHECKSIZE(CBuilding, 0x3C, 0x60);
 
 DECL_CLASS_BASED(CAnimatedBuilding, CBuilding)
+    CAnimatedBuilding() = delete;
+    DECL_DTORCALL_VIRTUAL(CAnimatedBuilding, _ZN7CEntityD2Ev, _ZN17CAnimatedBuilding, _ZTV17CAnimatedBuilding);
     // has overloaded virtual functions
 DECL_CLASS_END()
 

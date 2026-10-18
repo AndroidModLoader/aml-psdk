@@ -27,10 +27,29 @@ A1 std_minmax(A1 val, A1 minval, A1 maxval)
     return val;
 }
 
-struct SimpleVTable
+#ifdef AML64
+    #define CHECKSIZE(_cls, _s32, _s64) static_assert(sizeof(_cls)==_s64, "Validating size of " #_cls " is failed! " #_cls "'s size is not " #_s64)
+    #define SELBYBIT(__32val, __64val) __64val
+    #define B64MACRO(...) __VA_ARGS__
+    #define B32MACRO(...)
+    #define ALIGN_8_4 8
+#else
+    #define CHECKSIZE(_cls, _s32, _s64) static_assert(sizeof(_cls)==_s32, "Validating size of " #_cls " is failed! " #_cls "'s size is not " #_s32)
+    #define SELBYBIT(__32val, __64val) __32val
+    #define B32MACRO(...) __VA_ARGS__
+    #define B64MACRO(...)
+    #define ALIGN_8_4 4
+#endif
+
+#define PSDK_LIFETIME_RET(_clsName) SELBYBIT(_clsName*, void)
+#define PSDK_LIFETIME_RETURN(_self) B32MACRO(return _self;)
+
+struct __attribute__((type_visibility("hidden"))) SimpleVTable
 {
-    virtual void BaseDestructor();
-    virtual void MyDestructor();
+    virtual ~SimpleVTable() {}
+
+    inline void BaseDestructor() { ((void(*)(SimpleVTable*))(*(uintptr_t**)this)[0])(this); }
+    inline void MyDestructor() { ((void(*)(SimpleVTable*))(*(uintptr_t**)this)[1])(this); }
 
     inline void* ptr() { return (void*)this; }
     inline uintptr_t addr() { return (uintptr_t)this; }
@@ -53,34 +72,20 @@ typedef intptr_t iptr;
 typedef uintptr_t uptr;
 typedef uintptr_t FILESTREAM;
 
-#ifdef AML64
-    #define CHECKSIZE(_cls, _s32, _s64) static_assert(sizeof(_cls)==_s64, "Validating size of " #_cls " is failed! " #_cls "'s size is not " #_s64)
-    #define SELBYBIT(__32val, __64val) __64val
-    #define B64MACRO(...) __VA_ARGS__
-    #define B32MACRO(...)
-    #define ALIGN_8_4 8
-#else
-    #define CHECKSIZE(_cls, _s32, _s64) static_assert(sizeof(_cls)==_s32, "Validating size of " #_cls " is failed! " #_cls "'s size is not " #_s32)
-    #define SELBYBIT(__32val, __64val) __32val
-    #define B32MACRO(...) __VA_ARGS__
-    #define B64MACRO(...)
-    #define ALIGN_8_4 4
-#endif
-    
 // Class
 
 #define DECL_CLASS(_clsName, ...) \
-    struct __VA_ARGS__ _clsName { \
+    struct __attribute__((type_visibility("hidden"))) __VA_ARGS__ _clsName { \
         typedef _clsName ThisClass; \
         typedef _clsName BaseClass;
 
 #define DECL_CLASS_VTABLE(_clsName, ...) \
-    struct __VA_ARGS__ _clsName : SimpleVTable { \
+    struct __attribute__((type_visibility("hidden"))) __VA_ARGS__ _clsName : SimpleVTable { \
         typedef _clsName ThisClass; \
         typedef _clsName BaseClass;
 
 #define DECL_CLASS_BASED(_clsName, _clsBaseName, ...) \
-    struct __VA_ARGS__ _clsName : _clsBaseName { \
+    struct __attribute__((type_visibility("hidden"))) __VA_ARGS__ _clsName : _clsBaseName { \
         typedef _clsName ThisClass; \
         typedef _clsBaseName BaseClass;
 

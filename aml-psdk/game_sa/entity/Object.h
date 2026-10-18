@@ -19,10 +19,12 @@ enum eObjectType : unsigned char
 
 DECL_CLASS_BASED(CObject, CPhysical)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CObject, _ZN7CObjectC2Ev);
-    DECL_CTORCALL_PROXY(CObject1, _ZN7CObjectC2Eib, i32 modelId, bool bCreate);
-    DECL_CTORCALL_PROXY(CObject2, _ZN7CObjectC2EP12CDummyObject, CDummyObject* dummyObj);
-    DECL_DTORCALL_PROXY(CObject, _ZN7CObjectD2Ev);
+    DECL_CTORCALL(CObject, _ZN7CObjectC2Ev);
+    DECL_CTORCALL_NAMED_ARG_HEAD(CObject1, CObject, _ZN7CObjectC2Eib, i32 modelId, bool bCreate)
+    DECL_CTORCALL_ARG_TAIL(modelId, bCreate)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CObject2, CObject, _ZN7CObjectC2EP12CDummyObject, CDummyObject* dummyObj)
+    DECL_CTORCALL_ARG_TAIL(dummyObj)
+    DECL_DTORCALL_VIRTUAL(CObject, _ZN7CObjectD2Ev, _ZN7CObject, _ZTV7CObject);
     DECL_NEWCALL(CObject, BYBIT(_ZN7CObjectnwEj, _ZN7CObjectnwEm) );
     DECL_DLCALL(CObject, _ZN7CObjectdlEPv);
     DECL_FASTCALL_SIMPLE(InstantiateAt, BYBIT(_ZN7CObjectnwEji, _ZN7CObjectnwEmi), CObject*, size_t size, i32 poolRef);
@@ -153,8 +155,9 @@ CHECKSIZE(CObject, 0x184, 0x1F8);
 
 DECL_CLASS_BASED(CHandObject, CObject)
     // Construct/Deconstruct functions
-    CHandObject(){}
-    DECL_CTORCALL_PROXY(CHandObject, _ZN11CHandObjectC2EiP4CPedb, i32 modelId, CPed* pPed, bool bLeft);
+    DECL_CTORCALL_ARG_HEAD(CHandObject, _ZN11CHandObjectC2EiP4CPedb, i32 modelId, CPed* pPed, bool bLeft)
+    DECL_CTORCALL_ARG_TAIL(modelId, pPed, bLeft)
+    DECL_DTORCALL_VIRTUAL(CHandObject, _ZN7CObjectD2Ev, _ZN11CHandObject, _ZTV11CHandObject);
 
     CPed       *m_pPed;
     int m_nBoneIndex;
@@ -164,8 +167,8 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CCutsceneObject, CObject)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CCutsceneObject, _ZN15CCutsceneObjectC2Ev);
-    DECL_DTORCALL_PROXY(CCutsceneObject, _ZN15CCutsceneObjectD2Ev);
+    DECL_CTORCALL(CCutsceneObject, _ZN15CCutsceneObjectC2Ev);
+    DECL_DTORCALL_VIRTUAL(CCutsceneObject, _ZN15CCutsceneObjectD2Ev, _ZN15CCutsceneObject, _ZTV15CCutsceneObject);
 
     union
     {

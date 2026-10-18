@@ -8,8 +8,8 @@ struct CAEMP3TrackLoader;
 
 DECL_CLASS(CAEStreamThread)
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CAEStreamThread, _ZN15CAEStreamThreadD2Ev);
-    DECL_CTORCALL_PROXY(CAEStreamThread, _ZN15CAEStreamThreadC2Ev);
+    DECL_DTORCALL(CAEStreamThread, _ZN15CAEStreamThreadD2Ev);
+    DECL_CTORCALL(CAEStreamThread, _ZN15CAEStreamThreadC2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(MainLoop, _ZN15CAEStreamThread8MainLoopEPv, unsigned int, void* pData);

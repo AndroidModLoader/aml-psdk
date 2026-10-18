@@ -17,9 +17,9 @@ enum eSprintType
 
 DECL_CLASS_BASED(CPlayerPed, CPed)
     // Construct/Deconstruct functions
-    CPlayerPed(){}
-    DECL_CTORCALL_PROXY(CPlayerPed, _ZN10CPlayerPedC2Eib, i32 nPlayerInfoIndex, bool bForReplay);
-    DECL_DTORCALL_PROXY(CPlayerPed, _ZN10CPlayerPedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CPlayerPed, _ZN10CPlayerPedC2Eib, i32 nPlayerInfoIndex, bool bForReplay)
+    DECL_CTORCALL_ARG_TAIL(nPlayerInfoIndex, bForReplay)
+    DECL_DTORCALL_VIRTUAL(CPlayerPed, _ZN10CPlayerPedD2Ev, _ZN10CPlayerPed, _ZTV10CPlayerPed);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(SetupPlayerPed, _ZN10CPlayerPed14SetupPlayerPedEi, void, i32 nPlayerNum);

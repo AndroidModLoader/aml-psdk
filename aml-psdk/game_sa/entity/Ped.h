@@ -127,7 +127,6 @@ DECL_CLASS(CPedIK)
     };
 
     // Construct functions
-    CPedIK(){} // CPed holds one by value, so keep a default ctor available
     DECL_CTORCALL_ARG_HEAD(CPedIK, _ZN6CPedIKC2EP4CPed, CPed *pPed)
     DECL_CTORCALL_ARG_TAIL(pPed)
 
@@ -191,16 +190,19 @@ CHECKSIZE(CPedIK, 0x20, 0x28);
 
 DECL_CLASS_BASED(CPed, CPhysical)
     // Construct/Deconstruct functions
-    CPed(){}
-    DECL_CTORCALL_PROXY(CPed, _ZN4CPedC2Ej, u32 pedType);
-    DECL_DTORCALL_PROXY(CPed, _ZN4CPedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CPed, _ZN4CPedC2Ej, u32 pedType)
+    DECL_CTORCALL_ARG_TAIL(pedType)
+    DECL_DTORCALL_VIRTUAL(CPed, _ZN4CPedD2Ev, _ZN4CPed, _ZTV4CPed);
     DECL_NEWCALL(CPed, BYBIT(_ZN4CPednwEj, _ZN4CPednwEm) );
     DECL_DLCALL(CPed, _ZN4CPeddlEPv);
 
     // Virtual functions
-    virtual void SetMoveAnim();
-    virtual bool Save();
-    virtual bool Load();
+    DECL_VIRTUALCALL_HEAD(CPed, SetMoveAnim, _ZTV4CPed, 24, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CPed, Save, _ZTV4CPed, 25, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CPed, Load, _ZTV4CPed, 26, bool)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC values
     DECL_VALUE_PLT_U16(m_sGunFlashBlendStart, BYBIT(0x6782BC, 0x84E590));
@@ -717,9 +719,9 @@ CHECKSIZE(CPed, 0x7A4, 0x988);
 
 DECL_CLASS_BASED(CCopPed, CPed)
     // Construct/Deconstruct functions
-    CCopPed(){}
-    DECL_CTORCALL_PROXY(CCopPed, _ZN7CCopPedC2E8eCopType, eCopType CopType);
-    DECL_DTORCALL_PROXY(CCopPed, _ZN7CCopPedD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CCopPed, _ZN7CCopPedC2E8eCopType, eCopType CopType)
+    DECL_CTORCALL_ARG_TAIL(CopType)
+    DECL_DTORCALL_VIRTUAL(CCopPed, _ZN7CCopPedD2Ev, _ZN7CCopPed, _ZTV7CCopPed);
 
     // Member functions
     DECL_THISCALL_SIMPLE(ClearCriminalsToKill, _ZN7CCopPed20ClearCriminalsToKillEv, void);
@@ -744,6 +746,33 @@ DECL_CLASS_BASED(CCopPed, CPed)
 DECL_CLASS_END()
 
 
+
+DECL_CLASS_BASED(CCivilianPed, CPed)
+    DECL_CTORCALL_ARG_HEAD(CCivilianPed, _ZN12CCivilianPedC2E8ePedTypej, ePedType pedType, u32 modelIndex)
+    DECL_CTORCALL_ARG_TAIL(pedType, modelIndex)
+    DECL_DTORCALL_VIRTUAL(CCivilianPed, _ZN12CCivilianPedD2Ev, _ZN12CCivilianPed, _ZTV12CCivilianPed);
+    DECL_NEWCALL(CCivilianPed, BYBIT(_ZN4CPednwEj, _ZN4CPednwEm));
+    DECL_DLCALL(CCivilianPed, _ZN4CPeddlEPv);
+
+    DECL_VIRTUALCALL_HEAD(CCivilianPed, ProcessControl, _ZTV12CCivilianPed, 11, void)
+    DECL_VIRTUALCALL_TAIL()
+DECL_CLASS_END()
+CHECKSIZE(CCivilianPed, 0x7A4, 0x988);
+
+DECL_CLASS_BASED(CEmergencyPed, CPed)
+    DECL_CTORCALL_ARG_HEAD(CEmergencyPed, _ZN13CEmergencyPedC2Ejj, u32 pedType, u32 modelIndex)
+    DECL_CTORCALL_ARG_TAIL(pedType, modelIndex)
+    DECL_DTORCALL_VIRTUAL(CEmergencyPed, _ZN4CPedD2Ev, _ZN13CEmergencyPed, _ZTV13CEmergencyPed);
+    DECL_NEWCALL(CEmergencyPed, BYBIT(_ZN4CPednwEj, _ZN4CPednwEm));
+    DECL_DLCALL(CEmergencyPed, _ZN4CPeddlEPv);
+
+    DECL_VIRTUALCALL_HEAD(CEmergencyPed, ProcessControl, _ZTV13CEmergencyPed, 11, void)
+    DECL_VIRTUALCALL_TAIL()
+
+    DECL_THISCALL_HEAD(InRange, _ZN13CEmergencyPed7InRangeEP4CPed, bool, CPed* ped)
+    DECL_THISCALL_TAIL(InRange, ped)
+DECL_CLASS_END()
+CHECKSIZE(CEmergencyPed, 0x7A4, 0x988);
 
 DECL_FASTCALL_SIMPLE_GLO(IsPedPointerValid, _Z17IsPedPointerValidP4CPed, bool, CPed* pPed);
 DECL_FASTCALL_SIMPLE_GLO(IsPedPointerValid_NotInWorld, _Z28IsPedPointerValid_NotInWorldP4CPed, bool, CPed* pPed);

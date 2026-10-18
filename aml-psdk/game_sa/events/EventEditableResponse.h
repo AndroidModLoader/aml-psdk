@@ -4,12 +4,15 @@
 #include "Event.h"
 
 DECL_CLASS_BASED(CEventEditableResponse, CEvent)
+    DECL_VIRTUALCALL_CONST_HEAD(CEventEditableResponse, Clone, _ZTV22CEventEditableResponse, 5, CEvent*)
+    DECL_VIRTUALCALL_TAIL()
+
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CEventEditableResponse, _ZN22CEventEditableResponseD2Ev);
-    DECL_CTORCALL_PROXY(CEventEditableResponse, _ZN22CEventEditableResponseC2Ev);
+    DECL_DTORCALL_VIRTUAL(CEventEditableResponse, _ZN22CEventEditableResponseD2Ev, _ZN22CEventEditableResponse, _ZTV22CEventEditableResponse);
+    DECL_CTORCALL(CEventEditableResponse, _ZN22CEventEditableResponseC2Ev);
 
     // Virtual functions
-    virtual CEvent* CloneEditable() const;
+    virtual CEvent* CloneEditable() const = 0;
 
     // Member functions
     DECL_THISCALL_NAMED_HEAD(ComputeResponseTaskType1, ComputeResponseTaskType, _ZN22CEventEditableResponse23ComputeResponseTaskTypeEP4CPedb, void, CPed* pPed, bool bUseInGroupDecisionMaker)

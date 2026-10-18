@@ -11,6 +11,7 @@
 #include <math.h>
 #include <type_traits>
 #include <utility>
+#include <new>
 
 #include "sdk_basetypes.h"
 
@@ -39,6 +40,20 @@ template<typename Type = void*>
 inline Type GetMainLibrarySymbol(const char* sym)
 {
     return (Type)aml->GetSym(GetMainLibrary(), sym);
+}
+
+template<class Owner>
+inline uptr* GetNativeVtable(const char* symbol)
+{
+    static uptr* vtable = GetMainLibrarySymbol<uptr*>(symbol);
+    return vtable + 2;
+}
+
+template<class Owner, class Fn>
+inline Fn GetNativeVirtual(const void* self, size_t slot, Fn wrapper, const char* symbol)
+{
+    Fn func = (Fn)(*(const uptr* const*)self)[slot];
+    return func == wrapper ? (Fn)GetNativeVtable<Owner>(symbol)[slot] : func;
 }
 
 template<typename Ret = void, typename... Args>
@@ -440,11 +455,17 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
     static inline auto FuncProxy_dtor##_clsName = GetMainLibrarySymbol<void(*)(ThisClass*)>(PSDK_STRINGIFY(_sym))
 
 #define DECL_CTORCALL_ARG_HEAD(_clsName, _sym, ...) \
-    DECL_CTORCALL_PROXY(_clsName, _sym, __VA_ARGS__); \
-    _clsName(__VA_ARGS__) { FuncProxy_ctor##_clsName(
+    DECL_CTORCALL_NAMED_ARG_HEAD(_clsName, _clsName, _sym, __VA_ARGS__)
+
+#define DECL_CTORCALL_NAMED_ARG_HEAD(_proxyName, _clsName, _sym, ...) \
+    DECL_CTORCALL_PROXY(_proxyName, _sym, __VA_ARGS__); \
+    _clsName(__VA_ARGS__) asm("psdk_ctor_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_proxyName) "_" PSDK_STRINGIFY(_sym)); \
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeCtor_##_proxyName(ThisClass* _psdkSelf VA_ARGS(__VA_ARGS__)) \
+        asm("psdk_ctor_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_proxyName) "_" PSDK_STRINGIFY(_sym)) \
+    { FuncProxy_ctor##_proxyName(
 
 #define DECL_CTORCALL_ARG_TAIL(...) \
-    this VA_ARGS(__VA_ARGS__)); }
+    _psdkSelf VA_ARGS(__VA_ARGS__)); PSDK_LIFETIME_RETURN(_psdkSelf); }
 
 #define DECL_CTORCALL(_clsName, _sym) \
     DECL_CTORCALL_ARG_HEAD(_clsName, _sym) \
@@ -452,19 +473,86 @@ inline Ret CallFnVariadic(uintptr_t address, Args... args)
 
 #define DECL_DTORCALL(_clsName, _sym) \
     DECL_DTORCALL_PROXY(_clsName, _sym); \
-    ~_clsName() { FuncProxy_dtor##_clsName(this); }
+    ~_clsName() asm("psdk_dtor_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_sym)); \
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeDtor_##_clsName(ThisClass* _psdkSelf) \
+        asm("psdk_dtor_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_sym)) \
+    { FuncProxy_dtor##_clsName(_psdkSelf); PSDK_LIFETIME_RETURN(_psdkSelf); }
+
+#define DECL_DTORCALL_VIRTUAL(_clsName, _sym, _cppPrefix, _vtblSym) \
+    DECL_DTORCALL_VIRTUAL_SLOT(_clsName, _sym, _cppPrefix, _vtblSym, 0)
+
+#define DECL_DTORCALL_VIRTUAL_SLOT(_clsName, _sym, _cppPrefix, _vtblSym, _slot) \
+    DECL_DTORCALL_PROXY(_clsName, _sym); \
+    DECL_DTORCALL_VIRTUAL_SHIMS(_clsName, _cppPrefix, _vtblSym, _slot)
+
+#define DECL_DTORCALL_VIRTUAL_VTABLE(_clsName, _cppPrefix, _vtblSym) \
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(_clsName, _cppPrefix, _vtblSym, 0)
+
+#define DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(_clsName, _cppPrefix, _vtblSym, _slot) \
+    static inline void NativeDtorFallback_##_clsName(ThisClass* _psdkSelf) \
+    { \
+        ((void(*)(ThisClass*))GetNativeVtable<ThisClass>(PSDK_STRINGIFY(_vtblSym))[_slot])(_psdkSelf); \
+    } \
+    static inline auto FuncProxy_dtor##_clsName = &NativeDtorFallback_##_clsName; \
+    DECL_DTORCALL_VIRTUAL_SHIMS(_clsName, _cppPrefix, _vtblSym, _slot)
+
+#define DECL_DTORCALL_VIRTUAL_SHIMS(_clsName, _cppPrefix, _vtblSym, _slot) \
+    _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wundefined-inline\"") \
+    virtual inline ~_clsName(); \
+    _Pragma("clang diagnostic pop") \
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeDtor_##_clsName(ThisClass* _psdkSelf) \
+        asm(PSDK_STRINGIFY(_cppPrefix) "D2Ev") \
+    { FuncProxy_dtor##_clsName(_psdkSelf); PSDK_LIFETIME_RETURN(_psdkSelf); } \
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeCompleteDtor_##_clsName(ThisClass* _psdkSelf) \
+        asm(PSDK_STRINGIFY(_cppPrefix) "D1Ev") \
+    { FuncProxy_dtor##_clsName(_psdkSelf); PSDK_LIFETIME_RETURN(_psdkSelf); } \
+    static inline __attribute__((used, noinline, visibility("hidden"))) void NativeDeletingDtor_##_clsName(ThisClass* _psdkSelf) \
+        asm(PSDK_STRINGIFY(_cppPrefix) "D0Ev") \
+    { \
+        auto func = GetNativeVirtual<ThisClass>(_psdkSelf, 1 + _slot, &NativeDeletingDtor_##_clsName, PSDK_STRINGIFY(_vtblSym)); \
+        func(_psdkSelf); \
+    }
 
 #define DECL_DTORCALL_PLT(_clsName, _addr) \
     static inline auto FuncProxy_dtor##_clsName = (void(*)(ThisClass*))(GetMainLibraryAddress() + _addr); \
-    ~_clsName() { FuncProxy_dtor##_clsName(this); }
+    ~_clsName() asm("psdk_dtor_" PSDK_STRINGIFY(_clsName) "_plt"); \
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeDtor_##_clsName(ThisClass* _psdkSelf) \
+        asm("psdk_dtor_" PSDK_STRINGIFY(_clsName) "_plt") \
+    { FuncProxy_dtor##_clsName(_psdkSelf); PSDK_LIFETIME_RETURN(_psdkSelf); }
 
 #define DECL_NEWCALL(_clsName, _sym) \
     static inline auto FuncProxy_opnew##_clsName = GetMainLibrarySymbol<_clsName*(*)(size_t size)>(PSDK_STRINGIFY(_sym)); \
-    inline static _clsName* Instantiate(size_t size = sizeof(_clsName)) { return FuncProxy_opnew##_clsName(size); }
+    inline static _clsName* Instantiate(size_t size = sizeof(_clsName)) { return FuncProxy_opnew##_clsName(size); } \
+    inline static void* operator new(size_t size) noexcept { return FuncProxy_opnew##_clsName(size); } \
+    inline static void* operator new(size_t, void* memory) noexcept { return memory; }
     
 #define DECL_DLCALL(_clsName, _sym) \
     static inline auto FuncProxy_opdel##_clsName = GetMainLibrarySymbol<void(*)(void* ptr)>(PSDK_STRINGIFY(_sym)); \
-    inline void DeInstantiate() { FuncProxy_opdel##_clsName(this); }
+    inline void DeInstantiate() { FuncProxy_opdel##_clsName(this); } \
+    inline static void operator delete(void* ptr) noexcept { FuncProxy_opdel##_clsName(ptr); } \
+    inline static void operator delete(void*, void*) noexcept {}
+
+#define DECL_VIRTUALCALL_BODY(_name, _vtblSym, _slot) \
+    { \
+        auto _psdkCall = GetNativeVirtual<ThisClass>(this, _slot, &FuncProxy_virtual_##_name##_##_slot, PSDK_STRINGIFY(_vtblSym));
+
+#define DECL_VIRTUALCALL_HEAD(_clsName, _name, _vtblSym, _slot, _ret, ...) \
+    static _ret FuncProxy_virtual_##_name##_##_slot(ThisClass* VA_ARGS(__VA_ARGS__)) \
+        asm("psdk_vcall_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_slot)); \
+    virtual __attribute__((used, noinline, visibility("hidden"))) _ret _name(__VA_ARGS__) \
+        asm("psdk_vcall_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_slot)) \
+    DECL_VIRTUALCALL_BODY(_name, _vtblSym, _slot)
+
+#define DECL_VIRTUALCALL_CONST_HEAD(_clsName, _name, _vtblSym, _slot, _ret, ...) \
+    static _ret FuncProxy_virtual_##_name##_##_slot(const ThisClass* VA_ARGS(__VA_ARGS__)) \
+        asm("psdk_vcall_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_slot)); \
+    virtual __attribute__((used, noinline, visibility("hidden"))) _ret _name(__VA_ARGS__) const \
+        asm("psdk_vcall_" PSDK_STRINGIFY(_clsName) "_" PSDK_STRINGIFY(_slot)) \
+    DECL_VIRTUALCALL_BODY(_name, _vtblSym, _slot)
+
+#define DECL_VIRTUALCALL_TAIL(...) \
+        return _psdkCall(this VA_ARGS(__VA_ARGS__)); \
+    }
 
 #define DECL_THISCALL_HEAD(_name, _sym, _ret, ...) \
     static inline auto FuncProxy_##_name = GetMainLibrarySymbol<_ret(*)(ThisClass* VA_ARGS(__VA_ARGS__))>(PSDK_STRINGIFY(_sym)); \

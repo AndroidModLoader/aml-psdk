@@ -28,8 +28,8 @@ CHECKSIZE(CPedTaskPair, 0x14, 0x20);
 
 DECL_CLASS(CPedGroupMembership)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CPedGroupMembership1, _ZN19CPedGroupMembershipC2ERKS_, CPedGroupMembership const& src);
-    CPedGroupMembership(CPedGroupMembership const& src) { FuncProxy_ctorCPedGroupMembership1(this, src); }
+    DECL_CTORCALL_NAMED_ARG_HEAD(CPedGroupMembership1, CPedGroupMembership, _ZN19CPedGroupMembershipC2ERKS_, CPedGroupMembership const& src)
+    DECL_CTORCALL_ARG_TAIL(src)
     DECL_CTORCALL(CPedGroupMembership, _ZN19CPedGroupMembershipC2Ev);
     DECL_DTORCALL(CPedGroupMembership, _ZN19CPedGroupMembershipD2Ev);
 
@@ -157,8 +157,8 @@ CHECKSIZE(CPedGroupIntelligence, 0x2A0, 0x438);
 
 DECL_CLASS(CPedGroup)
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CPedGroup, _ZN9CPedGroupD2Ev);
-    DECL_CTORCALL_PROXY(CPedGroup, _ZN9CPedGroupC2Ev);
+    DECL_DTORCALL(CPedGroup, _ZN9CPedGroupD2Ev);
+    DECL_CTORCALL(CPedGroup, _ZN9CPedGroupC2Ev);
     // Member functions
     DECL_THISCALL_SIMPLE(Process, _ZN9CPedGroup7ProcessEv, void);
     DECL_THISCALL_SIMPLE(Flush, _ZN9CPedGroup5FlushEv, void);

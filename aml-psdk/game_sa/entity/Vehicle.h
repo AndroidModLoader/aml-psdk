@@ -241,56 +241,99 @@ DECL_CLASS_END()
 
 DECL_CLASS_BASED(CVehicle, CPhysical)
     // Construct/Deconstruct functions
-    CVehicle(){}
-    DECL_CTORCALL_PROXY(CVehicle, _ZN8CVehicleC2Eh, u8 createdBy);
-    DECL_DTORCALL_PROXY(CVehicle, _ZN8CVehicleD2Ev);
+    DECL_CTORCALL_ARG_HEAD(CVehicle, _ZN8CVehicleC2Eh, u8 createdBy)
+    DECL_CTORCALL_ARG_TAIL(createdBy)
+    DECL_DTORCALL_VIRTUAL(CVehicle, _ZN8CVehicleD2Ev, _ZN8CVehicle, _ZTV8CVehicle);
     DECL_NEWCALL(CVehicle, BYBIT(_ZN8CVehiclenwEj, _ZN8CVehiclenwEm) );
     DECL_DLCALL(CVehicle, _ZN8CVehicledlEPv);
 
     // Virtual functions
-    virtual void ProcessControlCollisionCheck(bool);
-    virtual void ProcessControlInputs(unsigned char);
-    virtual void GetComponentWorldPosition(int,CVector &);
-    virtual bool IsComponentPresent(int) const;
-    virtual void OpenDoor(CPed *,int,eDoors,float,bool);
-    virtual void ProcessOpenDoor(CPed *,unsigned int,unsigned int,unsigned int,float);
-    virtual float GetDooorAngleOpenRatio(eDoors) const;
-    virtual bool IsDoorReady(eDoors) const;
-    virtual bool IsDoorFullyOpen(eDoors) const;
-    virtual bool IsDoorClosed(eDoors) const;
-    virtual bool IsDoorMissing(eDoors) const;
-    virtual float GetDooorAngleOpenRatio(unsigned int) const;
-    virtual bool IsDoorReady(unsigned int) const;
-    virtual bool IsDoorFullyOpen(unsigned int) const;
-    virtual bool IsDoorClosed(unsigned int) const;
-    virtual bool IsDoorMissing(unsigned int) const;
-    virtual bool IsOpenTopCar(void) const;
-    virtual void RemoveRefsToVehicle(CEntity *);
-    virtual void BlowUpCar(CEntity *,unsigned char);
-    virtual void BlowUpCarCutSceneNoExtras(bool,bool,bool,bool);
-    virtual bool SetUpWheelColModel(CColModel *);
-    virtual bool BurstTyre(unsigned char,bool);
-    virtual bool IsRoomForPedToLeaveCar(unsigned int,CVector *);
-    virtual void ProcessDrivingAnims(CPed *,unsigned char);
-    virtual CRideAnimData* GetRideAnimData(void);
-    virtual void SetupSuspensionLines(void);
-    virtual CVector AddMovingCollisionSpeed(CVector &);
-    virtual void Fix(void);
-    virtual void SetupDamageAfterLoad(void);
-    virtual void DoBurstAndSoftGroundRatios(void);
-    virtual float GetHeightAboveRoad(void) const;
-    virtual void PlayCarHorn(void);
-    virtual int GetNumContactWheels(void);
-    virtual void VehicleDamage(float,unsigned short,CEntity *,CVector *,CVector *,eWeaponType);
-    virtual bool CanPedStepOutCar(bool) const;
-    virtual bool CanPedJumpOutCar(CPed *) const;
-    virtual bool GetTowHitchPos(CVector &,bool,CVehicle*);
-    virtual bool GetTowBarPos(CVector &,bool,CVehicle*);
-    virtual bool SetTowLink(CVehicle*,bool);
-    virtual bool BreakTowLink(void);
-    virtual float FindWheelWidth(bool);
-    virtual bool Save(void);
-    virtual bool Load(void);
+    DECL_VIRTUALCALL_HEAD(CVehicle, ProcessControlCollisionCheck, _ZTV8CVehicle, 24, void, bool arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, ProcessControlInputs, _ZTV8CVehicle, 25, void, unsigned char arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, GetComponentWorldPosition, _ZTV8CVehicle, 26, void, int arg1, CVector & arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsComponentPresent, _ZTV8CVehicle, 27, bool, int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, OpenDoor, _ZTV8CVehicle, 28, void, CPed * arg1, int arg2, eDoors arg3, float arg4, bool arg5)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5)
+    DECL_VIRTUALCALL_HEAD(CVehicle, ProcessOpenDoor, _ZTV8CVehicle, 29, void, CPed * arg1, unsigned int arg2, unsigned int arg3, unsigned int arg4, float arg5)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, GetDooorAngleOpenRatio, _ZTV8CVehicle, 30, float, eDoors arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorReady, _ZTV8CVehicle, 31, bool, eDoors arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorFullyOpen, _ZTV8CVehicle, 32, bool, eDoors arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorClosed, _ZTV8CVehicle, 33, bool, eDoors arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorMissing, _ZTV8CVehicle, 34, bool, eDoors arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, GetDooorAngleOpenRatio, _ZTV8CVehicle, 35, float, unsigned int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorReady, _ZTV8CVehicle, 36, bool, unsigned int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorFullyOpen, _ZTV8CVehicle, 37, bool, unsigned int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorClosed, _ZTV8CVehicle, 38, bool, unsigned int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsDoorMissing, _ZTV8CVehicle, 39, bool, unsigned int arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, IsOpenTopCar, _ZTV8CVehicle, 40, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, RemoveRefsToVehicle, _ZTV8CVehicle, 41, void, CEntity * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, BlowUpCar, _ZTV8CVehicle, 42, void, CEntity * arg1, unsigned char arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CVehicle, BlowUpCarCutSceneNoExtras, _ZTV8CVehicle, 43, void, bool arg1, bool arg2, bool arg3, bool arg4)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4)
+    DECL_VIRTUALCALL_HEAD(CVehicle, SetUpWheelColModel, _ZTV8CVehicle, 44, bool, CColModel * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, BurstTyre, _ZTV8CVehicle, 45, bool, unsigned char arg1, bool arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CVehicle, IsRoomForPedToLeaveCar, _ZTV8CVehicle, 46, bool, unsigned int arg1, CVector * arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CVehicle, ProcessDrivingAnims, _ZTV8CVehicle, 47, void, CPed * arg1, unsigned char arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CVehicle, GetRideAnimData, _ZTV8CVehicle, 48, CRideAnimData*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, SetupSuspensionLines, _ZTV8CVehicle, 49, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, AddMovingCollisionSpeed, _ZTV8CVehicle, 50, CVector, CVector & arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, Fix, _ZTV8CVehicle, 51, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, SetupDamageAfterLoad, _ZTV8CVehicle, 52, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, DoBurstAndSoftGroundRatios, _ZTV8CVehicle, 53, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, GetHeightAboveRoad, _ZTV8CVehicle, 54, float)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, PlayCarHorn, _ZTV8CVehicle, 55, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, GetNumContactWheels, _ZTV8CVehicle, 56, int)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, VehicleDamage, _ZTV8CVehicle, 57, void, float arg1, unsigned short arg2, CEntity * arg3, CVector * arg4, CVector * arg5, eWeaponType arg6)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3, arg4, arg5, arg6)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, CanPedStepOutCar, _ZTV8CVehicle, 58, bool, bool arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_CONST_HEAD(CVehicle, CanPedJumpOutCar, _ZTV8CVehicle, 59, bool, CPed * arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, GetTowHitchPos, _ZTV8CVehicle, 60, bool, CVector & arg1, bool arg2, CVehicle* arg3)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3)
+    DECL_VIRTUALCALL_HEAD(CVehicle, GetTowBarPos, _ZTV8CVehicle, 61, bool, CVector & arg1, bool arg2, CVehicle* arg3)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2, arg3)
+    DECL_VIRTUALCALL_HEAD(CVehicle, SetTowLink, _ZTV8CVehicle, 62, bool, CVehicle* arg1, bool arg2)
+    DECL_VIRTUALCALL_TAIL(arg1, arg2)
+    DECL_VIRTUALCALL_HEAD(CVehicle, BreakTowLink, _ZTV8CVehicle, 63, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, FindWheelWidth, _ZTV8CVehicle, 64, float, bool arg1)
+    DECL_VIRTUALCALL_TAIL(arg1)
+    DECL_VIRTUALCALL_HEAD(CVehicle, Save, _ZTV8CVehicle, 65, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CVehicle, Load, _ZTV8CVehicle, 66, bool)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(Shutdown, _ZN8CVehicle8ShutdownEv, void);

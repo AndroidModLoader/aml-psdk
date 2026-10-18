@@ -64,16 +64,16 @@ CHECKSIZE(FxInfoManager_c, 0xC, 0x18);
 
 DECL_CLASS_VTABLE(FxPrimBP_c)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(FxPrimBP_c, _ZN10FxPrimBP_cC2Ev);
-    DECL_DTORCALL_PROXY(FxPrimBP_c, _ZN10FxPrimBP_cD2Ev);
+    DECL_CTORCALL(FxPrimBP_c, _ZN10FxPrimBP_cC2Ev);
+    DECL_DTORCALL_VIRTUAL(FxPrimBP_c, _ZN10FxPrimBP_cD2Ev, _ZN10FxPrimBP_c, _ZTV10FxPrimBP_c);
 
     // Virtual functions
-    virtual u8 Load(uptr arg1, i32 arg2, FxName32_t* arg3);
-    virtual u8 LoadTextures(FxName32_t* arg1, i32 arg2);
-    virtual FxPrim_c* CreateInstance();
-    virtual i32 Update(float arg1);
-    virtual void Render(RwCamera* arg1, u32 arg2, float arg3, u8 arg4);
-    virtual u8 FreePrtFromPrim(FxSystem_c* arg1);
+    virtual u8 Load(uptr arg1, i32 arg2, FxName32_t* arg3) = 0;
+    virtual u8 LoadTextures(FxName32_t* arg1, i32 arg2) = 0;
+    virtual FxPrim_c* CreateInstance() = 0;
+    virtual i32 Update(float arg1) = 0;
+    virtual void Render(RwCamera* arg1, u32 arg2, float arg3, u8 arg4) = 0;
+    virtual u8 FreePrtFromPrim(FxSystem_c* arg1) = 0;
 
     // Member functions
     DECL_THISCALL_HEAD(GetRWMatrix, _ZN10FxPrimBP_c11GetRWMatrixEP11RwMatrixTag, void, RwMatrix* mat)
@@ -97,14 +97,15 @@ CHECKSIZE(FxPrimBP_c, 0x38, 0x70);
 
 DECL_CLASS_VTABLE(FxPrim_c)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(FxPrim_c, _ZN8FxPrim_cC2Ev);
+    DECL_CTORCALL(FxPrim_c, _ZN8FxPrim_cC2Ev);
+    DECL_DTORCALL_VIRTUAL(FxPrim_c, _ZN8FxPrim_cD2Ev, _ZN8FxPrim_c, _ZTV8FxPrim_c);
 
     // Virtual functions
-    virtual u8 Init(FxPrimBP_c* arg1, FxSystem_c* arg2);
-    virtual void Update(float arg1, float arg2);
-    virtual void Reset();
-    virtual void AddParticle(RwV3d* arg1, RwV3d* arg2, float arg3, FxPrtMult_c* arg4, float arg5, float arg6, u8 arg7);
-    virtual void AddParticle(RwMatrix* arg1, RwV3d* arg2, float arg3, FxPrtMult_c* arg4, float arg5, float arg6, u8 arg7);
+    virtual u8 Init(FxPrimBP_c* arg1, FxSystem_c* arg2) = 0;
+    virtual void Update(float arg1, float arg2) = 0;
+    virtual void Reset() = 0;
+    virtual void AddParticle(RwV3d* arg1, RwV3d* arg2, float arg3, FxPrtMult_c* arg4, float arg5, float arg6, u8 arg7) = 0;
+    virtual void AddParticle(RwMatrix* arg1, RwV3d* arg2, float arg3, FxPrtMult_c* arg4, float arg5, float arg6, u8 arg7) = 0;
 
     // Member functions
     DECL_THISCALL_HEAD(Enable, _ZN8FxPrim_c6EnableEh, void, u8 on)

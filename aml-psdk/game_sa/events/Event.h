@@ -105,27 +105,38 @@ enum eEventType
 
 DECL_CLASS_VTABLE(CEvent)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CEvent, _ZN6CEventC2Ev);
-    DECL_DTORCALL_PROXY(CEvent, _ZN6CEventD2Ev);
+    DECL_CTORCALL(CEvent, _ZN6CEventC2Ev);
+    DECL_DTORCALL_VIRTUAL(CEvent, _ZN6CEventD2Ev, _ZN6CEvent, _ZTV6CEvent);
     DECL_NEWCALL(CEvent, BYBIT(_ZN6CEventnwEj, _ZN6CEventnwEm) );
     DECL_DLCALL(CEvent, _ZN6CEventdlEPv);
 
     // Virtual functions
-    virtual eEventType GetEventType() const;
-    virtual int GetEventPriority() const; // TODO: eEventPriorityList
-    virtual int GetLifeTime() const;
-    virtual CEvent* Clone() const;
-    virtual bool AffectsPed(CPed* pPed) const;
-    virtual bool AffectsPedGroup(CPedGroup* pPedGroup) const;
-    virtual bool IsCriminalEvent() const;
-    virtual void ReportCriminalEvent(CPed* pPed) const;
-    virtual bool HasEditableResponse() const;
-    virtual CEntity* GetSourceEntity() const;
-    virtual bool TakesPriorityOver(const CEvent& otherEvent) const;
-    virtual float GetLocalSoundLevel() const;
-    virtual bool DoInformVehiclreOccupants(CPed* pPed) const;
-    virtual bool IsValid(CPed* pPed) const;
-    virtual bool CanBeInterruptedBySameEvent() const;
+    virtual eEventType GetEventType() const = 0;
+    virtual int GetEventPriority() const = 0; // TODO: eEventPriorityList
+    virtual int GetLifeTime() const = 0;
+    virtual CEvent* Clone() const = 0;
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, AffectsPed, _ZTV6CEvent, 6, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, AffectsPedGroup, _ZTV6CEvent, 7, bool, CPedGroup* pPedGroup)
+    DECL_VIRTUALCALL_TAIL(pPedGroup)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, IsCriminalEvent, _ZTV6CEvent, 8, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, ReportCriminalEvent, _ZTV6CEvent, 9, void, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, HasEditableResponse, _ZTV6CEvent, 10, bool)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, GetSourceEntity, _ZTV6CEvent, 11, CEntity*)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, TakesPriorityOver, _ZTV6CEvent, 12, bool, const CEvent& otherEvent)
+    DECL_VIRTUALCALL_TAIL(otherEvent)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, GetLocalSoundLevel, _ZTV6CEvent, 13, float)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, DoInformVehiclreOccupants, _ZTV6CEvent, 14, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, IsValid, _ZTV6CEvent, 15, bool, CPed* pPed)
+    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_CONST_HEAD(CEvent, CanBeInterruptedBySameEvent, _ZTV6CEvent, 16, bool)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(CalcSoundLevelIncrement, _ZN6CEvent23CalcSoundLevelIncrementEff, float, float fOrig, float fAdd);

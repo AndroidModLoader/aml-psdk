@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_GTAMATRIX_H
 #define __AML_PSDK_GTAMATRIX_H
 
+#include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/renderware/RwMatrix.h>
 
@@ -21,10 +22,10 @@ DECL_CLASS(CMatrix)
     // Construct/Deconstruct functions
     DECL_CTORCALL_ARG_HEAD(CMatrix, _ZN7CMatrixC2EP11RwMatrixTagb, RwMatrix* matrix, bool temporary)
     DECL_CTORCALL_ARG_TAIL(matrix, temporary)
-    DECL_CTORCALL_PROXY(CMatrix1, _ZN7CMatrixC2ERK16CMatrixSerialize, CMatrixSerialize const& matrix);
-    CMatrix(CMatrixSerialize const& matrix) { FuncProxy_ctorCMatrix1(this, matrix); }
-    DECL_CTORCALL_PROXY(CMatrix2, _ZN7CMatrixC2ERKS_, CMatrix const& matrix);
-    CMatrix(CMatrix const& matrix) { FuncProxy_ctorCMatrix2(this, matrix); }
+    DECL_CTORCALL_NAMED_ARG_HEAD(CMatrix1, CMatrix, _ZN7CMatrixC2ERK16CMatrixSerialize, CMatrixSerialize const& matrix)
+    DECL_CTORCALL_ARG_TAIL(matrix)
+    DECL_CTORCALL_NAMED_ARG_HEAD(CMatrix2, CMatrix, _ZN7CMatrixC2ERKS_, CMatrix const& matrix)
+    DECL_CTORCALL_ARG_TAIL(matrix)
     DECL_DTORCALL(CMatrix, _ZN7CMatrixD2Ev);
 
     // Member functions

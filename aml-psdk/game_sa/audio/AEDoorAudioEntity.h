@@ -4,6 +4,8 @@
 #include "AEAudioEntity.h"
 
 DECL_CLASS(CAEDoorAudioEntity)
+    CAEDoorAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN18CAEDoorAudioEntity16StaticInitialiseEv, void);
 

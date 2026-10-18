@@ -107,8 +107,8 @@ CHECKSIZE(cVehicleParams, 0x4C, 0x60);
 
 DECL_CLASS(CAESound)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAESound1, _ZN8CAESoundC2ERS_, CAESound& sound);
-    CAESound(CAESound& sound) { FuncProxy_ctorCAESound1(this, sound); }
+    DECL_CTORCALL_NAMED_ARG_HEAD(CAESound1, CAESound, _ZN8CAESoundC2ERS_, CAESound& sound)
+    DECL_CTORCALL_ARG_TAIL(sound)
     CAESound() : m_pPhysicalEntity(NULL) {}
     DECL_CTORCALL_ARG_HEAD(CAESound, _ZN8CAESoundC2EssP14CAEAudioEntity7CVectorffffhtf, i16 BankSlotID, i16 SoundID, CAEAudioEntity *pAudioEntity,
                                                                                         CVector Position, float Volume, float RollOffFactor, float RelativeFrequency,
@@ -222,12 +222,20 @@ CHECKSIZE(CAESound, 0x74, 0x80);
 
 DECL_CLASS(CAEAudioEntity)
     // Construct/Deconstruct functions
-    CAEAudioEntity() : m_pEntity(NULL) {}
-    DECL_DTORCALL_PROXY(CAEAudioEntity, _ZN14CAEAudioEntityD2Ev);
+    CAEAudioEntity() asm("psdk_ctor_CAEAudioEntity_inline");
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeCtor_CAEAudioEntity(ThisClass* _psdkSelf)
+        asm("psdk_ctor_CAEAudioEntity_inline")
+    {
+        *(uptr**)_psdkSelf = GetMainLibrarySymbol<uptr*>("_ZTV14CAEAudioEntity") + 2;
+        _psdkSelf->m_tempSound.m_pPhysicalEntity = NULL;
+        PSDK_LIFETIME_RETURN(_psdkSelf);
+    }
+    DECL_DTORCALL(CAEAudioEntity, _ZN14CAEAudioEntityD2Ev);
 
     CEntity *m_pEntity;
     CAESound m_tempSound;
-    virtual void UpdateParameters(CAESound *pSound, short PlayPosition);
+    DECL_VIRTUALCALL_HEAD(CAEAudioEntity, UpdateParameters, _ZTV14CAEAudioEntity, 0, void, CAESound *pSound, short PlayPosition)
+    DECL_VIRTUALCALL_TAIL(pSound, PlayPosition)
 
     // STATIC values
     DECL_OBJECT_PLT(i8*, m_pAudioEventVolumes, BYBIT(0x67605C, 0x84A128));
@@ -238,9 +246,20 @@ CHECKSIZE(CAEAudioEntity, 0x7C, 0x90);
 
 DECL_CLASS_BASED(CAETwinLoopSoundEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    CAETwinLoopSoundEntity() : m_bIsInitialised(0) {}
-    DECL_CTORCALL_PROXY(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityC2EsssP14CAEAudioEntityttss, i16 BankSlotID, i16 FirstSoundID, i16 SecondSoundID, CAEAudioEntity* pAudioEntity, u16 MinSwapTime, u16 MaxSwapTime, i16 StartPercentFirst, i16 StartPercentSecond);
-    DECL_DTORCALL_PROXY(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityD2Ev);
+    CAETwinLoopSoundEntity() asm("psdk_ctor_CAETwinLoopSoundEntity_inline");
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeCtor_CAETwinLoopSoundEntityDefault(ThisClass* _psdkSelf)
+        asm("psdk_ctor_CAETwinLoopSoundEntity_inline")
+    {
+        *(uptr**)_psdkSelf = GetMainLibrarySymbol<uptr*>("_ZTV22CAETwinLoopSoundEntity") + 2;
+        _psdkSelf->m_tempSound.m_pPhysicalEntity = NULL;
+        _psdkSelf->m_bIsInitialised = 0;
+        _psdkSelf->m_apSounds[0] = NULL;
+        _psdkSelf->m_apSounds[1] = NULL;
+        PSDK_LIFETIME_RETURN(_psdkSelf);
+    }
+    DECL_CTORCALL_ARG_HEAD(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityC2EsssP14CAEAudioEntityttss, i16 BankSlotID, i16 FirstSoundID, i16 SecondSoundID, CAEAudioEntity* pAudioEntity, u16 MinSwapTime, u16 MaxSwapTime, i16 StartPercentFirst, i16 StartPercentSecond)
+    DECL_CTORCALL_ARG_TAIL(BankSlotID, FirstSoundID, SecondSoundID, pAudioEntity, MinSwapTime, MaxSwapTime, StartPercentFirst, StartPercentSecond)
+    DECL_DTORCALL(CAETwinLoopSoundEntity, _ZN22CAETwinLoopSoundEntityD2Ev);
 
     short           m_nBankSlotId;
     short           m_nSoundType[2];
@@ -276,6 +295,8 @@ CHECKSIZE(CAETwinLoopSoundEntity, 0xA8, 0xC8);
 
 
 DECL_CLASS_BASED(CAEPedAudioEntity, CAEAudioEntity)
+    CAEPedAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN17CAEPedAudioEntity16StaticInitialiseEv, void);
 
@@ -335,16 +356,30 @@ CHECKSIZE(CAEPedAudioEntity, 0x15C, 0x1A8);
 
 DECL_CLASS_BASED(CAEPedSpeechAudioEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAEPedSpeechAudioEntity, _ZN23CAEPedSpeechAudioEntityC2Ev);
+    DECL_CTORCALL(CAEPedSpeechAudioEntity, _ZN23CAEPedSpeechAudioEntityC2Ev);
+    ~CAEPedSpeechAudioEntity() asm("psdk_dtor_CAEPedSpeechAudioEntity_inline");
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeDtor_CAEPedSpeechAudioEntity(ThisClass* _psdkSelf)
+        asm("psdk_dtor_CAEPedSpeechAudioEntity_inline")
+    {
+        CAEAudioEntity::FuncProxy_dtorCAEAudioEntity(_psdkSelf);
+        PSDK_LIFETIME_RETURN(_psdkSelf);
+    }
 
     // Virtual functions
-    virtual void AddScriptSayEvent(i32 audioEvent, i32 pedContext, u8 overrideSilence, u8 forceAudible, u8 frontEnd);
-    virtual void Terminate();
-    virtual void PlayLoadedSound();
-    virtual i16 GetAllocatedVoice();
-    virtual u8 WillPedChatAboutTopic(i16 topic);
-    virtual i16 GetPedType();
-    virtual u8 IsPedFemaleForAudio();
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, AddScriptSayEvent, _ZTV23CAEPedSpeechAudioEntity, 1, void, i32 audioEvent, i32 pedContext, u8 overrideSilence, u8 forceAudible, u8 frontEnd)
+    DECL_VIRTUALCALL_TAIL(audioEvent, pedContext, overrideSilence, forceAudible, frontEnd)
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, Terminate, _ZTV23CAEPedSpeechAudioEntity, 2, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, PlayLoadedSound, _ZTV23CAEPedSpeechAudioEntity, 3, void)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, GetAllocatedVoice, _ZTV23CAEPedSpeechAudioEntity, 4, i16)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, WillPedChatAboutTopic, _ZTV23CAEPedSpeechAudioEntity, 5, u8, i16 topic)
+    DECL_VIRTUALCALL_TAIL(topic)
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, GetPedType, _ZTV23CAEPedSpeechAudioEntity, 6, i16)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_VIRTUALCALL_HEAD(CAEPedSpeechAudioEntity, IsPedFemaleForAudio, _ZTV23CAEPedSpeechAudioEntity, 7, u8)
+    DECL_VIRTUALCALL_TAIL()
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN23CAEPedSpeechAudioEntity16StaticInitialiseEv, void);
@@ -477,6 +512,8 @@ CHECKSIZE(CAEPedSpeechAudioEntity, 0x100, 0x130);
 
 
 DECL_CLASS_BASED(CAEWeaponAudioEntity, CAEAudioEntity)
+    CAEWeaponAudioEntity() = delete;
+
     // Member functions
     DECL_THISCALL_SIMPLE(Initialise, _ZN20CAEWeaponAudioEntity10InitialiseEv, void);
     DECL_THISCALL_SIMPLE(Terminate, _ZN20CAEWeaponAudioEntity9TerminateEv, void);
@@ -527,6 +564,8 @@ CHECKSIZE(CAEWeaponAudioEntity, 0xA0, 0xB8);
 
 
 DECL_CLASS_BASED(CAEPedWeaponAudioEntity, CAEWeaponAudioEntity)
+    CAEPedWeaponAudioEntity() = delete;
+
     // Member functions
     DECL_THISCALL_HEAD(AddAudioEvent, _ZN23CAEPedWeaponAudioEntity13AddAudioEventEi, void, i32 arg1)
     DECL_THISCALL_TAIL(AddAudioEvent, arg1)
@@ -609,7 +648,17 @@ struct tVehicleSound
 
 DECL_CLASS_BASED(CAEVehicleAudioEntity, CAEAudioEntity)
     // Construct/Deconstruct functions
-    DECL_CTORCALL_PROXY(CAEVehicleAudioEntity, _ZN21CAEVehicleAudioEntityC2Ev);
+    DECL_CTORCALL(CAEVehicleAudioEntity, _ZN21CAEVehicleAudioEntityC2Ev);
+    ~CAEVehicleAudioEntity() asm("psdk_dtor_CAEVehicleAudioEntity_inline");
+    static inline __attribute__((used, visibility("hidden"))) PSDK_LIFETIME_RET(ThisClass) NativeDtor_CAEVehicleAudioEntity(ThisClass* _psdkSelf)
+        asm("psdk_dtor_CAEVehicleAudioEntity_inline")
+    {
+        *(uptr**)_psdkSelf = GetMainLibrarySymbol<uptr*>("_ZTV21CAEVehicleAudioEntity") + 2;
+        if(_psdkSelf->m_bEnabled) FuncProxy_Terminate(_psdkSelf);
+        CAETwinLoopSoundEntity::FuncProxy_dtorCAETwinLoopSoundEntity(&_psdkSelf->m_skidSound);
+        CAEAudioEntity::FuncProxy_dtorCAEAudioEntity(_psdkSelf);
+        PSDK_LIFETIME_RETURN(_psdkSelf);
+    }
 
     short                   m_nStallCounter;
     tVehicleAudioSettings   m_settings;
@@ -881,6 +930,8 @@ CHECKSIZE(CAEVehicleAudioEntity, 0x24C, 0x310);
 
 
 DECL_CLASS_BASED(CAEWeatherAudioEntity, CAEAudioEntity)
+    CAEWeatherAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN21CAEWeatherAudioEntity16StaticInitialiseEv, void);
     DECL_FASTCALL_SIMPLE(StaticReset, _ZN21CAEWeatherAudioEntity11StaticResetEv, void);
@@ -904,6 +955,8 @@ DECL_CLASS_END()
 
 
 DECL_CLASS_BASED(CAEFireAudioEntity, CAEAudioEntity)
+    CAEFireAudioEntity() = delete;
+
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN18CAEFireAudioEntity16StaticInitialiseEv, void);
 
@@ -967,8 +1020,10 @@ DECL_CLASS_END()
 #define m_snLastFireFrequencyIndex m_snLastFireFrequencyIndex()
 
 DECL_CLASS_BASED(CAEPoliceScannerAudioEntity, CAEAudioEntity)
+    CAEPoliceScannerAudioEntity() = delete;
+
     // Construct/Deconstruct functions
-    DECL_DTORCALL_PROXY(CAEPoliceScannerAudioEntity, _ZN27CAEPoliceScannerAudioEntityD2Ev);
+    DECL_DTORCALL(CAEPoliceScannerAudioEntity, _ZN27CAEPoliceScannerAudioEntityD2Ev);
 
     // STATIC functions
     DECL_FASTCALL_SIMPLE(StaticInitialise, _ZN27CAEPoliceScannerAudioEntity16StaticInitialiseEv, void);
