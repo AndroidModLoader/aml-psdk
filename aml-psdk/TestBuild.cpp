@@ -215,6 +215,12 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/other/CustomRoadsign.h>
 #include <aml-psdk/game_sa/other/Shopping.h>
 
+#include <aml-psdk/game_sa/ai/Formation.h>
+#include <aml-psdk/game_sa/ai/PedPlacement.h>
+#include <aml-psdk/game_sa/ai/PedGeometryAnalyser.h>
+#include <aml-psdk/game_sa/engine/CarEnterExit.h>
+#include <aml-psdk/game_sa/other/InterestingEvents.h>
+
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {
     CCamera__Process(self);

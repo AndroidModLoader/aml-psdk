@@ -14,6 +14,19 @@ struct CMatrix;
 struct CPed;
 struct CVehicle;
 
+DECL_CLASS(CWeaponSaveStructure)
+    // Member values
+    eWeaponType m_eWeaponType;
+    eWeaponState m_eState;
+    i32 m_nAmmoInClip;
+    i32 m_nAmmoTotal;
+    u32 m_nTimer;
+    bool m_bFirstPersonWeaponModeSelected;
+    bool m_bDontPlaceInHand;
+    u32 m_pWeaponFxSys;
+DECL_CLASS_END()
+CHECKSIZE(CWeaponSaveStructure, 0x1C, 0x1C);
+
 DECL_CLASS(CWeapon)
     // Construct/Deconstruct functions
     DECL_CTORCALL_ARG_HEAD(CWeapon, _ZN7CWeaponC2E11eWeaponTypei, eWeaponType weaponType, i32 ammo)

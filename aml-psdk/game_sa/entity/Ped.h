@@ -33,6 +33,29 @@ DECL_CLASS(CAccident)
 DECL_CLASS_END()
 CHECKSIZE(CAccident, 0x8, 0x10);
 
+DECL_CLASS(CAccidentManager)
+    enum { MAX_NUM_ACCIDENTS = 16 };
+
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CAccidentManager, _ZN16CAccidentManagerC2Ev);
+    DECL_DTORCALL(CAccidentManager, _ZN16CAccidentManagerD2Ev);
+
+    // Member functions
+    DECL_THISCALL_HEAD(ReportAccident, _ZN16CAccidentManager14ReportAccidentEP4CPed, void, CPed* ped)
+    DECL_THISCALL_TAIL(ReportAccident, ped)
+    DECL_THISCALL_SIMPLE(ComputeNoOfFreeAccidents, _ZNK16CAccidentManager24ComputeNoOfFreeAccidentsEv, i32);
+    DECL_THISCALL_HEAD(GetNearestFreeAccident, _ZN16CAccidentManager22GetNearestFreeAccidentERK7CVectorb, CAccident*, CVector const& pos, bool ignoreHeadless)
+    DECL_THISCALL_TAIL(GetNearestFreeAccident, pos, ignoreHeadless)
+    DECL_THISCALL_HEAD(GetNearestFreeAccidentExceptThisOne, _ZN16CAccidentManager35GetNearestFreeAccidentExceptThisOneERK7CVectorP9CAccidentb, CAccident*, CVector const& pos, CAccident* exceptThisOne, bool ignoreHeadless)
+    DECL_THISCALL_TAIL(GetNearestFreeAccidentExceptThisOne, pos, exceptThisOne, ignoreHeadless)
+
+    // Member values
+    CAccident m_accidents[MAX_NUM_ACCIDENTS];
+DECL_CLASS_END()
+CHECKSIZE(CAccidentManager, 0x80, 0x100);
+
+DECL_FASTCALL_SIMPLE_GLO(GetAccidentManager, _Z18GetAccidentManagerv, CAccidentManager*);
+
 DECL_CLASS(CCoverPoint)
     enum
     {
