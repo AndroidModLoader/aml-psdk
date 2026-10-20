@@ -298,3 +298,4 @@ void Test()
 #include <aml-psdk/game_sa/other/Credits.h>
 #include <aml-psdk/game_sa/other/PlayerSkin.h>
 #include <aml-psdk/game_sa/utils/AnimationUtils.h>
+#include <aml-psdk/game_sa/utils/PedAnimationUtils.h>
