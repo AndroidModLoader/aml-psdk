@@ -158,40 +158,259 @@ CHECKSIZE(CPedAttractorManager, 0x78, 0xA0);
 DECL_CLASS_BASED(CPedPizzaAttractor, CPedAttractor)
     DECL_NEWCALL(CPedPizzaAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
 
+    // Construct/Deconstruct functions
+    CPedPizzaAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
     // Virtual functions
-    DECL_VIRTUALCALL_CONST_HEAD(CPedPizzaAttractor, GetType, _ZTV18CPedPizzaAttractor, 0, int)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedPizzaAttractor, GetType, _ZTV18CPedPizzaAttractor, 0, i32)
     DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedPizzaAttractor, _ZN18CPedPizzaAttractor, _ZTV18CPedPizzaAttractor, 1);
     DECL_VIRTUALCALL_HEAD(CPedPizzaAttractor, GetHeadOfQueueWaitTime, _ZTV18CPedPizzaAttractor, 7, float)
     DECL_VIRTUALCALL_TAIL()
 
-    // Member functions
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN18CPedPizzaAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN18CPedPizzaAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN18CPedPizzaAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN18CPedPizzaAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN18CPedPizzaAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN18CPedPizzaAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN18CPedPizzaAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN18CPedPizzaAttractor16ms_fDeltaHeadingE);
+    DECL_OBJECT_SYM(float const, ms_fPizzaOrderTime, _ZN18CPedPizzaAttractor18ms_fPizzaOrderTimeE);
+
     DECL_THISCALL_SIMPLE(Delete, _ZN18CPedPizzaAttractorD0Ev, void);
 DECL_CLASS_END()
-CHECKSIZE(CPedPizzaAttractor, 0xB8, 0xD0);
+CHECKSIZE(CPedPizzaAttractor, 0xb8, 0xd0);
 
 DECL_CLASS_BASED(CPedShelterAttractor, CPedAttractor)
     DECL_NEWCALL(CPedShelterAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
 
+    // Construct/Deconstruct functions
+    CPedShelterAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
     // Virtual functions
-    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, GetType, _ZTV20CPedShelterAttractor, 0, int)
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, GetType, _ZTV20CPedShelterAttractor, 0, i32)
     DECL_VIRTUALCALL_TAIL()
-    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, IsAtHeadOfQueue, _ZTV20CPedShelterAttractor, 3, bool, CPed* pPed)
-    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedShelterAttractor, _ZN20CPedShelterAttractor, _ZTV20CPedShelterAttractor, 1);
+    DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, IsAtHeadOfQueue, _ZTV20CPedShelterAttractor, 3, bool, CPed* ped)
+    DECL_VIRTUALCALL_TAIL(ped)
     DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, ComputeAttractPos, _ZTV20CPedShelterAttractor, 4, void, int const slot, CVector& pos)
     DECL_VIRTUALCALL_TAIL(slot, pos)
     DECL_VIRTUALCALL_CONST_HEAD(CPedShelterAttractor, ComputeAttractHeading, _ZTV20CPedShelterAttractor, 5, void, int const slot, float& heading)
     DECL_VIRTUALCALL_TAIL(slot, heading)
-    DECL_VIRTUALCALL_HEAD(CPedShelterAttractor, BroadcastDeparture, _ZTV20CPedShelterAttractor, 6, bool, CPed* pPed)
-    DECL_VIRTUALCALL_TAIL(pPed)
+    DECL_VIRTUALCALL_HEAD(CPedShelterAttractor, BroadcastDeparture, _ZTV20CPedShelterAttractor, 6, bool, CPed* ped)
+    DECL_VIRTUALCALL_TAIL(ped)
 
-    // Member functions
-    DECL_THISCALL_SIMPLE(Delete, _ZN20CPedShelterAttractorD0Ev, void);
+    // STATIC functions
     DECL_FASTCALL_SIMPLE(GetDisplacement, _ZN20CPedShelterAttractor15GetDisplacementEi, CVector const&, int const iSlot);
 
     // STATIC values
-    DECL_OBJECT_PLT(SArray<CVector>, ms_displacements, BYBIT(0x678170, 0x84E2F8));
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN20CPedShelterAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN20CPedShelterAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN20CPedShelterAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN20CPedShelterAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN20CPedShelterAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN20CPedShelterAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN20CPedShelterAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN20CPedShelterAttractor16ms_fDeltaHeadingE);
+    DECL_OBJECT_PLT(SArray<CVector>, ms_displacements, BYBIT(0x678170, 0x84e2f8));
+
+    DECL_THISCALL_SIMPLE(Delete, _ZN20CPedShelterAttractorD0Ev, void);
 DECL_CLASS_END()
-CHECKSIZE(CPedShelterAttractor, 0xB8, 0xD0);
+CHECKSIZE(CPedShelterAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedAtmAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedAtmAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedAtmAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedAtmAttractor, GetType, _ZTV16CPedAtmAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedAtmAttractor, _ZN16CPedAtmAttractor, _ZTV16CPedAtmAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN16CPedAtmAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN16CPedAtmAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN16CPedAtmAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN16CPedAtmAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN16CPedAtmAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN16CPedAtmAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN16CPedAtmAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN16CPedAtmAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedAtmAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedLookAtAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedLookAtAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedLookAtAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedLookAtAttractor, GetType, _ZTV19CPedLookAtAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedLookAtAttractor, _ZN19CPedLookAtAttractor, _ZTV19CPedLookAtAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN19CPedLookAtAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN19CPedLookAtAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN19CPedLookAtAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN19CPedLookAtAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN19CPedLookAtAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN19CPedLookAtAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN19CPedLookAtAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN19CPedLookAtAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedLookAtAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedParkAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedParkAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedParkAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedParkAttractor, GetType, _ZTV17CPedParkAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedParkAttractor, _ZN17CPedParkAttractor, _ZTV17CPedParkAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN17CPedParkAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN17CPedParkAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN17CPedParkAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN17CPedParkAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN17CPedParkAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN17CPedParkAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN17CPedParkAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN17CPedParkAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedParkAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedScriptedAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedScriptedAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedScriptedAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedScriptedAttractor, GetType, _ZTV21CPedScriptedAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedScriptedAttractor, _ZN21CPedScriptedAttractor, _ZTV21CPedScriptedAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN21CPedScriptedAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN21CPedScriptedAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN21CPedScriptedAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN21CPedScriptedAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN21CPedScriptedAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN21CPedScriptedAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN21CPedScriptedAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN21CPedScriptedAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedScriptedAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedSeatAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedSeatAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedSeatAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedSeatAttractor, GetType, _ZTV17CPedSeatAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedSeatAttractor, _ZN17CPedSeatAttractor, _ZTV17CPedSeatAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN17CPedSeatAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN17CPedSeatAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN17CPedSeatAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN17CPedSeatAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN17CPedSeatAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN17CPedSeatAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN17CPedSeatAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN17CPedSeatAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedSeatAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedStepAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedStepAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedStepAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedStepAttractor, GetType, _ZTV17CPedStepAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedStepAttractor, _ZN17CPedStepAttractor, _ZTV17CPedStepAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN17CPedStepAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN17CPedStepAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN17CPedStepAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN17CPedStepAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN17CPedStepAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN17CPedStepAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN17CPedStepAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN17CPedStepAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedStepAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedStopAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedStopAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedStopAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedStopAttractor, GetType, _ZTV17CPedStopAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedStopAttractor, _ZN17CPedStopAttractor, _ZTV17CPedStopAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN17CPedStopAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN17CPedStopAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN17CPedStopAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN17CPedStopAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN17CPedStopAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN17CPedStopAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN17CPedStopAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN17CPedStopAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedStopAttractor, 0xb8, 0xd0);
+
+DECL_CLASS_BASED(CPedTriggerScriptAttractor, CPedAttractor)
+    DECL_NEWCALL(CPedTriggerScriptAttractor, BYBIT(_ZN13CPedAttractornwEj, _ZN13CPedAttractornwEm));
+
+    // Construct/Deconstruct functions
+    CPedTriggerScriptAttractor(C2dEffect* effect, CEntity* entity, i32 const moveState) : CPedAttractor(effect, entity, moveState, ms_iMaxSlots(), ms_fSpacing(), ms_fAchieveQueueTime(), ms_fAchieveQueueShuffleTime(), ms_fArriveRange(), ms_fHeadingRange(), ms_fDeltaPos(), ms_fDeltaHeading()) {}
+
+    // Virtual functions
+    DECL_VIRTUALCALL_CONST_HEAD(CPedTriggerScriptAttractor, GetType, _ZTV26CPedTriggerScriptAttractor, 0, i32)
+    DECL_VIRTUALCALL_TAIL()
+    DECL_DTORCALL_VIRTUAL_VTABLE_SLOT(CPedTriggerScriptAttractor, _ZN26CPedTriggerScriptAttractor, _ZTV26CPedTriggerScriptAttractor, 1);
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iMaxSlots, _ZN26CPedTriggerScriptAttractor12ms_iMaxSlotsE);
+    DECL_OBJECT_SYM(float const, ms_fSpacing, _ZN26CPedTriggerScriptAttractor11ms_fSpacingE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueTime, _ZN26CPedTriggerScriptAttractor20ms_fAchieveQueueTimeE);
+    DECL_OBJECT_SYM(float const, ms_fAchieveQueueShuffleTime, _ZN26CPedTriggerScriptAttractor27ms_fAchieveQueueShuffleTimeE);
+    DECL_OBJECT_SYM(float const, ms_fArriveRange, _ZN26CPedTriggerScriptAttractor15ms_fArriveRangeE);
+    DECL_OBJECT_SYM(float const, ms_fHeadingRange, _ZN26CPedTriggerScriptAttractor16ms_fHeadingRangeE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaPos, _ZN26CPedTriggerScriptAttractor12ms_fDeltaPosE);
+    DECL_OBJECT_SYM(float const, ms_fDeltaHeading, _ZN26CPedTriggerScriptAttractor16ms_fDeltaHeadingE);
+
+DECL_CLASS_END()
+CHECKSIZE(CPedTriggerScriptAttractor, 0xb8, 0xd0);
 
 DECL_FASTCALL_SIMPLE_GLO(GetPedAttractorManager, _Z22GetPedAttractorManagerv, CPedAttractorManager*);
 

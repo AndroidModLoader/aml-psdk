@@ -275,3 +275,26 @@ void Test()
         );
     };
 }
+
+#include <aml-psdk/game_sa/ai/Conversations.h>
+#include <aml-psdk/game_sa/ai/PlayerRelationshipRecorder.h>
+#include <aml-psdk/game_sa/audio/AEAmbienceTrackManager.h>
+#include <aml-psdk/game_sa/audio/AEAudioEnvironment.h>
+#include <aml-psdk/game_sa/audio/AEBankLoader.h>
+#include <aml-psdk/game_sa/audio/AECutsceneTrackManager.h>
+#include <aml-psdk/game_sa/audio/AEMP3BankLoader.h>
+#include <aml-psdk/game_sa/audio/AEMP3Decoder.h>
+#include <aml-psdk/game_sa/audio/AEMP3TrackLoader.h>
+#include <aml-psdk/game_sa/audio/AERadioTrackManager.h>
+#include <aml-psdk/game_sa/audio/AESmoothFadeThread.h>
+#include <aml-psdk/game_sa/audio/AEStreamTransformer.h>
+#include <aml-psdk/game_sa/audio/AEStreamingDecoder.h>
+#include <aml-psdk/game_sa/audio/AEWaveDecoder.h>
+#include <aml-psdk/game_sa/engine/CreepingFire.h>
+#include <aml-psdk/game_sa/engine/MenuManager.h>
+#include <aml-psdk/game_sa/engine/MenuSystem.h>
+#include <aml-psdk/game_sa/engine/WindModifiers.h>
+#include <aml-psdk/game_sa/entity/IdleCam.h>
+#include <aml-psdk/game_sa/other/Credits.h>
+#include <aml-psdk/game_sa/other/PlayerSkin.h>
+#include <aml-psdk/game_sa/utils/AnimationUtils.h>
