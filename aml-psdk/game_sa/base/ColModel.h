@@ -8,12 +8,27 @@
 
 struct CColSphere;
 struct CColDisk;
-struct CColLine;
 struct CColBox;
 struct CColModelSection;
 
 typedef CVector CollisionVector;
 typedef float CollisionFloat;
+
+DECL_CLASS(CColLine)
+    CColLine() {}
+    CColLine(CVector const& start, CVector const& end) : m_vecStart(start), m_vecEnd(end) {}
+
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN8CColLine3SetERK7CVectorS2_, void, CVector const& start, CVector const& end)
+    DECL_THISCALL_TAIL(Set, start, end)
+
+    // Member values
+    CVector m_vecStart;
+    u32 : 32;
+    CVector m_vecEnd;
+    u32 : 32;
+DECL_CLASS_END()
+CHECKSIZE(CColLine, 0x20, 0x20);
 
 struct __attribute__((aligned(4))) CColTriangle
 {

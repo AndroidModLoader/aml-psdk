@@ -299,3 +299,8 @@ void Test()
 #include <aml-psdk/game_sa/other/PlayerSkin.h>
 #include <aml-psdk/game_sa/utils/AnimationUtils.h>
 #include <aml-psdk/game_sa/utils/PedAnimationUtils.h>
+#include <aml-psdk/game_sa/utils/EntityRef.h>
+#include <aml-psdk/game_sa/utils/ScreenUtils.h>
+#include <aml-psdk/game_sa/base/CompressedMatrix.h>
+#include <aml-psdk/game_sa/base/Curves.h>
+#include <aml-psdk/game_sa/ai/Cover.h>
