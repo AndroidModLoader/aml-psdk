@@ -29,9 +29,13 @@ enum eEventType
     EVENT_COP_CAR_BEING_STOLEN = 16,
     EVENT_PED_ENTERED_MY_VEHICLE = 17,
     EVENT_REVIVE = 18,
+    EVENT_REVIVED = 18,
     EVENT_CHAT_PARTNER = 19,
     EVENT_SEXY_PED = 20,
     EVENT_SEXY_VEHICLE = 21,
+    EVENT_PED_TO_HASSLE = 22,
+    EVENT_HASSLED_BY_COP = 23,
+    EVENT_COP_ID_REQUEST = 24,
     EVENT_PED_TO_CHASE = 25,
     EVENT_PED_TO_FLEE = 26,
     EVENT_ATTRACTOR = 27,
@@ -72,6 +76,7 @@ enum eEventType
     EVENT_SOUND_QUIET = 62,
     EVENT_ACQUAINTANCE_PED_HATE_BADLY_LIT = 63,
     EVENT_WATER_CANNON = 64,
+    EVENT_HIT_BY_WATER_CANNON = 64,
     EVENT_SEEN_PANICKED_PED = 65,
     EVENT_IN_WATER = 66,
     EVENT_AREA_CODES = 67,
@@ -85,21 +90,26 @@ enum eEventType
     EVENT_DANGER = 75,
     EVENT_PLAYER_COMMAND_TO_GROUP_GATHER = 76,
     EVENT_LEADER_ENTRY_EXIT = 77,
-    // GAP
+    EVENT_NOT_USED20 = 78,
     EVENT_VEHICLE_ON_FIRE = 79,
     EVENT_PHYSICAL_DAMAGE = 80,
     EVENT_INTERIOR_USE_INFO = 81,
     EVENT_INTERIOR_LEAVE = 82,
-    // GAP
+    EVENT_INTERIOR_RESERVED1 = 83,
+    EVENT_INTERIOR_RESERVED2 = 84,
+    EVENT_INTERIOR_RESERVED3 = 85,
+    EVENT_INTERIOR_RESERVED4 = 86,
+    EVENT_INTERIOR_RESERVED5 = 87,
     EVENT_SIGNAL_AT_PED = 88,
     EVENT_PASS_OBJECT = 89,
     EVENT_NEW_GANG_MEMBER = 90,
     EVENT_WAIT_FOR_PED = 91,
     EVENT_LEAN_ON_VEHICLE = 92,
+    EVENT_LEAN_ON_CAR = 92,
     EVENT_STUCK_IN_AIR = 93,
     EVENT_DONT_JOIN_GROUP = 94,
     EVENT_PLAYER_CLOSE_BY = 95,
-    
+    MAX_NUM_EVENT_TYPES = 96,
     EVENT_TOTAL_NUM_EVENTS = 96
 };
 
@@ -112,7 +122,7 @@ DECL_CLASS_VTABLE(CEvent)
 
     // Virtual functions
     virtual eEventType GetEventType() const = 0;
-    virtual int GetEventPriority() const = 0; // TODO: eEventPriorityList
+    virtual int GetEventPriority() const = 0;
     virtual int GetLifeTime() const = 0;
     virtual CEvent* Clone() const = 0;
     DECL_VIRTUALCALL_CONST_HEAD(CEvent, AffectsPed, _ZTV6CEvent, 6, bool, CPed* pPed)
@@ -142,12 +152,18 @@ DECL_CLASS_VTABLE(CEvent)
     DECL_FASTCALL_SIMPLE(CalcSoundLevelIncrement, _ZN6CEvent23CalcSoundLevelIncrementEff, float, float fOrig, float fAdd);
 
     // Member functions
-    DECL_THISCALL_HEAD(GetSoundLevel, _ZNK6CEvent13GetSoundLevelEPK7CEntityRK7CVector, float, CEntity const* pSourceEnt, CVector const& vecMicPos)
-    DECL_THISCALL_TAIL(GetSoundLevel, pSourceEnt, vecMicPos)
+    DECL_FASTCALL_SIMPLE(FuncProxy_GetSoundLevel, _ZNK6CEvent13GetSoundLevelEPK7CEntityRK7CVector, float, CEvent const* event, CEntity const* pSourceEnt, CVector const& vecMicPos);
+    inline float GetSoundLevel(CEntity const* pSourceEnt, CVector const& vecMicPos) const { return FuncProxy_GetSoundLevel(this, pSourceEnt, vecMicPos); }
+
+    inline void ForcePersistence(bool persistent) { m_bIsPersistent = persistent; }
+    inline void Tick() { ++m_iAccumulatedTime; }
+    inline void UnTick() { --m_iAccumulatedTime; }
+    inline bool DoInformVehicleOccupants(CPed* ped) const { return DoInformVehiclreOccupants(ped); }
 
     // Member values
     int m_iAccumulatedTime;
     bool m_bIsPersistent;
 DECL_CLASS_END()
+CHECKSIZE(CEvent, 0xC, 0x10);
 
 #endif // __AML_PSDK_SAEVENT_H

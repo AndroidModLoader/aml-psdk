@@ -5,8 +5,71 @@
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/game_sa/base/Lists.h>
 #include <aml-psdk/renderware/RwRGBA.h>
+#include <aml-psdk/renderware/RwMatrix.h>
 
 struct FxSystem_c;
+
+DECL_CLASS(FxName32_t)
+    // Member values
+    char txt[32];
+DECL_CLASS_END()
+CHECKSIZE(FxName32_t, 0x20, 0x20);
+
+DECL_CLASS(EmissionInfo_t)
+    // Member values
+    float count;
+    float radius;
+    RwV3d sizeMin;
+    RwV3d sizeMax;
+    RwV2d speed;
+    RwV3d dir;
+    RwV2d angle;
+    RwV2d life;
+    RwV3d pos;
+    float rot[2];
+    float weather[4];
+DECL_CLASS_END()
+CHECKSIZE(EmissionInfo_t, 0x68, 0x68);
+
+DECL_CLASS(MovementInfo_t)
+    // Member values
+    RwV3d pos;
+    RwV3d vel;
+    float rot[4];
+    u8 hasFloatInfo;
+    u8 hasUnderwaterInfo;
+DECL_CLASS_END()
+CHECKSIZE(MovementInfo_t, 0x2c, 0x2c);
+
+DECL_CLASS(RenderInfo_t)
+    // Member values
+    RwRGBA colour;
+    RwRGBA colour2;
+    i32 colId;
+    RwV2d size;
+    RwV2d sizeBias;
+    RwV4d spriteRect;
+    i32 trailId;
+    float trailTime;
+    u8 hasAnimTextures;
+    i8 currTexId;
+    u8 hasHeatHaze;
+    u8 isSelfLit;
+    RwMatrix flatMat;
+    u8 isFlat;
+    u8 hasDir;
+    u8 useVel;
+    i8 smokeType;
+    RwV3d dirVec;
+    float smokeRed;
+    float smokeGreen;
+    float smokeBlue;
+    float smokeAlpha;
+    float smokeBright;
+    float smokeSize;
+    float smokeTime;
+DECL_CLASS_END()
+CHECKSIZE(RenderInfo_t, 0xa4, 0xa4);
 
 struct FxBox_c
 {

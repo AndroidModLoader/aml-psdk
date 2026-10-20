@@ -7,6 +7,11 @@
 #define RwV2d CVector2D
 #define RwV3d CVector
 
+struct RwV4d
+{
+    float x, y, z, w;
+};
+
 union RQVector
 {
     float v[4];
@@ -50,6 +55,7 @@ struct RwPlane
     RwReal distance;
 };
 
+CHECKSIZE(RwV4d, 0x10, 0x10);
 CHECKSIZE(RwSphere, 0x10, 0x10);
 CHECKSIZE(RwBBox, 0x18, 0x18);
 CHECKSIZE(RwPlane, 0x10, 0x10);

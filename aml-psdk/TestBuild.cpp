@@ -221,6 +221,16 @@ MYMOD(net.psdk.mymod.guid, AML PSDK Template, 1.0, Author)
 #include <aml-psdk/game_sa/engine/CarEnterExit.h>
 #include <aml-psdk/game_sa/other/InterestingEvents.h>
 
+#include <aml-psdk/game_sa/engine/FxInfo.h>
+#include <aml-psdk/game_sa/engine/FxEmitter.h>
+#include <aml-psdk/game_sa/entity/PedDamageResponseCalculator.h>
+#include <aml-psdk/game_sa/audio/AudioZones.h>
+#include <aml-psdk/game_sa/other/Darkel.h>
+#include <aml-psdk/game_sa/engine/Scripted2dEffects.h>
+#include <aml-psdk/game_sa/other/Clouds.h>
+#include <aml-psdk/game_sa/engine/PlantMgr.h>
+#include <aml-psdk/game_sa/engine/Mirrors.h>
+
 DECL_HOOKv(CCamera__Process, CCamera* self)
 {
     CCamera__Process(self);

@@ -2,6 +2,7 @@
 #define __AML_PSDK_SAEVENTTYPES_H
 
 #include "EventEditableResponse.h"
+#include "../entity/PedDamageResponseCalculator.h"
 #include "../enum/WeaponType.h"
 #include "../enum/PedEnums.h"
 #include "../enum/AnimGroup.h"
@@ -14,16 +15,6 @@ struct CTask;
 struct C2dEffect;
 struct CAnimBlendAssociation;
 
-DECL_CLASS(CPedDamageResponse)
-    // Member values
-    float m_fHealthLost;
-    float m_fArmourLost;
-    bool m_bKilled;
-    bool m_bInstantKill;
-    bool m_bDamageCalculated;
-    bool m_bAffectsPed;
-DECL_CLASS_END()
-CHECKSIZE(CPedDamageResponse, 0xC, 0xC);
 
 DECL_CLASS_BASED(CEventDamage, CEventEditableResponse)
     DECL_VIRTUALCALL_CONST_HEAD(CEventDamage, GetEventType, _ZTV12CEventDamage, 2, eEventType)
