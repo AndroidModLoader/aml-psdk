@@ -5,6 +5,7 @@
 #include <aml-psdk/sdk_callevents.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/game_sa/enum/WeaponType.h>
+#include <aml-psdk/game_sa/other/Explosion.h>
 
 struct CCamera;
 struct CEntity;
@@ -17,6 +18,11 @@ struct CPed;
 struct CObject;
 struct MobileMenu;
 struct CPlayerInfo;
+struct CPedDamageResponseCalculator;
+struct CPedDamageResponse;
+struct CWanted;
+struct CFire;
+struct CAudioEngine;
 
 struct Events
 {
@@ -57,8 +63,6 @@ struct Events
     EVENT_SYM(gameProcessEvent, void, (), _ZN5CGame7ProcessEv);
     EVENT_PLT(initGameEvent, void, (), BYBIT(0x6740A4, 0x846D20));
     EVENT_PLT(reInitGameEvent, void, (), BYBIT(0x672014, 0x843810));
-    // onPauseAllSounds
-    // onResumeAllSounds
     EVENT_PLT(initScriptsEvent, void, (), BYBIT(0x671B14, 0x842FC0));
     EVENT_PLT(processScriptsEvent, void, (), BYBIT(0x673178, 0x845438)); // wrong on PC. bruh...
     EVENT_PLT(menuDrawingEvent, void, (MobileMenu*), BYBIT(0x674254, 0x846FE8));
@@ -114,6 +118,26 @@ struct Events
     EVENT_SYM(playerKillEvent, void, (CPlayerInfo* info), _ZN11CPlayerInfo10KillPlayerEv, 0);
     EVENT_SYM(playerArrestEvent, void, (CPlayerInfo* info), _ZN11CPlayerInfo12ArrestPlayerEv, 0);
     EVENT_SYM_BEFORE(frameEndEvent, void, (bool fromIdle), _Z19DoRWStuffEndOfFrameb, 0);
+    EVENT_SYM(drawCrosshairEvent, void, (), _ZN4CHud14DrawCrossHairsEv);
+    EVENT_SYM(render3dMarkersEvent, void, (), _ZN10C3dMarkers6RenderEv);
+    EVENT_SYM(pedDamageResponseEvent, void, (CPedDamageResponseCalculator* calculator, CPed* ped, CPedDamageResponse& response, bool speak), _ZN28CPedDamageResponseCalculator21ComputeDamageResponseEP4CPedR18CPedDamageResponseb, 0, 1, 2, 3);
+    EVENT_SYM(pedSetWeaponEvent, void, (CPed* ped, int weaponSlot), _ZN4CPed16SetCurrentWeaponEi, 0, 1);
+    EVENT_SYM(pedClearWeaponsEvent, void, (CPed* ped), _ZN4CPed12ClearWeaponsEv, 0);
+    EVENT_SYM(wantedLevelUpdateEvent, void, (CWanted* wanted), _ZN7CWanted17UpdateWantedLevelEv, 0);
+    EVENT_SYM(addExplosionEvent, bool, (CEntity* victim, CEntity* creator, eExplosionType explosionType, CVector pos, u32 time, u8 makeSound, float cameraShake, u8 visibility), _ZN10CExplosion12AddExplosionEP7CEntityS1_14eExplosionType7CVectorjhfh, 0, 1, 2, 3, 4, 5, 6, 7);
+    EVENT_SYM_BEFORE(fireExtinguishEvent, void, (CFire* fire), _ZN5CFire10ExtinguishEv, 0);
+    EVENT_SYM(playerResurrectEvent, void, (CPlayerPed* player, CVector pos, float heading), _ZN10CGameLogic36RestorePlayerStuffDuringResurrectionEP10CPlayerPed7CVectorf, 0, 1, 2);
+    EVENT_SYM_BEFORE(cutsceneLoadRequestEvent, void, (const char* name), _ZN12CCutsceneMgr16LoadCutsceneDataEPKc, 0);
+    EVENT_SYM(cutsceneStartEvent, void, (), _ZN12CCutsceneMgr13StartCutsceneEv);
+    EVENT_SYM(cutsceneFinishEvent, void, (), _ZN12CCutsceneMgr14FinishCutsceneEv);
+    EVENT_SYM(cutsceneSkipEvent, void, (), _ZN12CCutsceneMgr12SkipCutsceneEv);
+    EVENT_SYM_BEFORE(cutsceneDeleteEvent, void, (), _ZN12CCutsceneMgr18DeleteCutsceneDataEv);
+    EVENT_SYM(pauseAllSoundsEvent, void, (CAudioEngine* audio), _ZN12CAudioEngine14PauseAllSoundsEv);
+    EVENT_SYM(resumeAllSoundsEvent, void, (CAudioEngine* audio), _ZN12CAudioEngine15ResumeAllSoundsEv);
+    EVENT_SYM(radioRetuneEvent, void, (CAudioEngine* audio, i8 stationId), _ZN12CAudioEngine11RetuneRadioEa, 0, 1);
+    EVENT_SYM(forceWeatherEvent, void, (i16 weatherType), _ZN8CWeather12ForceWeatherEs, 0);
+    EVENT_SYM(forceWeatherNowEvent, void, (i16 weatherType), _ZN8CWeather15ForceWeatherNowEs, 0);
+    EVENT_SYM(releaseWeatherEvent, void, (), _ZN8CWeather14ReleaseWeatherEv);
 };
 
 #endif // __AML_PSDK_SACALLEVENTS_H
