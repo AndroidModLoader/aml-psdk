@@ -1,6 +1,18 @@
 #ifndef __AML_PSDK_SAEFFECTS_H
 #define __AML_PSDK_SAEFFECTS_H
 
+enum e3dMarkerType
+{
+    MARKER3D_ARROW = 0,
+    MARKER3D_CYLINDER = 1,
+    MARKER3D_TUBE = 2,
+    MARKER3D_ARROW2 = 3,
+    MARKER3D_TORUS = 4,
+    MARKER3D_CONE = 5,
+    MARKER3D_CONE_NO_COLLISION = 6,
+    MARKER3D_NA = 257,
+};
+
 enum eFlashiness
 {
     FL_CONSTANT = 0,

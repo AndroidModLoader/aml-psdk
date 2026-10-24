@@ -3,16 +3,54 @@
 
 #include "Vehicle.h"
 
-struct CTrainNode
-{
+DECL_CLASS(CTrainNode)
+    DECL_THISCALL_SIMPLE(GetLightingFromCollision, _ZN10CTrainNode24GetLightingFromCollisionEv, u8);
+
+    inline void SetX(float x) { CoorX = (i16)(i32)(x * 8.0f); }
+    inline void SetY(float y) { CoorY = (i16)(i32)(y * 8.0f); }
+    inline void SetZ(float z) { CoorZ = (i16)(i32)(z * 8.0f); }
+    inline float GetX() const { return CoorX * 0.125f; }
+    inline float GetY() const { return CoorY * 0.125f; }
+    inline float GetZ() const { return CoorZ * 0.125f; }
+    inline CVector GetPosn() const { return { GetX(), GetY(), GetZ() }; }
+    inline void SetDistanceFromStart(float distance) { LengthFromStart = (u16)(u32)(distance * 3.0f); }
+    inline float GetDistanceFromStart() const { return LengthFromStart / 3.0f; }
+
     i16 CoorX;
     i16 CoorY;
     i16 CoorZ;
     u16 LengthFromStart;
     u8 lighting;
     bool bLightingHasBeenCalculated;
-};
+DECL_CLASS_END()
 CHECKSIZE(CTrainNode, 0xA, 0xA);
+
+DECL_CLASS(CTrainDoor)
+    // Member functions
+    DECL_THISCALL_HEAD(Open, _ZN10CTrainDoor4OpenEf, void, float ratio)
+    DECL_THISCALL_TAIL(Open, ratio)
+    DECL_THISCALL_SIMPLE(IsClosed, _ZNK10CTrainDoor8IsClosedEv, bool);
+    DECL_THISCALL_SIMPLE(IsFullyOpen, _ZNK10CTrainDoor11IsFullyOpenEv, bool);
+    DECL_THISCALL_SIMPLE(IsInUse, _ZN10CTrainDoor7IsInUseEv, bool);
+    DECL_THISCALL_SIMPLE(RetTranslationWhenClosed, _ZNK10CTrainDoor24RetTranslationWhenClosedEv, float);
+    DECL_THISCALL_SIMPLE(RetTranslationWhenOpen, _ZNK10CTrainDoor22RetTranslationWhenOpenEv, float);
+
+    inline float RetDoorTransVel() const { return m_fTransVel; }
+    inline float RetDoorTrans() const { return m_fTrans; }
+    inline u8 RetAxes() const { return m_nAxis; }
+    inline u8 RetDoorState() const { return m_nDoorState; }
+
+    // Member values
+    float m_fMaxTrans;
+    float m_fMinTrans;
+    bool m_bPositive;
+    u8 m_nDoorState;
+    u8 m_nAxis;
+    float m_fTrans;
+    float m_fPrevTrans;
+    float m_fTransVel;
+DECL_CLASS_END()
+CHECKSIZE(CTrainDoor, 0x18, 0x18);
 
 
 enum eTrainNodes
@@ -137,6 +175,17 @@ DECL_CLASS_BASED(CTrain, CVehicle)
     RwFrame          *m_aTrainNodes[TRAIN_NUM_NODES];
 DECL_CLASS_END()
 CHECKSIZE(CTrain, 0x6C0, 0x8B8);
+
+DECL_FASTCALL_SIMPLE_GLO(TrainHitStuff, _Z13TrainHitStuffR8CPtrListP7CEntity, void, CPtrList& list, CEntity* exception);
+DECL_FASTCALL_SIMPLE_GLO(MarkSurroundingEntitiesForCollisionWithTrain, _Z44MarkSurroundingEntitiesForCollisionWithTrain7CVectorfP7CEntityb, void, CVector center, float size, CEntity* exception, bool onlyVehicles);
+
+DECL_OBJECT_ARRAY_PLT_GLOBAL(i32, NumTrackNodes, BYBIT(0x6789BC, 0x84F398));
+DECL_OBJECT_ARRAY_PLT_GLOBAL(CTrainNode*, pTrackNodes, BYBIT(0x679FB8, 0x851F80));
+DECL_OBJECT_ARRAY_PLT_GLOBAL(float, StationDist, BYBIT(0x675EE4, 0x849E38));
+
+#define NumTrackNodes NumTrackNodes()
+#define pTrackNodes pTrackNodes()
+#define StationDist StationDist()
 
 #define aStationCoors aStationCoors()
 #define bDisableRandomTrains bDisableRandomTrains()

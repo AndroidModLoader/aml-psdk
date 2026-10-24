@@ -1,6 +1,7 @@
 #ifndef __AML_PSDK_SAPEDINTELLIGENCE_H
 #define __AML_PSDK_SAPEDINTELLIGENCE_H
 
+#include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
 #include <aml-psdk/game_sa/enum/DecisionMaker.h>
 #include <aml-psdk/game_sa/enum/WeaponType.h>
@@ -235,6 +236,7 @@ DECL_CLASS(CPedStuckChecker)
     unsigned short m_nStuck;
 
     // Member functions
+    inline u16 GetState() const { return m_nStuck; }
     DECL_THISCALL_HEAD(TestPedStuck, _ZN16CPedStuckChecker12TestPedStuckEP4CPedP11CEventGroup, bool, CPed* ped, CEventGroup* eventGroup)
     DECL_THISCALL_TAIL(TestPedStuck, ped, eventGroup)
 DECL_CLASS_END()

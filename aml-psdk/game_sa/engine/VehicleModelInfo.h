@@ -43,6 +43,7 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     DECL_FASTCALL_SIMPLE(HasAlphaMaterialCB, _ZN17CVehicleModelInfo18HasAlphaMaterialCBEP10RpMaterialPv, RpMaterial*, RpMaterial* material, void* data);
     DECL_FASTCALL_SIMPLE(SetEditableMaterials, _ZN17CVehicleModelInfo20SetEditableMaterialsEP7RpClump, void, RpClump* clump);
     DECL_FASTCALL_SIMPLE(SetEditableMaterialsCB1, _ZN17CVehicleModelInfo22SetEditableMaterialsCBEP8RpAtomicPv, RpAtomic*, RpAtomic* pAtomic, void* pData);
+    static inline RpAtomic* SetEditableMaterialsCB(RpAtomic* atomic, void* data) { return SetEditableMaterialsCB1(atomic, data); }
     DECL_FASTCALL_SIMPLE(ResetEditableMaterials, _ZN17CVehicleModelInfo22ResetEditableMaterialsEP7RpClump, void, RpClump* clump);
     DECL_FASTCALL_SIMPLE(CollapseFramesCB, _ZN17CVehicleModelInfo16CollapseFramesCBEP7RwFramePv, RwFrame*, RwFrame* frame, void* data);
     DECL_FASTCALL_SIMPLE(MoveObjectsCB, _ZN17CVehicleModelInfo13MoveObjectsCBEP8RwObjectPv, RwObject*, RwObject* object, void* data);
@@ -55,6 +56,7 @@ DECL_CLASS_BASED(CVehicleModelInfo, CClumpModelInfo)
     DECL_FASTCALL_SIMPLE(HideDamagedAtomicCB, _ZN17CVehicleModelInfo19HideDamagedAtomicCBEP8RpAtomicPv, RpAtomic*, RpAtomic* atomic, void* data);
     DECL_FASTCALL_SIMPLE(GetEditableMaterialListCB1, _ZN17CVehicleModelInfo25GetEditableMaterialListCBEP8RpAtomicPv, RpAtomic*, RpAtomic* pRpAtomic1, void* pvoid2);
     DECL_FASTCALL_SIMPLE(SetEditableMaterialsCB2, _ZN17CVehicleModelInfo22SetEditableMaterialsCBEP10RpMaterialPv, RpMaterial*, RpMaterial* pRpMaterial1, void* pvoid2);
+    static inline RpMaterial* SetEditableMaterialsCB(RpMaterial* material, void* data) { return SetEditableMaterialsCB2(material, data); }
     DECL_FASTCALL_SIMPLE(GetEditableMaterialListCB2, _ZN17CVehicleModelInfo25GetEditableMaterialListCBEP10RpMaterialPv, RpMaterial*, RpMaterial* pMaterial, void* pData);
     DECL_FASTCALL_SIMPLE(SetEnvironmentMapCB, _ZN17CVehicleModelInfo19SetEnvironmentMapCBEP10RpMaterialPv, RpMaterial*, RpMaterial* material, void* data);
     DECL_FASTCALL_SIMPLE(SetEnvironmentMapAtomicCB, _ZN17CVehicleModelInfo25SetEnvironmentMapAtomicCBEP8RpAtomicPv, RpAtomic*, RpAtomic* atomic, void* data);

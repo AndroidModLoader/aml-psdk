@@ -2,6 +2,7 @@
 #define __AML_PSDK_SAMARKERS_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include <aml-psdk/game_sa/enum/Effects.h>
 #include <aml-psdk/game_sa/base/Matrix.h>
 #include <aml-psdk/gta_base/RGBA.h>
 #include <aml-psdk/renderware/RpClump.h>

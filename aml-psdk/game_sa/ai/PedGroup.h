@@ -41,6 +41,8 @@ DECL_CLASS(CPedGroupMembership)
 
     // Member functions
     DECL_THISCALL_SIMPLE(Flush, _ZN19CPedGroupMembership5FlushEv, void);
+    DECL_THISCALL_HEAD(From, _ZN19CPedGroupMembership4FromERKS_, void, CPedGroupMembership const& src)
+    DECL_THISCALL_TAIL(From, src)
     DECL_THISCALL_HEAD(RemoveAllFollowers, _ZN19CPedGroupMembership18RemoveAllFollowersEb, void, bool bLeaveMissionPeds)
     DECL_THISCALL_TAIL(RemoveAllFollowers, bLeaveMissionPeds)
     DECL_THISCALL_HEAD(RemoveNFollowers, _ZN19CPedGroupMembership16RemoveNFollowersEi, void, i32 N)

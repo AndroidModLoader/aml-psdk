@@ -6,6 +6,7 @@
 #include <aml-psdk/gta_base/Vector.h>
 
 struct CEntity;
+struct CObject;
 struct C2dEffect;
 struct CVehicle;
 struct CPtrList;
@@ -48,6 +49,16 @@ DECL_CLASS_BASED(CVehicleScanner, CEntityScanner)
     DECL_THISCALL_SIMPLE(GetClosestVehicleInRange, _ZNK15CVehicleScanner24GetClosestVehicleInRangeEv, CVehicle*);
 
 DECL_CLASS_END()
+DECL_CLASS_BASED(CObjectScanner, CEntityScanner)
+    CObjectScanner() = delete;
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForObjectsInRange, _ZN14CObjectScanner21ScanForObjectsInRangeERK4CPed, void, CPed const& ped)
+    DECL_THISCALL_TAIL(ScanForObjectsInRange, ped)
+    DECL_THISCALL_SIMPLE(GetClosestObjectInRange, _ZNK14CObjectScanner23GetClosestObjectInRangeEv, CObject*);
+
+DECL_CLASS_END()
+CHECKSIZE(CObjectScanner, 0x50, 0x98);
+
 DECL_CLASS(CCollisionEventScanner)
     // Member functions
     DECL_THISCALL_HEAD(ScanForCollisionEvents, _ZN22CCollisionEventScanner22ScanForCollisionEventsER4CPedP11CEventGroup, void, CPed& victim, CEventGroup* eventGroup)
@@ -117,6 +128,92 @@ DECL_CLASS(CPedAcquaintanceScanner)
     bool m_bActivatedInVehicle;
     bool m_bActivatedDuringScriptCommands;
 DECL_CLASS_END()
+
+DECL_CLASS(CObjectPotentialCollisionScanner)
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForObjectPotentialCollisionEvents, _ZN32CObjectPotentialCollisionScanner37ScanForObjectPotentialCollisionEventsERK4CPed, void, CPed const& ped)
+    DECL_THISCALL_TAIL(ScanForObjectPotentialCollisionEvents, ped)
+
+    inline CTaskTimer* GetTimer() { return &m_timer; }
+
+    // STATIC values
+    DECL_OBJECT_PLT(float const, ms_fObjectAvoidDistance, BYBIT(0x679D94, 0x851B40));
+    DECL_OBJECT_SYM(float const, ms_fMinIntersectionLength, _ZN32CObjectPotentialCollisionScanner25ms_fMinIntersectionLengthE);
+    DECL_OBJECT_SYM(i32 const, ms_iPeriod, _ZN32CObjectPotentialCollisionScanner10ms_iPeriodE);
+
+    // Member values
+    CTaskTimer m_timer;
+DECL_CLASS_END()
+CHECKSIZE(CObjectPotentialCollisionScanner, 0xC, 0xC);
+
+DECL_CLASS(CVehiclePotentialCollisionScanner)
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForVehiclePotentialCollisionEvents, _ZN33CVehiclePotentialCollisionScanner38ScanForVehiclePotentialCollisionEventsERK4CPedPP7CEntityi, void, CPed const& ped, CEntity** entities, i32 count)
+    DECL_THISCALL_TAIL(ScanForVehiclePotentialCollisionEvents, ped, entities, count)
+
+    inline CTaskTimer* GetTimer() { return &m_timer; }
+
+    // STATIC values
+    DECL_OBJECT_SYM(float const, ms_fVehiclePotentialRunOverDistance, _ZN33CVehiclePotentialCollisionScanner35ms_fVehiclePotentialRunOverDistanceE);
+    DECL_OBJECT_PLT(float const, ms_fVehicleThreatMultiplier, BYBIT(0x678758, 0x84EED8));
+    DECL_OBJECT_PLT(float const, ms_fMinAvoidSpeed, BYBIT(0x678F98, 0x84FF58));
+    DECL_OBJECT_PLT(float const, ms_fMinAvoidScaredSpeed, BYBIT(0x675F3C, 0x849EE8));
+    DECL_OBJECT_SYM(float const, ms_fSlowDiveDist, _ZN33CVehiclePotentialCollisionScanner16ms_fSlowDiveDistE);
+    DECL_OBJECT_SYM(float const, ms_fFastDiveDist, _ZN33CVehiclePotentialCollisionScanner16ms_fFastDiveDistE);
+    DECL_OBJECT_SYM(float const, ms_fVehicleAvoidDistance, _ZN33CVehiclePotentialCollisionScanner24ms_fVehicleAvoidDistanceE);
+    DECL_OBJECT_SYM(float const, ms_fMinIntersectionLength, _ZN33CVehiclePotentialCollisionScanner25ms_fMinIntersectionLengthE);
+    DECL_OBJECT_SYM(i32 const, ms_iPeriod, _ZN33CVehiclePotentialCollisionScanner10ms_iPeriodE);
+
+    // Member values
+    CTaskTimer m_timer;
+DECL_CLASS_END()
+CHECKSIZE(CVehiclePotentialCollisionScanner, 0xC, 0xC);
+
+DECL_CLASS(CPedPotentialCollisionScanner)
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForPedPotentialCollisionEvents, _ZNK29CPedPotentialCollisionScanner34ScanForPedPotentialCollisionEventsERK4CPedPS0_, void, CPed const& ped, CPed* otherPed)
+    DECL_THISCALL_TAIL(ScanForPedPotentialCollisionEvents, ped, otherPed)
+
+    // STATIC values
+    DECL_OBJECT_PLT(float const, ms_fPedAvoidDistance, BYBIT(0x679888, 0x851128));
+DECL_CLASS_END()
+CHECKSIZE(CPedPotentialCollisionScanner, 0x1, 0x1);
+
+DECL_CLASS(CNearbyFireScanner)
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForNearbyFires, _ZN18CNearbyFireScanner18ScanForNearbyFiresERK4CPed, void, CPed const& ped)
+    DECL_THISCALL_TAIL(ScanForNearbyFires, ped)
+
+    inline CTaskTimer* GetTimer() { return &m_timer; }
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_iLatencyPeriod, _ZN18CNearbyFireScanner17ms_iLatencyPeriodE);
+    DECL_OBJECT_PLT(float const, ms_fNearbyFireRange, BYBIT(0x67712C, 0x84C290));
+    DECL_OBJECT_SYM(float const, ms_fPotentialWalkIntoFireRange, _ZN18CNearbyFireScanner30ms_fPotentialWalkIntoFireRangeE);
+
+    // Member values
+    CTaskTimer m_timer;
+DECL_CLASS_END()
+CHECKSIZE(CNearbyFireScanner, 0xC, 0xC);
+
+DECL_CLASS(CSexyPedScanner)
+    // Member functions
+    DECL_THISCALL_HEAD(ScanForSexyPedEvents, _ZN15CSexyPedScanner20ScanForSexyPedEventsERK4CPedPP7CEntityi, void, CPed const& ped, CEntity** entities, i32 count)
+    DECL_THISCALL_TAIL(ScanForSexyPedEvents, ped, entities, count)
+    DECL_THISCALL_HEAD(IsScanPermitted, _ZNK15CSexyPedScanner15IsScanPermittedERK4CPed, bool, CPed const& ped)
+    DECL_THISCALL_TAIL(IsScanPermitted, ped)
+
+    inline CTaskTimer* GetTimer() { return &m_timer; }
+
+    // STATIC values
+    DECL_OBJECT_SYM(i32 const, ms_fSexyPedRange, _ZN15CSexyPedScanner16ms_fSexyPedRangeE);
+    DECL_OBJECT_SYM(i32 const, ms_iScanPeriod, _ZN15CSexyPedScanner14ms_iScanPeriodE);
+    DECL_OBJECT_SYM(i32 const, ms_iSexyPedLatencyPeriod, _ZN15CSexyPedScanner24ms_iSexyPedLatencyPeriodE);
+
+    // Member values
+    CTaskTimer m_timer;
+DECL_CLASS_END()
+CHECKSIZE(CSexyPedScanner, 0xC, 0xC);
 
 DECL_CLASS(CEventScanner)
     // Construct/Deconstruct functions

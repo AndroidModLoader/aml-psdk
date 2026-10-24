@@ -7,6 +7,8 @@ struct CPed;
 struct CPedGroup;
 
 DECL_CLASS(CDecisionMakerTypes)
+    static constexpr u32 NUM_TYPES = 20;
+
     // Construct/Deconstruct functions
     DECL_CTORCALL(CDecisionMakerTypes, _ZN19CDecisionMakerTypesC2Ev);
 
@@ -37,6 +39,7 @@ DECL_CLASS(CDecisionMakerTypes)
     DECL_THISCALL_TAIL(LoadEventIndices2, indices, filename)
 
     // STATIC functions
+    static inline CDecisionMakerTypes* GetInstance() { return m_pPedDecisionTypes(); }
     DECL_FASTCALL_SIMPLE(Save, _ZN19CDecisionMakerTypes4SaveEv, void);
     DECL_FASTCALL_SIMPLE(Load, _ZN19CDecisionMakerTypes4LoadEv, void);
 
@@ -82,7 +85,6 @@ DECL_CLASS(CDecisionMakerTypesFileLoader)
     DECL_OBJECT_ARRAY_PLT(char*, ms_grp_DM_Names, BYBIT(0x676274, 0x84A548));
 DECL_CLASS_END()
 
-#define ScriptReferenceIndex ScriptReferenceIndex()
 #define m_pPedDecisionTypes m_pPedDecisionTypes()
 #define ms_ped_DM_Names ms_ped_DM_Names()
 #define ms_grp_DM_Names ms_grp_DM_Names()

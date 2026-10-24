@@ -9,6 +9,8 @@ struct CPed;
 struct CEntity;
 
 DECL_CLASS(CPedDamageResponse)
+    CPedDamageResponse() : m_fHealthLost(0.0f), m_fArmourLost(0.0f), m_bKilled(false), m_bInstantKill(false), m_bDamageCalculated(false), m_bAffectsPed(false) {}
+
     // Member values
     float m_fHealthLost;
     float m_fArmourLost;

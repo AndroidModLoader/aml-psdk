@@ -423,6 +423,8 @@ DECL_CLASS_BASED(CVehicle, CPhysical)
     DECL_THISCALL_SIMPLE(CanUseCameraHeightSetting, _ZN8CVehicle25CanUseCameraHeightSettingEv, bool);
     DECL_THISCALL_HEAD(CanVehicleBeDamaged, _ZN8CVehicle19CanVehicleBeDamagedEP7CEntity11eWeaponTypePh, u8, CEntity* damager, eWeaponType weapon, u8* arg2)
     DECL_THISCALL_TAIL(CanVehicleBeDamaged, damager, weapon, arg2)
+    DECL_THISCALL_HEAD(InflictDamage, _ZN8CVehicle13InflictDamageEP7CEntity11eWeaponTypef7CVector, void, CEntity* damager, eWeaponType weapon, float intensity, CVector coords)
+    DECL_THISCALL_TAIL(InflictDamage, damager, weapon, intensity, coords)
     DECL_THISCALL_SIMPLE(IsUpsideDown, _ZNK8CVehicle12IsUpsideDownEv, u8);
     DECL_THISCALL_SIMPLE(IsOnItsSide, _ZNK8CVehicle11IsOnItsSideEv, u8);
     DECL_THISCALL_SIMPLE(UsesSiren, _ZNK8CVehicle9UsesSirenEv, u8);

@@ -10,11 +10,17 @@ struct ChunkHeader
     u32  Size;
 };
 
-struct CText__TDat
-{
+DECL_CLASS(CText__TDat)
+    // Member functions
+    DECL_THISCALL_HEAD(Load, BYBIT(_ZN5CData4LoadEjjPjh, _ZN5CData4LoadEjyPjh), u8, u32 blockSize, uintptr_t file, u32* offset, u8 skipRead)
+    DECL_THISCALL_TAIL(Load, blockSize, file, offset, skipRead)
+    DECL_THISCALL_SIMPLE(Unload, _ZN5CData6UnloadEv, void);
+
+    // Member values
     GxtChar* data;
     int size;
-};
+DECL_CLASS_END()
+CHECKSIZE(CText__TDat, 0x8, 0x10);
 struct CText__TablEntry
 {
     char name[8];
@@ -31,11 +37,23 @@ struct tGXT_VERSION_2_TKEY_item
     uintptr_t Position; // Native text pointer after loading
     unsigned int KeyHash;
 };
-struct CText__TKey
-{
+DECL_CLASS(CText__TKey)
+    // Member functions
+    DECL_THISCALL_HEAD(Load, BYBIT(_ZN9CKeyArray4LoadEjjPjh, _ZN9CKeyArray4LoadEjyPjh), u8, u32 blockSize, uintptr_t file, u32* offset, u8 skipRead)
+    DECL_THISCALL_TAIL(Load, blockSize, file, offset, skipRead)
+    DECL_THISCALL_SIMPLE(Unload, _ZN9CKeyArray6UnloadEv, void);
+    DECL_THISCALL_HEAD(Update, _ZN9CKeyArray6UpdateEPt, void, GxtChar* text)
+    DECL_THISCALL_TAIL(Update, text)
+    DECL_THISCALL_HEAD(Search, _ZN9CKeyArray6SearchEPKcPh, GxtChar*, char const* key, u8* found)
+    DECL_THISCALL_TAIL(Search, key, found)
+    DECL_THISCALL_HEAD(BinarySearch, _ZN9CKeyArray12BinarySearchEjP9CKeyEntryss, tGXT_VERSION_2_TKEY_item*, u32 key, tGXT_VERSION_2_TKEY_item* entries, i16 first, i16 last)
+    DECL_THISCALL_TAIL(BinarySearch, key, entries, first, last)
+
+    // Member values
     tGXT_VERSION_2_TKEY_item* data;
     unsigned int size;
-};
+DECL_CLASS_END()
+CHECKSIZE(CText__TKey, 0x8, 0x10);
 
 DECL_CLASS(CText)
     // Construct/Deconstruct functions

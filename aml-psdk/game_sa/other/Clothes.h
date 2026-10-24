@@ -125,6 +125,14 @@ DECL_CLASS(CClothesBuilder)
         RpClump* clump, char const* arg2, char const* arg3, char const* arg4, float arg5, float arg6, float arg7);
     DECL_FASTCALL_SIMPLE(BlendGeometry2, _ZN15CClothesBuilder13BlendGeometryEP7RpClumpPKcS3_ff, RpGeometry*,
         RpClump* clump, char const* arg2, char const* arg3, float arg4, float arg5);
+    inline static RpGeometry* BlendGeometry(RpClump* clump, char const* name, char const* name2, char const* name3, float factorA, float factorB, float factorC)
+    {
+        return BlendGeometry1(clump, name, name2, name3, factorA, factorB, factorC);
+    }
+    inline static RpGeometry* BlendGeometry(RpClump* clump, char const* name, char const* name2, float factorA, float factorB)
+    {
+        return BlendGeometry2(clump, name, name2, factorA, factorB);
+    }
     DECL_FASTCALL_SIMPLE(CopyGeometry, _ZN15CClothesBuilder12CopyGeometryEP7RpClumpPKcS3_, RpGeometry*, RpClump* clump, char const* arg2, char const* arg3);
     DECL_FASTCALL_SIMPLE(ConstructGeometryAndSkinArrays, _ZN15CClothesBuilder30ConstructGeometryAndSkinArraysEP16RpHAnimHierarchyPP10RpGeometryPP15RwMatrixWeightsPPjjS4_PP10RpMaterial, void,
         RpHAnimHierarchy* arg1, RpGeometry** arg2, RwMatrixWeights** arg3, u32** arg4, u32 arg5, RpGeometry** arg6, RpMaterial** arg7);
@@ -139,6 +147,18 @@ DECL_CLASS(CClothesBuilder)
         RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC, i32 arg7);
     DECL_FASTCALL_SIMPLE(BlendTextures3, _ZN15CClothesBuilder13BlendTexturesEP9RwTextureS1_S1_fffiS1_, void,
         RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC, i32 arg7, RwTexture* texture4);
+    inline static void BlendTextures(RwTexture* texture1, RwTexture* texture2, float factorA, float factorB, i32 arg5)
+    {
+        BlendTextures1(texture1, texture2, factorA, factorB, arg5);
+    }
+    inline static void BlendTextures(RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC, i32 arg7)
+    {
+        BlendTextures2(texture1, texture2, texture3, factorA, factorB, factorC, arg7);
+    }
+    inline static void BlendTextures(RwTexture* texture1, RwTexture* texture2, RwTexture* texture3, float factorA, float factorB, float factorC, i32 arg7, RwTexture* texture4)
+    {
+        BlendTextures3(texture1, texture2, texture3, factorA, factorB, factorC, arg7, texture4);
+    }
     DECL_FASTCALL_SIMPLE(ReducePaletteSize, _ZN15CClothesBuilder17ReducePaletteSizeEP9RwTexturei, void, RwTexture* texture, i32 numColorsToReduce);
     DECL_FASTCALL_SIMPLE(InitPaletteOctTree, _ZN15CClothesBuilder18InitPaletteOctTreeEi, void, i32 numColors);
     DECL_FASTCALL_SIMPLE(ShutdownPaletteOctTree, _ZN15CClothesBuilder22ShutdownPaletteOctTreeEv, void);

@@ -563,6 +563,30 @@ CHECKSIZE(CAEWeaponAudioEntity, 0xA0, 0xB8);
 
 
 
+DECL_CLASS_BASED(CAEGlobalWeaponAudioEntity, CAEWeaponAudioEntity)
+    CAEGlobalWeaponAudioEntity() = delete;
+
+    // Virtual functions
+    DECL_VIRTUALCALL_HEAD(CAEGlobalWeaponAudioEntity, UpdateParameters, _ZTV26CAEGlobalWeaponAudioEntity, 0, void, CAESound* sound, i16 playPosition)
+    DECL_VIRTUALCALL_TAIL(sound, playPosition)
+
+    // Member functions
+    DECL_THISCALL_HEAD(AddAudioEvent, _ZN26CAEGlobalWeaponAudioEntity13AddAudioEventEi11eWeaponTypeP9CPhysical, void, i32 audioEvent, eWeaponType weaponType, CPhysical* physical)
+    DECL_THISCALL_TAIL(AddAudioEvent, audioEvent, weaponType, physical)
+    DECL_THISCALL_SIMPLE(ServiceAmbientGunFire, _ZN26CAEGlobalWeaponAudioEntity21ServiceAmbientGunFireEv, void);
+    DECL_THISCALL_HEAD(PickAmbientGunFire, _ZN26CAEGlobalWeaponAudioEntity18PickAmbientGunFireERiR11eWeaponTypeS0_, void, i32& numShots, eWeaponType& weaponType, i32& delay)
+    DECL_THISCALL_TAIL(PickAmbientGunFire, numShots, weaponType, delay)
+    DECL_THISCALL_HEAD(ProjectileFire, _ZN26CAEGlobalWeaponAudioEntity14ProjectileFireE11eWeaponTypeP9CPhysicali, void, eWeaponType weaponType, CPhysical* physical, i32 audioEvent)
+    DECL_THISCALL_TAIL(ProjectileFire, weaponType, physical, audioEvent)
+
+    // Member values
+    CPhysical* m_pGunFirePhysical;
+    i8 m_nLastMissileFrequencyIndex;
+DECL_CLASS_END()
+CHECKSIZE(CAEGlobalWeaponAudioEntity, 0xA8, 0xC8);
+
+
+
 DECL_CLASS_BASED(CAEPedWeaponAudioEntity, CAEWeaponAudioEntity)
     CAEPedWeaponAudioEntity() = delete;
 

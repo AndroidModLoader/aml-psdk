@@ -83,6 +83,9 @@ struct RtAnimInterpolator
 };
 CHECKSIZE(RtAnimInterpolator, 0x4C, 0x80);
 
+inline RwInt32 RtAnimAnimationGetTypeID(RtAnimAnimation* animation) { return animation->interpInfo->typeID; }
+inline RtAnimAnimation* RtAnimInterpolatorGetCurrentAnim(RtAnimInterpolator* animI) { return animI->pCurrentAnim; }
+
 DECL_FASTCALL_SIMPLE_GLO(RtAnimAnimationFreeListCreateParams, _Z35RtAnimAnimationFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 DECL_FASTCALL_SIMPLE_GLO(RtAnimInterpolatorAddSubInterpolator, _Z36RtAnimInterpolatorAddSubInterpolatorP18RtAnimInterpolatorS0_S0_, RwBool, RtAnimInterpolator* outAnim, RtAnimInterpolator* mainAnim, RtAnimInterpolator* subAnim);
 DECL_FASTCALL_SIMPLE_GLO(RtAnimInterpolatorSetAnimLoopCallBack, _Z37RtAnimInterpolatorSetAnimLoopCallBackP18RtAnimInterpolatorPFS0_S0_PvES1_, void, RtAnimInterpolator* anim, RtAnimCallBack callBack, void* data);

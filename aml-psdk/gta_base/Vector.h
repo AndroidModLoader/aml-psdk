@@ -12,6 +12,12 @@ struct CVector2D
     CVector2D(float V) : x(V), y(V) {}
     CVector2D(float X, float Y) : x(X), y(Y) {}
 
+    inline void Reset() { Set(0.0f); }
+    inline void Set(float value) { Set(value, value); }
+    inline void Set(float X, float Y) { x = X; y = Y; }
+    inline void FromSum(const CVector2D& left, const CVector2D& right) { *this = left + right; }
+    inline void FromDiff(const CVector2D& left, const CVector2D& right) { *this = left - right; }
+
     operator CVector2D*() { return this; }
     inline void operator+=(const CVector2D& right)
     {
@@ -79,6 +85,32 @@ struct CVector2D
     {
         return SQ(x) + SQ(y);
     }
+    inline float Magnitude() const { return Magnitude2D(); }
+    inline float MagnitudeSqr() const { return MagnitudeSqr2D(); }
+    inline bool IsZero() const { return x == 0.0f && y == 0.0f; }
+    inline bool IsNormalized() const { return fabsf(MagnitudeSqr() - 1.0f) < 0.001f; }
+    inline float Heading() const { return atan2f(-x, y); }
+    inline float Dot(const CVector2D& other) const { return x * other.x + y * other.y; }
+    inline float Cross(const CVector2D& other) const { return x * other.y - y * other.x; }
+    inline float Distance(const CVector2D& other) const { return (*this - other).Magnitude(); }
+    inline void Normalize() { NormalizeAndMag(); }
+    inline float NormalizeAndMag()
+    {
+        float length = Magnitude();
+        if(length > 0.0f) *this /= length;
+        return length;
+    }
+    inline CVector2D Normalized() const
+    {
+        CVector2D result = *this;
+        result.Normalize();
+        return result;
+    }
+    inline static CVector2D Sum(const CVector2D& left, const CVector2D& right) { return left + right; }
+    inline static CVector2D Diff(const CVector2D& left, const CVector2D& right) { return left - right; }
+    inline static float Distance(const CVector2D& left, const CVector2D& right) { return left.Distance(right); }
+    inline static float Dot(const CVector2D& left, const CVector2D& right) { return left.Dot(right); }
+    inline static float Cross(const CVector2D& left, const CVector2D& right) { return left.Cross(right); }
 };
 
 DECL_CLASS(CVector)
@@ -98,6 +130,16 @@ DECL_CLASS(CVector)
     CVector() : x(0.0f), y(0.0f), z(0.0f) {}
     CVector(float V) : x(V), y(V), z(V) {}
     CVector(float X, float Y, float Z) : x(X), y(Y), z(Z) {}
+    CVector(const CVector2D& xy, float Z) : x(xy.x), y(xy.y), z(Z) {}
+
+    inline void Reset() { Set(0.0f); }
+    inline void Set(float value) { Set(value, value, value); }
+    inline void Set(float X, float Y, float Z) { x = X; y = Y; z = Z; }
+    inline void From2D(const CVector2D& xy, float Z) { Set(xy.x, xy.y, Z); }
+    inline void FromSum(const CVector& left, const CVector& right) { *this = left + right; }
+    inline void FromDiff(const CVector& left, const CVector& right) { *this = left - right; }
+    inline void FromCross(const CVector& left, const CVector& right) { *this = left.Cross(right); }
+    inline CVector2D To2D() const { return { x, y }; }
 
     inline void operator+=(const CVector& right)
     {
@@ -194,10 +236,22 @@ DECL_CLASS(CVector)
     {
         return { fabsf(x), fabsf(y), fabsf(z) };
     }
-    inline bool IsNormalized()
+    inline bool IsNormalized() const
     {
-        return InRange(-1.0f, 1.0f);
+        return fabsf(MagnitudeSqr() - 1.0f) < 0.001f;
     }
+    inline bool IsZero() const { return x == 0.0f && y == 0.0f && z == 0.0f; }
+    inline float Heading() const { return atan2f(-x, y); }
+    inline float Dot(const CVector& other) const { return x * other.x + y * other.y + z * other.z; }
+    inline float Distance(const CVector& other) const { return (*this - other).Magnitude(); }
+    inline float Distance2D(const CVector& other) const { return (*this - other).Magnitude2D(); }
+    inline float Distance2D(const CVector2D& other) const { return To2D().Distance(other); }
+    inline static CVector Sum(const CVector& left, const CVector& right) { return left + right; }
+    inline static CVector Diff(const CVector& left, const CVector& right) { return left - right; }
+    inline static float Distance(const CVector& left, const CVector& right) { return left.Distance(right); }
+    inline static float Distance2D(const CVector& left, const CVector& right) { return left.Distance2D(right); }
+    inline static float Distance2D(const CVector& left, const CVector2D& right) { return left.Distance2D(right); }
+    inline static float Dot(const CVector& left, const CVector& right) { return left.Dot(right); }
     inline void Normalise()
     {
         float lenSq = SQ(x) + SQ(y) + SQ(z);

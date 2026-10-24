@@ -65,6 +65,10 @@ DECL_CLASS(CPickup, B64MACRO(__attribute__((packed)) __attribute__((aligned(4)))
     {
         m_vecPos.Set(posn);
     }
+    inline void SetPosn(float x, float y, float z)
+    {
+        SetCoors(CVector(x, y, z));
+    }
     inline CVector GetCoors() const
     {
         return CVector(GetCoorsX(), GetCoorsY(), GetCoorsZ());

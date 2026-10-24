@@ -66,6 +66,32 @@ DECL_CLASS(CColTrianglePlane)
 DECL_CLASS_END()
 CHECKSIZE(CColTrianglePlane, 0x14, 0x14);
 
+DECL_CLASS(CSerializedColTriangle)
+    // STATIC functions
+    // Free the array returned by Fixup with free.
+    DECL_FASTCALL_SIMPLE(Fixup, _ZN22CSerializedColTriangle5FixupEPS_i, CColTriangle*, CSerializedColTriangle* triangles, i32 numTriangles);
+
+    // Member values
+    u16 m_nIndex1;
+    u16 m_nIndex2;
+    u16 m_nIndex3;
+    u8 m_nSurfaceType;
+    u8 m_nLighting;
+DECL_CLASS_END()
+CHECKSIZE(CSerializedColTriangle, 0x8, 0x8);
+
+DECL_CLASS(CSerializedColTrianglePlane)
+    // STATIC functions
+    // Free the array returned by Fixup with free.
+    DECL_FASTCALL_SIMPLE(Fixup, _ZN27CSerializedColTrianglePlane5FixupEPS_i, CColTrianglePlane*, CSerializedColTrianglePlane* planes, i32 numPlanes);
+
+    // Member values
+    CompressedVector m_compressedNormal;
+    i16 m_compressedNormalOffset;
+    u8 m_nPrincipalAxis;
+DECL_CLASS_END()
+CHECKSIZE(CSerializedColTrianglePlane, 0xA, 0xA);
+
 DECL_CLASS(CCollisionData)
     // Construct/Deconstruct functions
     DECL_CTORCALL(CCollisionData, _ZN14CCollisionDataC2Ev);

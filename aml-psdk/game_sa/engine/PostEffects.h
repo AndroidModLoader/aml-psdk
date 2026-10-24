@@ -11,6 +11,7 @@ struct CPed;
 
 DECL_CLASS(CPostEffects)
     // STATIC functions
+    DECL_FASTCALL_SIMPLE(Initialise, _ZN12CPostEffects10InitialiseEv, void);
     DECL_FASTCALL_SIMPLE(Close, _ZN12CPostEffects5CloseEv, void);
     DECL_FASTCALL_SIMPLE(SetupBackBufferVertex, _ZN12CPostEffects21SetupBackBufferVertexEv, void);
     DECL_FASTCALL_SIMPLE(ScriptResetForEffects, _ZN12CPostEffects21ScriptResetForEffectsEv, void);
@@ -34,6 +35,7 @@ DECL_CLASS(CPostEffects)
     DECL_FASTCALL_SIMPLE(Radiosity, _ZN12CPostEffects9RadiosityEiiii, void, i32 intensityLimit, i32 filterPasses, i32 renderPasses, i32 intensity);
     DECL_FASTCALL_SIMPLE(DarknessFilter, _ZN12CPostEffects14DarknessFilterEi, void, i32 alpha);
     DECL_FASTCALL_SIMPLE(CCTV, _ZN12CPostEffects4CCTVEv, void);
+    DECL_FASTCALL_SIMPLE(Grain, _ZN12CPostEffects5GrainEib, void, i32 strength, bool bUpdate);
     DECL_FASTCALL_SIMPLE(Fog, _ZN12CPostEffects3FogEv, void);
     DECL_FASTCALL_SIMPLE(SpeedFX, _ZN12CPostEffects7SpeedFXEf, void, float speed);
     DECL_FASTCALL_SIMPLE(FilterFX_StoreAndSetDayNightBalance, _ZN12CPostEffects35FilterFX_StoreAndSetDayNightBalanceEv, void);
@@ -41,6 +43,7 @@ DECL_CLASS(CPostEffects)
     DECL_FASTCALL_SIMPLE(IsVisionFXActive, _ZN12CPostEffects16IsVisionFXActiveEv, bool);
     DECL_FASTCALL_SIMPLE(SetFilterMainColour, _ZN12CPostEffects19SetFilterMainColourEP8RwRaster6RwRGBA, void, RwRaster* pRaster, RwRGBA colour);
     DECL_FASTCALL_SIMPLE(UnderWaterRipple, _ZN12CPostEffects16UnderWaterRippleE6RwRGBAffiff, void, RwRGBA col, float xoffset, float yoffset, i32 strength, float speed, float freq);
+    DECL_FASTCALL_SIMPLE(UnderWaterRippleFadeToFX, _ZN12CPostEffects24UnderWaterRippleFadeToFXEv, void);
     DECL_FASTCALL_SIMPLE(Update, _ZN12CPostEffects6UpdateEv, void);
     DECL_FASTCALL_SIMPLE(DoScreenModeDependentInitializations, _ZN12CPostEffects36DoScreenModeDependentInitializationsEv, void);
     DECL_FASTCALL_SIMPLE(ImmediateModeFilterStuffInitialize, _ZN12CPostEffects34ImmediateModeFilterStuffInitializeEv, void);

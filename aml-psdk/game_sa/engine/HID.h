@@ -5,6 +5,8 @@
 #include <aml-psdk/game_sa/enum/HID.h>
 #include <aml-psdk/game_sa/base/Lists.h>
 #include <aml-psdk/game_sa/engine/OS.h>
+#include <aml-psdk/game_sa/engine/Sprite2d.h>
+#include <aml-psdk/gta_base/GxtChar.h>
 
 enum HIDInputType : i32
 {
@@ -83,6 +85,272 @@ DECL_CLASS(CHID)
     DECL_VALUE_PLT_I32(currentInstanceIndex, BYBIT(0x679994, 0x851340));
 DECL_CLASS_END()
 CHECKSIZE(CHID, 0x4, 0x8);  // 64-bit from the IDB; 32-bit measured from this layout
+
+enum MouseButtons : i32
+{
+    LEFT_MOUSE_BUTTON = 0,
+    RIGHT_MOUSE_BUTTON = 1,
+    MIDDLE_MOUSE_BUTTON = 2,
+    MOUSE_WHEEL_FORWARD = 3,
+    MOUSE_WHEEL_BACKWARD = 4,
+    NUM_MOUSE_BUTTON_MAPPINGS = 5,
+};
+
+struct KeyboardButtonMapping
+{
+    OSKeyboardKey key;
+    HIDMapping mapping;
+    bool bNegate;
+    MouseButtons MouseButton;
+    float fLastReleaseTime;
+};
+CHECKSIZE(KeyboardButtonMapping, 0x14, 0x14);
+
+struct JoystickButtonMapping
+{
+    i32 nButtonID;
+    HIDMapping mapping;
+    bool bAnalogPressedThisFrame;
+    bool bAnalogReleasedThisFrame;
+    float fLastAnalogValue;
+    float fLastReleaseTime;
+};
+CHECKSIZE(JoystickButtonMapping, 0x14, 0x14);
+
+struct QueuedText
+{
+    HIDMapping m_Mapping;
+    float m_fX;
+    float m_fY;
+    float m_fHeight;
+    i32 m_nAlpha;
+    bool m_bNegated;
+};
+CHECKSIZE(QueuedText, 0x18, 0x18);
+
+struct KeyPair
+{
+    OSKeyboardKey m_key;
+    char m_szTag[8];
+};
+CHECKSIZE(KeyPair, 0xC, 0xC);
+
+DECL_CLASS_BASED(CHIDKeyboard, CHID)
+protected:
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDKeyboard, _ZN12CHIDKeyboardC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+public:
+    DECL_DTORCALL(CHIDKeyboard, _ZN12CHIDKeyboardD2Ev);
+
+    // Member functions
+    DECL_THISCALL_HEAD(InternalCacheAnalogValues, _ZN12CHIDKeyboard25InternalCacheAnalogValuesEj, void, u32 gamepadIndex)
+    DECL_THISCALL_TAIL(InternalCacheAnalogValues, gamepadIndex)
+    DECL_THISCALL_HEAD(InternalImplements, _ZN12CHIDKeyboard18InternalImplementsE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalImplements, mapping)
+    DECL_THISCALL_HEAD(InternalReplaces, _ZN12CHIDKeyboard16InternalReplacesE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalReplaces, mapping)
+    DECL_THISCALL_HEAD(InternalIsDoubleTapped, _ZN12CHIDKeyboard22InternalIsDoubleTappedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsDoubleTapped, mapping)
+    DECL_THISCALL_HEAD(InternalIsJustPressed, _ZN12CHIDKeyboard21InternalIsJustPressedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsJustPressed, mapping)
+    DECL_THISCALL_HEAD(InternalIsPressed, _ZN12CHIDKeyboard17InternalIsPressedE10HIDMappingPf, bool, HIDMapping mapping, float* value)
+    DECL_THISCALL_TAIL(InternalIsPressed, mapping, value)
+    DECL_THISCALL_HEAD(InternalIsReleased, _ZN12CHIDKeyboard18InternalIsReleasedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsReleased, mapping)
+    DECL_THISCALL_HEAD(InternalDrawHelpIcon, _ZN12CHIDKeyboard20InternalDrawHelpIconEPKc10HIDMappingfffib, void, char const* characters, HIDMapping mapping, float x, float y, float height, i32 alpha, bool negated)
+    DECL_THISCALL_TAIL(InternalDrawHelpIcon, characters, mapping, x, y, height, alpha, negated)
+    DECL_THISCALL_HEAD(InternalGetHelpSprite, _ZN12CHIDKeyboard21InternalGetHelpSpriteEPKc10HIDMappingP9CVector2DS4_, CSprite2d*, char const* characters, HIDMapping mapping, CVector2D* uvTopLeft, CVector2D* uvBottomRight)
+    DECL_THISCALL_TAIL(InternalGetHelpSprite, characters, mapping, uvTopLeft, uvBottomRight)
+    DECL_THISCALL_SIMPLE(InternalGetInputType, _ZN12CHIDKeyboard20InternalGetInputTypeEv, HIDInputType);
+    DECL_THISCALL_HEAD(AddMapping, _ZN12CHIDKeyboard10AddMappingE13OSKeyboardKey10HIDMappingb12MouseButtons, void, OSKeyboardKey key, HIDMapping mapping, bool negated, MouseButtons mouseButton)
+    DECL_THISCALL_TAIL(AddMapping, key, mapping, negated, mouseButton)
+    DECL_THISCALL_HEAD(InternalGetMappingWeight, _ZN12CHIDKeyboard24InternalGetMappingWeightE10HIDMapping, float, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalGetMappingWeight, mapping)
+    DECL_THISCALL_SIMPLE(InternalFlushQueuedText, _ZN12CHIDKeyboard23InternalFlushQueuedTextEv, void);
+    DECL_THISCALL_SIMPLE(InternalRemoveQueuedText, _ZN12CHIDKeyboard24InternalRemoveQueuedTextEv, void);
+    DECL_THISCALL_HEAD(QueueTextRender, _ZN12CHIDKeyboard15QueueTextRenderE10HIDMappingfffib, void, HIDMapping mapping, float x, float y, float height, i32 alpha, bool negated)
+    DECL_THISCALL_TAIL(QueueTextRender, mapping, x, y, height, alpha, negated)
+    DECL_THISCALL_SIMPLE(DoDefaultMappings, _ZN12CHIDKeyboard17DoDefaultMappingsEv, void);
+    DECL_FASTCALL_SIMPLE(FuncProxy_GetMappingString, _ZN12CHIDKeyboard16GetMappingStringE13OSKeyboardKey, GxtChar*, OSKeyboardKey key);
+    inline static GxtChar* GetMappingString(OSKeyboardKey key) { return FuncProxy_GetMappingString(key); }
+    DECL_THISCALL_NAMED_HEAD(GetMappingString1, GetMappingString, _ZN12CHIDKeyboard16GetMappingStringE10HIDMappingb, GxtChar*, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(GetMappingString1, mapping, negated)
+    DECL_FASTCALL_SIMPLE(GetTagName, _ZN12CHIDKeyboard10GetTagNameE13OSKeyboardKey, char const*, OSKeyboardKey key);
+    DECL_THISCALL_HEAD(ReplaceMapping, _ZN12CHIDKeyboard14ReplaceMappingE10HIDMapping13OSKeyboardKeyb12MouseButtons, void, HIDMapping mapping, OSKeyboardKey key, bool negated, MouseButtons mouseButton)
+    DECL_THISCALL_TAIL(ReplaceMapping, mapping, key, negated, mouseButton)
+    DECL_FASTCALL_SIMPLE(RestoreDefaultMappings, _ZN12CHIDKeyboard22RestoreDefaultMappingsEv, void);
+    DECL_THISCALL_HEAD(LoadMappingsFromDisk, _ZN12CHIDKeyboard20LoadMappingsFromDiskEb, bool, bool setDefaults)
+    DECL_THISCALL_TAIL(LoadMappingsFromDisk, setDefaults)
+    DECL_THISCALL_SIMPLE(SaveMappingsToDisk, _ZN12CHIDKeyboard18SaveMappingsToDiskEv, void);
+
+    inline CRect FindUVsFromMapping(char const* characters, HIDMapping mapping, bool negated)
+    {
+        return ((CRect(*)(ThisClass*, char const*, HIDMapping, bool))((void**)__vftable)[21])(this, characters, mapping, negated);
+    }
+
+    // STATIC values
+    DECL_OBJECT_PLT(OSArray<KeyPair>, m_KeyPairs, BYBIT(0x6773EC, 0x84C810));
+
+    // Member values
+    OSArray<KeyboardButtonMapping> m_Mappings;
+    CSprite2d m_Sprite;
+    i32 m_nNumTextQueued;
+    QueuedText m_QueuedText[100];
+DECL_CLASS_END()
+CHECKSIZE(CHIDKeyboard, 0x978, 0x988);
+
+DECL_CLASS_BASED(CHIDJoystick, CHID)
+protected:
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystick, _ZN12CHIDJoystickC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+public:
+    DECL_DTORCALL(CHIDJoystick, _ZN12CHIDJoystickD2Ev);
+
+    // Member functions
+    DECL_THISCALL_HEAD(InternalCacheAnalogValues, _ZN12CHIDJoystick25InternalCacheAnalogValuesEj, void, u32 gamepadIndex)
+    DECL_THISCALL_TAIL(InternalCacheAnalogValues, gamepadIndex)
+    DECL_THISCALL_HEAD(InternalImplements, _ZN12CHIDJoystick18InternalImplementsE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalImplements, mapping)
+    DECL_THISCALL_HEAD(InternalReplaces, _ZN12CHIDJoystick16InternalReplacesE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalReplaces, mapping)
+    DECL_THISCALL_HEAD(InternalIsDoubleTapped, _ZN12CHIDJoystick22InternalIsDoubleTappedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsDoubleTapped, mapping)
+    DECL_THISCALL_HEAD(InternalIsJustPressed, _ZN12CHIDJoystick21InternalIsJustPressedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsJustPressed, mapping)
+    DECL_THISCALL_HEAD(InternalIsPressed, _ZN12CHIDJoystick17InternalIsPressedE10HIDMappingPf, bool, HIDMapping mapping, float* value)
+    DECL_THISCALL_TAIL(InternalIsPressed, mapping, value)
+    DECL_THISCALL_HEAD(InternalIsReleased, _ZN12CHIDJoystick18InternalIsReleasedE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsReleased, mapping)
+    DECL_THISCALL_HEAD(InternalIsReleasedPositive, _ZN12CHIDJoystick26InternalIsReleasedPositiveE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsReleasedPositive, mapping)
+    DECL_THISCALL_HEAD(InternalIsReleasedNegative, _ZN12CHIDJoystick26InternalIsReleasedNegativeE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsReleasedNegative, mapping)
+    DECL_THISCALL_HEAD(InternalIsPressedPositive, _ZN12CHIDJoystick25InternalIsPressedPositiveE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsPressedPositive, mapping)
+    DECL_THISCALL_HEAD(InternalIsPressedNegative, _ZN12CHIDJoystick25InternalIsPressedNegativeE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalIsPressedNegative, mapping)
+    DECL_THISCALL_HEAD(InternalMappingIsAnalog, _ZN12CHIDJoystick23InternalMappingIsAnalogE10HIDMapping, bool, HIDMapping mapping)
+    DECL_THISCALL_TAIL(InternalMappingIsAnalog, mapping)
+    DECL_THISCALL_HEAD(InternalDrawHelpIcon, _ZN12CHIDJoystick20InternalDrawHelpIconEPKc10HIDMappingfffib, void, char const* characters, HIDMapping mapping, float x, float y, float height, i32 alpha, bool negated)
+    DECL_THISCALL_TAIL(InternalDrawHelpIcon, characters, mapping, x, y, height, alpha, negated)
+    DECL_THISCALL_HEAD(InternalGetHelpSprite, _ZN12CHIDJoystick21InternalGetHelpSpriteEPKc10HIDMappingP9CVector2DS4_, CSprite2d*, char const* characters, HIDMapping mapping, CVector2D* uvTopLeft, CVector2D* uvBottomRight)
+    DECL_THISCALL_TAIL(InternalGetHelpSprite, characters, mapping, uvTopLeft, uvBottomRight)
+    DECL_THISCALL_SIMPLE(InternalGetInputType, _ZN12CHIDJoystick20InternalGetInputTypeEv, HIDInputType);
+    DECL_THISCALL_HEAD(AddMapping, _ZN12CHIDJoystick10AddMappingEi10HIDMapping, void, i32 buttonId, HIDMapping mapping)
+    DECL_THISCALL_TAIL(AddMapping, buttonId, mapping)
+    DECL_THISCALL_SIMPLE(InternalUpdate, _ZN12CHIDJoystick14InternalUpdateEv, void);
+    DECL_THISCALL_HEAD(GetButtonID, _ZN12CHIDJoystick11GetButtonIDE10HIDMapping, int, HIDMapping mapping)
+    DECL_THISCALL_TAIL(GetButtonID, mapping)
+    DECL_THISCALL_HEAD(MappingHasButtonID, _ZN12CHIDJoystick18MappingHasButtonIDEi, bool, i32 buttonId)
+    DECL_THISCALL_TAIL(MappingHasButtonID, buttonId)
+
+    inline CRect FindUVsFromMapping(char const* characters, HIDMapping mapping, bool negated)
+    {
+        return ((CRect(*)(ThisClass*, char const*, HIDMapping, bool))((void**)__vftable)[21])(this, characters, mapping, negated);
+    }
+
+    inline static bool InstanceEverCreated() { return m_bInstanceEverCreated(); }
+
+    // STATIC values
+    DECL_VALUE_PLT_BOOL(m_bInstanceEverCreated, BYBIT(0x676E58, 0x84BCF0));
+
+    // Member values
+    OSArray<JoystickButtonMapping> m_Mappings;
+    CSprite2d m_Sprite;
+    bool m_bContextButtonActive;
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystick, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDKeyboardPC, CHIDKeyboard)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDKeyboardPC, _ZN14CHIDKeyboardPCC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN14CHIDKeyboardPC18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+    DECL_THISCALL_SIMPLE(DoDefaultMappings, _ZN14CHIDKeyboardPC17DoDefaultMappingsEv, void);
+DECL_CLASS_END()
+CHECKSIZE(CHIDKeyboardPC, 0x978, 0x988);
+
+DECL_CLASS_BASED(CHIDJoystickAndroidTV, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickAndroidTV, _ZN21CHIDJoystickAndroidTVC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN21CHIDJoystickAndroidTV18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickAndroidTV, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickAmazon, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickAmazon, _ZN18CHIDJoystickAmazonC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN18CHIDJoystickAmazon18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickAmazon, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickMogaPocket, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickMogaPocket, _ZN22CHIDJoystickMogaPocketC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN22CHIDJoystickMogaPocket18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickMogaPocket, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickMogaPro, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickMogaPro, _ZN19CHIDJoystickMogaProC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN19CHIDJoystickMogaPro18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickMogaPro, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickPS3, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickPS3, _ZN15CHIDJoystickPS3C2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN15CHIDJoystickPS318FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickPS3, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickXbox360, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickXbox360, _ZN19CHIDJoystickXbox360C2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN19CHIDJoystickXbox36018FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickXbox360, 0x18, 0x28);
+
+DECL_CLASS_BASED(CHIDJoystickXbox360Standard, CHIDJoystick)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL_ARG_HEAD(CHIDJoystickXbox360Standard, _ZN27CHIDJoystickXbox360StandardC2EPKc, char const* textureName)
+    DECL_CTORCALL_ARG_TAIL(textureName)
+
+    // Member functions
+    DECL_THISCALL_HEAD(FindUVsFromMapping, _ZN27CHIDJoystickXbox360Standard18FindUVsFromMappingEPKc10HIDMappingb, CRect, char const* characters, HIDMapping mapping, bool negated)
+    DECL_THISCALL_TAIL(FindUVsFromMapping, characters, mapping, negated)
+DECL_CLASS_END()
+CHECKSIZE(CHIDJoystickXbox360Standard, 0x18, 0x28);
 
 #define m_GamepadType m_GamepadType()
 #define bAllowKeyboardInstance bAllowKeyboardInstance()

@@ -2,6 +2,32 @@
 #define __AML_PSDK_SAMENUSYSTEM_H
 
 #include <aml-psdk/game_sa/plugin.h>
+#include <aml-psdk/gta_base/Vector.h>
+
+DECL_CLASS(tMenuPanel)
+    // Member values
+    u8 m_anUsedCarColors[64];
+    u8 m_nType;
+    char m_aaacRowTitles[4][12][10];
+    i32 m_aadwNumberInRowTitle[4][12];
+    i32 m_aadw2ndNumberInRowTitle[4][12];
+    char m_aacColumnHeaders[4][10];
+    char m_acTitle[10];
+    u8 m_abRowSelectable[12];
+    u8 m_abRowAlreadyBought[12];
+    u8 m_anColumnAlignment[4];
+    i8 m_anColumnHeaderAlignment[4];
+    u8 m_nNumRows;
+    u8 m_nNumColumns;
+    u8 m_bInputEnabled;
+    u8 m_bUseDPad;
+    float m_afColumnWidth[4];
+    CVector2D m_vPosn;
+    bool m_bColumnBackground;
+    i8 m_nSelectedRow;
+    i8 m_nAcceptedRow;
+DECL_CLASS_END()
+CHECKSIZE(tMenuPanel, 0x418, 0x418);
 
 DECL_CLASS(CMenuSystem)
     // STATIC functions
@@ -42,5 +68,8 @@ DECL_CLASS(CMenuSystem)
 
 DECL_CLASS_END()
 CHECKSIZE(CMenuSystem, 0x1, 0x1);
+
+DECL_OBJECT_ARRAY_PLT_GLOBAL(tMenuPanel*, MenuNumber, BYBIT(0x678FA4, 0x84FF70));
+#define MenuNumber MenuNumber()
 
 #endif // __AML_PSDK_SAMENUSYSTEM_H

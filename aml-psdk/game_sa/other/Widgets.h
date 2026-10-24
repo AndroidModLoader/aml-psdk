@@ -49,6 +49,36 @@ DECL_CLASS(CHoldEffect)
 DECL_CLASS_END()
 CHECKSIZE(CHoldEffect, 0x568, 0x578);
 
+DECL_CLASS(CTapEffect)
+    // Construct/Deconstruct functions
+    // Update deletes finished effects; allocate with new.
+    DECL_CTORCALL_ARG_HEAD(CTapEffect, _ZN10CTapEffectC2EPKc9CVector2D, char const* spriteName, CVector2D screenPosition)
+    DECL_CTORCALL_ARG_TAIL(spriteName, screenPosition)
+    DECL_DTORCALL(CTapEffect, _ZN10CTapEffectD2Ev);
+
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(UpdateAll, _ZN10CTapEffect9UpdateAllEv, void);
+    DECL_FASTCALL_SIMPLE(DrawAll, _ZN10CTapEffect7DrawAllEv, void);
+
+    // STATIC values
+    DECL_OBJECT_PLT(CTapEffect*, m_pChainHead, BYBIT(0x67633C, 0x84A6D0));
+    DECL_OBJECT_PLT(CTapEffect*, m_pChainTail, BYBIT(0x677558, 0x84CAE8));
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(Update, _ZN10CTapEffect6UpdateEv, void);
+    DECL_THISCALL_SIMPLE(Draw, _ZN10CTapEffect4DrawEv, void);
+
+    // Member values
+    CTapEffect* m_pPrev;
+    CTapEffect* m_pNext;
+    CSprite2d m_Sprite;
+    CVector2D m_vecScreen;
+    float m_fScale;
+    float m_fRate;
+    CRect m_RectScreen;
+DECL_CLASS_END()
+CHECKSIZE(CTapEffect, 0x2C, 0x38);
+
 
 
 DECL_CLASS_BASED(CWidget, SimpleVTable)

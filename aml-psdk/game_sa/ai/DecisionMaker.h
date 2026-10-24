@@ -4,7 +4,32 @@
 #include "../plugin.h"
 #include "../enum/TaskType.h"
 
+struct DecisionContext
+{
+    bool onFoot = false;
+    bool inVehicle = false;
+
+    DecisionContext() = default;
+    DecisionContext(bool onFoot, bool inVehicle) : onFoot(onFoot), inVehicle(inVehicle) {}
+};
+CHECKSIZE(DecisionContext, 0x2, 0x2);
+
+struct DecisionChances
+{
+    u8 toNeutral = 0;
+    u8 toPlayer = 0;
+    u8 toFriend = 0;
+    u8 toEnemy = 0;
+
+    DecisionChances() = default;
+    DecisionChances(u8 toNeutral, u8 toPlayer, u8 toFriend, u8 toEnemy) :
+        toNeutral(toNeutral), toPlayer(toPlayer), toFriend(toFriend), toEnemy(toEnemy) {}
+};
+CHECKSIZE(DecisionChances, 0x4, 0x4);
+
 DECL_CLASS(CDecision)
+    static constexpr int RESPONSE_COUNT = 6;
+
     // Construct/Deconstruct functions
     DECL_CTORCALL(CDecision, _ZN9CDecisionC2Ev);
     // Member functions

@@ -34,6 +34,22 @@ DECL_CLASS(CQuaternion)
     DECL_THISCALL_TAIL(Slerp1, quatStart, quatEnd, fInterpValue)
 
     // Helper functions
+    inline void operator+=(CQuaternion const& right)
+    {
+        imag += right.imag;
+        real += right.real;
+    }
+    inline void operator-=(CQuaternion const& right)
+    {
+        imag -= right.imag;
+        real -= right.real;
+    }
+    inline void operator*=(float multiplier) { Scale(multiplier); }
+    inline void Scale(float multiplier)
+    {
+        imag *= multiplier;
+        real *= multiplier;
+    }
     inline void Conjugate()
     {
         imag.x = -imag.x;

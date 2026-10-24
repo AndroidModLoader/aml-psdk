@@ -47,6 +47,7 @@ DECL_CLASS(CWeapon)
     DECL_FASTCALL_SIMPLE(ShutdownWeapons, _ZN7CWeapon15ShutdownWeaponsEv, void);
     DECL_FASTCALL_SIMPLE(UpdateWeapons, _ZN7CWeapon13UpdateWeaponsEv, void);
     DECL_FASTCALL_SIMPLE(CanBeUsedFor2Player2, _ZN7CWeapon19CanBeUsedFor2PlayerE11eWeaponType, bool, eWeaponType weaponType);
+    static inline bool CanBeUsedFor2Player(eWeaponType weaponType) { return CanBeUsedFor2Player2(weaponType); }
     DECL_FASTCALL_SIMPLE(DoDoomAiming, _ZN7CWeapon12DoDoomAimingEP7CEntityP7CVectorS3_, void, CEntity* owner, CVector* start, CVector* end);
     DECL_FASTCALL_SIMPLE(DoTankDoomAiming, _ZN7CWeapon16DoTankDoomAimingEP7CEntityS1_P7CVectorS3_, void, CEntity* vehicle, CEntity* owner, CVector* startPoint, CVector* endPoint);
     DECL_FASTCALL_SIMPLE(DoDriveByAutoAiming, _ZN7CWeapon19DoDriveByAutoAimingEP7CEntityP8CVehicleP7CVectorS5_b, void, CEntity* owner, CVehicle* vehicle, CVector* startPoint, CVector* endPoint, bool canAimVehicles);
@@ -80,6 +81,8 @@ DECL_CLASS(CWeapon)
     DECL_THISCALL_TAIL(Reload, owner)
     DECL_THISCALL_HEAD(Update, _ZN7CWeapon6UpdateEP4CPed, void, CPed* owner)
     DECL_THISCALL_TAIL(Update, owner)
+    DECL_THISCALL_HEAD(Fire, _ZN7CWeapon4FireEP7CEntityP7CVectorS3_S1_S3_S3_, bool, CEntity* firingEntity, CVector* origin, CVector* muzzlePosn, CEntity* targetEntity, CVector* target, CVector* originForDriveBy)
+    DECL_THISCALL_TAIL(Fire, firingEntity, origin, muzzlePosn, targetEntity, target, originForDriveBy)
     DECL_THISCALL_HEAD(FireInstantHit, _ZN7CWeapon14FireInstantHitEP7CEntityP7CVectorS3_S1_S3_S3_bb, bool, CEntity* firingEntity, CVector* origin, CVector* muzzlePosn, CEntity* targetEntity, CVector* target, CVector* originForDriveBy, bool arg6, bool muzzle)
     DECL_THISCALL_TAIL(FireInstantHit, firingEntity, origin, muzzlePosn, targetEntity, target, originForDriveBy, arg6, muzzle)
     DECL_THISCALL_HEAD(DoBulletImpact, _ZN7CWeapon14DoBulletImpactEP7CEntityS1_P7CVectorS3_P9CColPointi, void, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, i32 arg5)

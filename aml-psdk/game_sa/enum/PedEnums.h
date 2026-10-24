@@ -36,6 +36,18 @@ enum ePedType : unsigned int
     PED_TYPE_MISSION8
 };
 
+enum eCopType : unsigned int
+{
+    COP_TYPE_CITYCOP = 0,
+    COP_TYPE_LAPDM1 = 1,
+    COP_TYPE_SWAT1 = 2,
+    COP_TYPE_SWAT2 = 3,
+    COP_TYPE_FBI = 4,
+    COP_TYPE_ARMY = 5,
+    COP_TYPE_MIAMIVICE = 6,
+    COP_TYPE_CSHER = 7,
+};
+
 enum ePedState : unsigned int
 {
     PEDSTATE_NONE,

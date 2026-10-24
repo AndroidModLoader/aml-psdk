@@ -121,6 +121,7 @@ CHECKSIZE(CIPLFileBinaryHeaderSerialize, 0x48, 0x48);
 DECL_CLASS(CFileLoader)
     // STATIC functions
     DECL_FASTCALL_SIMPLE(LoadObjectTypes, _ZN11CFileLoader15LoadObjectTypesEPKc, void, char const* pFilename);
+    DECL_FASTCALL_SIMPLE(ReloadObjectTypes, _ZN11CFileLoader17ReloadObjectTypesEPKc, void, char const* pFilename);
     DECL_FASTCALL_SIMPLE(ReloadPaths, _ZN11CFileLoader11ReloadPathsEPKc, void, char const* pFilename);
     DECL_FASTCALL_SIMPLE(LoadScene, _ZN11CFileLoader9LoadSceneEPKc, void, char const* pFilename);
     DECL_FASTCALL_SIMPLE(LoadLevel, _ZN11CFileLoader9LoadLevelEPKc, void, char const* pDatFilename);

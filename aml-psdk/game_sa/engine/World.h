@@ -3,6 +3,7 @@
 
 #include <aml-psdk/game_sa/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
+#include <aml-psdk/renderware/RwVector.h>
 #include <aml-psdk/game_sa/base/Lists.h>
 #include <aml-psdk/game_sa/base/ColModel.h>
 #include <aml-psdk/game_sa/other/PlayerInfo.h>
@@ -18,6 +19,13 @@ struct CMatrix;
 struct CVehicle;
 struct CPed;
 struct CPhysical;
+
+DECL_CLASS(CWorldScan)
+    // STATIC functions
+    DECL_FASTCALL_SIMPLE(ScanWorld, _ZN10CWorldScan9ScanWorldEP5RwV2diPFviiE, void, RwV2d* points, i32 numPoints, void (*callback)(i32, i32));
+    DECL_FASTCALL_SIMPLE(SetExtraRectangleToScan, _ZN10CWorldScan23SetExtraRectangleToScanEffff, void, float left, float right, float bottom, float top);
+DECL_CLASS_END()
+CHECKSIZE(CWorldScan, 0x1, 0x1);
 
 DECL_CLASS(CWorld)
     // STATIC functions
@@ -139,7 +147,19 @@ DECL_CLASS(CWorld)
     DECL_FASTCALL_SIMPLE(FindPlayerSlotWithVehiclePointer, _ZN6CWorld32FindPlayerSlotWithVehiclePointerEP7CEntity, i32, CEntity *pEntity);
     DECL_FASTCALL_SIMPLE(FindUnsuspectingTargetCar, _ZN6CWorld25FindUnsuspectingTargetCarE7CVectorS0_, CVehicle*, CVector Coors, CVector AimTowardsCoors);
     DECL_FASTCALL_SIMPLE(FindUnsuspectingTargetPed, _ZN6CWorld25FindUnsuspectingTargetPedE7CVectorS0_, CPed*, CVector Coors, CVector AimTowardsCoors);
-    
+
+    inline static u16 GetCurrentScanCode() { return ms_nCurrentScanCode(); }
+    inline static CSector* GetSector(i32 x, i32 y) { return &ms_aSectors()[y * 120 + x]; }
+    inline static CRepeatSector* GetRepeatSector(i32 x, i32 y) { return &ms_aRepeatSectors()[y * 16 + x]; }
+    inline static CPtrListSingleLink* GetLodPtrList(i32 x, i32 y) { return &ms_aLodPtrLists()[y * 30 + x]; }
+    inline static void AdvanceCurrentScanCode()
+    {
+        if(++ms_nCurrentScanCode() == 0)
+        {
+            ClearScanCodes();
+            ms_nCurrentScanCode() = 1;
+        }
+    }
 
     // STATIC values
     DECL_VALUE_PLT_U8(bDoingCarCollisions, BYBIT(0x678710, 0x84EE48));

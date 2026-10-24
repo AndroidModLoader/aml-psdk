@@ -116,20 +116,6 @@ struct LimbMovementInfo
     float pitchD;
 };
 
-enum eCopType : unsigned int
-{
-    COP_TYPE_CITYCOP = 0,
-    COP_TYPE_LAPDM1,
-    COP_TYPE_SWAT1,
-    COP_TYPE_SWAT2,
-    COP_TYPE_FBI,
-    COP_TYPE_ARMY,
-    COP_TYPE_MIAMIVICE,
-    COP_TYPE_CSHER
-};
-
-
-
 DECL_CLASS(CPedIK)
     CPed *m_pPed;
     LimbOrientation m_TorsoOrien;
