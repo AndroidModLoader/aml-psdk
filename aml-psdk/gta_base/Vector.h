@@ -17,6 +17,7 @@ struct CVector2D
     inline void Set(float X, float Y) { x = X; y = Y; }
     inline void FromSum(const CVector2D& left, const CVector2D& right) { *this = left + right; }
     inline void FromDiff(const CVector2D& left, const CVector2D& right) { *this = left - right; }
+    inline void FromLerp(const CVector2D& begin, const CVector2D& end, float progress) { *this = Lerp(begin, end, progress); }
 
     operator CVector2D*() { return this; }
     inline void operator+=(const CVector2D& right)
@@ -108,6 +109,12 @@ struct CVector2D
     }
     inline static CVector2D Sum(const CVector2D& left, const CVector2D& right) { return left + right; }
     inline static CVector2D Diff(const CVector2D& left, const CVector2D& right) { return left - right; }
+    inline static CVector2D Lerp(const CVector2D& begin, const CVector2D& end, float progress)
+    {
+        if(progress == 0.0f) return begin;
+        if(progress == 1.0f) return end;
+        return begin * (1.0f - progress) + end * progress;
+    }
     inline static float Distance(const CVector2D& left, const CVector2D& right) { return left.Distance(right); }
     inline static float Dot(const CVector2D& left, const CVector2D& right) { return left.Dot(right); }
     inline static float Cross(const CVector2D& left, const CVector2D& right) { return left.Cross(right); }
@@ -138,6 +145,7 @@ DECL_CLASS(CVector)
     inline void From2D(const CVector2D& xy, float Z) { Set(xy.x, xy.y, Z); }
     inline void FromSum(const CVector& left, const CVector& right) { *this = left + right; }
     inline void FromDiff(const CVector& left, const CVector& right) { *this = left - right; }
+    inline void FromLerp(const CVector& begin, const CVector& end, float progress) { *this = Lerp(begin, end, progress); }
     inline void FromCross(const CVector& left, const CVector& right) { *this = left.Cross(right); }
     inline CVector2D To2D() const { return { x, y }; }
 
@@ -248,6 +256,12 @@ DECL_CLASS(CVector)
     inline float Distance2D(const CVector2D& other) const { return To2D().Distance(other); }
     inline static CVector Sum(const CVector& left, const CVector& right) { return left + right; }
     inline static CVector Diff(const CVector& left, const CVector& right) { return left - right; }
+    inline static CVector Lerp(const CVector& begin, const CVector& end, float progress)
+    {
+        if(progress == 0.0f) return begin;
+        if(progress == 1.0f) return end;
+        return begin * (1.0f - progress) + end * progress;
+    }
     inline static float Distance(const CVector& left, const CVector& right) { return left.Distance(right); }
     inline static float Distance2D(const CVector& left, const CVector& right) { return left.Distance2D(right); }
     inline static float Distance2D(const CVector& left, const CVector2D& right) { return left.Distance2D(right); }

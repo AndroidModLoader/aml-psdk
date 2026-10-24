@@ -172,8 +172,11 @@ public:
     DECL_THISCALL_HEAD(QueueTextRender, _ZN12CHIDKeyboard15QueueTextRenderE10HIDMappingfffib, void, HIDMapping mapping, float x, float y, float height, i32 alpha, bool negated)
     DECL_THISCALL_TAIL(QueueTextRender, mapping, x, y, height, alpha, negated)
     DECL_THISCALL_SIMPLE(DoDefaultMappings, _ZN12CHIDKeyboard17DoDefaultMappingsEv, void);
-    DECL_FASTCALL_SIMPLE(FuncProxy_GetMappingString, _ZN12CHIDKeyboard16GetMappingStringE13OSKeyboardKey, GxtChar*, OSKeyboardKey key);
-    inline static GxtChar* GetMappingString(OSKeyboardKey key) { return FuncProxy_GetMappingString(key); }
+    inline static GxtChar* GetMappingString(OSKeyboardKey key)
+    {
+        static auto native = GetMainLibrarySymbol<GxtChar*(*)(OSKeyboardKey)>("_ZN12CHIDKeyboard16GetMappingStringE13OSKeyboardKey");
+        return native(key);
+    }
     DECL_THISCALL_NAMED_HEAD(GetMappingString1, GetMappingString, _ZN12CHIDKeyboard16GetMappingStringE10HIDMappingb, GxtChar*, HIDMapping mapping, bool negated)
     DECL_THISCALL_TAIL(GetMappingString1, mapping, negated)
     DECL_FASTCALL_SIMPLE(GetTagName, _ZN12CHIDKeyboard10GetTagNameE13OSKeyboardKey, char const*, OSKeyboardKey key);

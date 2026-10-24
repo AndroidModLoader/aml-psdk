@@ -135,6 +135,34 @@ struct CRect
     {
         return fabsf(top - bottom);
     }
+    inline CVector2D GetSize() const
+    {
+        return CVector2D(Width(), Height());
+    }
+    inline bool Contains(CRect const& rect) const
+    {
+        return !IsInvalid() && !rect.IsInvalid() &&
+            rect.left >= left && rect.right <= right && rect.bottom >= bottom && rect.top <= top;
+    }
+    inline bool GetIntersection(CRect const& rect, CRect& result) const
+    {
+        if(IsInvalid() || rect.IsInvalid()) return false;
+        CRect intersection(fmaxf(left, rect.left), fminf(top, rect.top), fminf(right, rect.right), fmaxf(bottom, rect.bottom));
+        if(intersection.IsInvalid()) return false;
+        result = intersection;
+        return true;
+    }
+    inline bool DoesIntersectCircle(CVector2D const& center, float radius) const
+    {
+        if(IsInvalid() || radius < 0.0f) return false;
+        float x = fmaxf(left, fminf(center.x, right));
+        float y = fmaxf(bottom, fminf(center.y, top));
+        return SQ(center.x - x) + SQ(center.y - y) <= SQ(radius);
+    }
+    inline CVector2D GetClosestPoint(CVector2D const& point) const
+    {
+        return CVector2D(fmaxf(left, fminf(point.x, right)), fmaxf(bottom, fminf(point.y, top)));
+    }
 };
 CHECKSIZE(CRect, 0x10, 0x10);
 

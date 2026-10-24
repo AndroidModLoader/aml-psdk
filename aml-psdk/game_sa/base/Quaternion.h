@@ -84,10 +84,60 @@ DECL_CLASS(CQuaternion)
             real = invNormSqrt * real;
         }
     }
+    inline float GetLength() const { return sqrtf(imag.MagnitudeSqr() + SQ(real)); }
+    inline bool IsNormalized() const { return fabsf(imag.MagnitudeSqr() + SQ(real) - 1.0f) < 0.001f; }
+    inline CQuaternion Conjugated() const
+    {
+        CQuaternion result = *this;
+        result.Conjugate();
+        return result;
+    }
+    inline CQuaternion Normalized() const
+    {
+        CQuaternion result = *this;
+        result.Normalise();
+        return result;
+    }
+    inline CQuaternion operator*(CQuaternion const& right) const
+    {
+        CQuaternion result;
+        result.imag = imag.Cross(right.imag) + imag * right.real + right.imag * real;
+        result.real = real * right.real - imag.Dot(right.imag);
+        return result;
+    }
+    inline CQuaternion& operator*=(CQuaternion const& right)
+    {
+        *this = *this * right;
+        return *this;
+    }
+    inline CQuaternion Inverted() const
+    {
+        float norm = imag.MagnitudeSqr() + SQ(real);
+        CQuaternion result;
+        if(norm == 0.0f)
+        {
+            result.imag.Set(0.0f);
+            result.real = 1.0f;
+        }
+        else
+        {
+            result.imag = imag * (-1.0f / norm);
+            result.real = real / norm;
+        }
+        return result;
+    }
+    inline CVector RotateVector(CVector const& vector) const
+    {
+        float norm = imag.MagnitudeSqr() + SQ(real);
+        if(norm == 0.0f) return vector;
+        CVector cross = imag.Cross(vector);
+        return vector + (cross * real + imag.Cross(cross)) * (2.0f / norm);
+    }
 
     // Member values
     CVector imag;
     float real;
 DECL_CLASS_END()
+CHECKSIZE(CQuaternion, 0x10, 0x10);
 
 #endif // __AML_PSDK_GTAQUAT_H

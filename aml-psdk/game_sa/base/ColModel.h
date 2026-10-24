@@ -176,6 +176,80 @@ DECL_CLASS(CBox)
         m_vecMin = CVector( 1,  1,  1);
         m_vecMax = CVector(-1, -1, -1);
     }
+    CBox(CVector const& vecMin, CVector const& vecMax) : m_vecMin(vecMin), m_vecMax(vecMax) {}
+
+    inline bool IsInvalid() const
+    {
+        return m_vecMin.x > m_vecMax.x || m_vecMin.y > m_vecMax.y || m_vecMin.z > m_vecMax.z;
+    }
+    inline CVector GetCenter() const
+    {
+        return (m_vecMin + m_vecMax) * 0.5f;
+    }
+    inline CVector GetSize() const
+    {
+        return m_vecMax - m_vecMin;
+    }
+    inline bool IsPointInside(CVector const& point) const
+    {
+        return point.x >= m_vecMin.x && point.x <= m_vecMax.x &&
+            point.y >= m_vecMin.y && point.y <= m_vecMax.y &&
+            point.z >= m_vecMin.z && point.z <= m_vecMax.z;
+    }
+    inline bool DoesIntersect(CBox const& box) const
+    {
+        return !IsInvalid() && !box.IsInvalid() &&
+            m_vecMin.x <= box.m_vecMax.x && m_vecMax.x >= box.m_vecMin.x &&
+            m_vecMin.y <= box.m_vecMax.y && m_vecMax.y >= box.m_vecMin.y &&
+            m_vecMin.z <= box.m_vecMax.z && m_vecMax.z >= box.m_vecMin.z;
+    }
+    inline bool Contains(CBox const& box) const
+    {
+        return !IsInvalid() && !box.IsInvalid() && IsPointInside(box.m_vecMin) && IsPointInside(box.m_vecMax);
+    }
+    inline bool GetIntersection(CBox const& box, CBox& result) const
+    {
+        if(IsInvalid() || box.IsInvalid()) return false;
+        CBox intersection(
+            CVector(fmaxf(m_vecMin.x, box.m_vecMin.x), fmaxf(m_vecMin.y, box.m_vecMin.y), fmaxf(m_vecMin.z, box.m_vecMin.z)),
+            CVector(fminf(m_vecMax.x, box.m_vecMax.x), fminf(m_vecMax.y, box.m_vecMax.y), fminf(m_vecMax.z, box.m_vecMax.z)));
+        if(intersection.IsInvalid()) return false;
+        result = intersection;
+        return true;
+    }
+    inline void Translate(CVector const& offset)
+    {
+        CVector translation = offset;
+        m_vecMin += translation;
+        m_vecMax += translation;
+    }
+    inline void Grow(float amount)
+    {
+        CVector margin(amount);
+        m_vecMin -= margin;
+        m_vecMax += margin;
+    }
+    inline CVector GetClosestPoint(CVector const& point) const
+    {
+        return CVector(
+            fmaxf(m_vecMin.x, fminf(point.x, m_vecMax.x)),
+            fmaxf(m_vecMin.y, fminf(point.y, m_vecMax.y)),
+            fmaxf(m_vecMin.z, fminf(point.z, m_vecMax.z)));
+    }
+    inline void StretchToPoint(CVector const& point)
+    {
+        if(IsInvalid())
+        {
+            m_vecMin = m_vecMax = point;
+            return;
+        }
+        m_vecMin.x = fminf(m_vecMin.x, point.x);
+        m_vecMin.y = fminf(m_vecMin.y, point.y);
+        m_vecMin.z = fminf(m_vecMin.z, point.z);
+        m_vecMax.x = fmaxf(m_vecMax.x, point.x);
+        m_vecMax.y = fmaxf(m_vecMax.y, point.y);
+        m_vecMax.z = fmaxf(m_vecMax.z, point.z);
+    }
 DECL_CLASS_END()
 CHECKSIZE(CBox, 0x18, 0x18);
 
@@ -218,6 +292,32 @@ struct CSphere
     {
         return (pos - m_vecCentre).MagnitudeSqr() <= (SQ(m_fRadius));
     }
+    inline bool Contains(CSphere const& sphere) const
+    {
+        if(m_fRadius < 0.0f || sphere.m_fRadius < 0.0f) return false;
+        float radius = m_fRadius - sphere.m_fRadius;
+        return radius >= 0.0f && (sphere.m_vecCentre - m_vecCentre).MagnitudeSqr() <= SQ(radius);
+    }
+    inline bool DoesIntersect(CSphere const& sphere) const
+    {
+        return m_fRadius >= 0.0f && sphere.m_fRadius >= 0.0f &&
+            (sphere.m_vecCentre - m_vecCentre).MagnitudeSqr() <= SQ(m_fRadius + sphere.m_fRadius);
+    }
+    inline bool DoesIntersect(CBox const& box) const
+    {
+        return m_fRadius >= 0.0f && !box.IsInvalid() &&
+            (box.GetClosestPoint(m_vecCentre) - m_vecCentre).MagnitudeSqr() <= SQ(m_fRadius);
+    }
+    inline CVector GetClosestPoint(CVector const& point) const
+    {
+        if(m_fRadius <= 0.0f) return m_vecCentre;
+        CVector offset = point - m_vecCentre;
+        float distanceSqr = offset.MagnitudeSqr();
+        if(distanceSqr <= SQ(m_fRadius)) return point;
+        return m_vecCentre + offset * (m_fRadius / sqrtf(distanceSqr));
+    }
+    inline void Translate(CVector const& offset) { m_vecCentre += offset; }
+    inline void Grow(float amount) { m_fRadius += amount; }
 };
 CHECKSIZE(CSphere, 0x10, 0x10);
 
@@ -271,6 +371,14 @@ struct CBoundingBox : CBox
     CSphere m_boundSphere;
 
     CBoundingBox() : CBox() {}
+
+    inline bool RecalcBoundingSphere()
+    {
+        if(IsInvalid()) return false;
+        m_boundSphere.m_vecCentre = GetCenter();
+        m_boundSphere.m_fRadius = (m_vecMax - m_boundSphere.m_vecCentre).Magnitude();
+        return true;
+    }
 };
 CHECKSIZE(CBoundingBox, 0x28, 0x28);
 

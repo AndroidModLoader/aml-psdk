@@ -21,6 +21,33 @@ DECL_CLASS(CRange2D)
     inline CVector2D GetTopLeft() { return m_vec2DTopLeft; }
     inline void SetBotRight(CVector2D point) { m_vec2DBotRight = point; }
     inline CVector2D GetBotRight() { return m_vec2DBotRight; }
+    inline bool IsEmpty() const
+    {
+        return !(m_vec2DTopLeft.x < m_vec2DBotRight.x && m_vec2DTopLeft.y < m_vec2DBotRight.y);
+    }
+    inline CVector2D GetCenter() const { return (m_vec2DTopLeft + m_vec2DBotRight) * 0.5f; }
+    inline CVector2D GetSize() const { return m_vec2DBotRight - m_vec2DTopLeft; }
+    inline void Translate(CVector2D offset)
+    {
+        m_vec2DTopLeft += offset;
+        m_vec2DBotRight += offset;
+    }
+    inline bool DoesIntersect(CRange2D const& range) const
+    {
+        return !IsEmpty() && !range.IsEmpty() &&
+            m_vec2DTopLeft.x < range.m_vec2DBotRight.x && m_vec2DBotRight.x > range.m_vec2DTopLeft.x &&
+            m_vec2DTopLeft.y < range.m_vec2DBotRight.y && m_vec2DBotRight.y > range.m_vec2DTopLeft.y;
+    }
+    inline bool GetIntersection(CRange2D const& range, CRange2D& result) const
+    {
+        if(IsEmpty() || range.IsEmpty()) return false;
+        CVector2D topLeft(fmaxf(m_vec2DTopLeft.x, range.m_vec2DTopLeft.x), fmaxf(m_vec2DTopLeft.y, range.m_vec2DTopLeft.y));
+        CVector2D botRight(fminf(m_vec2DBotRight.x, range.m_vec2DBotRight.x), fminf(m_vec2DBotRight.y, range.m_vec2DBotRight.y));
+        if(topLeft.x >= botRight.x || topLeft.y >= botRight.y) return false;
+        result.m_vec2DTopLeft = topLeft;
+        result.m_vec2DBotRight = botRight;
+        return true;
+    }
 
     // Member values
     CVector2D m_vec2DTopLeft;
@@ -45,6 +72,34 @@ DECL_CLASS(CRange3D)
     inline CVector GetTopLeft() { return m_vecTopLeft; }
     inline void SetBotRight(CVector point) { m_vecBotRight = point; }
     inline CVector GetBotRight() { return m_vecBotRight; }
+    inline bool IsEmpty() const
+    {
+        return !(m_vecTopLeft.x < m_vecBotRight.x && m_vecTopLeft.y < m_vecBotRight.y && m_vecTopLeft.z < m_vecBotRight.z);
+    }
+    inline CVector GetCenter() const { return (m_vecTopLeft + m_vecBotRight) * 0.5f; }
+    inline CVector GetSize() const { return m_vecBotRight - m_vecTopLeft; }
+    inline void Translate(CVector offset)
+    {
+        m_vecTopLeft += offset;
+        m_vecBotRight += offset;
+    }
+    inline bool DoesIntersect(CRange3D const& range) const
+    {
+        return !IsEmpty() && !range.IsEmpty() &&
+            m_vecTopLeft.x < range.m_vecBotRight.x && m_vecBotRight.x > range.m_vecTopLeft.x &&
+            m_vecTopLeft.y < range.m_vecBotRight.y && m_vecBotRight.y > range.m_vecTopLeft.y &&
+            m_vecTopLeft.z < range.m_vecBotRight.z && m_vecBotRight.z > range.m_vecTopLeft.z;
+    }
+    inline bool GetIntersection(CRange3D const& range, CRange3D& result) const
+    {
+        if(IsEmpty() || range.IsEmpty()) return false;
+        CVector topLeft(fmaxf(m_vecTopLeft.x, range.m_vecTopLeft.x), fmaxf(m_vecTopLeft.y, range.m_vecTopLeft.y), fmaxf(m_vecTopLeft.z, range.m_vecTopLeft.z));
+        CVector botRight(fminf(m_vecBotRight.x, range.m_vecBotRight.x), fminf(m_vecBotRight.y, range.m_vecBotRight.y), fminf(m_vecBotRight.z, range.m_vecBotRight.z));
+        if(topLeft.x >= botRight.x || topLeft.y >= botRight.y || topLeft.z >= botRight.z) return false;
+        result.m_vecTopLeft = topLeft;
+        result.m_vecBotRight = botRight;
+        return true;
+    }
 
     // Member values
     CVector m_vecTopLeft;

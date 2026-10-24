@@ -134,6 +134,36 @@ DECL_CLASS(CMatrix)
     inline const CVector& GetUp() const { return at; }
     inline CVector& GetPosition() { return pos; }
     inline const CVector& GetPosition() const { return pos; }
+    inline CVector GetScale() const { return { right.Magnitude(), up.Magnitude(), at.Magnitude() }; }
+    inline void SetScale(float scale) { SetScale2(scale); }
+    inline void Translate(float x, float y, float z)
+    {
+        pos.x += x;
+        pos.y += y;
+        pos.z += z;
+    }
+    inline void Translate(CVector const& offset) { pos += offset; }
+    inline CMatrix operator*(CMatrix const& matrix) const
+    {
+        CMatrix result;
+        result.right = *this * matrix.right;
+        result.up = *this * matrix.up;
+        result.at = *this * matrix.at;
+        result.pos = *this * matrix.pos + pos;
+        return result;
+    }
+    inline CMatrix& operator*=(CMatrix const& matrix)
+    {
+        CVector newRight = *this * matrix.right;
+        CVector newForward = *this * matrix.up;
+        CVector newUp = *this * matrix.at;
+        CVector newPosition = *this * matrix.pos + pos;
+        right = newRight;
+        up = newForward;
+        at = newUp;
+        pos = newPosition;
+        return *this;
+    }
     inline CVector operator*(CVector const& vector) const
     {
         CVector result;
@@ -151,9 +181,32 @@ DECL_CLASS(CMatrix)
         return TransformVector(v) + pos;
     }
     inline CVector TransformPoint(CVector& v) const { return TransformPos(v); }
+    inline void TransformPoints(CVector* output, i32 count, CVector const* input) const
+    {
+        for(i32 i = 0; i < count; ++i) output[i] = *this * input[i] + pos;
+    }
+    inline void TransformVectors(CVector* output, i32 count, CVector const* input) const
+    {
+        for(i32 i = 0; i < count; ++i) output[i] = *this * input[i];
+    }
+    // Inverse transforms require an orthonormal basis.
     inline CVector InverseTransformVector(CVector& v) const
     {
-        return { DotProduct(right, v), DotProduct(at, v), DotProduct(up, v) };
+        return { DotProduct(right, v), DotProduct(up, v), DotProduct(at, v) };
+    }
+    inline CVector InverseTransformPoint(CVector const& point) const
+    {
+        CVector offset = point - pos;
+        return InverseTransformVector(offset);
+    }
+    inline CMatrix Inverted() const
+    {
+        CMatrix result;
+        result.right = { right.x, up.x, at.x };
+        result.up = { right.y, up.y, at.y };
+        result.at = { right.z, up.z, at.z };
+        result.pos = { -DotProduct(right, pos), -DotProduct(up, pos), -DotProduct(at, pos) };
+        return result;
     }
 
     // Member values
@@ -168,5 +221,6 @@ DECL_CLASS(CMatrix)
     RwMatrix* m_pAttachMatrix;
     unsigned int m_bOwnsAttachedMatrix;
 DECL_CLASS_END()
+CHECKSIZE(CMatrix, 0x48, 0x50);
 
 #endif // __AML_PSDK_GTAMATRIX_H
