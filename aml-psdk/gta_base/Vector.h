@@ -122,10 +122,15 @@ struct CVector2D
 
 DECL_CLASS(CVector)
     // Member functions
+    #ifndef GTAVC
     DECL_THISCALL_HEAD(FromMultiply, _ZN7CVector12FromMultiplyERK7CMatrixRKS_, void, CMatrix const& arg1, CVector const& arg2)
     DECL_THISCALL_TAIL(FromMultiply, arg1, arg2)
     DECL_THISCALL_HEAD(FromMultiply3X3, _ZN7CVector15FromMultiply3X3ERK7CMatrixRKS_, void, CMatrix const& arg1, CVector const& arg2)
     DECL_THISCALL_TAIL(FromMultiply3X3, arg1, arg2)
+    #else
+    void FromMultiply(CMatrix const& matrix, CVector const& vector);
+    void FromMultiply3X3(CMatrix const& matrix, CVector const& vector);
+    #endif
 
     union
     {
