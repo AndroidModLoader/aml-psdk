@@ -151,4 +151,143 @@ DECL_CLASS(CSphere)
 DECL_CLASS_END()
 CHECKSIZE(CSphere, 0x10, 0x10);
 
+DECL_CLASS_BASED(CColSphere, CSphere)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN10CColSphere3SetEfRK7CVectorhh, void, float radius, CVector const& center, u8 material, u8 piece)
+    DECL_THISCALL_TAIL(Set, radius, center, material, piece)
+    DECL_THISCALL_HEAD(IntersectRay, _ZNK10CColSphere12IntersectRayERK7CVectorS2_RS0_S3_, bool, CVector const& rayStart, CVector const& rayEnd, CVector& point1, CVector& point2)
+    DECL_THISCALL_TAIL(IntersectRay, rayStart, rayEnd, point1, point2)
+
+    // Member values
+    u8 m_nMaterial;
+    u8 m_nPiece;
+DECL_CLASS_END()
+CHECKSIZE(CColSphere, 0x14, 0x14);
+
+DECL_CLASS_BASED(CColBox, CBox)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN7CColBox3SetERK7CVectorS2_hh, void, CVector const& vecMin, CVector const& vecMax, u8 material, u8 piece)
+    DECL_THISCALL_TAIL(Set, vecMin, vecMax, material, piece)
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN7CColBoxaSERKS_, CColBox&, CColBox const& box)
+    DECL_THISCALL_TAIL(Assign, box)
+
+    // Member values
+    u8 m_nMaterial;
+    u8 m_nPiece;
+DECL_CLASS_END()
+CHECKSIZE(CColBox, 0x1C, 0x1C);
+
+DECL_CLASS(CColPoint)
+    CColPoint() : m_nSurfaceTypeA(0), m_nPieceTypeA(0), m_nSurfaceTypeB(0), m_nPieceTypeB(0), m_fDepth(0.0f) {}
+
+    // Member functions
+    // Native assignment leaves depth unchanged.
+    DECL_THISCALL_NAMED_HEAD(Assign, operator=, _ZN9CColPointaSERKS_, CColPoint&, CColPoint const& point)
+    DECL_THISCALL_TAIL(Assign, point)
+
+    inline CVector& GetPosition() { return m_vecPoint; }
+    inline CVector const& GetPosition() const { return m_vecPoint; }
+    inline CVector& GetNormal() { return m_vNormal; }
+    inline CVector const& GetNormal() const { return m_vNormal; }
+
+    // Member values
+    CVector m_vecPoint;
+    u32 : 32;
+    CVector m_vNormal;
+    u32 : 32;
+    u8 m_nSurfaceTypeA;
+    u8 m_nPieceTypeA;
+    u8 m_nSurfaceTypeB;
+    u8 m_nPieceTypeB;
+    float m_fDepth;
+DECL_CLASS_END()
+CHECKSIZE(CColPoint, 0x28, 0x28);
+
+struct CColTriangle
+{
+    inline void Set(u16 vertA, u16 vertB, u16 vertC, u8 material)
+    {
+        m_nVertA = vertA;
+        m_nVertB = vertB;
+        m_nVertC = vertC;
+        m_nMaterial = material;
+    }
+
+    u16 m_nVertA;
+    u16 m_nVertB;
+    u16 m_nVertC;
+    u8 m_nMaterial;
+    u8 : 8;
+};
+CHECKSIZE(CColTriangle, 0x8, 0x8);
+
+DECL_CLASS(CColTrianglePlane)
+    // Member functions
+    DECL_THISCALL_HEAD(Set, _ZN17CColTrianglePlane3SetEPK16CompressedVectorR12CColTriangle, void, CVector const* vertices, CColTriangle& triangle)
+    DECL_THISCALL_TAIL(Set, vertices, triangle)
+
+    inline CVector const& GetNormal() const { return m_vecNormal; }
+    inline float GetNormalOffset() const { return m_fDistance; }
+
+    // Member values
+    CVector m_vecNormal;
+    float m_fDistance;
+    u8 m_nOrientation;
+DECL_CLASS_END()
+CHECKSIZE(CColTrianglePlane, 0x14, 0x14);
+
+struct CStoredCollPoly
+{
+    CStoredCollPoly() : m_bIsActual(false) {}
+
+    CVector m_aVertices[3];
+    bool m_bIsActual;
+};
+CHECKSIZE(CStoredCollPoly, 0x28, 0x28);
+
+template<class T> struct CLink;
+
+DECL_CLASS(CColModel)
+    // Construct/Deconstruct functions
+    DECL_CTORCALL(CColModel, _ZN9CColModelC2Ev);
+    DECL_DTORCALL(CColModel, _ZN9CColModelD2Ev);
+    #ifdef AML64
+        DECL_NEWCALL(CColModel, _ZN9CColModelnwEm);
+    #else
+        DECL_NEWCALL(CColModel, _ZN9CColModelnwEj);
+    #endif
+    DECL_DLCALL(CColModel, _ZN9CColModeldlEPv);
+
+    // Native assignment can overrun its box array.
+    CColModel(CColModel const&) = delete;
+    CColModel& operator=(CColModel const&) = delete;
+
+    // Member functions
+    DECL_THISCALL_SIMPLE(RemoveCollisionVolumes, _ZN9CColModel22RemoveCollisionVolumesEv, void);
+    DECL_THISCALL_SIMPLE(CalculateTrianglePlanes, _ZN9CColModel23CalculateTrianglePlanesEv, void);
+    DECL_THISCALL_SIMPLE(RemoveTrianglePlanes, _ZN9CColModel20RemoveTrianglePlanesEv, void);
+    DECL_THISCALL_HEAD(GetTrianglePoint, _ZNK9CColModel16GetTrianglePointER7CVectori, void, CVector& point, i32 vertex)
+    DECL_THISCALL_TAIL(GetTrianglePoint, point, vertex)
+    DECL_THISCALL_HEAD(SetLinkPtr, _ZN9CColModel10SetLinkPtrEP5CLinkIPS_E, void, CLink<CColModel*>* link)
+    DECL_THISCALL_TAIL(SetLinkPtr, link)
+    DECL_THISCALL_SIMPLE(GetLinkPtr, _ZN9CColModel10GetLinkPtrEv, CLink<CColModel*>*);
+
+    // Member values
+    CSphere m_boundSphere;
+    CBox m_boundBox;
+    i16 m_nNumSpheres;
+    i16 m_nNumBoxes;
+    i16 m_nNumTriangles;
+    i8 m_nNumLines;
+    u8 m_nColStoreIndex;
+    bool m_bOwnsCollisionVolumes;
+    CColSphere* m_pSpheres;
+    CColLine* m_pLines;
+    CColBox* m_pBoxes;
+    CVector* m_pVertices;
+    CColTriangle* m_pTriangles;
+    CColTrianglePlane* m_pTrianglePlanes;
+DECL_CLASS_END()
+CHECKSIZE(CColModel, 0x4C, 0x68);
+
 #endif // __AML_PSDK_VCCOLMODEL_H

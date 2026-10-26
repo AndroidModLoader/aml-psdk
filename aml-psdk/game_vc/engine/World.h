@@ -3,6 +3,7 @@
 
 #include <aml-psdk/game_vc/plugin.h>
 #include <aml-psdk/gta_base/Vector.h>
+#include "../base/ColModel.h"
 
 struct CEntity;
 
@@ -36,6 +37,9 @@ DECL_CLASS(CWorld)
     DECL_FASTCALL_SIMPLE(ExtinguishAllCarFiresInArea, _ZN6CWorld27ExtinguishAllCarFiresInAreaE7CVectorf, void, CVector center, float radius);
     DECL_FASTCALL_SIMPLE(StopAllLawEnforcersInTheirTracks, _ZN6CWorld32StopAllLawEnforcersInTheirTracksEv, void);
     DECL_FASTCALL_SIMPLE(FindPlayerSlotWithPedPointer, _ZN6CWorld28FindPlayerSlotWithPedPointerEPv, i32, void* ped);
+
+    DECL_FASTCALL_SIMPLE(ProcessLineOfSight, _ZN6CWorld18ProcessLineOfSightERK7CVectorS2_R9CColPointRP7CEntitybbbbbbbb, bool, CVector const& start, CVector const& end, CColPoint& point, CEntity*& entity, bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool seeThrough, bool ignoreSomeObjectsForCamera, bool shootThrough);
+    DECL_FASTCALL_SIMPLE(ProcessVerticalLine, _ZN6CWorld19ProcessVerticalLineERK7CVectorfR9CColPointRP7CEntitybbbbbbP15CStoredCollPoly, bool, CVector const& start, float endZ, CColPoint& point, CEntity*& entity, bool buildings, bool vehicles, bool peds, bool objects, bool dummies, bool seeThrough, CStoredCollPoly* storedPoly);
 
     // STATIC values
     DECL_VALUE_PLT_U8(PlayerInFocus, BYBIT(0x394A44, 0x577578));
