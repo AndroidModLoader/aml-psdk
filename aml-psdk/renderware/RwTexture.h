@@ -47,7 +47,9 @@ DECL_FASTCALL_SIMPLE_GLO(RwTextureCreate, _Z15RwTextureCreateP8RwRaster, RwTextu
 DECL_FASTCALL_SIMPLE_GLO(RwTextureDestroy, _Z16RwTextureDestroyP9RwTexture, RwBool, RwTexture *);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGenerateMipmapName, _Z27RwTextureGenerateMipmapNamePcS_hi, RwBool, char *,char *,u8,int);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetAutoMipmapping, _Z26RwTextureGetAutoMipmappingv, RwBool);
+#ifdef GTASA
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetFindCallBack, _Z24RwTextureGetFindCallBackv, RwTextureCallBackFind);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapGenerationCallBack, _Z36RwTextureGetMipmapGenerationCallBackv, RwTextureCallBackMipmapGeneration);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapNameCallBack, _Z30RwTextureGetMipmapNameCallBackv, RwTextureCallBackMipmapName);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureGetMipmapping, _Z22RwTextureGetMipmappingv, RwBool);
@@ -61,7 +63,9 @@ DECL_FASTCALL_SIMPLE_GLO(RwTextureRegisterPlugin, _Z23RwTextureRegisterPluginijP
 DECL_FASTCALL_SIMPLE_GLO(RwTextureRegisterPluginStream, _Z29RwTextureRegisterPluginStreamjPFP8RwStreamS0_iPviiEPFS0_S0_iPKviiEPFiS5_iiE, RwInt32,
     uint, RwPluginDataChunkReadCallBack, RwPluginDataChunkWriteCallBack, RwPluginDataChunkGetSizeCallBack);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetAutoMipmapping, _Z26RwTextureSetAutoMipmappingi, RwBool, int);
+#ifdef GTASA
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetFindCallBack, _Z24RwTextureSetFindCallBackPFP9RwTexturePKcE, RwBool, RwTextureCallBackFind);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetFreeListCreateParams, _Z32RwTextureSetFreeListCreateParamsii, void, int,int);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetMaskName, _Z20RwTextureSetMaskNameP9RwTexturePKc, RwTexture*, RwTexture *,char const*);
 DECL_FASTCALL_SIMPLE_GLO(RwTextureSetMipmapGenerationCallBack, _Z36RwTextureSetMipmapGenerationCallBackPFP8RwRasterS0_P7RwImageE, RwBool, RwTextureCallBackMipmapGeneration);
@@ -81,7 +85,9 @@ DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryDestroy, _Z22RwTexDictionaryDestroyP15Rw
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryAddTexture, _Z25RwTexDictionaryAddTextureP15RwTexDictionaryP9RwTexture, RwTexture*, RwTexDictionary* dict, RwTexture* texture);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryRemoveTexture, _Z28RwTexDictionaryRemoveTextureP9RwTexture, RwTexture*, RwTexture* texture);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryFindNamedTexture, _Z31RwTexDictionaryFindNamedTextureP15RwTexDictionaryPKc, RwTexture*, RwTexDictionary* dict, const char* name);
+#ifdef GTASA
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryFindHashNamedTexture, _Z35RwTexDictionaryFindHashNamedTextureP15RwTexDictionaryj, RwTexture*, RwTexDictionary* dict, RwUInt32 key);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetNumTextures, _Z29RwTexDictionaryGetNumTexturesP15RwTexDictionary, RwInt32, RwTexDictionary* dict);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetTextureByIndex, _Z32RwTexDictionaryGetTextureByIndexP15RwTexDictionaryi, RwTexture*, RwTexDictionary* dict, RwInt32 index);
 DECL_FASTCALL_SIMPLE_GLO(RwTexDictionaryGetCurrent, _Z25RwTexDictionaryGetCurrentv, RwTexDictionary*);

@@ -17,12 +17,7 @@ enum RpHAnimHierarchyFlag : RwInt32
     rpHANIMHIERARCHYFLAGFORCEENUMSIZEINT = 0x7FFFFFFF
 };
 
-struct RtQuat
-{
-    RwV3d imag;
-    RwReal real;
-};
-CHECKSIZE(RtQuat, 0x10, 0x10);
+#include "RtQuat.h"
 
 struct RpHAnimBlendInterpFrame
 {
@@ -109,15 +104,97 @@ DECL_FASTCALL_SIMPLE_GLO(RpHAnimIDGetIndex, _Z17RpHAnimIDGetIndexP16RpHAnimHiera
 
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimPluginAttach, _Z19RpHAnimPluginAttachv, RwBool);
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimHierarchySetFreeListCreateParams, _Z39RpHAnimHierarchySetFreeListCreateParamsii, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
+#ifdef GTAVC
+DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameStreamGetSize, _Z28RpHAnimKeyFrameStreamGetSizeP15RtAnimAnimation, RwInt32, RtAnimAnimation* animation);
+#else
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameStreamGetSize, _Z28RpHAnimKeyFrameStreamGetSizePK15RtAnimAnimation, RwInt32, RtAnimAnimation const* animation);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameMulRecip, _Z23RpHAnimKeyFrameMulRecipPvS_, void, void* pVoidFrame, void* pVoidStart);
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameBlend, _Z20RpHAnimKeyFrameBlendPvS_S_f, void, void* pVoidOut, void* pVoidIn1, void* pVoidIn2, RwReal fAlpha);
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameApply, _Z20RpHAnimKeyFrameApplyPvS_, void, void* pMatrix, void* pVoidIFrame);
+#ifdef GTAVC
+DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameInterpolate, _Z26RpHAnimKeyFrameInterpolatePvS_S_f, void, void* pVoidOut, void* pVoidIn1, void* pVoidIn2, RwReal time);
+#else
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameInterpolate, _Z26RpHAnimKeyFrameInterpolatePvS_S_fS_, void, void* pVoidOut, void* pVoidIn1, void* pVoidIn2, RwReal time, void* customData);
+#endif
+#ifdef GTAVC
+DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameStreamWrite, _Z26RpHAnimKeyFrameStreamWriteP15RtAnimAnimationP8RwStream, RwBool, RtAnimAnimation* pAnimation, RwStream* stream);
+#else
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameStreamWrite, _Z26RpHAnimKeyFrameStreamWritePK15RtAnimAnimationP8RwStream, RwBool, RtAnimAnimation const* pAnimation, RwStream* stream);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameStreamRead, _Z25RpHAnimKeyFrameStreamReadP8RwStreamP15RtAnimAnimation, RtAnimAnimation*, RwStream* stream, RtAnimAnimation* pAnimation);
 DECL_FASTCALL_SIMPLE_GLO(RpHAnimKeyFrameAdd, _Z18RpHAnimKeyFrameAddPvS_S_, void, void* pVoidOut, void* pVoidIn1, void* pVoidIn2);
 
+#ifdef GTAVC
+DECL_OBJECT_PLT_GLOBAL(RpHAnimAtomicGlobalVars, RpHAnimAtomicGlobals, BYBIT(0x394c98, 0x577a00));
+#else
 DECL_OBJECT_PLT_GLOBAL(RpHAnimAtomicGlobalVars, RpHAnimAtomicGlobals, BYBIT(0x676C5C, 0x84B900));
+#endif
 
+#ifdef GTAVC
+enum RpHAnimHierarchyNodeFlag : RwInt32
+{
+    rpHANIMPUSHPARENTMATRIX = 0x2,
+    rpHANIMPOPPARENTMATRIX = 0x1
+};
+#endif
+
+inline RpHAnimHierarchyFlag RpHAnimHierarchyGetFlags(const RpHAnimHierarchy* hierarchy) { return static_cast<RpHAnimHierarchyFlag>(hierarchy->flags); }
+inline RpHAnimHierarchy* RpHAnimHierarchySetFlags(RpHAnimHierarchy* hierarchy, RpHAnimHierarchyFlag flags)
+{
+    hierarchy->flags = flags;
+    return hierarchy;
+}
+inline RpHAnimAnimation* RpHAnimHierarchyGetCurrentAnim(RpHAnimHierarchy* hierarchy)
+{
+    return RtAnimInterpolatorGetCurrentAnim(hierarchy->currentAnim);
+}
+inline RwBool RpHAnimHierarchySetCurrentAnim(RpHAnimHierarchy* hierarchy, RpHAnimAnimation* animation)
+{
+    return RtAnimInterpolatorSetCurrentAnim(hierarchy->currentAnim, animation);
+}
+inline RwBool RpHAnimHierarchySetCurrentAnimTime(RpHAnimHierarchy* hierarchy, RwReal time)
+{
+    return RtAnimInterpolatorSetCurrentTime(hierarchy->currentAnim, time);
+}
+inline RwBool RpHAnimHierarchyAddAnimTime(RpHAnimHierarchy* hierarchy, RwReal time)
+{
+    return RtAnimInterpolatorAddAnimTime(hierarchy->currentAnim, time);
+}
+inline RwBool RpHAnimHierarchySubAnimTime(RpHAnimHierarchy* hierarchy, RwReal time)
+{
+    return RtAnimInterpolatorSubAnimTime(hierarchy->currentAnim, time);
+}
+inline RwBool RpHAnimHierarchyBlend(RpHAnimHierarchy* out, RpHAnimHierarchy* in1, RpHAnimHierarchy* in2, RwReal alpha)
+{
+    return RtAnimInterpolatorBlend(out->currentAnim, in1->currentAnim, in2->currentAnim, alpha);
+}
+inline RwBool RpHAnimHierarchyAddTogether(RpHAnimHierarchy* out, RpHAnimHierarchy* in1, RpHAnimHierarchy* in2)
+{
+    return RtAnimInterpolatorAddTogether(out->currentAnim, in1->currentAnim, in2->currentAnim);
+}
+inline RwBool RpHAnimHierarchySetKeyFrameCallBacks(RpHAnimHierarchy* hierarchy, RwInt32 keyFrameTypeID)
+{
+    return RtAnimInterpolatorSetKeyFrameCallBacks(hierarchy->currentAnim, keyFrameTypeID);
+}
+inline void RpHAnimHierarchySetAnimCallBack(RpHAnimHierarchy* hierarchy, RtAnimCallBack callback, RwReal time, void* data)
+{
+    RtAnimInterpolatorSetAnimCallBack(hierarchy->currentAnim, callback, time, data);
+}
+inline void RpHAnimHierarchySetAnimLoopCallBack(RpHAnimHierarchy* hierarchy, RtAnimCallBack callback, void* data)
+{
+    RtAnimInterpolatorSetAnimLoopCallBack(hierarchy->currentAnim, callback, data);
+}
+inline RwBool RpHAnimHierarchyBlendSubHierarchy(RpHAnimHierarchy* out, RpHAnimHierarchy* in1, RpHAnimHierarchy* in2, RwReal alpha)
+{
+    return RtAnimInterpolatorBlendSubInterpolator(out->currentAnim, in1->currentAnim, in2->currentAnim, alpha);
+}
+inline RwBool RpHAnimHierarchyAddSubHierarchy(RpHAnimHierarchy* out, RpHAnimHierarchy* main, RpHAnimHierarchy* sub)
+{
+    return RtAnimInterpolatorAddSubInterpolator(out->currentAnim, main->currentAnim, sub->currentAnim);
+}
+inline RwBool RpHAnimHierarchyCopy(RpHAnimHierarchy* out, RpHAnimHierarchy* in)
+{
+    return RtAnimInterpolatorCopy(out->currentAnim, in->currentAnim);
+}
 #endif // __AML_PSDK_RPHANIM_H

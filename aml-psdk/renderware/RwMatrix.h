@@ -70,10 +70,36 @@ DECL_FASTCALL_SIMPLE_GLO(RwMatrixStreamWrite, _Z19RwMatrixStreamWritePK11RwMatri
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixTransform, _Z17RwMatrixTransformP11RwMatrixTagPKS_15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwMatrix *transform, RwOpCombineType combineOp);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixTranslate, _Z17RwMatrixTranslateP11RwMatrixTagPK5RwV3d15RwOpCombineType, RwMatrix*, RwMatrix *matrix, const RwV3d *translation, RwOpCombineType combineOp);
 DECL_FASTCALL_SIMPLE_GLO(RwMatrixUpdate, _Z14RwMatrixUpdateP11RwMatrixTag, RwMatrix*, RwMatrix *matrix);
-#ifndef GTAVC
+#ifdef GTASA
     DECL_FASTCALL_SIMPLE_GLO(TestMatrix, _Z10TestMatrixP11RwMatrixTag, void, RwMatrix *pTempMatrix);
 #endif
 DECL_FASTCALL_SIMPLE_GLO(RwEngineGetMatrixTolerances, _Z27RwEngineGetMatrixTolerancesP17RwMatrixTolerance, RwBool, RwMatrixTolerance *const tolerance);
 DECL_FASTCALL_SIMPLE_GLO(RwEngineSetMatrixTolerances, _Z27RwEngineSetMatrixTolerancesPK17RwMatrixTolerance, RwBool, const RwMatrixTolerance *const tolerance);
 
+enum RwMatrixType : RwInt32
+{
+    rwMATRIXTYPENORMAL = 0x1,
+    rwMATRIXTYPEORTHOGONAL = 0x2,
+    rwMATRIXTYPEORTHONORMAL = 0x3,
+    rwMATRIXTYPEMASK = 0x3,
+    rwMATRIXINTERNALIDENTITY = 0x20000
+};
+
+inline RwV3d* RwMatrixGetRight(RwMatrix* matrix) { return &matrix->right; }
+inline RwV3d const* RwMatrixGetRight(RwMatrix const* matrix) { return &matrix->right; }
+inline RwV3d* RwMatrixGetUp(RwMatrix* matrix) { return &matrix->up; }
+inline RwV3d const* RwMatrixGetUp(RwMatrix const* matrix) { return &matrix->up; }
+inline RwV3d* RwMatrixGetAt(RwMatrix* matrix) { return &matrix->at; }
+inline RwV3d const* RwMatrixGetAt(RwMatrix const* matrix) { return &matrix->at; }
+inline RwV3d* RwMatrixGetPos(RwMatrix* matrix) { return &matrix->pos; }
+inline RwV3d const* RwMatrixGetPos(RwMatrix const* matrix) { return &matrix->pos; }
+inline void RwMatrixCopy(RwMatrix* out, RwMatrix const* in) { *out = *in; }
+inline void RwMatrixSetIdentity(RwMatrix* matrix)
+{
+    matrix->right.Set(1.0f, 0.0f, 0.0f);
+    matrix->up.Set(0.0f, 1.0f, 0.0f);
+    matrix->at.Set(0.0f, 0.0f, 1.0f);
+    matrix->pos.Set(0.0f);
+    matrix->flags |= rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
+}
 #endif // __AML_PSDK_RWMATRIX_H

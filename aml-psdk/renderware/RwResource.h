@@ -29,4 +29,19 @@ DECL_FASTCALL_SIMPLE_GLO(RwResourcesAllocateResEntry, _Z27RwResourcesAllocateRes
 DECL_FASTCALL_SIMPLE_GLO(RwResourcesGetArenaSize, _Z23RwResourcesGetArenaSizev, RwInt32);
 DECL_FASTCALL_SIMPLE_GLO(RwResourcesGetArenaUsage, _Z24RwResourcesGetArenaUsagev, RwInt32);
 
+#define rwFREELISTFLAG_STATIC 0x1
+#define rwFREELISTFLAG_FREEBLOCKS 0x2
+
+typedef void (*RwFreeListCallBack)(void* memory, void* data);
+
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListCreate, _Z16RwFreeListCreateiii, RwFreeList*, RwInt32 entrySize, RwInt32 entriesPerBlock, RwInt32 alignment);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListCreateAndPreallocateSpace, _Z35RwFreeListCreateAndPreallocateSpaceiiiiP10RwFreeList, RwFreeList*, RwInt32 entrySize, RwInt32 entriesPerBlock, RwInt32 alignment, RwInt32 numBlocksToPreallocate, RwFreeList* inPlaceSpace);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListDestroy, _Z17RwFreeListDestroyP10RwFreeList, RwBool, RwFreeList* freeList);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListGetFlags, _Z18RwFreeListGetFlagsP10RwFreeList, RwUInt32, RwFreeList* freeList);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListSetFlags, _Z18RwFreeListSetFlagsP10RwFreeListj, void, RwFreeList* freeList, RwUInt32 flags);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListPurge, _Z15RwFreeListPurgeP10RwFreeList, RwInt32, RwFreeList* freeList);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListPurgeAllFreeLists, _Z27RwFreeListPurgeAllFreeListsv, RwInt32);
+DECL_FASTCALL_SIMPLE_GLO(RwFreeListForAllUsed, _Z20RwFreeListForAllUsedP10RwFreeListPFvPvS1_ES1_, RwFreeList*, RwFreeList* freeList, RwFreeListCallBack callback, void* data);
+DECL_FASTCALL_SIMPLE_GLO(_rwFreeListAllocReal, _Z20_rwFreeListAllocRealP10RwFreeList, void*, RwFreeList* freeList);
+DECL_FASTCALL_SIMPLE_GLO(_rwFreeListFreeReal, _Z19_rwFreeListFreeRealP10RwFreeListPv, RwFreeList*, RwFreeList* freeList, void* memory);
 #endif // __AML_PSDK_RWRESOURCE_H

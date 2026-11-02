@@ -305,6 +305,65 @@ DECL_FASTCALL_SIMPLE_GLO(RwIm3DSetTransformPipeline, _Z26RwIm3DSetTransformPipel
 DECL_FASTCALL_SIMPLE_GLO(RwIm3DSetRenderPipeline, _Z23RwIm3DSetRenderPipelineP10RxPipeline15RwPrimitiveType, RxPipeline*, RxPipeline* pipeline, RwPrimitiveType primType);
 DECL_FASTCALL_SIMPLE_GLO(RwIm3DRenderLine, _Z16RwIm3DRenderLineii, RwBool, RwInt32 vert1, RwInt32 vert2);
 
+DECL_FASTCALL_SIMPLE_GLO(RwOpenGLSetStencilClear, _Z23RwOpenGLSetStencilClearj, void, RwUInt32 value);
+DECL_FASTCALL_SIMPLE_GLO(RwOpenGLGetStencilClear, _Z23RwOpenGLGetStencilClearv, RwUInt32);
+
+#ifdef GTAVC
+inline void RwIm2DVertexSetScreenX(RwIm2DVertex* vertex, RwReal value) { vertex->x = value; }
+inline void RwIm2DVertexSetScreenY(RwIm2DVertex* vertex, RwReal value) { vertex->y = value; }
+inline void RwIm2DVertexSetScreenZ(RwIm2DVertex* vertex, RwReal value) { vertex->z = value; }
+inline RwReal RwIm2DVertexGetScreenX(RwIm2DVertex const* vertex) { return vertex->x; }
+inline RwReal RwIm2DVertexGetScreenY(RwIm2DVertex const* vertex) { return vertex->y; }
+inline RwReal RwIm2DVertexGetScreenZ(RwIm2DVertex const* vertex) { return vertex->z; }
+inline void RwIm2DVertexSetRecipCameraZ(RwIm2DVertex* vertex, RwReal value) { vertex->rhw = value; }
+inline RwReal RwIm2DVertexGetRecipCameraZ(RwIm2DVertex const* vertex) { return vertex->rhw; }
+
+inline void RwIm2DVertexSetU(RwIm2DVertex* vertex, RwReal u, RwReal recipZ)
+{
+    vertex->u = u * recipZ;
+    vertex->w = 0.0f;
+    vertex->q = recipZ;
+}
+inline void RwIm2DVertexSetV(RwIm2DVertex* vertex, RwReal v, RwReal recipZ)
+{
+    vertex->v = v * recipZ;
+    vertex->w = 0.0f;
+    vertex->q = recipZ;
+}
+inline void RwIm2DVertexSetIntRGBA(RwIm2DVertex* vertex, RwUInt32 red, RwUInt32 green, RwUInt32 blue, RwUInt32 alpha)
+{
+    vertex->color.Set((RwUInt8)red, (RwUInt8)green, (RwUInt8)blue, (RwUInt8)alpha);
+}
+inline void RwIm2DVertexSetRealRGBA(RwIm2DVertex* vertex, RwReal red, RwReal green, RwReal blue, RwReal alpha)
+{
+    RwIm2DVertexSetIntRGBA(vertex, (RwUInt32)red, (RwUInt32)green, (RwUInt32)blue, (RwUInt32)alpha);
+}
+inline RwUInt32 RwIm2DVertexGetRed(RwIm2DVertex const* vertex) { return vertex->r; }
+inline RwUInt32 RwIm2DVertexGetGreen(RwIm2DVertex const* vertex) { return vertex->g; }
+inline RwUInt32 RwIm2DVertexGetBlue(RwIm2DVertex const* vertex) { return vertex->b; }
+inline RwUInt32 RwIm2DVertexGetAlpha(RwIm2DVertex const* vertex) { return vertex->a; }
+
+inline void RwIm3DVertexSetPos(RwIm3DVertex* vertex, RwReal x, RwReal y, RwReal z) { vertex->objVertex.Set(x, y, z); }
+inline void RwIm3DVertexSetNormal(RwIm3DVertex* vertex, RwReal x, RwReal y, RwReal z) { vertex->normal.Set(x, y, z); }
+inline RwV3d* RwIm3DVertexGetPos(RwIm3DVertex* vertex) { return &vertex->objVertex; }
+inline RwV3d const* RwIm3DVertexGetPos(RwIm3DVertex const* vertex) { return &vertex->objVertex; }
+inline RwV3d* RwIm3DVertexGetNormal(RwIm3DVertex* vertex) { return &vertex->normal; }
+inline RwV3d const* RwIm3DVertexGetNormal(RwIm3DVertex const* vertex) { return &vertex->normal; }
+inline void RwIm3DVertexSetU(RwIm3DVertex* vertex, RwReal u) { vertex->u = u; }
+inline void RwIm3DVertexSetV(RwIm3DVertex* vertex, RwReal v) { vertex->v = v; }
+inline RwReal RwIm3DVertexGetU(RwIm3DVertex const* vertex) { return vertex->u; }
+inline RwReal RwIm3DVertexGetV(RwIm3DVertex const* vertex) { return vertex->v; }
+inline void RwIm3DVertexSetRGBA(RwIm3DVertex* vertex, RwUInt32 red, RwUInt32 green, RwUInt32 blue, RwUInt32 alpha)
+{
+    vertex->color.Set((RwUInt8)red, (RwUInt8)green, (RwUInt8)blue, (RwUInt8)alpha);
+}
+inline RwUInt32 RwIm3DVertexGetRed(RwIm3DVertex const* vertex) { return vertex->r; }
+inline RwUInt32 RwIm3DVertexGetGreen(RwIm3DVertex const* vertex) { return vertex->g; }
+inline RwUInt32 RwIm3DVertexGetBlue(RwIm3DVertex const* vertex) { return vertex->b; }
+inline RwUInt32 RwIm3DVertexGetAlpha(RwIm3DVertex const* vertex) { return vertex->a; }
+inline void RwIm3DVertexCopyRGBA(RwIm3DVertex* dest, RwIm3DVertex const* source) { dest->emissiveColor = source->emissiveColor; }
+#endif
+
 enum RxRenderStateFlag : RwInt32
 {
     rxRENDERSTATEFLAG_TEXTUREPERSPECTIVE = 1,

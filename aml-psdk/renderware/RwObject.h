@@ -63,6 +63,6 @@ struct RwObjectHasFrame
 };
 
 DECL_FASTCALL_SIMPLE_GLO(_rwObjectHasFrameSetFrame, _Z25_rwObjectHasFrameSetFramePvP7RwFrame, void, void* object, RwFrame* frame);
-DECL_FASTCALL_SIMPLE_GLO(_rwObjectHasFrameReleaseFrame, _Z29_rwObjectHasFrameReleaseFramePv, void, RwFrame* object);
+DECL_FASTCALL_SIMPLE_GLO(_rwObjectHasFrameReleaseFrame, _Z29_rwObjectHasFrameReleaseFramePv, void, void* object);
 
 #endif // __AML_PSDK_RWOBJECT_H

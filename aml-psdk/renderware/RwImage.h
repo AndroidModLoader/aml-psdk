@@ -68,9 +68,17 @@ DECL_FASTCALL_SIMPLE_GLO(RwImageResample, _Z15RwImageResampleP7RwImagePKS_, RwIm
 DECL_FASTCALL_SIMPLE_GLO(RwImageCreateResample, _Z21RwImageCreateResamplePK7RwImageii, RwImage*, const RwImage *srcImage, RwInt32 width, RwInt32 height);
 
 DECL_FASTCALL_SIMPLE_GLO(RtBMPImageWrite, _Z15RtBMPImageWriteP7RwImagePKc, RwImage*, RwImage *image, const RwChar *imageName);
+#ifdef GTAVC
+DECL_FASTCALL_SIMPLE_GLO(RtPNGImageWrite, RtPNGImageWrite, RwImage*, RwImage *image, const RwChar *imageName);
+#else
 DECL_FASTCALL_SIMPLE_GLO(RtPNGImageWrite, _Z15RtPNGImageWriteP7RwImagePKc, RwImage*, RwImage *image, const RwChar *imageName);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RtBMPImageRead, _Z14RtBMPImageReadPKc, RwImage*, const RwChar *imageName);
+#ifdef GTAVC
+DECL_FASTCALL_SIMPLE_GLO(RtPNGImageRead, RtPNGImageRead, RwImage*, const RwChar *imageName);
+#else
 DECL_FASTCALL_SIMPLE_GLO(RtPNGImageRead, _Z14RtPNGImageReadPKc, RwImage*, const RwChar *imageName);
+#endif
 
 inline RwInt32 RwImageGetWidth(const RwImage* image)
 {

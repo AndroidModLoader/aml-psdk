@@ -297,6 +297,71 @@ DECL_FASTCALL_SIMPLE_GLO(RxHeapCreate, _Z12RxHeapCreatej, RxHeap*, RwUInt32 size
 DECL_FASTCALL_SIMPLE_GLO(RxNodeDefinitionGetOpenGLAtomicAllInOne, _Z39RxNodeDefinitionGetOpenGLAtomicAllInOnev, RxNodeDefinition*);
 DECL_FASTCALL_SIMPLE_GLO(RxNodeDefinitionGetOpenGLWorldSectorAllInOne, _Z44RxNodeDefinitionGetOpenGLWorldSectorAllInOnev, RxNodeDefinition*);
 
+struct RwResEntry;
+struct RxOpenGLMeshInstanceData;
+struct RpMeshHeader;
+
+typedef RwBool (*RxOpenGLAllInOneInstanceCallBack)(void* object, RxOpenGLMeshInstanceData* instanceData, RwBool instanceDL, RwBool instanceVA);
+typedef RwBool (*RxOpenGLAllInOneReinstanceCallBack)(void* object, RwResEntry* resourceEntry, RpMeshHeader const* meshHeader, RwBool reinstance, RxOpenGLAllInOneInstanceCallBack instanceCallback);
+typedef void (*RxOpenGLAllInOneLightingCallBack)(void* object);
+typedef void (*RxOpenGLAllInOneRenderCallBack)(RwResEntry* resourceEntry, void* object, RwUInt8 type, RwUInt32 flags);
+
+DECL_FASTCALL_SIMPLE_GLO(RxPacketCreate, _Z14RxPacketCreateP14RxPipelineNode, RxPacket*, RxPipelineNode* node);
+DECL_FASTCALL_SIMPLE_GLO(_rxHeapReset, _Z12_rxHeapResetP6RxHeap, RwBool, RxHeap* heap);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneSetInstanceCallBack, _Z35RxOpenGLAllInOneSetInstanceCallBackP14RxPipelineNodePFiPvP24RxOpenGLMeshInstanceDataiiE, void, RxPipelineNode* node, RxOpenGLAllInOneInstanceCallBack callback);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneGetInstanceCallBack, _Z35RxOpenGLAllInOneGetInstanceCallBackP14RxPipelineNode, RxOpenGLAllInOneInstanceCallBack, RxPipelineNode* node);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneSetReinstanceCallBack, _Z37RxOpenGLAllInOneSetReinstanceCallBackP14RxPipelineNodePFiPvP10RwResEntryPK12RpMeshHeaderiPFiS1_P24RxOpenGLMeshInstanceDataiiEE, void, RxPipelineNode* node, RxOpenGLAllInOneReinstanceCallBack callback);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneGetReinstanceCallBack, _Z37RxOpenGLAllInOneGetReinstanceCallBackP14RxPipelineNode, RxOpenGLAllInOneReinstanceCallBack, RxPipelineNode* node);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneSetLightingCallBack, _Z35RxOpenGLAllInOneSetLightingCallBackP14RxPipelineNodePFvPvE, void, RxPipelineNode* node, RxOpenGLAllInOneLightingCallBack callback);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneGetLightingCallBack, _Z35RxOpenGLAllInOneGetLightingCallBackP14RxPipelineNode, RxOpenGLAllInOneLightingCallBack, RxPipelineNode* node);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneSetRenderCallBack, _Z33RxOpenGLAllInOneSetRenderCallBackP14RxPipelineNodePFvP10RwResEntryPvhjE, void, RxPipelineNode* node, RxOpenGLAllInOneRenderCallBack callback);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneGetRenderCallBack, _Z33RxOpenGLAllInOneGetRenderCallBackP14RxPipelineNode, RxOpenGLAllInOneRenderCallBack, RxPipelineNode* node);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneSetInstanceDLandVA, _Z34RxOpenGLAllInOneSetInstanceDLandVAP14RxPipelineNodei, void, RxPipelineNode* node, RwBool instanceDLandVA);
+DECL_FASTCALL_SIMPLE_GLO(RxOpenGLAllInOneGetInstanceDLandVA, _Z34RxOpenGLAllInOneGetInstanceDLandVAP14RxPipelineNode, RwBool, RxPipelineNode* node);
+
+inline RwBool RxPipelineDestroy(RxPipeline* pipeline)
+{
+    _rxPipelineDestroy(pipeline);
+    return 1;
+}
+
+inline RwBool RxHeapReset(RxHeap* heap)
+{
+    return heap->dirty ? _rxHeapReset(heap) : 1;
+}
+
+DECL_OBJECT_SYM(RxClusterDefinition, RxClInterpolants, RxClInterpolants);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClUVs, RxClUVs);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClCamNorms, RxClCamNorms);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClMeshState, RxClMeshState);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClObjSpace3DVertices, RxClObjSpace3DVertices);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClScatter, RxClScatter);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClScrSpace2DVertices, RxClScrSpace2DVertices);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClRenderState, RxClRenderState);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClTriPlanes, RxClTriPlanes);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClVSteps, RxClVSteps);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClCamSpace3DVertices, RxClCamSpace3DVertices);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClIndices, RxClIndices);
+DECL_OBJECT_SYM(RxClusterDefinition, RxClRGBAs, RxClRGBAs);
+
+#define RxClInterpolants RxClInterpolants()
+#define RxClUVs RxClUVs()
+#define RxClCamNorms RxClCamNorms()
+#define RxClMeshState RxClMeshState()
+#define RxClObjSpace3DVertices RxClObjSpace3DVertices()
+#define RxClScatter RxClScatter()
+#define RxClScrSpace2DVertices RxClScrSpace2DVertices()
+#define RxClRenderState RxClRenderState()
+#define RxClTriPlanes RxClTriPlanes()
+#define RxClVSteps RxClVSteps()
+#define RxClCamSpace3DVertices RxClCamSpace3DVertices()
+#define RxClIndices RxClIndices()
+#define RxClRGBAs RxClRGBAs()
+
+#ifdef GTAVC
+DECL_VALUE_PLT_I32_GLOBAL(_rxPipelineMaxNodes, BYBIT(0x394A24, 0x577538));
+#else
 DECL_VALUE_PLT_I32_GLOBAL(_rxPipelineMaxNodes, BYBIT(0x67991C, 0x851258));
+#endif
 
 #endif // __AML_PSDK_RXPIPELINE_H

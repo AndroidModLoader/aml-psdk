@@ -66,18 +66,32 @@ DECL_FASTCALL_SIMPLE_GLO(RwBBoxAddPoint, _Z14RwBBoxAddPointP6RwBBoxPK5RwV3d, RwB
 DECL_FASTCALL_SIMPLE_GLO(RwV3dTransformVectors, _Z21RwV3dTransformVectorsP5RwV3dPKS_iPK11RwMatrixTag, RwV3d*, RwV3d* vectorsOut, RwV3d const* vectorsIn, RwInt32 numPoints, RwMatrix const* matrix);
 DECL_FASTCALL_SIMPLE_GLO(RwBBoxInitialize, _Z16RwBBoxInitializeP6RwBBoxPK5RwV3d, RwBBox*, RwBBox* boundBox, RwV3d const* vertex);
 DECL_FASTCALL_SIMPLE_GLO(RwBBoxContainsPoint, _Z19RwBBoxContainsPointPK6RwBBoxPK5RwV3d, RwBool, RwBBox const* boundBox, RwV3d const* vertex);
-#ifndef GTAVC
+#ifdef GTASA
     DECL_FASTCALL_SIMPLE_GLO(RwV3dTransformVector, _Z20RwV3dTransformVectorP5RwV3dPKS_PK11RwMatrixTag, RwV3d*, RwV3d* vectorOut, RwV3d const* vectorIn, RwMatrix const* matrix);
 #endif
 DECL_FASTCALL_SIMPLE_GLO(RwV2dLength, _Z11RwV2dLengthPK5RwV2d, RwReal, RwV2d const* in);
 DECL_FASTCALL_SIMPLE_GLO(RwV2dNormalize, _Z14RwV2dNormalizeP5RwV2dPKS_, RwReal, RwV2d* out, RwV2d const* in);
-#ifndef GTAVC
+#ifdef GTASA
     DECL_FASTCALL_SIMPLE_GLO(RwV3dTransformPoint, _Z19RwV3dTransformPointP5RwV3dPKS_PK11RwMatrixTag, RwV3d*, RwV3d* pointOut, RwV3d const* pointIn, RwMatrix const* matrix);
 #endif
 DECL_FASTCALL_SIMPLE_GLO(RwV3dLength, _Z11RwV3dLengthPK5RwV3d, RwReal, RwV3d const* in);
 DECL_FASTCALL_SIMPLE_GLO(RwV3dNormalize, _Z14RwV3dNormalizeP5RwV3dPKS_, RwReal, RwV3d* out, RwV3d const* in);
 DECL_FASTCALL_SIMPLE_GLO(RwBBoxCalculate, _Z15RwBBoxCalculateP6RwBBoxPK5RwV3di, RwBBox*, RwBBox* boundBox, RwV3d const* verts, RwInt32 numVerts);
 DECL_FASTCALL_SIMPLE_GLO(RwV3dTransformPoints, _Z20RwV3dTransformPointsP5RwV3dPKS_iPK11RwMatrixTag, RwV3d*, RwV3d* pointsOut, RwV3d const* pointsIn, RwInt32 numPoints, RwMatrix const* matrix);
+
+inline void RwV2dAssign(RwV2d* out, RwV2d const* in) { *out = *in; }
+inline void RwV2dAdd(RwV2d* out, RwV2d const* a, RwV2d const* b) { *out = *a + *b; }
+inline void RwV2dSub(RwV2d* out, RwV2d const* a, RwV2d const* b) { *out = *a - *b; }
+inline void RwV2dScale(RwV2d* out, RwV2d const* in, RwReal scale) { *out = *in * scale; }
+inline RwReal RwV2dDotProduct(RwV2d const* a, RwV2d const* b) { return a->Dot(*b); }
+inline void RwV3dAssign(RwV3d* out, RwV3d const* in) { *out = *in; }
+inline void RwV3dAdd(RwV3d* out, RwV3d const* a, RwV3d const* b) { *out = *a + *b; }
+inline void RwV3dSub(RwV3d* out, RwV3d const* a, RwV3d const* b) { *out = *a - *b; }
+inline void RwV3dScale(RwV3d* out, RwV3d const* in, RwReal scale) { *out = *in * scale; }
+inline void RwV3dIncrementScaled(RwV3d* out, RwV3d const* in, RwReal scale) { *out += *in * scale; }
+inline void RwV3dNegate(RwV3d* out, RwV3d const* in) { *out = *in * -1.0f; }
+inline RwReal RwV3dDotProduct(RwV3d const* a, RwV3d const* b) { return a->Dot(*b); }
+inline void RwV3dCrossProduct(RwV3d* out, RwV3d const* a, RwV3d const* b) { *out = a->Cross(*b); }
 
 #ifdef GTAVC
 inline RwV3d* RwV3dTransformVector(RwV3d* vectorOut, RwV3d const* vectorIn, RwMatrix const* matrix)

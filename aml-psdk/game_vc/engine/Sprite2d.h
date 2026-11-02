@@ -4,18 +4,10 @@
 #include <aml-psdk/game_vc/plugin.h>
 #include <aml-psdk/gta_base/Rect.h>
 #include <aml-psdk/gta_base/RGBA.h>
+#include <aml-psdk/gta_base/DrawVertices.h>
 
 struct RwTexture;
 enum RwTextureAddressMode : u32;
-
-struct RwOpenGLVertex
-{
-    float x, y, z;
-    CRGBA color;
-    float u, v, w, q;
-    float rhw;
-};
-CHECKSIZE(RwOpenGLVertex, 0x24, 0x24);
 
 DECL_CLASS(CSprite2d)
     // Construct/Deconstruct functions

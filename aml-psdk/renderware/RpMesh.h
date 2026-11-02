@@ -82,4 +82,16 @@ DECL_FASTCALL_SIMPLE_GLO(_rpMeshWrite, _Z12_rpMeshWritePK12RpMeshHeaderPKvP8RwSt
 DECL_FASTCALL_SIMPLE_GLO(RpMeshGetTriStripMethod, _Z23RpMeshGetTriStripMethodPPFP12RpMeshHeaderP11RpBuildMeshPvEPS3_, RwBool, RpTriStripMeshCallBack* callback, void** data);
 DECL_FASTCALL_SIMPLE_GLO(RpMeshSetTriStripMethod, _Z23RpMeshSetTriStripMethodPFP12RpMeshHeaderP11RpBuildMeshPvES3_, RwBool, RpTriStripMeshCallBack callback, void* data);
 
+
+DECL_FASTCALL_SIMPLE_GLO(_rpBuildMeshCreate, _Z18_rpBuildMeshCreatej, RpBuildMesh*, RwUInt32 bufferSize);
+DECL_FASTCALL_SIMPLE_GLO(_rpBuildMeshDestroy, _Z19_rpBuildMeshDestroyP11RpBuildMesh, RwBool, RpBuildMesh* mesh);
+DECL_FASTCALL_SIMPLE_GLO(_rpBuildMeshAddTriangle, _Z23_rpBuildMeshAddTriangleP11RpBuildMeshP10RpMaterialiii, RpBuildMesh*, RpBuildMesh* mesh, RpMaterial* material, RwInt32 vert1, RwInt32 vert2, RwInt32 vert3);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateTriStrip, _Z27RpBuildMeshGenerateTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateTrivialTriStrip, _Z34RpBuildMeshGenerateTrivialTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateDefaultTriStrip, _Z34RpBuildMeshGenerateDefaultTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGeneratePreprocessTriStrip, _Z37RpBuildMeshGeneratePreprocessTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateExhaustiveTriStrip, _Z37RpBuildMeshGenerateExhaustiveTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateDefaultIgnoreWindingTriStrip, _Z47RpBuildMeshGenerateDefaultIgnoreWindingTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGeneratePreprocessIgnoreWindingTriStrip, _Z50RpBuildMeshGeneratePreprocessIgnoreWindingTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
+DECL_FASTCALL_SIMPLE_GLO(RpBuildMeshGenerateExhaustiveIgnoreWindingTriStrip, _Z50RpBuildMeshGenerateExhaustiveIgnoreWindingTriStripP11RpBuildMeshPv, RpMeshHeader*, RpBuildMesh* mesh, void* data);
 #endif // __AML_PSDK_RPMESH_H

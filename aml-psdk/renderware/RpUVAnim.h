@@ -5,6 +5,8 @@
 #include "RwMatrix.h"
 #include "RpMaterial.h"
 
+#ifdef GTASA
+
 typedef RtAnimAnimation RpUVAnim;
 
 enum RpUVAnimKeyFrameType
@@ -105,5 +107,7 @@ DECL_OBJECT_PLT_GLOBAL(RpUVAnimMaterialGlobalVars, RpUVAnimMaterialGlobals, BYBI
 DECL_OBJECT_PLT_GLOBAL(RtAnimInterpolatorInfo, _rpUVAnimLinearInterpolatorInfo, BYBIT(0x678360, 0x84E6D8));
 DECL_OBJECT_PLT_GLOBAL(RtAnimInterpolatorInfo, _rpUVAnimParamInterpolatorInfo, BYBIT(0x6792B4, 0x850580));
 DECL_OBJECT_PLT_GLOBAL(const RwV3d, rpUVAnimPivot, BYBIT(0x679184, 0x850330));
+
+#endif // GTASA
 
 #endif // __AML_PSDK_RPUVANIM_H

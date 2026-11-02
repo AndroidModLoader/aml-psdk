@@ -75,4 +75,78 @@ DECL_FASTCALL_SIMPLE_GLO(RpMaterialDestroy, _Z17RpMaterialDestroyP10RpMaterial, 
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialValidatePlugins, _Z25RpMaterialValidatePluginsPK10RpMaterial, RwBool, RpMaterial const* material);
 DECL_FASTCALL_SIMPLE_GLO(RpMaterialSetDefaultPipeline, _Z28RpMaterialSetDefaultPipelineP10RxPipeline, RxPipeline*, RxPipeline* pipeline);
 
+
+struct RpMaterialChunkInfo
+{
+    RwInt32 flags;
+    RwRGBA color;
+    RwInt32 unused;
+    RwBool textured;
+    RwSurfaceProperties surfaceProps;
+};
+CHECKSIZE(RpMaterial, 0x1C, 0x28);
+CHECKSIZE(RpMaterialList, 0xC, 0x10);
+CHECKSIZE(RpMaterialChunkInfo, 0x1C, 0x1C);
+
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialSetDefaultSurfaceProperties, _Z38_rpMaterialSetDefaultSurfacePropertiesPK19RwSurfaceProperties, void, RwSurfaceProperties const* properties);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialOpen, _Z15_rpMaterialOpenPvii, void*, void* instance, RwInt32 offset, RwInt32 size);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialClose, _Z16_rpMaterialClosePvii, void*, void* instance, RwInt32 offset, RwInt32 size);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialRegisterMultiTexturePlugin, _Z37_rpMaterialRegisterMultiTexturePlugin12RwPlatformIDjj, RwBool, RwPlatformID platformID, RwUInt32 pluginID, RwUInt32 extensionSize);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialChunkInfoRead, _Z24_rpMaterialChunkInfoReadP8RwStreamP19RpMaterialChunkInfoPi, RpMaterialChunkInfo*, RwStream* stream, RpMaterialChunkInfo* info, RwInt32* bytesRead);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListInitialize, _Z25_rpMaterialListInitializeP14RpMaterialList, RpMaterialList*, RpMaterialList* list);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListDeinitialize, _Z27_rpMaterialListDeinitializeP14RpMaterialList, RpMaterialList*, RpMaterialList* list);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListAlloc, _Z20_rpMaterialListAllocj, RpMaterial**, RwUInt32 count);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListGetMaterial, _Z26_rpMaterialListGetMaterialPK14RpMaterialListi, RpMaterial*, RpMaterialList const* list, RwInt32 index);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListSetSize, _Z22_rpMaterialListSetSizeP14RpMaterialListi, RpMaterialList*, RpMaterialList* list, RwInt32 size);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListCopy, _Z19_rpMaterialListCopyP14RpMaterialListPKS_, RpMaterialList*, RpMaterialList* dest, RpMaterialList const* source);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListAppendMaterial, _Z29_rpMaterialListAppendMaterialP14RpMaterialListP10RpMaterial, RwInt32, RpMaterialList* list, RpMaterial* material);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListFindMaterialIndex, _Z32_rpMaterialListFindMaterialIndexPK14RpMaterialListPK10RpMaterial, RwInt32, RpMaterialList const* list, RpMaterial const* material);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListStreamGetSize, _Z28_rpMaterialListStreamGetSizePK14RpMaterialList, RwUInt32, RpMaterialList const* list);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListStreamRead, _Z25_rpMaterialListStreamReadP8RwStreamP14RpMaterialList, RpMaterialList*, RwStream* stream, RpMaterialList* list);
+DECL_FASTCALL_SIMPLE_GLO(_rpMaterialListStreamWrite, _Z26_rpMaterialListStreamWritePK14RpMaterialListP8RwStream, RpMaterialList const*, RpMaterialList const* list, RwStream* stream);
+
+inline RpMaterial* RpMaterialAddRef(RpMaterial* material)
+{
+    ++material->refCount;
+    return material;
+}
+
+inline RwTexture* RpMaterialGetTexture(RpMaterial const* material)
+{
+    return material->texture;
+}
+
+inline RwRGBA const* RpMaterialGetColor(RpMaterial const* material)
+{
+    return &material->color;
+}
+
+inline RpMaterial* RpMaterialSetColor(RpMaterial* material, RwRGBA const* color)
+{
+    material->color = *color;
+    return material;
+}
+
+inline RwSurfaceProperties const* RpMaterialGetSurfaceProperties(RpMaterial const* material)
+{
+    return &material->surfaceProps;
+}
+
+inline RpMaterial* RpMaterialSetSurfaceProperties(RpMaterial* material, RwSurfaceProperties const* properties)
+{
+    material->surfaceProps = *properties;
+    return material;
+}
+
+inline RpMaterial* RpMaterialSetPipeline(RpMaterial* material, RxPipeline* pipeline)
+{
+    material->pipeline = pipeline;
+    return material;
+}
+
+inline RpMaterial* RpMaterialGetPipeline(RpMaterial* material, RxPipeline** pipeline)
+{
+    *pipeline = material->pipeline;
+    return material;
+}
 #endif // __AML_PSDK_RPMATERIAL_H

@@ -15,10 +15,15 @@ enum RpMatFXMaterialFlags : RwInt32
     rpMATFXEFFECTENVMAP = 2,
     rpMATFXEFFECTBUMPENVMAP = 3,
     rpMATFXEFFECTDUAL = 4,
+    #ifdef GTAVC
+    rpMATFXEFFECTMAX = 5,
+    rpMATFXNUMEFFECTS = 4,
+    #else
     rpMATFXEFFECTUVTRANSFORM = 5,
     rpMATFXEFFECTDUALUVTRANSFORM = 6,
     rpMATFXEFFECTMAX = 7,
     rpMATFXNUMEFFECTS = 6,
+    #endif
     rpMATFXFORCEENUMSIZEINT = 2147483647,
 };
 
@@ -50,10 +55,14 @@ DECL_FASTCALL_SIMPLE_GLO(RpMatFXAtomicEnableEffects, _Z26RpMatFXAtomicEnableEffe
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetEnvMapTexture, _Z31RpMatFXMaterialGetEnvMapTexturePK10RpMaterial, RwTexture*, RpMaterial const* material);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetupEnvMap, _Z26RpMatFXMaterialSetupEnvMapP10RpMaterialP9RwTextureP7RwFrameif, RpMaterial*, RpMaterial* material, RwTexture* texture, RwFrame* frame, RwBool useFrameBufferAlpha, RwReal coef);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetEnvMapFrame, _Z29RpMatFXMaterialSetEnvMapFrameP10RpMaterialP7RwFrame, RpMaterial*, RpMaterial* material, RwFrame* frame);
+#ifdef GTASA
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetUVTransformMatrices, _Z37RpMatFXMaterialGetUVTransformMatricesPK10RpMaterialPP11RwMatrixTagS4_, RpMaterial const*, RpMaterial const* material, RwMatrix** baseTransform, RwMatrix** dualTransform);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetDualBlendModes, _Z32RpMatFXMaterialGetDualBlendModesPK10RpMaterialP15RwBlendFunctionS3_, RpMaterial const*, RpMaterial const* material, RwBlendFunction* srcBlendMode, RwBlendFunction* dstBlendMode);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetEnvMapTexture, _Z31RpMatFXMaterialSetEnvMapTextureP10RpMaterialP9RwTexture, RpMaterial*, RpMaterial* material, RwTexture* texture);
+#ifdef GTASA
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetUVTransformMatrices, _Z37RpMatFXMaterialSetUVTransformMatricesP10RpMaterialP11RwMatrixTagS2_, RpMaterial*, RpMaterial* material, RwMatrix* baseTransform, RwMatrix* dualTransform);
+#endif
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetDualBlendModes, _Z32RpMatFXMaterialSetDualBlendModesP10RpMaterial15RwBlendFunctionS1_, RpMaterial*, RpMaterial* material, RwBlendFunction srcBlendMode, RwBlendFunction dstBlendMode);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXWorldSectorEnableEffects, _Z31RpMatFXWorldSectorEnableEffectsP13RpWorldSector, RpWorldSector*, RpWorldSector* worldSector);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetBumpMapCoefficient, _Z36RpMatFXMaterialGetBumpMapCoefficientPK10RpMaterial, RwReal, RpMaterial const* material);
@@ -65,6 +74,10 @@ DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetBumpMapBumpedTexture, _Z38RpMatFXMate
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialGetEnvMapCoefficient, _Z35RpMatFXMaterialGetEnvMapCoefficientPK10RpMaterial, RwReal, RpMaterial const* material);
 DECL_FASTCALL_SIMPLE_GLO(RpMatFXMaterialSetBumpMapFrame, _Z30RpMatFXMaterialSetBumpMapFrameP10RpMaterialP7RwFrame, RpMaterial*, RpMaterial* material, RwFrame* frame);
 
+#ifdef GTAVC
+DECL_VALUE_PLT_I32_GLOBAL(MatFXMaterialDataOffset, BYBIT(0x3952c0, 0x5785d0));
+#else
 DECL_VALUE_PLT_I32_GLOBAL(MatFXMaterialDataOffset, BYBIT(0x679A04, 0x851420));
+#endif
 
 #endif // __AML_PSDK_RPMATFX_H

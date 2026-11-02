@@ -98,4 +98,7 @@ DECL_FASTCALL_SIMPLE_GLO(RpSkinGeometryGetSkin, RpSkinGeometryGetSkin, RpSkin*, 
 DECL_FASTCALL_SIMPLE_GLO(RpSkinSetFreeListCreateParams, RpSkinSetFreeListCreateParams, void, RwInt32 blockSize, RwInt32 numBlocksToPrealloc);
 DECL_FASTCALL_SIMPLE_GLO(RpSkinGetNumBones, RpSkinGetNumBones, RwUInt32, RpSkin* skin);
 
+inline RwUInt32 RpSkinGetNumUsedBones(const RpSkin* skin) { return skin->boneData.numUsedBones; }
+inline const RwUInt8* RpSkinGetUsedBoneList(const RpSkin* skin) { return skin->boneData.usedBoneList; }
+inline RwUInt32 RpSkinGetMaxWeights(const RpSkin* skin) { return skin->vertexMaps.maxWeights; }
 #endif // __AML_PSDK_RPSKIN_H
