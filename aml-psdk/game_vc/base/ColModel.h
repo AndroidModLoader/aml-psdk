@@ -155,8 +155,12 @@ DECL_CLASS_BASED(CColSphere, CSphere)
     // Member functions
     DECL_THISCALL_HEAD(Set, _ZN10CColSphere3SetEfRK7CVectorhh, void, float radius, CVector const& center, u8 material, u8 piece)
     DECL_THISCALL_TAIL(Set, radius, center, material, piece)
-    DECL_THISCALL_HEAD(IntersectRay, _ZNK10CColSphere12IntersectRayERK7CVectorS2_RS0_S3_, bool, CVector const& rayStart, CVector const& rayEnd, CVector& point1, CVector& point2)
-    DECL_THISCALL_TAIL(IntersectRay, rayStart, rayEnd, point1, point2)
+    // The ray direction must be normalized.
+    inline bool IntersectRay(CVector const& rayStart, CVector const& rayDirection, CVector& point1, CVector& point2) const
+    {
+        static auto func = GetMainLibrarySymbol<bool(*)(CColSphere const*, CVector const&, CVector const&, CVector&, CVector&)>("_ZNK10CColSphere12IntersectRayERK7CVectorS2_RS0_S3_");
+        return func(this, rayStart, rayDirection, point1, point2);
+    }
 
     // Member values
     u8 m_nMaterial;
@@ -266,8 +270,11 @@ DECL_CLASS(CColModel)
     DECL_THISCALL_SIMPLE(RemoveCollisionVolumes, _ZN9CColModel22RemoveCollisionVolumesEv, void);
     DECL_THISCALL_SIMPLE(CalculateTrianglePlanes, _ZN9CColModel23CalculateTrianglePlanesEv, void);
     DECL_THISCALL_SIMPLE(RemoveTrianglePlanes, _ZN9CColModel20RemoveTrianglePlanesEv, void);
-    DECL_THISCALL_HEAD(GetTrianglePoint, _ZNK9CColModel16GetTrianglePointER7CVectori, void, CVector& point, i32 vertex)
-    DECL_THISCALL_TAIL(GetTrianglePoint, point, vertex)
+    inline void GetTrianglePoint(CVector& point, i32 vertex) const
+    {
+        static auto func = GetMainLibrarySymbol<void(*)(CColModel const*, CVector&, i32)>("_ZNK9CColModel16GetTrianglePointER7CVectori");
+        return func(this, point, vertex);
+    }
     DECL_THISCALL_HEAD(SetLinkPtr, _ZN9CColModel10SetLinkPtrEP5CLinkIPS_E, void, CLink<CColModel*>* link)
     DECL_THISCALL_TAIL(SetLinkPtr, link)
     DECL_THISCALL_SIMPLE(GetLinkPtr, _ZN9CColModel10GetLinkPtrEv, CLink<CColModel*>*);

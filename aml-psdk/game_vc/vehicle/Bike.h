@@ -109,7 +109,7 @@ DECL_CLASS_BASED(CBike, CVehicle)
     float m_aWheelRatios[4];
     float m_aRatioHistory[4];
     float m_aWheelCounts[4];
-    float m_fBrakeCount;
+    float m_fUnknownValue;
     i32 m_anWheelSurfaceType[2];
     bool m_aBloodyWheel[2];
     bool m_aMoreSkidmarks[2];
@@ -148,7 +148,7 @@ DECL_CLASS_BASED(CBike, CVehicle)
             u8 bWheelieForCamera : 1;
         };
     };
-    i16 m_nBrakes;
+    i16 m_nDoingBurnout;
     float m_fTyreTemp;
     float m_fBrakingSliding;
     float m_fPreviousSpeed;

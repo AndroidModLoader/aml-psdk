@@ -480,7 +480,7 @@ DECL_CLASS_BASED(CPed, CPhysical)
     float m_fHeadingGoal;
     float m_fHeadingChangeRate;
     u16 m_nEnterType;
-    i16 m_nWalkAroundType;
+    u16 m_nWalkAroundType;
     CPhysical *m_pCurPhysSurface;
     CVector m_vecOffsetFromPhysSurface;
     CEntity *m_pCurSurface;

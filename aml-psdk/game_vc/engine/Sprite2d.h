@@ -40,7 +40,7 @@ DECL_CLASS(CSprite2d)
     DECL_FASTCALL_SIMPLE(SetVerticesForSniper, _ZN9CSprite2d20SetVerticesForSniperERK5CRectRK5CRGBAS5_S5_S5_, void, CRect const& rect, CRGBA const& topLeft, CRGBA const& topRight, CRGBA const& bottomLeft, CRGBA const& bottomRight);
     DECL_FASTCALL_SIMPLE(DrawSpecialRectForSniper, _ZN9CSprite2d24DrawSpecialRectForSniperERK5CRectRK5CRGBAS5_S5_S5_, void, CRect const& rect, CRGBA const& topLeft, CRGBA const& topRight, CRGBA const& bottomLeft, CRGBA const& bottomRight);
 
-    inline static void SetVertices(RwOpenGLVertex* vertices, CRect const& rect, CRGBA const& topLeft, CRGBA const& topRight, CRGBA const& bottomLeft, CRGBA const& bottomRight, float u1, float v1, float u2, float v2, float u3, float v3, float u4, float v4)
+    inline static void SetVertices(RwOpenGLVertex vertices[6], CRect const& rect, CRGBA const& topLeft, CRGBA const& topRight, CRGBA const& bottomLeft, CRGBA const& bottomRight, float u1, float v1, float u2, float v2, float u3, float v3, float u4, float v4)
     {
         static auto native = GetMainLibrarySymbol<void(*)(RwOpenGLVertex*, CRect const&, CRGBA const&, CRGBA const&, CRGBA const&, CRGBA const&, float, float, float, float, float, float, float, float)>("_ZN9CSprite2d11SetVerticesEP14RwOpenGLVertexRK5CRectRK5CRGBAS7_S7_S7_ffffffff");
         return native(vertices, rect, topLeft, topRight, bottomLeft, bottomRight, u1, v1, u2, v2, u3, v3, u4, v4);
