@@ -11,7 +11,7 @@ struct CRect
     float right;         // x2
     float bottom;        // min y for world bounds
 
-    CRect(float _left, float _top, float _right, float _bottom)
+    CRect(float _left, float _bottom, float _right, float _top)
     {
         left = _left;
         top = _top;
@@ -147,7 +147,7 @@ struct CRect
     inline bool GetIntersection(CRect const& rect, CRect& result) const
     {
         if(IsInvalid() || rect.IsInvalid()) return false;
-        CRect intersection(fmaxf(left, rect.left), fminf(top, rect.top), fminf(right, rect.right), fmaxf(bottom, rect.bottom));
+        CRect intersection(fmaxf(left, rect.left), fmaxf(bottom, rect.bottom), fminf(right, rect.right), fminf(top, rect.top));
         if(intersection.IsInvalid()) return false;
         result = intersection;
         return true;

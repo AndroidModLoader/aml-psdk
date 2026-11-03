@@ -28,7 +28,7 @@ struct ScreenUtils
 
     static inline CRect Scale(const CRect& rect, float width = 640.0f, float height = 448.0f)
     {
-        return {ScaleX(rect.left, width), ScaleY(rect.top, height), ScaleX(rect.right, width), ScaleY(rect.bottom, height)};
+        return {ScaleX(rect.left, width), ScaleY(rect.bottom, height), ScaleX(rect.right, width), ScaleY(rect.top, height)};
     }
 
     static inline float FromRight(float x, float width = 640.0f) { return GetWidth() - ScaleX(x, width); }
